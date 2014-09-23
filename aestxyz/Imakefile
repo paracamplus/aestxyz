@@ -29,12 +29,16 @@ create.aestxyz_cpan : Dockerfile-cpan
 	ln -sf Dockerfile-cpan Dockerfile
 	docker build -t paracamplus/aestxyz_cpan .
 	docker run paracamplus/aestxyz_cpan perl -MMoose -e 1
+# @bijou 61min
 # let start the sshd daemon:
 create.aestxyz_base : Dockerfile-daemons
 	ln -sf Dockerfile-daemons Dockerfile
 	docker build -t paracamplus/aestxyz_base .
 run.aestxyz-base : 
-	docker run -it -p '50022:22' paracamplus/aestxyz_base /bin/bash
+	docker run -it -p '127.0.0.1:50022:22' paracamplus/aestxyz_base /bin/bash
+start.aestxyz-base :
+	docker run -d -p '127.0.0.1:50022:22' paracamplus/aestxyz_base \
+	    sleep $$(( 60 * 60 * 24 * 365 * 10 ))
 
 
 # end of Imakefile

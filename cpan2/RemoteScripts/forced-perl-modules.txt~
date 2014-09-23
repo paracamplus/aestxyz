@@ -64,7 +64,7 @@ Exporter
 #File::Basename
 #File::Copy
 #File::Find
-#File::Path
+#File::Path -f
 File::Slurp
 File::Spec
 File::Temp
@@ -150,5 +150,6 @@ JSON::Schema
 
 # New problematic modules:
 #Filesys::DiskUsage -f
+#File::Path -f
 
 #end.
