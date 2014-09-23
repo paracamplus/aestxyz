@@ -8,6 +8,15 @@ HOME=/root
 # Assume cpan to be already configured.
 #cpan . </dev/null
 
+# Make CPAN configuration global:
+if [ -f .cpan/CPAN/MyConfig.pm ]
+then
+    cp -p .cpan/CPAN/MyConfig.pm /etc/perl/CPAN/Config.pm
+else
+    echo "Cannot find .cpan/CPAN/MyConfig.pm" 1>&2
+    exit 3
+fi
+
 sed -e 's/#.*$//' -e '/^\s*$/d' < $MODULES |\
 while read m flags
 do

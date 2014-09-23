@@ -49,6 +49,21 @@ archive.aestxyz_cpan :
 	docker push paracamplus/aestxyz_cpan
 # @bijou 4min
 
+create.aestxyz_a : a/Dockerfile
+	cd a/ && docker build -t paracamplus/aestxyz_a .
+	docker run paracamplus/aestxyz_a /root/RemoteScripts/a/check.sh
+	docker tag paracamplus/aestxyz_a \
+		"paracamplus/aestxyz_a:$$(date +%Y%m%d_%H%M%S)"
+
+
+# Customize
+# domainname vm.paracamplus.net
+#  cles ssh.........
+# RemoteScripts/installrc.sh ?
+# configure A server
+
+#  adduser fw4ex ?
+
 # let start the sshd daemon:
 create.aestxyz_daemons : daemons/Dockerfile
 	cd daemons/ && docker build -t paracamplus/aestxyz_daemons .
