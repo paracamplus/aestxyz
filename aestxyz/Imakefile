@@ -1,0 +1,40 @@
+#     Creation of a Docker container for aestxyz
+
+work : nothing 
+clean :: cleanMakefile
+
+# We start from a Debian7 image
+docker.wheezy :
+	docker pull 'debian:wheezy'
+
+# Caution, we will be in / rather than /root/
+start.wheezy :
+	docker run -it --name aestxyz1 'debian:wheezy' '/bin/bash'
+
+# NOTA: tags must respect only [a-z0-9_] are allowed, size between 4 and 30!
+
+erase.all :
+	docker rm `docker ps -a -q`
+	docker rmi `docker images -q`
+
+# To ease tuning, let's create the base container in two steps
+# one with the necessary Debian packages:
+create.aestxyz_apt : Dockerfile-apt
+	ln -sf Dockerfile-apt Dockerfile
+	docker build -t paracamplus/aestxyz_apt .
+	docker run paracamplus/aestxyz_apt pwd
+# @bijou 19min
+# and the other one with the required Perl modules:
+create.aestxyz_cpan : Dockerfile-cpan
+	ln -sf Dockerfile-cpan Dockerfile
+	docker build -t paracamplus/aestxyz_cpan .
+	docker run paracamplus/aestxyz_cpan perl -MMoose -e 1
+# let start the sshd daemon:
+create.aestxyz_base : Dockerfile-daemons
+	ln -sf Dockerfile-daemons Dockerfile
+	docker build -t paracamplus/aestxyz_base .
+run.aestxyz-base : 
+	docker run -it -p '50022:22' paracamplus/aestxyz_base /bin/bash
+
+
+# end of Imakefile

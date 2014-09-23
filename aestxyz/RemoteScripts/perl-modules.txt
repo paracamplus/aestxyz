@@ -1,0 +1,151 @@
+#     Perl modules for debian7 aestxyz-base
+
+YAML::XS
+YAML
+Term::ReadLine
+CPAN
+App::cpanminus
+#Bundle::CPAN
+Perl::OSType
+JSON::PP
+CPAN::Meta::YAML
+CPAN::Meta::Requirements
+CPAN::Meta
+ExtUtils::CBuilder
+ExtUtils::ParseXS
+Module::Build
+Module::Metadata
+Module::Signature
+
+# to handle XML
+XML::LibXML::Common
+#XML::LibXSLT         # needs libxslt version 1.1.28 ie libxml-libxslt-perl
+XML::DOM
+XML::DOM::XPath
+#XML::Diff
+XML::LibXML
+XML::Parser
+XML::SAX
+XML::SAX::Exception
+XML::SAX::PurePerl
+XML::SAX::PurePerl::Reader
+XML::SAX::Base
+XML::Simple
+
+Archive::Tar
+Archive::Zip
+Crypt::OpenSSL::Random
+Crypt::OpenSSL::RSA
+Carp
+Cwd
+URI
+URI::Encode
+Uniq
+String::Escape
+Filesys::Df
+Filesys::DiskUsage -f
+
+# Useful for further installations:
+Test::Exception
+Test::Pod
+#Test::Pod::Coverage
+
+Data::Dump
+Data::Dumper
+Data::Serializer
+Data::UUID
+Date::Parse
+DateTime
+Digest::MD5
+Digest::SHA
+Email::Address
+Encode
+Exporter
+#File::Basename
+#File::Copy
+#File::Find
+File::Path -f
+File::Slurp
+File::Spec
+File::Temp
+File::Touch
+File::chmod
+IO::File
+IO::Handle
+IO::Scalar
+IO::String
+IO::Compress::Bzip2
+Class::Accessor
+
+DBI
+DBD::Pg
+DBD::SQLite
+DBIx::Class
+DBIx::Class::Schema
+
+#Starman -f
+Moose
+Catalyst
+Catalyst::Runtime
+# the previous seems to require Catalyst::Plugin::Params::Nested
+Catalyst::Devel
+Task::Catalyst
+Catalyst::Model::DBIC::Schema
+Catalyst::View::XSLT -f
+CGI::Cookie
+CGI::Simple::Util
+Class::C3::Adopt::NEXT
+DBIx::Class::Schema::Loader
+Gravatar::URL
+HTTP::Cookies
+HTTP::Request
+HTTP::Status
+JSON::Any
+LWP
+LWP::ConnCache
+LWP::UserAgent
+LWPx::ParanoidAgent
+List::AllUtils
+Log::Log4perl
+MIME::Base64
+# Mail::Sendmail
+Module::Load
+Net::Ping::External
+Net::SSH2
+#Net::SSH2::Perl
+#Net::SSH::Perl      # prerequisite Math::GMP 1.04 libmath-gmp-perl
+IO::Socket::SSL
+Regexp::Common
+Regexp::Common::Email::Address
+String::Escape 
+String::Random
+#Sys::Hostname
+Time::ParseDate
+#UNIVERSAL
+URI::Escape
+Uniq
+Catalyst::Plugin::Authentication
+WWW::Mechanize
+Test::WWW::Mechanize
+Test::WWW::Mechanize::Catalyst
+Catalyst::View::JSON
+Catalyst::Controller
+Catalyst::Controller::REST
+Catalyst::Plugin::Unicode
+Object::Signature
+Catalyst::Plugin::Session
+Catalyst::Plugin::Session::State::Cookie
+Catalyst::View::TT
+Class::Accessor
+HTTP::Server::Simple::CGI
+Logfile::Rotate
+HTML::Scrubber
+JSON::Schema
+
+# Problematic ones:
+#RRDTool::OO # requiert une interaction manuelle
+# Patch the source after emacs /usr/local/share/perl/5.10.1/Google/Chart.pm
+# Done in z.vld7net.fr/post-install-01.sh
+#Google::Chart -f # 66/s/coerce => 1/coerce => 0/
+
+#end.
