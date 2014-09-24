@@ -49,9 +49,16 @@ archive.aestxyz_cpan :
 	docker push paracamplus/aestxyz_cpan
 # @bijou 4min
 
+# Install an A server:  a.paracamplus.net
+FW4EX_PERLLIB_DIR=${HOME}/Paracamplus/ExerciseFrameWork/perllib
 create.aestxyz_a : a/Dockerfile
+	-rm -f RemoteScripts/perllib.tgz
+	tar czf RemoteScripts/perllib.tgz -C ${FW4EX_PERLLIB_DIR}/ Paracamplus
+#	patch a_paracamplus_net.pm
+#	patch a.paracamplus.net.yml
 	cd a/ && docker build -t paracamplus/aestxyz_a .
-	docker run paracamplus/aestxyz_a /root/RemoteScripts/a/check.sh
+	docker run paracamplus/aestxyz_a \
+		/root/RemoteScripts/a/check-availability.sh
 	docker tag paracamplus/aestxyz_a \
 		"paracamplus/aestxyz_a:$$(date +%Y%m%d_%H%M%S)"
 
