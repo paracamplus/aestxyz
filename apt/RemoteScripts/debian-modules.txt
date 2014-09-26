@@ -28,8 +28,9 @@ libpq-dev
 libgdbm-dev
 cron
 uuid-runtime
-apache2
+apache2-mpm-prefork
 libapache2-mod-perl2
+wget
 
 # These are useful for cpan:
 unzip

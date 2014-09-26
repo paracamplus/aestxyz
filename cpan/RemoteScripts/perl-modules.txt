@@ -3,6 +3,7 @@
 YAML::XS
 YAML
 Term::ReadLine
+Term::Size::Any
 CPAN
 App::cpanminus
 #Bundle::CPAN
@@ -43,7 +44,7 @@ URI::Encode
 Uniq
 String::Escape
 Filesys::Df
-#Filesys::DiskUsage -f
+Filesys::DiskUsage -f
 
 # Useful for further installations:
 Test::Exception
@@ -147,9 +148,5 @@ JSON::Schema
 # Patch the source after emacs /usr/local/share/perl/5.10.1/Google/Chart.pm
 # Done in z.vld7net.fr/post-install-01.sh
 #Google::Chart -f # 66/s/coerce => 1/coerce => 0/
-
-# New problematic modules:
-#Filesys::DiskUsage -f
-#File::Path -f
 
 #end.

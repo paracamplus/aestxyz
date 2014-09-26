@@ -33,13 +33,23 @@ done | tee /tmp/${0##*/}.log
 /root/RemoteScripts/cleancpan.sh
 
 # Check for anomalies:
-sed -ne '/Result: FAIL/,+1p' < /tmp/${0##*/}.log > /tmp/bad.${0##*/}.log
+sed -ne '/Result: FAIL/,+1p' < /tmp/${0##*/}.log |\
+  grep -v 'Result: FAIL' > /tmp/bad.${0##*/}.log
 if [ 1 -le `wc -l < /tmp/bad.${0##*/}.log` ]
-then {
-        echo "Problematic Perl modules:" 
-        cat /tmp/bad.${0##*/}.log
-        exit 2
-     } 1>&2
+then 
+    # But don't display forced modules (we already know we forced them!)
+    sed -e 's/#.*$//' -e '/^\s*$/d' < $MODULES | grep ' -f' |\
+    while read m flags
+    do
+        sed -i -e "/${m//::/-}/d" /tmp/bad.${0##*/}.log
+    done
+    if [ 1 -le `wc -l < /tmp/bad.${0##*/}.log` ]
+    then {
+            echo "Problematic Perl modules:" 
+            cat /tmp/bad.${0##*/}.log
+            exit 2
+         } 1>&2
+    fi
 fi 
 
 rm -f /tmp/*${0##*/}.log

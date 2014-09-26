@@ -1,16 +1,19 @@
 #
-#                          Building aestxyz-cpan2
+#                          Building aestxyz-a
 #
 # It will contain all standard apt packages and cpan modules required to run 
 # the various servers a, e, ... but no specific FW4EX code.
 #
-FROM paracamplus/aestxyz_cpan
+FROM paracamplus/aestxyz_fw4ex
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV FW4EX_DOCKER true
+ENV HOSTNAME a.paracamplus.net
 
 WORKDIR /root/
-ADD RemoteScripts /root/RemoteScripts
+ADD RemoteScripts                /root/RemoteScripts
+ADD a.paracamplus.net/root.d/    /
 
-RUN /root/RemoteScripts/install-forced-perl-modules.sh
+EXPOSE 80
+RUN /root/RemoteScripts/setup.sh
 
 #end.

@@ -1,0 +1,18 @@
+
+        Installing an A server named a.paracamplus.net
+
+a/                  is the toplevel directory for Docker
+
+a/a.paracamplus.net contains scripts to be run on the Docker host:
+ a.paracamplus.net.sh    is the configuration file
+ prepare.sh              prepare stuff to be installed into the container
+ check-outer-availability.sh  checks the A server
+
+a/RemoteScripts     contains scripts to be run in the Docker container:
+a/RemoteScripts/root.d   files to be copied onto the container
+ a.paracamplus.net.sh    is the same configuration file
+ setup.sh                configures the container
+ start.sh                starts daemon when the container is ran  
+ check-inner-availability.sh  checks the A server
+
+#end.
