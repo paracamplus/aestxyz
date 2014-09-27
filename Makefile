@@ -20,8 +20,10 @@ erase.all :
 #recreate.all : erase.all
 #recreate.all : create.aestxyz_apt
 #recreate.all : create.aestxyz_cpan
-recreate.all : create.aestxyz_fw4ex
+#recreate.all : create.aestxyz_fw4ex
 recreate.all : create.aestxyz_a
+recreate.all : create.aestxyz_e
+recreate.all : create.aestxyz_s
 
 # To ease tuning, let's create the base container in small steps
 # one with the necessary Debian packages:
@@ -72,13 +74,15 @@ create.aestxyz_a : a/Dockerfile
 # inner check of the A server:
 	docker run --rm -h a.paracamplus.net \
 		paracamplus/aestxyz_a \
-		/root/RemoteScripts/check-inner-availability.sh
+		/root/RemoteScripts/check-inner-availability.sh \
+			a.paracamplus.net
 # outer check of the A server:
 	docker run -d -p '127.0.0.1:50080:80' -h a.paracamplus.net \
 	    paracamplus/aestxyz_a \
-	    /root/RemoteScripts/start.sh -s 30 && \
+	    /root/RemoteScripts/start.sh -s 10 && \
 	  a/a.paracamplus.net/check-outer-availability.sh \
-		-i 127.0.0.1 -p 50080 -s 4
+		-i 127.0.0.1 -p 50080 -s 4 \
+		a.paracamplus.net
 	docker tag paracamplus/aestxyz_a \
 		"paracamplus/aestxyz_a:$$(date +%Y%m%d_%H%M%S)"
 
@@ -87,7 +91,45 @@ create.aestxyz_e : e/Dockerfile
 	e/e.paracamplus.net/prepare.sh
 	cd e/ && docker build -t paracamplus/aestxyz_e .
 # @bijou 
+# inner check of the E and A servers:
+	docker run --rm -h e.paracamplus.net \
+		paracamplus/aestxyz_e \
+		/root/RemoteScripts/check-inner-availability.sh \
+			e.paracamplus.net a.paracamplus.net 
+# outer check of the E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h e.paracamplus.net \
+	    paracamplus/aestxyz_e \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  e/e.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_e \
+		"paracamplus/aestxyz_e:$$(date +%Y%m%d_%H%M%S)"
 
+# Install an S server: s.paracamplus.net
+create.aestxyz_s : s/Dockerfile
+	s/s.paracamplus.net/prepare.sh
+	cd s/ && docker build -t paracamplus/aestxyz_s .
+# inner check of the S, E and A servers:
+	docker run --rm -h s.paracamplus.net \
+		paracamplus/aestxyz_s \
+		/root/RemoteScripts/check-inner-availability.sh \
+			 s.paracamplus.net e.paracamplus.net a.paracamplus.net  
+# outer check of the S, E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h s.paracamplus.net \
+	    paracamplus/aestxyz_s \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  s/s.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_s \
+		"paracamplus/aestxyz_s:$$(date +%Y%m%d_%H%M%S)"
+
+
+# Install many exercises in this E server. Should be done after all
+# servers are installed in the container.
+fill.exercises :
+	echo to be done ; exit 3
 
 # let start the sshd daemon:
 create.aestxyz_daemons : daemons/Dockerfile

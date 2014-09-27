@@ -11,7 +11,6 @@ ENV HOSTNAME a.paracamplus.net
 
 WORKDIR /root/
 ADD RemoteScripts                /root/RemoteScripts
-ADD a.paracamplus.net/root.d/    /
 
 EXPOSE 80
 RUN /root/RemoteScripts/setup.sh

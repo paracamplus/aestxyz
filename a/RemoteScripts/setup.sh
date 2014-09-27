@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash
 # Initialize the Docker container from within the container.
 # Errors are signalled with a 2x code.
 
@@ -29,7 +29,7 @@ CURRENTHOST=$(hostname)
 
 ( 
     cd /usr/local/lib/site_perl
-    if [ -n "$MODULE" ]
+    if [ -n "$SRCDIR" ]
     then 
         cd /usr/local/lib/site_perl/Paracamplus/FW4EX
         if ${DEBUG:-false}
@@ -49,31 +49,40 @@ CURRENTHOST=$(hostname)
     fi
 )
 
+echo "Populate container"
+if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
+then ( 
+        cd /
+        tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
+     )
+fi
+
 echo "Install Catalyst /opt/$HOSTNAME/Templates"
 mkdir -p /opt/$HOSTNAME
-(
-    cd /opt/$HOSTNAME
-    tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
-)
+if [ -f /root/RemoteScripts/$MODULE.tgz ]
+then (
+        cd /opt/$HOSTNAME
+        tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
+     )
+fi
 echo "Install /var/www/$HOSTNAME"
 mkdir -p /var/www/$HOSTNAME
-(
-    cd /var/www/$HOSTNAME
-    tar xvzf /root/RemoteScripts/$MODULE.tgz 
-    rm -rf Templates
-)
+if [ -f /root/RemoteScripts/$MODULE.tgz ]
+then (
+        cd /var/www/$HOSTNAME
+        tar xvzf /root/RemoteScripts/$MODULE.tgz 
+        rm -rf Templates
+     )
+fi
 
-echo "Specific directories for A server"
-mkdir -p /opt/$HOSTNAME/tmpdir
-mkdir -p /opt/$HOSTNAME/batchdir
-mkdir -p /opt/$HOSTNAME/jobdir
-chown -R ${APACHEUSER}: /opt/$HOSTNAME/*dir
-
-echo "Restaure ownership and rights"
-chown -R $APACHEUSER: /var/www/$HOSTNAME
-chown -R $APACHEUSER: /opt/$HOSTNAME
-chmod 444 /opt/$HOSTNAME/?*.?*
-chmod 440 /opt/$HOSTNAME/fw4excookie.insecure.key
+if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh | wc -l ) ]
+then 
+    for f in ${0%/*}/setup-$MODULE-??.sh
+    do
+        echo "Sourcing $f"
+        source $f || exit 22
+    done
+fi
 
 if [ -n "$RANK" ]
 then
