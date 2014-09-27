@@ -1,0 +1,5 @@
+************************************************************
+*        This is the Storage server of Paracamplus.        *
+* This is a technical server you should never see at all.  *
+*               Your request is erroneous!                 *
+************************************************************

@@ -1,0 +1,44 @@
+---
+# This is the deployment configuration of a A server on a.paracamplus.net
+
+name: Paracamplus::FW4EX::A
+encoding: UTF-8
+default_view: TT
+
+Catalyst::Engine:
+    uploadtmp: /tmp/a/upload
+
+Controller::Exercise:
+    private_key_file: /opt/a.paracamplus.net/fw4excookie.insecure.key
+    job_dir:          /opt/a.paracamplus.net/jobdir
+    batch_dir:        /opt/a.paracamplus.net/batchdir
+    tmp_dir:          /opt/a.paracamplus.net/tmpdir
+    RNGschemaFile:    /opt/a.paracamplus.net/fw4ex.rng
+    statefilename:    /opt/a.paracamplus.net/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+Controller::Job:
+    private_key_file: /opt/a.paracamplus.net/fw4excookie.insecure.key
+    job_dir:          /opt/a.paracamplus.net/jobdir
+    batch_dir:        /opt/a.paracamplus.net/batchdir
+    tmp_dir:          /opt/a.paracamplus.net/tmpdir
+    RNGschemaFile:    /opt/a.paracamplus.net/fw4ex.rng
+    statefilename:    /opt/a.paracamplus.net/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+Controller::Batch:
+    private_key_file: /opt/a.paracamplus.net/fw4excookie.insecure.key
+    job_dir:          /opt/a.paracamplus.net/jobdir
+    batch_dir:        /opt/a.paracamplus.net/batchdir
+    tmp_dir:          /opt/a.paracamplus.net/tmpdir
+    RNGschemaFile:    /opt/a.paracamplus.net/fw4ex.rng
+    statefilename:    /opt/a.paracamplus.net/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/a.paracamplus.net/Templates
+    ENCODING: UTF-8
+    render_die: 1
+
+#end.

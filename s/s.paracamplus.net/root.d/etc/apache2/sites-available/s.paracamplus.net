@@ -1,0 +1,271 @@
+<VirtualHost *:80>
+# Check syntax with /usr/sbin/apache2ctl -t
+# This configuration is not automatically generated!!!
+
+  ServerName  s.paracamplus.net
+  ServerAdmin fw4exmaster@paracamplus.com
+  DocumentRoot /var/www/s.paracamplus.net/
+  AddDefaultCharset UTF-8
+
+  AddType text/javascript .js
+  AddType text/css        .css
+  AddType application/xslt+xml .xsl
+  ExpiresActive On
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+                Options -Indexes 
+                Order deny,allow
+                Deny from all
+        </Directory>
+
+        <Directory /var/www/s.paracamplus.net/ >
+          <Limit HEAD GET>
+                Order allow,deny
+                allow from all
+                DirectoryIndex index.txt
+          </Limit>
+        </Directory>
+
+# Caution: <Location> directives must be sorted from most general to
+#  most precise
+
+        ExpiresActive On
+
+        <Location /error.txt>
+              Header set Expires "Tue, 01 Jan 1980 16:58:34 GMT"
+        </Location>
+
+        <Location /index.txt>
+              Header set Expires "Tue, 01 Jan 1980 16:58:30 GMT"
+        </Location>
+
+        <Location /favicon.ico>
+              ExpiresDefault A2592000
+        </Location>
+
+        <Directory /var/www/s.paracamplus.net/s/ >
+              ErrorDocument 403 /error.txt
+              ErrorDocument 404 /error.txt
+              AddType "text/xml;charset=UTF-8" .xml
+              ExpiresByType text/xml "now plus 1 year"
+              AddType "text/plain;charset=UTF-8" .scm
+        </Directory>
+
+        Alias /sh/s/  /var/www/s.paracamplus.net/s/
+        Alias /shp/s/ /var/www/s.paracamplus.net/s/
+
+        <Directory /var/www/s.paracamplus.net/b/ >
+          # Directory to hold batch report which are incrementally rewritten
+                ErrorDocument 403 /error.txt
+                ErrorDocument 404 /error.txt
+                AddType text/xml .xml
+                ExpiresByType text/xml "now plus 1 minute"
+        </Directory>
+
+        Alias /sh/b/  /var/www/s.paracamplus.net/b/
+        Alias /shp/b/ /var/www/s.paracamplus.net/b/
+
+        <Directory /var/www/s.paracamplus.net/e/ >
+                # Directory to hold exercise reports
+                ErrorDocument 403 /error.txt
+                ErrorDocument 404 /error.txt
+                AddType text/xml .xml
+                ExpiresByType text/xml "now plus 1 year"
+        </Directory>
+
+        Alias /sh/e/  /var/www/s.paracamplus.net/e/
+        Alias /shp/e/ /var/www/s.paracamplus.net/e/
+
+        <Directory /var/www/s.paracamplus.net/c/ >
+                # Directory to hold certificates
+                ErrorDocument 403 /error.txt
+                ErrorDocument 404 /error.txt
+                AddType application/pdf .pdf
+                ExpiresByType text/xml "now plus 1 year"
+                SSLRequireSSL
+                RedirectMatch /c/(.*) https://paracamplus.com/c/$1
+        </Directory>
+
+        Errorlog /var/log/apache2/s.paracamplus.net-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/s.paracamplus.net-access.log combined
+        ServerSignature On
+
+</VirtualHost>
+
+# <VirtualHost *:443>
+
+#   ServerName  paracamplus.com
+#   ServerAlias www.paracamplus.com
+#   ServerAlias s.paracamplus.net
+#   ServerAlias s1.paracamplus.net
+#   ServerAlias services.queinnec.org
+#   ServerAdmin fw4exmaster@paracamplus.net
+#   DocumentRoot /var/www/s.paracamplus.net/
+#   AddDefaultCharset UTF-8
+
+# AddType text/javascript .js
+# AddType text/css        .css
+# AddType application/xslt+xml .xsl
+# AddType text/plain      .txt
+# ExpiresActive On
+
+# ModPagespeed off
+
+#         SSLEngine on
+#         SSLCertificateFile /etc/ssl/certs/paracamplus.com.2014.crt
+#         SSLCertificateKeyFile /etc/ssl/private/paracamplus.com.2014.insecure.key
+
+#         <Directory />
+#                 Options FollowSymLinks
+#                 AllowOverride None
+#                 Options -Indexes 
+#                 Order deny,allow
+#                 Deny from all
+#                 SSLRequireSSL
+#         </Directory>
+
+#         <Directory /var/www/s.paracamplus.net/c/ >
+#           <Limit HEAD GET>
+#                 Order allow,deny
+#                 allow from all
+#                 DirectoryIndex index.txt
+#           </Limit>
+#         </Directory>
+
+#         <Directory /var/www/services.queinnec.org/ >
+#                 Options FollowSymLinks MultiViews
+#                 AllowOverride None
+#                 Order allow,deny
+#                 allow from 81.56.121.122
+#         </Directory>
+
+#         ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+#         <Directory "/usr/lib/cgi-bin">
+#                 AllowOverride None
+#                 Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+#                 Order allow,deny
+#                 Allow from all
+#         </Directory>
+
+#         <Location /error.txt>
+#               Header set Expires "Tue, 01 Jan 1980 16:58:34 GMT"
+#         </Location>
+
+#         <Location /index.txt>
+#               Header set Expires "Tue, 01 Jan 1980 16:58:30 GMT"
+#         </Location>
+
+#         <Location /favicon.ico>
+#               ExpiresDefault A2592000
+#         </Location>
+
+#         ErrorLog ${APACHE_LOG_DIR}/s.paracamplus.net-ssl-error.log
+
+#         # Possible values include: debug, info, notice, warn, error, crit,
+#         # alert, emerg.
+#         LogLevel warn
+
+#         CustomLog ${APACHE_LOG_DIR}/s.paracamplus.net-ssl-access.log combined
+
+# <Directory "/usr/local/nrdp">
+#    SSLRequireSSL
+#    Options None
+#    AllowOverride None
+#    Order deny,allow
+#    Deny from all
+# # 132.227.68.116 robinet.selfip.info 
+# # 94.23.224.161 ns306732.ovh.net = OVHedite
+# # 81.56.121.122 queinnec.homeip.net
+# # 132.227.85.152 youpou.rsr.lip6.fr = camplou
+#    Allow from 132.227.68.116 94.23.224.161 81.56.121.122 132.227.85.152
+# #   AuthName "NRDP"
+# #   AuthType Basic
+# #   AuthUserFile /usr/local/nrdp/htpasswd.users
+# #  Require valid-user
+# </Directory>
+# # Essai depuis robinet.selfip.info
+# # Modifie send_nrdp.sh pour ajouter WGET_FLAGS
+# #   (export WGET_FLAGS=--no-check-certificate ; bash -x scripts/send_nrdp.sh -t "87e5585b6ebc6520580171078b0c6d14" -u https://services.queinnec.org/NrdP/ -H robinetSelfipInfo -s VM -S OK -o 'test' )
+
+# Alias /NrdP "/usr/local/nrdp/server"
+
+# # ################### Zabbix
+# # incorporate /etc/zabbix/apache2.conf and
+# # remove /etc/apache2/conf.d/zabbix so zabbix
+# # is only available in the vhost services.queinnec.org
+
+# # Define /zabbix alias, this is the default
+# <IfModule mod_alias.c>
+#     Alias /zabbix /usr/share/zabbix
+# </IfModule>
+
+# <Directory "/usr/share/zabbix">
+#     Options FollowSymLinks
+#     AllowOverride None
+#    Order deny,allow
+#    Deny from all
+# # 132.227.68.116 robinet.selfip.info 
+# # 94.23.224.161 ns306732.ovh.net = OVHedite
+# # 81.56.121.122 queinnec.homeip.net
+# # 132.227.85.152 youpou.rsr.lip6.fr = camplou
+#    Allow from 132.227.68.116 94.23.224.161 81.56.121.122 132.227.85.152
+
+#     php_value max_execution_time 300
+#     php_value memory_limit 128M
+#     php_value post_max_size 16M
+#     php_value upload_max_filesize 2M
+#     php_value max_input_time 300
+#     php_value date.timezone Europe/Paris
+# </Directory>
+
+# <Directory "/usr/share/zabbix/conf">
+#     Order deny,allow
+#     Deny from all
+#     <files *.php>
+#         Order deny,allow
+#         Deny from all
+#     </files>
+# </Directory>
+
+# <Directory "/usr/share/zabbix/api">
+#     Order deny,allow
+#     Deny from all
+#     <files *.php>
+#         Order deny,allow
+#         Deny from all
+#     </files>
+# </Directory>
+
+# <Directory "/usr/share/zabbix/include">
+#     Order deny,allow
+#     Deny from all
+#     <files *.php>
+#         Order deny,allow
+#         Deny from all
+#     </files>
+# </Directory>
+
+# <Directory "/usr/share/zabbix/include/classes">
+#     Order deny,allow
+#     Deny from all
+#     <files *.php>
+#         Order deny,allow
+#         Deny from all
+#     </files>
+# </Directory>
+
+# </VirtualHost>
+# bijou$ wget -S -o/dev/stdout https://paracamplus.com/c/
+#--2014-05-23 18:15:10--  https://paracamplus.com/c/
+#Resolving paracamplus.com (paracamplus.com)... 91.121.96.58
+#Connecting to paracamplus.com (paracamplus.com)|91.121.96.58|:443... connected.
+#ERROR: cannot verify paracamplus.com's certificate, issued by `/C=FR/O=GANDI SAS/CN=Gandi Standard SSL CA':
+#  Unable to locally verify the issuer's authority.
+

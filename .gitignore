@@ -1,3 +1,6 @@
 .#*
 *~
+*.bak
 notes.QNC
+fw4excookie.*.key
+*.tgz
