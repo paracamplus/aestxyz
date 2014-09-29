@@ -1,0 +1,178 @@
+---
+# This is the deployment configuration of the X server onto x.paracamplus.net
+
+name: Paracamplus::FW4EX::X
+default_view: TT
+
+Catalyst::Engine:
+    uploadtmp: /tmp/x/upload
+
+Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=localhost
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Controller::Root:
+    version: 1208
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::Direct:
+    version: 1208
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    # 8 jours
+    timeout: 691200
+    ephemeralId: 32825
+    ephemeralTimeout: 15
+    lang: fr
+    message:
+      en:
+          missingLogin: "Give me your login please!"
+          missingPassword: "Give me your password please!"
+          wrongCombination: "Wrong combination of login and password!"
+      fr:
+          missingLogin: "Votre nom de connexion SVP!"
+          missingPassword: "Votre mot de passe SVP!"
+          wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
+
+Controller::FromUPMC:
+    version: 1208
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    endTime: 20110201T00:00:00
+    message:
+      en:
+          notAuthenticated: "Authentication required!"
+          missingPassword: "Give me your password please!"
+          missingLogin: "missingLogin"
+          wrongCombination: "Wrong combination of login and password!"
+
+Controller::FromMOOC:
+    version: 1208
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    smtpfrom: CodeGradX confirmation <noreply@paracamplus.com>
+    sendLinkSubject: "Confirmation de courriel"
+    sendLinkBaseUrl: http://x.paracamplus.net/authenticate/checklink/
+    smtpservers:
+      - 127.0.0.1
+    message:
+      fr:
+          missingEmail: "Courriel manquant!"
+          badEmail:     "Pas un courriel!"
+    defaultGroup: nogroup
+    checkAPPID: CodeGradX
+
+Controller::OpenID:
+    verbose: 10
+    # Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    cache_dir: /opt/tmp/x/cache
+    provider:  'https://accounts.google.com/o/oauth2/auth?'
+    client_id: 'xxx.apps.googleusercontent.com'
+    client_secret: 'yyy'
+    redirect_uri:  'http://x.paracamplus.net/openid/check'
+    realm:         'http://*.paracamplus.net/'
+    checker:   'https://accounts.google.com/o/oauth2/token'
+    googleCertsUrl: https://www.googleapis.com/oauth2/v1/certs
+#    behavior: register
+
+Controller::Person:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    sServerUrl: /s/
+    xServerUrl: /
+
+Controller::History:
+    version: 1208
+    count: 20
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    sServerUrl: /sh/s/
+    xServerUrl: /xh/
+
+Controller::Exercise:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    sServerUrl: /s/
+    xServerUrl: /
+
+Controller::Things:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+    defaultContentType: application/json
+    maximum: 15
+
+Controller::Jobs:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+    defaultContentType: application/json
+    maximum: 15
+
+Controller::Exercises:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::Batches:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::Persons:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::Author:
+    version: 1208
+    user_cookie_key: u
+# Use the same insecure key as the A server:
+    private_key_file:  /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::PersonGroup:
+    version: 1208
+    user_cookie_key: u
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+
+Controller::Enroll:
+    version: 1208
+    user_cookie_key: u
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    home_page: /authenticationAnswer
+
+Controller::Register:
+    version: 1208
+    user_cookie_key: u
+    private_key_file: /opt/x.paracamplus.net/fw4excookie.insecure.key
+    sendLinkBaseUrl: http://x.paracamplus.net/
+    smtpfrom: FW4EX master <keymaster@paracamplus.com>
+    smtpservers:
+      - 127.0.0.1
+    confirmationLinkSubject: "Lien temporaire"
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/x.paracamplus.net/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/x.paracamplus.net/Templates/
+        - /opt/x.paracamplus.net/Templates/Default/
+
+# end.

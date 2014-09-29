@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -e
 # Prepare the Docker build process on the Docker host.
 # This script is supposed to be run in the Docker/ directory.
 # Errors are signalled with a 1x code.
@@ -25,6 +25,10 @@ source ${0%/*}/../../common/preparelib.sh
 
 # The top directory of files to be copied in the Docker container:
 ROOTDIR=${0%/*}/root.d
+mkdir -p $ROOTDIR
+
+# if forgotten:
+mkdir -p ${0%/*}/../RemoteScripts
 
 # Get the version number from Mercurial:
 VERSION=`echo $( cd $PARACAMPLUSDIR/ && \
@@ -93,12 +97,6 @@ else
     :
 fi
 
-# Docker takes a very long time to process an instruction such as
-#     ADD root.d/  /
-# this way is much faster:
-echo "Taring root.d"
-tar czhf ${0%/*}/../RemoteScripts/root-$MODULE.tgz -C $ROOTDIR .
-
 if [ 1 -le $( ls -1 ${0%/*}/prepare-??.sh 2>/dev/null | wc -l ) ]
 then 
     for f in ${0%/*}/prepare-??.sh
@@ -107,6 +105,12 @@ then
         source $f || exit 12
     done
 fi
+
+# Docker takes a very long time to process an instruction such as
+#     ADD root.d/  /
+# this way is much faster:
+echo "Taring root.d"
+tar czhf ${0%/*}/../RemoteScripts/root-$MODULE.tgz -C $ROOTDIR .
 
 # Make sure RemoteScripts has the same configuration:
 cp -p ${0%/*}/$HOSTNAME.sh ${0%/*}/../RemoteScripts/$HOSTNAME.sh 

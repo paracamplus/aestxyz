@@ -90,6 +90,7 @@ Catalyst
 Catalyst::Runtime
 # the previous seems to require Catalyst::Plugin::Params::Nested
 Catalyst::Devel
+Cache::File
 Task::Catalyst
 Catalyst::Model::DBIC::Schema
 Catalyst::View::XSLT -f
@@ -98,6 +99,7 @@ CGI::Simple::Util
 Class::C3::Adopt::NEXT
 DBIx::Class::Schema::Loader
 Gravatar::URL
+HTML::FormHandler::Model::DBIC
 HTTP::Cookies
 HTTP::Request
 HTTP::Status
@@ -109,12 +111,13 @@ LWPx::ParanoidAgent
 List::AllUtils
 Log::Log4perl
 MIME::Base64
-# Mail::Sendmail
+Mail::Sendmail -f
 Module::Load
 Net::Ping::External
 Net::SSH2
 #Net::SSH2::Perl
 #Net::SSH::Perl      # prerequisite Math::GMP 1.04 libmath-gmp-perl
+OIDC::Lite::Util::JWT
 IO::Socket::SSL
 Regexp::Common
 Regexp::Common::Email::Address
@@ -124,6 +127,7 @@ String::Random
 Time::ParseDate
 #UNIVERSAL
 URI::Escape
+URL::Encode
 Uniq
 Catalyst::Plugin::Authentication
 WWW::Mechanize

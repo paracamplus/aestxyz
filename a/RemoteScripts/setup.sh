@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash 
 # Initialize the Docker container from within the container.
 # Errors are signalled with a 2x code.
 

@@ -1,4 +1,8 @@
 #     Creation of a Docker container for aestxyz
+# We install all the softwares required to instantiate
+#   vmauthor
+#   proxying frontend
+#   a,e,t servers
 
 work : nothing 
 clean :: cleanMakefile
@@ -20,10 +24,14 @@ erase.all :
 #recreate.all : erase.all
 #recreate.all : create.aestxyz_apt
 #recreate.all : create.aestxyz_cpan
-#recreate.all : create.aestxyz_fw4ex
+recreate.all : create.aestxyz_fw4ex
 recreate.all : create.aestxyz_a
 recreate.all : create.aestxyz_e
 recreate.all : create.aestxyz_s
+recreate.all : create.aestxyz_x
+recreate.all : create.aestxyz_t
+recreate.all : create.aestxyz_z
+recreate.all : create.aestxyz_y
 
 # To ease tuning, let's create the base container in small steps
 # one with the necessary Debian packages:
@@ -107,6 +115,7 @@ create.aestxyz_e : e/Dockerfile
 		"paracamplus/aestxyz_e:$$(date +%Y%m%d_%H%M%S)"
 
 # Install an S server: s.paracamplus.net
+# S is not a Catalyst webapp
 create.aestxyz_s : s/Dockerfile
 	s/s.paracamplus.net/prepare.sh
 	cd s/ && docker build -t paracamplus/aestxyz_s .
@@ -125,6 +134,93 @@ create.aestxyz_s : s/Dockerfile
 	docker tag paracamplus/aestxyz_s \
 		"paracamplus/aestxyz_s:$$(date +%Y%m%d_%H%M%S)"
 
+# Install an X server: x.paracamplus.net
+# requires access to the database
+create.aestxyz_x : x/Dockerfile
+	x/x.paracamplus.net/prepare.sh
+	cd x/ && docker build -t paracamplus/aestxyz_x .
+# inner check of the X, S, E and A servers:
+	docker run --rm -h x.paracamplus.net \
+		paracamplus/aestxyz_x \
+		/root/RemoteScripts/check-inner-availability.sh \
+			x.paracamplus.net \
+			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
+# outer check of the X, S, E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h x.paracamplus.net \
+	    paracamplus/aestxyz_x \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  x/x.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		x.paracamplus.net \
+		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_x \
+		"paracamplus/aestxyz_x:$$(date +%Y%m%d_%H%M%S)"
+
+# Install a T server: t.paracamplus.net
+# T proxies to the previous servers
+create.aestxyz_t : t/Dockerfile
+	t/t.paracamplus.net/prepare.sh
+	cd t/ && docker build -t paracamplus/aestxyz_t .
+# inner check of the T, X, S, E and A servers:
+	docker run --rm -h t.paracamplus.net \
+		paracamplus/aestxyz_t \
+		/root/RemoteScripts/check-inner-availability.sh \
+			t.paracamplus.net x.paracamplus.net \
+			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
+# outer check of the T, X, S, E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h t.paracamplus.net \
+	    paracamplus/aestxyz_t \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  t/t.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		t.paracamplus.net x.paracamplus.net \
+		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_t \
+		"paracamplus/aestxyz_t:$$(date +%Y%m%d_%H%M%S)"
+
+# Install a Z server: z.paracamplus.net
+create.aestxyz_z : z/Dockerfile
+	z/z.paracamplus.net/prepare.sh
+	cd z/ && docker build -t paracamplus/aestxyz_z .
+# inner check of the Z, T, X, S, E and A servers:
+	docker run --rm -h z.paracamplus.net \
+		paracamplus/aestxyz_z \
+		/root/RemoteScripts/check-inner-availability.sh \
+			z.paracamplus.net t.paracamplus.net x.paracamplus.net \
+			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
+# outer check of the Z, T, X, S, E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h z.paracamplus.net \
+	    paracamplus/aestxyz_z \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  z/z.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		z.paracamplus.net t.paracamplus.net x.paracamplus.net \
+		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_z \
+		"paracamplus/aestxyz_z:$$(date +%Y%m%d_%H%M%S)"
+
+# Install a Y server: y.paracamplus.net
+create.aestxyz_y : y/Dockerfile
+	y/y.paracamplus.net/prepare.sh
+	cd y/ && docker build -t paracamplus/aestxyz_y .
+# inner check of the Y, Z, T, X, S, E and A servers:
+	docker run --rm -h y.paracamplus.net \
+		paracamplus/aestxyz_y \
+		/root/RemoteScripts/check-inner-availability.sh \
+			y.paracamplus.net \
+			z.paracamplus.net t.paracamplus.net x.paracamplus.net \
+			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
+# outer check of the Y, Z, T, X, S, E and A servers:
+	docker run -d -p '127.0.0.1:50080:80' -h y.paracamplus.net \
+	    paracamplus/aestxyz_y \
+	    /root/RemoteScripts/start.sh -s 10 && \
+	  y/y.paracamplus.net/check-outer-availability.sh \
+		-i 127.0.0.1 -p 50080 -s 4 \
+		y.paracamplus.net \
+		z.paracamplus.net t.paracamplus.net x.paracamplus.net \
+		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+	docker tag paracamplus/aestxyz_y \
+		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
 
 # Install many exercises in this E server. Should be done after all
 # servers are installed in the container.

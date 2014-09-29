@@ -24,6 +24,7 @@ rrdtool
 librrdtool-oo-perl
 postgresql
 postgresql-client 
+postgresql-server
 libpq-dev
 libgdbm-dev
 cron

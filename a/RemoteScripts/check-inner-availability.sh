@@ -34,14 +34,19 @@ do (
             else
                 echo '***************** Problem (missing fragment)!'
                 cat /tmp/wget_$HOSTNAME.txt
+                echo 33 > /tmp/wget_code.txt
                 exit 33
             fi
         else
-            echo '***************** Problem (wrong version)!'
+            echo '***************** Problem (missing or wrong version)!'
             cat /tmp/wget_$HOSTNAME.txt
+            echo 32 > /tmp/wget_code.txt
             exit 32
         fi
     )
+    if [ -f /tmp/wget_code.txt ]
+    then exit $(< /tmp/wget_code.txt)
+    fi
 done
 
 # end of check-inner-availability.sh

@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -e
 
 echo "Specific directories for A server"
 mkdir -p /opt/$HOSTNAME/tmpdir

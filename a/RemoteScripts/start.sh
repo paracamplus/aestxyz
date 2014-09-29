@@ -10,13 +10,21 @@ do
         s)
             SLEEP=$OPTARG
             ;;
-        *)
+        \?)
             echo "Bad option $opt"
+            exit 41
             ;;
     esac
 done
 
-/etc/init.d/apache2 start
+if [ 1 -le $( ls -1 ${0%/*}/start-*.sh 2>/dev/null | wc -l ) ]
+then 
+    for f in ${0%/*}/start-*.sh
+    do
+        echo "Sourcing $f"
+        source $f || exit 42
+    done
+fi
 
 sleep $SLEEP
 

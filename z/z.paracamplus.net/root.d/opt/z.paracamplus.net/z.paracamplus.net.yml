@@ -1,0 +1,279 @@
+---
+# This is the deployment configuration of the Z server onto z.paracamplus.net
+
+name: Paracamplus::FW4EX::Z
+encoding: UTF-8
+default_view: TT
+tmpDir: /opt/tmp/z.paracamplus.net
+version: 1208
+lang: fr
+decoration:
+    ue_url: http://info.paracamplus.net/
+    title: CodeGradX
+    lcAppName: z
+
+Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=localhost
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/z.paracamplus.net/
+    mime_types:
+        xsl: application/xslt+xml
+
+############### Deployment
+deployment:
+   shortName: z
+   serverName: z.paracamplus.net
+   topSrcDir: Servers/w.z
+   apacheRank: 402
+
+############### Path
+
+exercises:
+    kind: and
+    1: 
+       title: Exercice en C
+       kind: set
+       1: com.paracamplus.li205.function.1
+    2:
+       title: Exercice en Java
+       kind: set
+       1: com.paracamplus.li314.java.3
+    3: 
+       title: Exercice en bash
+       kind: set
+       1: com.paracamplus.li362.sh.7
+    4: 
+       title: Exercices sur commandes Posix
+       kind: set
+       1: com.paracamplus.li362.tr.4
+       2: org.fw4ex.li218.devoir.2010nov.3
+    5: 
+       title: Exercice en Octave
+       kind: set
+       1: com.paracamplus.lt216.1
+    6: 
+       title: Exercice en Scheme
+       kind: set
+       1: org.fw4ex.li101.l2p
+    7:
+       title: "Exercice en O'Caml"
+       kind: set
+       1: org.fw4ex.ocaml.1
+    8: 
+       title: Exercice pour le MOOC Programmation récursive
+       kind: set
+       1: org.fw4ex.li101.pgcd.0
+
+
+############### Views
+
+View::Identity:
+
+View::XSLT:
+   INCLUDE_PATH:
+      - /var/www/z.paracamplus.net/static/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/z.paracamplus.net/Templates
+        - /opt/z.paracamplus.net/Templates/Default
+    ENCODING: UTF-8
+    render_die: 1
+
+################## Controllers
+
+Controller::Authenticate:
+   private_key_file:  /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+# FIXME prendre en compte ces dates si elles existent!!!!!!!!!!!!!!!!!!!
+   startTime: 2011-08-22T00:00
+   endTime:   2020-02-01T00:00
+   sendLinkBaseUrl: http://z.paracamplus.net/authenticate/checklink/
+   smtpfrom: webmaster@paracamplus.net <WebMaster@paracamplus.net>
+   sendLinkSubject: "Accès à z.paracamplus.net"
+   smtpservers:
+       - localhost:25
+   message:
+     fr:
+       missingLogin: "Nom de connexion (du genre nobody:0) manquant!"
+       missingPassword: "Mot de passe manquant!"
+       wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
+       missingLoginOrEmail: "Nom de connexion ou courriel absent!"
+       unknownEmail: "Courriel inconnu!"
+       ambiguousEmail: "Courriel ambigü ?"
+       unknownLogin: "Nom de connexion inconnu!"
+       ambiguousLogin: "Nom de connexion ambigü ?"
+       missingLink: "Lien temporaire absent!"
+       obsoleteLink: "Lien temporaire inconnu ou périmé!"
+       changePassword: "N'oubliez pas de changer votre mot de passe!"
+     en:
+       missingLogin: "Missing login!"
+       missingPassword: "Missing password!"
+       wrongCombination: "Wrong combination of login and password!"
+       missingLoginOrEmail: "Missing login or email!"
+       unknownEmail: "Unknown email!"
+       ambiguousEmail: "Ambiguous email!"
+       unknownLogin: "Unknown login!"
+       ambiguousLogin: "Ambiguous login!"
+       missingLink: "Missing link!"
+       obsoleteLink: "Obsolete or unknown link!"
+       changePassword: "Change your password!"
+   decoration:
+       login: "nobody:0"
+       loginOrEmail: "upmc:1234567 ou x@truc.fr"
+       siteUrl: http://z.paracamplus.net/
+
+Controller::Profile:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   message:
+      fr:
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Les mots de passe diffèrent ?"
+        badPassword: "Mauvais caractère(s) dans mot de passe!"
+        missingOnePassword: "Un des mots de passe manque!"
+        badPseudo: "Mauvais caractère(s) dans pseudo!"
+        badEmail: "Courriel bizarre!"
+        emailAlreadyUsed: "Courriel déjà utilisé!"
+        OK: "Modifications enregistrées!"
+
+Controller::Doc:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   decoration:
+      exoPath: /xh/path/z
+   defaultPage: toc
+   pages:
+      toc:
+        title: Table des matières
+      howto:
+        title: "Mode d'emploi"
+      legal:
+        title: Côté légal
+      exercises:
+        title: Exercices proposés
+      authentication:
+        title: Authentification
+
+Controller::Root:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   startTime: 2011-09-01T00:00:00z
+   endTime:   2020-02-01T00:00z
+
+Controller::History:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   eServerUrl: /sh/s/
+   jobsPerPage: 20
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::TopScore:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   before: 4
+   justBefore: 4
+   after: 3
+
+Controller::Whoswho:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+
+Controller::Skill:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   personGroupName: free
+   exerciseGroupName: free
+   startTime: 2011-09-01
+   endTime:   2020-02-01
+   decoration: 
+      waitingImage: /static/5-1.gif
+
+Controller::OneLiner:
+   version: 1208
+# Use the same insecure key as the A server:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+   stylesheet: /static/z.xsl
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::FromUPMC:
+# Use the same insecure key as the A server:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+
+Controller::Stats:
+   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+   campaignName: free
+
+# The stylesheet (.xsl) must be reachable as a template (.tt)
+Controller::Proxy:
+  private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
+  version: 1208
+  x:
+     prefix: /x/
+     remote: x.paracamplus.net
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.net
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: z.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://z.paracamplus.net/static/z.css
+  s:
+     prefix: /
+     remote: s.paracamplus.net
+  sh:
+     prefix: /sh/
+     remote: s.paracamplus.net
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: z.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://z.paracamplus.net/static/z.css
+  shp:
+     prefix: /shp/
+     remote: s.paracamplus.net
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: z.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://z.paracamplus.net/static/z.css
+  e:
+     prefix: /e/
+     remote: e.paracamplus.net
+  eh:
+     prefix: /eh/
+     remote: e.paracamplus.net
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: z.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://z.paracamplus.net/static/z.css
+  a:
+     prefix: /a/
+     remote: a.paracamplus.net
+
+#end.

@@ -1,0 +1,30 @@
+---
+# This is the configuration of the Y server on y.paracamplus.net
+
+name: Paracamplus::FW4EX::Y
+default_view: TT
+
+Controller::Root:
+  version: 1208
+
+redirections:
+    mooc-li101-2014fev.fw4ex.org:
+#      permanent: 0
+       choices:
+          - mooc1-li101-2014fev.fw4ex.org
+#         - mooc4-li101-2014fev.fw4ex.org
+#         - mooc5-li101-2014fev.fw4ex.org
+    a.fw4ex.org:
+       choices:
+          - a1.fw4ex.org
+          - a3.fw4ex.org
+    e.fw4ex.org:
+       choices:
+          - e1.fw4ex.org
+          - e3.fw4ex.org
+    s.fw4ex.org:
+       choices:
+          - s1.fw4ex.org
+          - s3.fw4ex.org
+
+# end.
