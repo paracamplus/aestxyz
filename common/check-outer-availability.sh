@@ -36,6 +36,7 @@ shift $(( $OPTIND - 1 ))
 
 VERSION=$(cat ${0%/*}/root.d/opt/$HOSTNAME/VERSION.txt)
 
+rm -f /tmp/wget_code.txt
 for HOSTNAME
 do (
         echo "Outer check of $HOSTNAME"

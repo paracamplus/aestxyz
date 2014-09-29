@@ -5,6 +5,6 @@ RANK=407
 SRCDIR=Servers/y/Paracamplus-FW4EX-Y
 MODULE=Y
 #URL=http://$HOSTNAME/
-FRAGMENT=''
+FRAGMENT='Redirection server'
 #DEBUG=true
 # end of y.paracamplus.net.sh

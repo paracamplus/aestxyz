@@ -19,6 +19,7 @@ fi
 
 VERSION=$(cat /opt/$HOSTNAME/VERSION.txt)
 
+rm -f /tmp/wget_code.txt
 for HOSTNAME
 do (
         echo "Inner check of $HOSTNAME"
