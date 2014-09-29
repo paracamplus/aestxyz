@@ -1,10 +1,9 @@
 #
 #                          Building aestxyz-fw4ex
 #
-# It will contain all standard apt packages and cpan modules required to run 
-# the various servers a, e, ... and specific FW4EX code.
+# Install FW4EX Perl modules
 #
-FROM paracamplus/aestxyz_cpan
+FROM paracamplus/aestxyz_dockerio
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV FW4EX_DOCKER true
 

@@ -24,6 +24,7 @@ erase.all :
 #recreate.all : erase.all
 #recreate.all : create.aestxyz_apt
 #recreate.all : create.aestxyz_cpan
+recreate.all : adjoin.docker.io
 recreate.all : create.aestxyz_fw4ex
 recreate.all : create.aestxyz_a
 recreate.all : create.aestxyz_e
@@ -55,6 +56,11 @@ create.aestxyz_cpan : cpan/Dockerfile
 archive.aestxyz_cpan :
 	docker push paracamplus/aestxyz_cpan
 # @bijou 4min
+
+adjoin.docker.io : dockerio/Dockerfile
+	cd dockerio/ && docker build -t paracamplus/aestxyz_dockerio .
+	docker tag paracamplus/aestxyz_dockerio \
+		"paracamplus/aestxyz_dockerio:$$(date +%Y%m%d_%H%M%S)"
 
 # install Paracamplus/FW4EX perl modules:
 create.aestxyz_fw4ex : fw4ex/Dockerfile	
@@ -221,6 +227,11 @@ create.aestxyz_y : y/Dockerfile
 		s.paracamplus.net e.paracamplus.net a.paracamplus.net
 	docker tag paracamplus/aestxyz_y \
 		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
+
+create.aestxyz_vmauthor : vmauthor/Dockerfile
+	vmauthor/vmauthor.paracamplus.net/prepare.sh
+	cd vmauthor/ && docker build -t paracamplus/aestxyz_vmauthor .
+
 
 # Install many exercises in this E server. Should be done after all
 # servers are installed in the container.

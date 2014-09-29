@@ -10,7 +10,7 @@ Catalyst::Engine:
     uploadtmp: /tmp/t/upload
 
 Controller::Root:
-  version: 1208
+  version: 1209
 # Use the same insecure key as the A server:
   private_key_file: /opt/t.paracamplus.net/fw4excookie.insecure.key
 

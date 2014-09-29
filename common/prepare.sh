@@ -58,18 +58,13 @@ then
     SanitizedHOSTNAME=${SanitizedHOSTNAME//-/_}
     TODIR=$ROOTDIR/usr/local/lib/site_perl/Paracamplus/FW4EX/${MODULE}
     mkdir -p $TODIR
-    if [ -r $TODIR/$SanitizedHOSTNAME.pm ]
-    then
-        echo "Keeping current Catalyst controller $SanitizedHOSTNAME.pm"
-    else
-        echo "Generating missing Catalyst controller $SanitizedHOSTNAME.pm"
-        $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
-            --servername $HOSTNAME \
-            --perlmodule Paracamplus-FW4EX-$MODULE \
-            --version "$VERSION" \
-            -o $TODIR/${SanitizedHOSTNAME}.pm
-    fi
-    cp $PARACAMPLUSDIR/perllib/Paracamplus/FW4EX/${MODULE}.pm $TODIR.pm
+    echo "Generating Catalyst controller $SanitizedHOSTNAME.pm"
+    $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
+        --servername $HOSTNAME \
+        --perlmodule Paracamplus-FW4EX-$MODULE \
+        --version "$VERSION" \
+        -o $TODIR/${SanitizedHOSTNAME}.pm
+    cp -p $PARACAMPLUSDIR/perllib/Paracamplus/FW4EX/${MODULE}.pm $TODIR.pm
     patchPerlfile $TODIR.pm
 fi
 
