@@ -5,7 +5,6 @@
 #
 FROM paracamplus/aestxyz_dockerio
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
-ENV FW4EX_DOCKER true
 
 WORKDIR /root/
 ADD perllib.tgz                  /usr/local/lib/site_perl/

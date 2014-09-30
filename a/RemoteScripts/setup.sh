@@ -75,7 +75,7 @@ then (
      )
 fi
 
-if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh | wc -l ) ]
+if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh 2>/dev/null | wc -l ) ]
 then 
     for f in ${0%/*}/setup-$MODULE-??.sh
     do
@@ -95,5 +95,7 @@ then
 fi
 
 # Apache should be restarted when the container will be ran.
+# This will be done by /root/RemoteScripts/start*.sh scripts.
+chmod u+x /root/RemoteScripts/*.sh
 
 # end of setup.sh

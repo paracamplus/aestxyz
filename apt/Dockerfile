@@ -6,7 +6,6 @@
 #
 FROM debian:wheezy
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
-ENV FW4EX_DOCKER true
 
 WORKDIR /root/
 ENV HOME /root/

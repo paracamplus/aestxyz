@@ -6,7 +6,6 @@
 #
 FROM paracamplus/aestxyz_s
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
-ENV FW4EX_DOCKER true
 ENV HOSTNAME x.paracamplus.net
 
 WORKDIR /root/

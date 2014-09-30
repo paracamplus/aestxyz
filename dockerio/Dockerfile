@@ -5,7 +5,6 @@
 #
 FROM paracamplus/aestxyz_cpan
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
-ENV FW4EX_DOCKER true
 ENV HOSTNAME whatever.paracamplus.net
 
 WORKDIR /root/

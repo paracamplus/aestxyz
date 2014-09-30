@@ -19,12 +19,12 @@ start.wheezy :
 
 erase.all :
 	-docker rm `docker ps -a -q`
-	-docker rmi `docker images -q`
+	-docker rmi -f `docker images -q`
 
 #recreate.all : erase.all
 #recreate.all : create.aestxyz_apt
 #recreate.all : create.aestxyz_cpan
-recreate.all : adjoin.docker.io
+#recreate.all : adjoin.docker.io
 recreate.all : create.aestxyz_fw4ex
 recreate.all : create.aestxyz_a
 recreate.all : create.aestxyz_e
@@ -33,6 +33,8 @@ recreate.all : create.aestxyz_x
 recreate.all : create.aestxyz_t
 recreate.all : create.aestxyz_z
 recreate.all : create.aestxyz_y
+recreate.all : create.aestxyz_vmy
+# @bijou 87 min
 
 # To ease tuning, let's create the base container in small steps
 # one with the necessary Debian packages:
@@ -59,6 +61,9 @@ archive.aestxyz_cpan :
 
 adjoin.docker.io : dockerio/Dockerfile
 	cd dockerio/ && docker build -t paracamplus/aestxyz_dockerio .
+# FIXME how to run docker within docker ?????????????????????????????????
+#	docker run --rm paracamplus/aestxyz_dockerio \
+#		/root/RemoteScripts/check-docker.sh
 	docker tag paracamplus/aestxyz_dockerio \
 		"paracamplus/aestxyz_dockerio:$$(date +%Y%m%d_%H%M%S)"
 
@@ -227,6 +232,38 @@ create.aestxyz_y : y/Dockerfile
 		s.paracamplus.net e.paracamplus.net a.paracamplus.net
 	docker tag paracamplus/aestxyz_y \
 		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
+
+# A container with a single Y server in it.
+create.aestxyz_vmy : vmy/Dockerfile
+	vmy/vmy.paracamplus.net/prepare.sh
+	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
+deploy.y.paracamplus.com :
+	docker push paracamplus/aestxyz_vmy
+# @bijou 
+	rsync -avu y.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
+	y/y.paracamplus.net/check-outer-availability.sh \
+		-i y.paracamplus.com -p 80 -s 4 \
+		y.paracamplus.com
+
+# A container with an A and E servers in it.
+create.aestxyz_vmae : vmae/Dockerfile
+	vmae/vmae.paracamplus.net/prepare.sh
+	cd vmae/ && docker build -t paracamplus/aestxyz_vmae .
+deploy.ae.paracamplus.com :
+#	docker push paracamplus/aestxyz_vmae
+	rsync -avu ae.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/ae.paracamplus.com/install.sh
+	a/a.paracamplus.net/check-outer-availability.sh \
+		-i a.paracamplus.com -p 80 -s 4 \
+		a.paracamplus.com
+	e/e.paracamplus.net/check-outer-availability.sh \
+		-i e.paracamplus.com -p 80 -s 4 \
+		e.paracamplus.com
+
+
+
+
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile
 	vmauthor/vmauthor.paracamplus.net/prepare.sh

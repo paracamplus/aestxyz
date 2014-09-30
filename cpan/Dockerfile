@@ -6,7 +6,6 @@
 #
 FROM paracamplus/aestxyz_apt
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
-ENV FW4EX_DOCKER true
 
 WORKDIR /root/
 ADD RemoteScripts /root/RemoteScripts

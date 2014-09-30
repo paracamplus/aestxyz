@@ -83,6 +83,16 @@ then
         echo "Incorrect YAML file $PARACAMPLUSDIR/$SRCDIR/${HOSTNAME}.yml" 1>&2
         exit 10
     fi
+elif [ -r $TODIR/${HOSTNAME}.yml ]
+then
+    if $PARACAMPLUSDIR/Scripts/checkYAML.pl \
+        $TODIR/${HOSTNAME}.yml
+    then
+        patchYMLfile $TODIR/${HOSTNAME}.yml
+    else
+        echo "Incorrect YAML file $TODIR/${HOSTNAME}.yml" 1>&2
+        exit 12
+    fi
 elif [ -n "$SRCDIR" ]
 then
     echo "Missing $PARACAMPLUSDIR/$SRCDIR/${HOSTNAME}.yml" 1>&2
@@ -103,9 +113,10 @@ fi
 
 # Docker takes a very long time to process an instruction such as
 #     ADD root.d/  /
-# this way is much faster:
+# this way is much faster but requires cooperation from setup.sh:
 echo "Taring root.d"
-tar czhf ${0%/*}/../RemoteScripts/root-$MODULE.tgz -C $ROOTDIR .
+tar czhf --exclude='*~' --exclude='*.bak' \
+    ${0%/*}/../RemoteScripts/root-$MODULE.tgz -C $ROOTDIR .
 
 # Make sure RemoteScripts has the same configuration:
 cp -p ${0%/*}/$HOSTNAME.sh ${0%/*}/../RemoteScripts/$HOSTNAME.sh 
