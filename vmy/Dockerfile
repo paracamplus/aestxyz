@@ -2,13 +2,14 @@
 #                          Building aestxyz-vmy
 #
 # Start a container only running a Y server
-# its configuration is in root.d/opt/vmy.paracamplus.net/
+# its configuration is in root.d/opt/y.paracamplus.com/
 #
 # Run this on the docker host:
-#   vmy.paracamplus.net/install.sh
+#   Docker/y.paracamplus.com/install.sh
 #
 FROM paracamplus/aestxyz_y
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
+ENV HOSTNAME y.paracamplus.com
 
 WORKDIR /root/
 ADD RemoteScripts                /root/RemoteScripts

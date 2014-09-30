@@ -5,9 +5,10 @@
 HOSTNAME=${HOSTNAME:-no.host.name}
 source ${0%/*}/$HOSTNAME.sh
 
+# Docker prevents these operations:
 #hostname ${HOSTNAME%%.*}
 #domainname ${HOSTNAME#*.}
-CURRENTHOST=$(hostname)
+#CURRENTHOST=$(hostname)
 #sed -i -e 's/$CURRENTHOST/$CURRENTHOST $HOSTNAME/' /etc/hosts
 
 (
@@ -23,8 +24,11 @@ CURRENTHOST=$(hostname)
 
     echo "Install $HOSTNAME Apache site"
     cd /etc/apache2/sites-enabled/
-    ln -sf ../sites-available/$HOSTNAME $RANK-$HOSTNAME
-    rm 000-default 2>/dev/null
+    if [ -f ../sites-available/$HOSTNAME ]
+    then
+        ln -sf ../sites-available/$HOSTNAME $RANK-$HOSTNAME
+        rm -f 000-default 2>/dev/null
+    fi
 )
 
 ( 
@@ -49,26 +53,26 @@ CURRENTHOST=$(hostname)
     fi
 )
 
-echo "Populate container"
 if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
 then ( 
+        echo "Populate container"
         cd /
         tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
      )
 fi
 
-echo "Install Catalyst /opt/$HOSTNAME/Templates"
-mkdir -p /opt/$HOSTNAME
 if [ -f /root/RemoteScripts/$MODULE.tgz ]
 then (
+        echo "Install Catalyst /opt/$HOSTNAME/Templates"
+        mkdir -p /opt/$HOSTNAME
         cd /opt/$HOSTNAME
         tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
      )
 fi
-echo "Install /var/www/$HOSTNAME"
-mkdir -p /var/www/$HOSTNAME
 if [ -f /root/RemoteScripts/$MODULE.tgz ]
 then (
+        echo "Install /var/www/$HOSTNAME"
+        mkdir -p /var/www/$HOSTNAME
         cd /var/www/$HOSTNAME
         tar xvzf /root/RemoteScripts/$MODULE.tgz 
         rm -rf Templates

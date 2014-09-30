@@ -114,9 +114,9 @@ fi
 # Docker takes a very long time to process an instruction such as
 #     ADD root.d/  /
 # this way is much faster but requires cooperation from setup.sh:
-echo "Taring root.d"
-tar czhf --exclude='*~' --exclude='*.bak' \
-    ${0%/*}/../RemoteScripts/root-$MODULE.tgz -C $ROOTDIR .
+echo "Tar-ing root.d"
+tar czhf ${0%/*}/../RemoteScripts/root-$MODULE.tgz \
+    --exclude='*~' --exclude='*.bak' -C $ROOTDIR .
 
 # Make sure RemoteScripts has the same configuration:
 cp -p ${0%/*}/$HOSTNAME.sh ${0%/*}/../RemoteScripts/$HOSTNAME.sh 

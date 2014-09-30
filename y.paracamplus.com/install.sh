@@ -29,11 +29,12 @@ then
     tail /var/log/apache2/$HOSTNAME-error.log
 fi
 
+# Make sure that this container is run after boot:
 ( 
     cd /root/Docker/${HOSTNAME}/root.d/
     chmod a+x etc/init.d/qnc-docker.sh
-    rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/
-    update-rc.d qnc-docker.sh defaults
+    rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/qnc-docker-$HOSTNAME.sh
+    update-rc.d qnc-docker-$HOSTNAME.sh defaults
 )
 
 # end of install.sh

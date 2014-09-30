@@ -3,9 +3,9 @@
 # generated on 2014-09-29T18:09:54
 # Catalyst needs apache2-mpm-prefork!
 
-  ServerName  vmy.paracamplus.net
+  ServerName  y.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/vmy.paracamplus.net/
+  DocumentRoot /var/www/y.paracamplus.com/
   AddDefaultCharset UTF-8
 
 AddType text/javascript .js
@@ -21,17 +21,17 @@ ExpiresActive On
                 Deny from all
         </Directory>
 
-        <Directory /var/www/vmy.paracamplus.net/ >
+        <Directory /var/www/y.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::Y::vmy_paracamplus_net
+PerlModule Paracamplus::FW4EX::Y::y_paracamplus_com
 
         <Location / >
               SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::Y::vmy_paracamplus_net
+              PerlResponseHandler Paracamplus::FW4EX::Y::y_paracamplus_com
               Order allow,deny
               allow from all
 # FUTURE limit number of request/second
@@ -42,7 +42,7 @@ PerlModule Paracamplus::FW4EX::Y::vmy_paracamplus_net
               ExpiresDefault A2592000
         </Location>
 
-        Alias /static/ /var/www/vmy.paracamplus.net/static/
+        Alias /static/ /var/www/y.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
                 FileETag none
@@ -62,7 +62,7 @@ PerlModule Paracamplus::FW4EX::Y::vmy_paracamplus_net
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/vmy.paracamplus.net-access.log combined
+        CustomLog /var/log/apache2/y.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>

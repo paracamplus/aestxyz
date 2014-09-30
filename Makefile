@@ -235,10 +235,10 @@ create.aestxyz_y : y/Dockerfile
 
 # A container with a single Y server in it.
 create.aestxyz_vmy : vmy/Dockerfile
-	vmy/vmy.paracamplus.net/prepare.sh
+	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 deploy.y.paracamplus.com :
-#	docker push paracamplus/aestxyz_vmy
+	docker push paracamplus/aestxyz_vmy
 # @bijou 1min
 	rsync -avu y.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
@@ -246,20 +246,19 @@ deploy.y.paracamplus.com :
 		-i y.paracamplus.com -p 80 -s 4 \
 		y.paracamplus.com
 
-# A container with an A and E servers in it.
-create.aestxyz_vmae : vmae/Dockerfile
-	vmae/vmae.paracamplus.net/prepare.sh
-	cd vmae/ && docker build -t paracamplus/aestxyz_vmae .
-deploy.ae.paracamplus.com :
-#	docker push paracamplus/aestxyz_vmae
-	rsync -avu ae.paracamplus.com root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net Docker/ae.paracamplus.com/install.sh
+# NOTA: this is a bad idea to put two different servers (A and E for
+# instance) in the same container. Scripts are tailored for just one server!
+# A container with an A server in it.
+create.aestxyz_vma : vma/Dockerfile
+	vma/vma.paracamplus.net/prepare.sh
+	cd vma/ && docker build -t paracamplus/aestxyz_vma .
+deploy.a.paracamplus.com :
+#	docker push paracamplus/aestxyz_vma
+	rsync -avu a.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
 	a/a.paracamplus.net/check-outer-availability.sh \
 		-i a.paracamplus.com -p 80 -s 4 \
 		a.paracamplus.com
-	e/e.paracamplus.net/check-outer-availability.sh \
-		-i e.paracamplus.com -p 80 -s 4 \
-		e.paracamplus.com
 
 
 
