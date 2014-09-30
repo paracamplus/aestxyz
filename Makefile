@@ -238,8 +238,8 @@ create.aestxyz_vmy : vmy/Dockerfile
 	vmy/vmy.paracamplus.net/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 deploy.y.paracamplus.com :
-	docker push paracamplus/aestxyz_vmy
-# @bijou 
+#	docker push paracamplus/aestxyz_vmy
+# @bijou 1min
 	rsync -avu y.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
 	y/y.paracamplus.net/check-outer-availability.sh \

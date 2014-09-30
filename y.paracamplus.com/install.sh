@@ -6,14 +6,17 @@
 
 HOSTNAME=y.paracamplus.com
 HOSTPORT=50081
+DOCKERNAME=vmy
+DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 
-docker rm vmy
-docker pull paracamplus/aestxyz_vmy
+docker stop ${DOCKERNAME}
+docker rm ${DOCKERNAME}
+docker pull ${DOCKERIMAGE}
 docker run -d -p "127.0.0.1:${HOSTPORT}:80" \
-    --name=vmy -h $HOSTNAME \
-    paracamplus/aestxyz_vmy \
+    --name=${DOCKERNAME} -h $HOSTNAME \
+    ${DOCKERIMAGE} \
     /root/RemoteScripts/start.sh
-# To connect to that container, use: docker attach vmy
+# To connect to that container, use: docker attach ${DOCKERNAME}
 
 rsync -avu ${0%/*}/root.d/etc/apache2/sites-available/$HOSTNAME \
     /etc/apache2/sites-available/
@@ -25,5 +28,12 @@ if ! /etc/init.d/apache2 restart
 then
     tail /var/log/apache2/$HOSTNAME-error.log
 fi
+
+( 
+    cd /root/Docker/${HOSTNAME}/root.d/
+    chmod a+x etc/init.d/qnc-docker.sh
+    rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/
+    update-rc.d qnc-docker.sh defaults
+)
 
 # end of install.sh
