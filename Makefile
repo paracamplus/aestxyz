@@ -7,6 +7,21 @@
 work : nothing 
 clean :: cleanMakefile
 
+RSYNC_FLAGS     =     \
+        --exclude RCS \
+        --exclude CVS \
+        --exclude .svn \
+        --exclude .hg \
+        --exclude .git \
+        --exclude Archive \
+        --exclude='.DS_Store' \
+        --exclude='*~' \
+        --exclude='.\#*' \
+        --exclude='\#*\#' \
+        --exclude='*.bak' \
+        --exclude='*.sql.gz' \
+        --exclude='disk*\.qcow2' 
+
 # We start from a Debian7 image
 docker.wheezy :
 	docker pull 'debian:wheezy'
@@ -240,7 +255,8 @@ create.aestxyz_vmy : vmy/Dockerfile
 deploy.y.paracamplus.com :
 	docker push paracamplus/aestxyz_vmy
 # @bijou 1min
-	rsync -avu y.paracamplus.com root@ns353482.ovh.net':'Docker/
+	rsync ${RSYNC_FLAGS} -avu \
+		y.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
 	y/y.paracamplus.net/check-outer-availability.sh \
 		-i y.paracamplus.com -p 80 -s 4 \
@@ -249,16 +265,29 @@ deploy.y.paracamplus.com :
 # NOTA: this is a bad idea to put two different servers (A and E for
 # instance) in the same container. Scripts are tailored for just one server!
 # A container with an A server in it.
+# CAUTION: don't divulge fw4ex private key!!!!!!!!!!!!!!!!!!!!!!
 create.aestxyz_vma : vma/Dockerfile
-	vma/vma.paracamplus.net/prepare.sh
+	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 deploy.a.paracamplus.com :
-#	docker push paracamplus/aestxyz_vma
-	rsync -avu a.paracamplus.com root@ns353482.ovh.net':'Docker/
+	docker push paracamplus/aestxyz_vma
+	rsync ${RSYNC_FLAGS} -avu \
+		a.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
 	a/a.paracamplus.net/check-outer-availability.sh \
 		-i a.paracamplus.com -p 80 -s 4 \
 		a.paracamplus.com
+
+create.aestxyz_vme : vme/Dockerfile
+	vme/e.paracamplus.com/prepare.sh
+	cd vme/ && docker build -t paracamplus/aestxyz_vme .
+deploy.e.paracamplus.com :
+	docker push paracamplus/aestxyz_vme
+	rsync -avu e.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
+	a/e.paracamplus.net/check-outer-availability.sh \
+		-i e.paracamplus.com -p 80 -s 4 \
+		e.paracamplus.com
 
 
 

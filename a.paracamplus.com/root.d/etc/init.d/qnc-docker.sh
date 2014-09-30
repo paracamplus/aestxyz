@@ -2,7 +2,7 @@
 # Restart docker container
 
 ### BEGIN INIT INFO
-# Provides:          qncDockerY
+# Provides:          qncDockerA
 # Required-Start:    $local_fs $remote_fs $network $named $time docker
 # Required-Stop:     $local_fs $remote_fs $network $named $time docker
 # Should-Start:      $syslog
@@ -13,7 +13,7 @@
 # Description:       Restart Docker containers for ns353482.ovh.net
 ### END INIT INFO
 
-# Install with            update-rc.d qnc-docker.sh defaults 
+# Install with            update-rc.d qnc-docker.sh defaults
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 

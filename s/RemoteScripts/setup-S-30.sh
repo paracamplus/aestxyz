@@ -1,5 +1,1 @@
-#! /bin/bash
-
-chown -R $APACHEUSER: /var/www/$HOSTNAME/
-
-# end of setup-S-30.sh
+../../remote-common/setup-30.sh
