@@ -2,6 +2,8 @@
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  a.paracamplus.com
+              # temporary:
+              ServerAlias a.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/a.paracamplus.com/
   AddDefaultCharset UTF-8
@@ -27,13 +29,14 @@
         ProxyRequests off
         <Proxy balancer://mycluster>
                 BalancerMember http://a0.paracamplus.com
-                BalancerMember http://a1.paracamplus.com
+                BalancerMember http://x.paracamplus.com
                 Order Deny,Allow
                 Deny from none
                 Allow from all
                 ProxySet lbmethod=byrequests
         </Proxy>
-        ProxyPass / balancer://mycluster/
+        ProxyPass        / balancer://mycluster/
+        ProxyPassReverse / balancer://mycluster/
 
         Errorlog /var/log/apache2/a.paracamplus.com-error.log
 

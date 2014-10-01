@@ -55,6 +55,7 @@ recreate.all : create.aestxyz_y
 recreate.all : create.aestxyz_vmy
 recreate.all : create.aestxyz_vma
 recreate.all : create.aestxyz_vme
+recreate.all : create.aestxyz_vmx
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
 

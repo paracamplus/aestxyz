@@ -2,6 +2,8 @@
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  x.paracamplus.com
+              # temporary:
+              ServerAlias x.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/x.paracamplus.com/
   AddDefaultCharset UTF-8

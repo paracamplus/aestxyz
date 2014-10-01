@@ -34,6 +34,7 @@ fi
     cd /root/Docker/${HOSTNAME}/root.d/
     chmod a+x etc/init.d/qnc-docker.sh
     rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/qnc-docker-$HOSTNAME.sh
+    rm -f /etc/init.d/qnc-docker.sh
     update-rc.d qnc-docker-$HOSTNAME.sh defaults
 )
 
