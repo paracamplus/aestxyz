@@ -8,23 +8,17 @@ Controller::Root:
   version: 1209
 
 redirections:
-#    mooc-li101-2014fev.fw4ex.org:
-#      permanent: 0
-#       choices:
-#          - mooc1-li101-2014fev.fw4ex.org
-#         - mooc4-li101-2014fev.fw4ex.org
-#         - mooc5-li101-2014fev.fw4ex.org
-    a.fw4ex.org:
+    a.paracamplus.com:
        choices:
-          - a1.fw4ex.org
-          - a3.fw4ex.org
-    e.fw4ex.org:
+          - a1.paracamplus.com
+          - a2.paracamplus.com
+    e.paracamplus.com:
        choices:
-          - e1.fw4ex.org
-          - e3.fw4ex.org
-    s.fw4ex.org:
+          - e1.paracamplus.com
+          - e2.paracamplus.com
+    s.paracamplus.com:
        choices:
-          - s1.fw4ex.org
-          - s3.fw4ex.org
+          - s1.paracamplus.com
+          - s2.paracamplus.com
 
 # end.

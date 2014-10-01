@@ -1,9 +1,9 @@
 <VirtualHost *:80>
 # Check syntax with /usr/sbin/apache2ctl -t
 
-  ServerName  a.paracamplus.com
+  ServerName  a0.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/a.paracamplus.com/
+  DocumentRoot /var/www/a0.paracamplus.com/
   AddDefaultCharset UTF-8
 
   AddType text/javascript .js
@@ -19,30 +19,28 @@
                 Deny from all
         </Directory>
 
-        <Directory /var/www/a.paracamplus.com/ >
+        <Directory /var/www/a0.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
 
-        ProxyRequests off
-        <Proxy balancer://mycluster>
-                BalancerMember http://a0.paracamplus.com
-                BalancerMember http://a1.paracamplus.com
-                Order Deny,Allow
-                Deny from none
-                Allow from all
-                ProxySet lbmethod=byrequests
-        </Proxy>
-        ProxyPass / balancer://mycluster/
-
 # <Location> directives should be sorted from less to most precise:
+
+        <Location / >
+              Order allow,deny
+              allow from all
+# FUTURE limit the number of requests/second
+              # Relay to the Docker container
+              ProxyPass        http://localhost:51080/
+              ProxyPassReverse http://localhost:51080/
+        </Location>
 
         <Location /favicon.ico>
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
-        Alias /static/ /var/www/a.paracamplus.com/static/
+        Alias /static/ /var/www/a0.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
                 FileETag none
@@ -55,13 +53,13 @@
                 ExpiresByType text/javascript A108000
         </Location>
 
-        Errorlog /var/log/apache2/a.paracamplus.com-error.log
+        Errorlog /var/log/apache2/a0.paracamplus.com-error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/a.paracamplus.com-access.log combined
+        CustomLog /var/log/apache2/a0.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>

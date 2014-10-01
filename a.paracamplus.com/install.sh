@@ -35,12 +35,13 @@ docker run -d \
     ${DOCKERIMAGE} \
     bash -x /root/RemoteScripts/start.sh
 
-rsync -avu ./root.d/etc/apache2/sites-available/$HOSTNAME \
-    /etc/apache2/sites-available/
-(
-    cd /etc/apache2/sites-enabled/
-    ln -sf ../sites-available/$HOSTNAME 499-$HOSTNAME
-)
+rsync -avu ./root.d/ /
+for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
+do (
+        cd /etc/apache2/sites-enabled/
+        ln -sf ../sites-available/$conf 499-$conf
+    )
+done
 if ! /etc/init.d/apache2 restart
 then
     tail /var/log/apache2/$HOSTNAME-error.log

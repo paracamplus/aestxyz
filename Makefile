@@ -281,6 +281,10 @@ deploy.a.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avu \
 		a.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
+	a/a.paracamplus.net/check-outer-availability.sh \
+		-i a0.paracamplus.com -p 80 -s 4 \
+		a0.paracamplus.com
 	a/a.paracamplus.net/check-outer-availability.sh \
 		-i a.paracamplus.com -p 80 -s 4 \
 		a.paracamplus.com
@@ -294,16 +298,34 @@ create.aestxyz_vme : vme/Dockerfile
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker push paracamplus/aestxyz_vme
 deploy.e.paracamplus.com :
-	rsync -avu e.paracamplus.com root@ns353482.ovh.net':'Docker/
+	rsync ${RSYNC_FLAGS} -avu \
+	    e.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
 	e/e.paracamplus.net/check-outer-availability.sh \
 		-i e.paracamplus.com -p 80 -s 4 \
 		e.paracamplus.com
-# Weird! does not work:
 	ssh -t root@ns353482.ovh.net \
 	  ssh -v -p 52022 -i Docker/e.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
+
+create.aestxyz_vmx : vmx/Dockerfile
+	vmx/x.paracamplus.com/prepare.sh
+	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
+	docker push paracamplus/aestxyz_vmx
+deploy.x.paracamplus.com :
+	rsync ${RSYNC_FLAGS} -avu \
+	    x.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
+	bash -x x/x.paracamplus.net/check-outer-availability.sh \
+		-i x.paracamplus.com -p 80 -s 4 \
+		x.paracamplus.com
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 
 
