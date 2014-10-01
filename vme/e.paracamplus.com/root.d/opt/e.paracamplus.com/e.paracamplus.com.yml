@@ -1,0 +1,55 @@
+---
+# This is the deployment configuration of the E server onto e.paracamplus.com
+
+name: Paracamplus::FW4EX::E
+default_view: TT
+
+Catalyst::Engine:
+    uploadtmp: /tmp/e/upload
+
+Controller::Root:
+#    version: 1026
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/e.paracamplus.com/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/e.paracamplus.com/Templates
+
+Controller::ExerciseContent:
+    exercise_dir:     /opt/e.paracamplus.com/exercisedir
+# Use the same insecure key as the A server:
+    private_key_file: /opt/e.paracamplus.com/fw4excookie.insecure.key
+#    version: 1026
+
+Controller::Exercise:
+#    user_cookie_key: u
+#    file_name_key:   content
+    exercise_dir:     /opt/e.paracamplus.com/exercisedir
+    private_key_file: /opt/e.paracamplus.com/fw4excookie.insecure.key
+#    version: 1026
+
+Controller::Exercises:
+#    user_cookie_key: u
+#    file_name_key:   content
+    exercise_dir:     /opt/e.paracamplus.com/incoming
+    private_key_file: /opt/e.paracamplus.com/fw4excookie.insecure.key
+#    version: 1026
+
+Controller::Path:
+#    user_cookie_key: u
+#    file_name_key:   content
+    path_dir:     /opt/e.paracamplus.com/path
+    private_key_file: /opt/e.paracamplus.com/fw4excookie.insecure.key
+#    version: 1026
+
+Controller::Proxy:
+#    user_cookie_key: u
+#    file_name_key:   content
+    path_dir:     /opt/e.paracamplus.com/path
+    private_key_file: /opt/e.paracamplus.com/fw4excookie.insecure.key
+#    version: 1026
+
+#end.

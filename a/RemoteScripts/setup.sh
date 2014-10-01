@@ -11,6 +11,15 @@ source ${0%/*}/$HOSTNAME.sh
 #CURRENTHOST=$(hostname)
 #sed -i -e 's/$CURRENTHOST/$CURRENTHOST $HOSTNAME/' /etc/hosts
 
+if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
+then ( 
+        echo "Populate container"
+        cd /
+        tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
+        rm -f /root/RemoteScripts/root-$MODULE.tgz
+     )
+fi
+
 (
     echo "Configure extra modules for Apache"
     cd /etc/apache2/mods-enabled/ 
@@ -29,6 +38,8 @@ source ${0%/*}/$HOSTNAME.sh
         ln -sf ../sites-available/$HOSTNAME $RANK-$HOSTNAME
         rm -f 000-default 2>/dev/null
     fi
+    echo "Apache virtual hosts:"
+    ls
 )
 
 ( 
@@ -52,15 +63,6 @@ source ${0%/*}/$HOSTNAME.sh
         fi
     fi
 )
-
-if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
-then ( 
-        echo "Populate container"
-        cd /
-        tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
-        rm -f /root/RemoteScripts/root-$MODULE.tgz
-     )
-fi
 
 if [ -f /root/RemoteScripts/$MODULE.tgz ]
 then (

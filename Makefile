@@ -36,7 +36,12 @@ erase.all :
 	-docker rm `docker ps -a -q`
 	-docker rmi -f `docker images -q`
 
+clean.useless :
+	rm -f $$(find . -name '*~')
+	rm -f $$(find . -name '*.bak')
+
 #recreate.all : erase.all
+recreate.all : clean.useless
 #recreate.all : create.aestxyz_apt
 #recreate.all : create.aestxyz_cpan
 recreate.all : create.aestxyz_fw4ex
@@ -49,6 +54,7 @@ recreate.all : create.aestxyz_z
 recreate.all : create.aestxyz_y
 recreate.all : create.aestxyz_vmy
 recreate.all : create.aestxyz_vma
+recreate.all : create.aestxyz_vme
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
 
@@ -253,9 +259,9 @@ create.aestxyz_y : y/Dockerfile
 create.aestxyz_vmy : vmy/Dockerfile
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
-deploy.y.paracamplus.com :
 	docker push paracamplus/aestxyz_vmy
 # @bijou 1min
+deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avu \
 		y.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
@@ -286,13 +292,18 @@ deploy.a.paracamplus.com :
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
-deploy.e.paracamplus.com :
 	docker push paracamplus/aestxyz_vme
+deploy.e.paracamplus.com :
 	rsync -avu e.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
-	a/e.paracamplus.net/check-outer-availability.sh \
+	e/e.paracamplus.net/check-outer-availability.sh \
 		-i e.paracamplus.com -p 80 -s 4 \
 		e.paracamplus.com
+# Weird! does not work:
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 52022 -i Docker/e.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
 
 
 
