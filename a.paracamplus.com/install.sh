@@ -12,6 +12,12 @@ HOSTSSHPORT=51022
 DOCKERNAME=vma
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 
+if ! [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
+then
+    echo "Missing /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key"
+    exit 51
+fi
+
 # Prepare ssh keys
 if ! [ -r .ssh/authorized_keys ]
 then ( 
@@ -30,7 +36,7 @@ docker run -d \
     -p "127.0.0.1:${HOSTPORT}:80" \
     -p "127.0.0.1:${HOSTSSHPORT}:22" \
     --name=${DOCKERNAME} -h $HOSTNAME \
-    -v /opt/$HOSTNAME/:/opt/$HOSTNAME/private \
+    -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
     -v `pwd`/.ssh:/root/.ssh \
     ${DOCKERIMAGE} \
     bash -x /root/RemoteScripts/start.sh

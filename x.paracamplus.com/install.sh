@@ -1,15 +1,15 @@
 #! /bin/bash -x
 # This script should be run on the Docker host as root.
 # On hostname, install apache configuration to proxy towards the
-# container and run the container. Here the container runs an E server
+# container and run the container. Here the container runs an X server
 # known as HOSTNAME on Internet.
 
 cd ${0%/*}
 
-HOSTNAME=e.paracamplus.com
-HOSTPORT=52080
-HOSTSSHPORT=52022
-DOCKERNAME=vme
+HOSTNAME=x.paracamplus.com
+HOSTPORT=53080
+HOSTSSHPORT=53022
+DOCKERNAME=vmx
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 
 if ! [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
@@ -38,7 +38,6 @@ docker run -d \
     --name=${DOCKERNAME} -h $HOSTNAME \
     -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
     -v `pwd`/.ssh:/root/.ssh \
-    -v /opt/$HOSTNAME/exercisedir/:/opt/$HOSTNAME/exercisedir/ \
     ${DOCKERIMAGE} \
     bash -x /root/RemoteScripts/start.sh
 
@@ -60,5 +59,7 @@ fi
     rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/qnc-docker-$HOSTNAME.sh
     update-rc.d qnc-docker-$HOSTNAME.sh defaults
 )
+
+docker ps -l
 
 # end of install.sh

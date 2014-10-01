@@ -319,7 +319,7 @@ deploy.x.paracamplus.com :
 	    x.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
-	bash -x x/x.paracamplus.net/check-outer-availability.sh \
+	x/x.paracamplus.net/check-outer-availability.sh \
 		-i x.paracamplus.com -p 80 -s 4 \
 		x.paracamplus.com
 	ssh -t root@ns353482.ovh.net \

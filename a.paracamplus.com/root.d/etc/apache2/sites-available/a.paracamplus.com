@@ -35,26 +35,6 @@
         </Proxy>
         ProxyPass / balancer://mycluster/
 
-# <Location> directives should be sorted from less to most precise:
-
-        <Location /favicon.ico>
-              SetHandler default_handler
-              ExpiresDefault A2592000
-        </Location>
-
-        Alias /static/ /var/www/a.paracamplus.com/static/
-        <Location /static/ >
-                SetHandler default_handler
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
-        </Location>
-
         Errorlog /var/log/apache2/a.paracamplus.com-error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
