@@ -1,0 +1,49 @@
+
+        Short notice for these Docker containers.
+
+The goal is to build a container that will be known as HOSTNAME. The
+container is built on a development machine then installed on a Docker
+host. 
+
+Before building the container, vma/HOSTNAME/prepare.sh is run.
+This script is configured with vma/HOSTNAME/HOSTNAME.sh 
+The vma/HOSTNAME/prepare.sh will populate vma/HOSTNAME/root.d/, a
+directory that will be copied towards the container by the Dockerfile.
+
+vma/           is the directory where the container is built and
+vma/Dockerfile is the associated Dockerfile. This Dockerfile will
+run vma/RemoteScripts/setup.sh in the container.
+
+The container is migrated to the deployment Docker host with
+HOSTNAME/install.sh, this script will install the files of
+HOSTNAME/root.d/ in the Docker host (Apache configuration to proxy
+towards the container, share private information not to be stored in
+the publicly known container). And, finally, HOSTNAME/install.sh will
+start the container with vma/RemoteScripts/start.sh
+
+All these scripts may be partially customized with prepare-*.sh,
+setup-*.sh and start-*.sh scripts.
+
+To sum up
+  prepare*.sh is run on the development machine
+  setup*.sh   is run in the container
+  install.sh  is run on the deployment machine
+  start*.sh   is run in the container
+
+A snippet of a Makefile to do this may be as:
+
+ DIR       =  vma
+ IMAGE     =  prefix_${IMAGE}
+ HOST      =  host.example.com
+ create.${IMAGE} : ${DIR}/Dockerfile
+	${DIR}/${HOST}/prepare.sh
+	cd ${DIR}/ && docker build -t ${IMAGE} .
+	docker push ${IMAGE}
+ deploy.${HOST} :
+	rsync -avu ${HOST} root@${HOST}:Docker/
+	ssh -t root@${HOST} Docker/${HOST}/install.sh
+
+#end.
+
+
+

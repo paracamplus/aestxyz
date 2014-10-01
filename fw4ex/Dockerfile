@@ -3,7 +3,7 @@
 #
 # Install FW4EX Perl modules
 #
-FROM paracamplus/aestxyz_dockerio
+FROM paracamplus/aestxyz_cpan
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 
 WORKDIR /root/

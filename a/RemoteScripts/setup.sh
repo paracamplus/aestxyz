@@ -58,6 +58,7 @@ then (
         echo "Populate container"
         cd /
         tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
+        rm -f /root/RemoteScripts/root-$MODULE.tgz
      )
 fi
 
@@ -68,15 +69,14 @@ then (
         cd /opt/$HOSTNAME
         tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
      )
-fi
-if [ -f /root/RemoteScripts/$MODULE.tgz ]
-then (
+     (
         echo "Install /var/www/$HOSTNAME"
         mkdir -p /var/www/$HOSTNAME
         cd /var/www/$HOSTNAME
         tar xvzf /root/RemoteScripts/$MODULE.tgz 
         rm -rf Templates
      )
+     rm -f /root/RemoteScripts/$MODULE.tgz 
 fi
 
 if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh 2>/dev/null | wc -l ) ]
@@ -85,12 +85,13 @@ then
     do
         echo "Sourcing $f"
         source $f || exit 22
+        rm -f $f
     done
 fi
 
 if [ -n "$RANK" ]
 then
-    # This is necessary when removing a catalyst controller:
+    # This is necessary when removing generated catalyst controllers:
     echo "Removing automatically generated sub-classes code from /opt/tmp/"
     rm -rf /opt/tmp/$HOSTNAME 2>/dev/null
     echo "Checking Apache configuration"
