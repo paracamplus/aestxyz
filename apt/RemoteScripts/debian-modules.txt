@@ -6,6 +6,7 @@ emacs23-nox
 sudo
 rsync
 net-tools
+bind9-host
 openssh-server
 ntp
 ntpdate

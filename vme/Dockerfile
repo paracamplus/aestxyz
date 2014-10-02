@@ -7,7 +7,7 @@
 # Run this on the docker host:
 #   Docker/e.paracamplus.com/install.sh
 #
-FROM paracamplus/aestxyz_y
+FROM paracamplus/aestxyz_fw4ex
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME e.paracamplus.com
 

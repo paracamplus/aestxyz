@@ -40,6 +40,15 @@ clean.useless :
 	rm -f $$(find . -name '*~')
 	rm -f $$(find . -name '*.bak')
 
+# setup*.sh and start*.sh scripts cannot be symbolically linked.
+# Docker copies them as links not as files.
+# Caution: install*sh scripts are specific to every server!
+unify.common.scripts : clean.useless
+	for f in setup.sh start.sh ;\
+	do lastf=`ls -t1 */RemoteScripts/$$f | head -n1` ;\
+	   for g in */RemoteScripts/$$f ;\
+		do echo cp -f $$lastf $$g ; done ; done
+
 #recreate.all : erase.all
 recreate.all : clean.useless
 #recreate.all : create.aestxyz_apt
@@ -82,14 +91,6 @@ archive.aestxyz_cpan :
 	docker push paracamplus/aestxyz_cpan
 # @bijou 4min
 
-adjoin.docker.io : dockerio/Dockerfile
-	cd dockerio/ && docker build -t paracamplus/aestxyz_dockerio .
-# FIXME how to run docker within docker ?????????????????????????????????
-#	docker run --rm paracamplus/aestxyz_dockerio \
-#		/root/RemoteScripts/check-docker.sh
-	docker tag paracamplus/aestxyz_dockerio \
-		"paracamplus/aestxyz_dockerio:$$(date +%Y%m%d_%H%M%S)"
-
 # install Paracamplus/FW4EX perl modules:
 create.aestxyz_fw4ex : fw4ex/Dockerfile	
 	tar czf fw4ex/perllib.tgz -C ../perllib \
@@ -101,6 +102,7 @@ create.aestxyz_fw4ex : fw4ex/Dockerfile
 		"paracamplus/aestxyz_fw4ex:$$(date +%Y%m%d_%H%M%S)"
 	docker tag paracamplus/aestxyz_fw4ex \
 		"paracamplus/aestxyz_fw4ex:latest"
+# paracamplus/aestxyz_fw4ex is the base image for all the next ones.
 
 # These are CPAN modules required to run prepare.sh on the Docker host:
 local.ensure.cpan :
@@ -109,7 +111,7 @@ local.ensure.cpan :
 	cpan JavaScript::Minifier
 
 # Install an A server:  a.paracamplus.net
-create.aestxyz_a : a/Dockerfile
+create.aestxyz_a : a/Dockerfile unify.common.scripts 
 	a/a.paracamplus.net/prepare.sh
 	cd a/ && docker build -t paracamplus/aestxyz_a .
 # @bijou 1min
@@ -129,135 +131,125 @@ create.aestxyz_a : a/Dockerfile
 		"paracamplus/aestxyz_a:$$(date +%Y%m%d_%H%M%S)"
 
 # Install an E server:  e.paracamplus.net
-create.aestxyz_e : e/Dockerfile
+create.aestxyz_e : e/Dockerfile unify.common.scripts 
 	e/e.paracamplus.net/prepare.sh
 	cd e/ && docker build -t paracamplus/aestxyz_e .
 # @bijou 
-# inner check of the E and A servers:
+# inner check of the E server:
 	docker run --rm -h e.paracamplus.net \
 		paracamplus/aestxyz_e \
 		/root/RemoteScripts/check-inner-availability.sh \
-			e.paracamplus.net a.paracamplus.net 
-# outer check of the E and A servers:
+			e.paracamplus.net
+# outer check of the E server:
 	docker run -d -p '127.0.0.1:50080:80' -h e.paracamplus.net \
 	    paracamplus/aestxyz_e \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  e/e.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		e.paracamplus.net a.paracamplus.net
+		e.paracamplus.net
 	docker tag paracamplus/aestxyz_e \
 		"paracamplus/aestxyz_e:$$(date +%Y%m%d_%H%M%S)"
 
 # Install an S server: s.paracamplus.net
 # S is not a Catalyst webapp
-create.aestxyz_s : s/Dockerfile
+create.aestxyz_s : s/Dockerfile unify.common.scripts 
 	s/s.paracamplus.net/prepare.sh
 	cd s/ && docker build -t paracamplus/aestxyz_s .
-# inner check of the S, E and A servers:
+# inner check of the S server:
 	docker run --rm -h s.paracamplus.net \
 		paracamplus/aestxyz_s \
 		/root/RemoteScripts/check-inner-availability.sh \
-			 s.paracamplus.net e.paracamplus.net a.paracamplus.net  
-# outer check of the S, E and A servers:
+			 s.paracamplus.net
+# outer check of the S server:
 	docker run -d -p '127.0.0.1:50080:80' -h s.paracamplus.net \
 	    paracamplus/aestxyz_s \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  s/s.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+		s.paracamplus.net
 	docker tag paracamplus/aestxyz_s \
 		"paracamplus/aestxyz_s:$$(date +%Y%m%d_%H%M%S)"
 
 # Install an X server: x.paracamplus.net
 # requires access to the database
-create.aestxyz_x : x/Dockerfile
+create.aestxyz_x : x/Dockerfile unify.common.scripts 
 	x/x.paracamplus.net/prepare.sh
 	cd x/ && docker build -t paracamplus/aestxyz_x .
-# inner check of the X, S, E and A servers:
+# inner check of the X server:
 	docker run --rm -h x.paracamplus.net \
 		paracamplus/aestxyz_x \
 		/root/RemoteScripts/check-inner-availability.sh \
-			x.paracamplus.net \
-			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
-# outer check of the X, S, E and A servers:
+			x.paracamplus.net
+# outer check of the X server:
 	docker run -d -p '127.0.0.1:50080:80' -h x.paracamplus.net \
 	    paracamplus/aestxyz_x \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  x/x.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		x.paracamplus.net \
-		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+		x.paracamplus.net
 	docker tag paracamplus/aestxyz_x \
 		"paracamplus/aestxyz_x:$$(date +%Y%m%d_%H%M%S)"
 
 # Install a T server: t.paracamplus.net
 # T proxies to the previous servers
-create.aestxyz_t : t/Dockerfile
+create.aestxyz_t : t/Dockerfile unify.common.scripts 
 	t/t.paracamplus.net/prepare.sh
 	cd t/ && docker build -t paracamplus/aestxyz_t .
-# inner check of the T, X, S, E and A servers:
+# inner check of the T server:
 	docker run --rm -h t.paracamplus.net \
 		paracamplus/aestxyz_t \
 		/root/RemoteScripts/check-inner-availability.sh \
-			t.paracamplus.net x.paracamplus.net \
-			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
-# outer check of the T, X, S, E and A servers:
+			t.paracamplus.net
+# outer check of the T server:
 	docker run -d -p '127.0.0.1:50080:80' -h t.paracamplus.net \
 	    paracamplus/aestxyz_t \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  t/t.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		t.paracamplus.net x.paracamplus.net \
-		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+		t.paracamplus.net
 	docker tag paracamplus/aestxyz_t \
 		"paracamplus/aestxyz_t:$$(date +%Y%m%d_%H%M%S)"
 
 # Install a Z server: z.paracamplus.net
-create.aestxyz_z : z/Dockerfile
+create.aestxyz_z : z/Dockerfile unify.common.scripts 
 	z/z.paracamplus.net/prepare.sh
 	cd z/ && docker build -t paracamplus/aestxyz_z .
-# inner check of the Z, T, X, S, E and A servers:
+# inner check of the Z server:
 	docker run --rm -h z.paracamplus.net \
 		paracamplus/aestxyz_z \
 		/root/RemoteScripts/check-inner-availability.sh \
-			z.paracamplus.net t.paracamplus.net x.paracamplus.net \
-			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
-# outer check of the Z, T, X, S, E and A servers:
+			z.paracamplus.net
+# outer check of the Z server:
 	docker run -d -p '127.0.0.1:50080:80' -h z.paracamplus.net \
 	    paracamplus/aestxyz_z \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  z/z.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		z.paracamplus.net t.paracamplus.net x.paracamplus.net \
-		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+		z.paracamplus.net
 	docker tag paracamplus/aestxyz_z \
 		"paracamplus/aestxyz_z:$$(date +%Y%m%d_%H%M%S)"
 
 # Install a Y server: y.paracamplus.net
-create.aestxyz_y : y/Dockerfile
+create.aestxyz_y : y/Dockerfile unify.common.scripts 
 	y/y.paracamplus.net/prepare.sh
 	cd y/ && docker build -t paracamplus/aestxyz_y .
-# inner check of the Y, Z, T, X, S, E and A servers:
+# inner check of the Y server:
 	docker run --rm -h y.paracamplus.net \
 		paracamplus/aestxyz_y \
 		/root/RemoteScripts/check-inner-availability.sh \
-			y.paracamplus.net \
-			z.paracamplus.net t.paracamplus.net x.paracamplus.net \
-			s.paracamplus.net e.paracamplus.net a.paracamplus.net  
-# outer check of the Y, Z, T, X, S, E and A servers:
+			y.paracamplus.net 
+# outer check of the Y server:
 	docker run -d -p '127.0.0.1:50080:80' -h y.paracamplus.net \
 	    paracamplus/aestxyz_y \
 	    /root/RemoteScripts/start.sh -s 10 && \
 	  y/y.paracamplus.net/check-outer-availability.sh \
 		-i 127.0.0.1 -p 50080 -s 4 \
-		y.paracamplus.net \
-		z.paracamplus.net t.paracamplus.net x.paracamplus.net \
-		s.paracamplus.net e.paracamplus.net a.paracamplus.net
+		y.paracamplus.net
 	docker tag paracamplus/aestxyz_y \
 		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
 
 # A container with a single Y server in it.
-create.aestxyz_vmy : vmy/Dockerfile
+create.aestxyz_vmy : vmy/Dockerfile unify.common.scripts 
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 	docker push paracamplus/aestxyz_vmy
@@ -274,7 +266,7 @@ deploy.y.paracamplus.com :
 # instance) in the same container. Scripts are tailored for just one server!
 # A container with an A server in it.
 # CAUTION: don't divulge fw4ex or ssh private keys.
-create.aestxyz_vma : vma/Dockerfile
+create.aestxyz_vma : vma/Dockerfile unify.common.scripts 
 	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker push paracamplus/aestxyz_vma
@@ -294,7 +286,7 @@ deploy.a.paracamplus.com :
 		root@127.0.0.1 \
 		ls -l /opt/a.paracamplus.com/fw4excookie.insecure.key
 
-create.aestxyz_vme : vme/Dockerfile
+create.aestxyz_vme : vme/Dockerfile unify.common.scripts 
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker push paracamplus/aestxyz_vme
@@ -311,7 +303,9 @@ deploy.e.paracamplus.com :
 		root@127.0.0.1 \
 		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
 
-create.aestxyz_vmx : vmx/Dockerfile
+# Caution: take care of the size of the Apache logs!!!!!!!!!!
+
+create.aestxyz_vmx : vmx/Dockerfile unify.common.scripts 
 	vmx/x.paracamplus.com/prepare.sh
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
 	docker push paracamplus/aestxyz_vmx
@@ -329,9 +323,6 @@ deploy.x.paracamplus.com :
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 
-
-
-
 create.aestxyz_vmauthor : vmauthor/Dockerfile
 	vmauthor/vmauthor.paracamplus.net/prepare.sh
 	cd vmauthor/ && docker build -t paracamplus/aestxyz_vmauthor .
@@ -341,6 +332,14 @@ create.aestxyz_vmauthor : vmauthor/Dockerfile
 # servers are installed in the container.
 fill.exercises :
 	echo to be done ; exit 3
+
+adjoin.docker.io : dockerio/Dockerfile
+	cd dockerio/ && docker build -t paracamplus/aestxyz_dockerio .
+# FIXME how to run docker within docker ?????????????????????????????????
+#	docker run --rm paracamplus/aestxyz_dockerio \
+#		/root/RemoteScripts/check-docker.sh
+	docker tag paracamplus/aestxyz_dockerio \
+		"paracamplus/aestxyz_dockerio:$$(date +%Y%m%d_%H%M%S)"
 
 # let start the sshd daemon:
 create.aestxyz_daemons : daemons/Dockerfile

@@ -107,7 +107,11 @@ then
     for f in ${0%/*}/prepare-??.sh
     do
         echo "Sourcing $f"
-        source $f || exit 12
+        source $f
+        status=$?
+        if [ $status -gt 0 ]
+        then exit $status
+        fi
     done
 fi
 

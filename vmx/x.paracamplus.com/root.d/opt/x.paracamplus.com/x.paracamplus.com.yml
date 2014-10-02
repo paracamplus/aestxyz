@@ -10,7 +10,7 @@ Catalyst::Engine:
 Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
-       - dbi:Pg:dbname=fw4ex host=localhost
+       - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7
        - pg_enable_utf8: 1
@@ -58,8 +58,6 @@ Controller::FromMOOC:
     smtpfrom: FW4EX confirmation <noreply@paracamplus.com>
     sendLinkSubject: "Confirmation de courriel"
     sendLinkBaseUrl: http://mooc-li101-2014fev.paracamplus.com/authenticate/checklink/
-    smtpfrom: FW4EX confirmation <noreply@paracamplus.com>
-    sendLinkSubject: "Confirmation de courriel"
     smtpservers:
       - 127.0.0.1
     message:
