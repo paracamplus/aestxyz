@@ -10,6 +10,7 @@ Catalyst::Engine:
 Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
+#       - dbi:Pg:dbname=fw4ex host=db.paracamplus.com
        - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7

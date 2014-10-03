@@ -68,6 +68,7 @@ recreate.all : create.aestxyz_vmx
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
 
+# {{{ Base images
 # To ease tuning, let's create the base container in small steps
 # one with the necessary Debian packages:
 create.aestxyz_apt : apt/Dockerfile
@@ -110,6 +111,9 @@ local.ensure.cpan :
 	cpan Crypt::OpenSSL::RSA File::Slurp XML::DOM YAML
 	cpan JavaScript::Minifier
 
+# }}}
+
+# {{{ Local images for local tests
 # Install an A server:  a.paracamplus.net
 create.aestxyz_a : a/Dockerfile unify.common.scripts 
 	a/a.paracamplus.net/prepare.sh
@@ -247,7 +251,9 @@ create.aestxyz_y : y/Dockerfile unify.common.scripts
 		y.paracamplus.net
 	docker tag paracamplus/aestxyz_y \
 		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
+# }}}
 
+# {{{ Images for servers in *.paracamplus.com
 # A container with a single Y server in it.
 create.aestxyz_vmy : vmy/Dockerfile unify.common.scripts 
 	vmy/y.paracamplus.com/prepare.sh
@@ -321,7 +327,28 @@ deploy.x.paracamplus.com :
 	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		psql -l
 
+create.aestxyz_vmt : vmt/Dockerfile unify.common.scripts 
+	vmt/t.paracamplus.com/prepare.sh
+	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
+	docker push paracamplus/aestxyz_vmt
+deploy.t.paracamplus.com :
+	rsync ${RSYNC_FLAGS} -avu \
+	    t.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
+	x/t.paracamplus.net/check-outer-availability.sh \
+		-i t.paracamplus.com -p 80 -s 4 \
+		t.paracamplus.com
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 53022 -i Docker/t.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/t.paracamplus.com/fw4excookie.insecure.key
+# }}}
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile
 	vmauthor/vmauthor.paracamplus.net/prepare.sh

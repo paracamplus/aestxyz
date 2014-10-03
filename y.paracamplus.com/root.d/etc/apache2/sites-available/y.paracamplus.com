@@ -33,8 +33,8 @@
               allow from all
 # FUTURE limit the number of requests/second
               # Relay to the Docker container
-              ProxyPass        http://localhost:50081/
-              ProxyPassReverse http://localhost:50081/
+              ProxyPass        http://localhost:50080/
+              ProxyPassReverse http://localhost:50080/
         </Location>
 
         <Location /favicon.ico>

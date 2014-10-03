@@ -5,7 +5,7 @@
 # known as HOSTNAME on Internet.
 
 HOSTNAME=y.paracamplus.com
-HOSTPORT=50081
+HOSTPORT=50080
 DOCKERNAME=vmy
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 

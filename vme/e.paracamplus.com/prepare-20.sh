@@ -1,1 +1,0 @@
-../../common/prepare-20.sh

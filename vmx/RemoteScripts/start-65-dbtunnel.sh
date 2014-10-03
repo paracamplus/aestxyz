@@ -17,7 +17,7 @@ if ssh -i /opt/x.paracamplus.com/private/dbuser_ecdsa \
 then
     if ! ssh -n -N -C -o TCPKeepAlive=yes \
         -i /opt/x.paracamplus.com/private/dbuser_ecdsa \
-        -L 55432:127.0.0.1:5432 dbuser@db.paracamplus.com    
+        -L 5432:127.0.0.1:5432 dbuser@db.paracamplus.com    
     then 
         echo "Cannot create a tunnel towards db.paracamplus.com"
         exit 46

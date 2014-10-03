@@ -1,0 +1,1 @@
+../../common/prepare-10-generate-fw4excookie.sh
