@@ -8,4 +8,4 @@ mkdir -p $TODIR
     cp -p $FROM/*.key $TODIR/
 )
 
-# end of prepare-11.sh
+# end of prepare-11-copy-fw4excookie.sh

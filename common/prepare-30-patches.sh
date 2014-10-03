@@ -8,4 +8,4 @@ rsync -avu $PARACAMPLUSDIR/Servers/s/root/*.txt $TODIR/
 
 patchTXTfile $TODIR/index.txt
 
-# end of prepare-S-30.sh
+# end of prepare-30-patches.sh

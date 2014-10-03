@@ -11,4 +11,4 @@ tar czhf $TGZ --exclude '*~' \
     -C $PARACAMPLUSDIR/$SRCDIR \
     Templates -C root .
 
-# end of prepare-20.sh
+# end of prepare-20-tar-Templates.sh

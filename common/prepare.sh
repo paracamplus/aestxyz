@@ -102,9 +102,9 @@ else
     :
 fi
 
-if [ 1 -le $( ls -1 ${0%/*}/prepare-??.sh 2>/dev/null | wc -l ) ]
+if [ 1 -le $( ls -1 ${0%/*}/prepare-??*.sh 2>/dev/null | wc -l ) ]
 then 
-    for f in ${0%/*}/prepare-??.sh
+    for f in ${0%/*}/prepare-??*.sh
     do
         echo "Sourcing $f"
         source $f
