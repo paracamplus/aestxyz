@@ -4,6 +4,7 @@
   ServerName  a.paracamplus.com
               # temporary:
               ServerAlias a.fw4ex.org
+              ServerAlias a4.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/a.paracamplus.com/
   AddDefaultCharset UTF-8
@@ -29,7 +30,7 @@
         ProxyRequests off
         <Proxy balancer://mycluster>
                 BalancerMember http://a0.paracamplus.com
-                BalancerMember http://x.paracamplus.com
+ #               BalancerMember http://a1.paracamplus.com
                 Order Deny,Allow
                 Deny from none
                 Allow from all

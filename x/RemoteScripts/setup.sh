@@ -86,7 +86,11 @@ then
     for f in ${0%/*}/setup-$MODULE-??.sh
     do
         echo "Sourcing $f"
-        source $f || exit 22
+        source $f 
+        status=$?
+        if [ $status -gt 0 ]
+        then exit $status
+        fi
         rm -f $f
     done
 fi

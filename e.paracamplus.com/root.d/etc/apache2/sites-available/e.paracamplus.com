@@ -4,6 +4,7 @@
   ServerName  e.paracamplus.com
               # temporary:
               ServerAlias e.fw4ex.org
+              ServerAlias e3.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/e.paracamplus.com/
   AddDefaultCharset UTF-8

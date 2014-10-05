@@ -47,7 +47,7 @@ unify.common.scripts : clean.useless
 	for f in setup.sh start.sh ;\
 	do lastf=`ls -t1 */RemoteScripts/$$f | head -n1` ;\
 	   for g in */RemoteScripts/$$f ;\
-		do echo cp -f $$lastf $$g ; done ; done
+		do cp -f $$lastf $$g ; done ; done
 
 #recreate.all : erase.all
 recreate.all : clean.useless
@@ -65,8 +65,15 @@ recreate.all : create.aestxyz_vmy
 recreate.all : create.aestxyz_vma
 recreate.all : create.aestxyz_vme
 recreate.all : create.aestxyz_vmx
+recreate.all : create.aestxyz_vmt
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
+
+deploy.all : deploy.y.paracamplus.com
+deploy.all : deploy.a.paracamplus.com
+deploy.all : deploy.e.paracamplus.com
+deploy.all : deploy.x.paracamplus.com
+deploy.all : deploy.t.paracamplus.com
 
 # {{{ Base images
 # To ease tuning, let's create the base container in small steps
@@ -261,7 +268,7 @@ create.aestxyz_vmy : vmy/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_vmy
 # @bijou 1min
 deploy.y.paracamplus.com :
-	rsync ${RSYNC_FLAGS} -avu \
+	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
 	y/y.paracamplus.net/check-outer-availability.sh \
@@ -277,7 +284,7 @@ create.aestxyz_vma : vma/Dockerfile unify.common.scripts
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker push paracamplus/aestxyz_vma
 deploy.a.paracamplus.com :
-	rsync ${RSYNC_FLAGS} -avu \
+	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
@@ -297,7 +304,7 @@ create.aestxyz_vme : vme/Dockerfile unify.common.scripts
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker push paracamplus/aestxyz_vme
 deploy.e.paracamplus.com :
-	rsync ${RSYNC_FLAGS} -avu \
+	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
@@ -316,7 +323,7 @@ create.aestxyz_vmx : vmx/Dockerfile unify.common.scripts
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
 	docker push paracamplus/aestxyz_vmx
 deploy.x.paracamplus.com :
-	rsync ${RSYNC_FLAGS} -avu \
+	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
@@ -327,27 +334,40 @@ deploy.x.paracamplus.com :
 	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
-	ssh -t root@ns353482.ovh.net \
-	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
-		root@127.0.0.1 \
-		psql -l
 
 create.aestxyz_vmt : vmt/Dockerfile unify.common.scripts 
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker push paracamplus/aestxyz_vmt
 deploy.t.paracamplus.com :
-	rsync ${RSYNC_FLAGS} -avu \
+	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
-	x/t.paracamplus.net/check-outer-availability.sh \
+	t/t.paracamplus.net/check-outer-availability.sh \
 		-i t.paracamplus.com -p 80 -s 4 \
 		t.paracamplus.com
 	ssh -t root@ns353482.ovh.net \
-	  ssh -v -p 53022 -i Docker/t.paracamplus.com/root_rsa \
+	  ssh -v -p 54022 -i Docker/t.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/t.paracamplus.com/fw4excookie.insecure.key
+	wget -qO /dev/stdout http://t.paracamplus.com/static/t.css
+	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css
+	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css
+	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css
+
+COURSE=li314
+instantiate_${COURSE} :
+	./Scripts/instantiate.sh ${COURSE}
+create.aestxyz_${COURSE} : ${COURSE}/Dockerfile unify.common.scripts 
+	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
+	exit 1
+	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
+#	docker push paracamplus/aestxyz_${COURSE}
+deploy.${COURSE}.paracamplus.com :
+	rsync ${RSYNC_FLAGS} -avuL \
+	    t.paracamplus.com root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh
 # }}}
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile

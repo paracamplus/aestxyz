@@ -1,0 +1,107 @@
+---
+# This is the deployment configuration of the T server onto t.paracamplus.com
+
+name: Paracamplus::FW4EX::T
+encoding: UTF-8
+default_view: TT
+parse_on_demand: 1
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
+private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
+
+Catalyst::Engine:
+    uploadtmp: /tmp/t/upload
+
+Controller::Root:
+  version: 1209
+# Use the same insecure key as the A server:
+  private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
+
+Controller::OneLiner:
+  private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
+  stylesheet: /static/t.xsl
+
+Controller::Profile:
+  private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
+
+# Embody needs a connection to the DB
+Controller::Embody:
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Proxy:
+  private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
+# verbose: 4
+  a:
+     prefix: /a/
+     remote: a.paracamplus.com
+  s:
+     prefix: /s/
+     remote: s.paracamplus.com
+  sh:
+     prefix: /sh/
+     remote: s.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: t.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://t.paracamplus.com/static/t.css
+  shp:
+     prefix: /shp/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: tp.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://t.paracamplus.com/static/t.css
+  x:
+     prefix: /x/
+     remote: x.paracamplus.com
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: t.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://t.paracamplus.com/static/t.css
+  e:
+     prefix: /e/
+     remote: e.paracamplus.com
+  eh:
+     prefix: /eh/
+     remote: e.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: t.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://t.paracamplus.com/static/t.css
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/t.paracamplus.com/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/t.paracamplus.com/Templates/
+        - /opt/t.paracamplus.com/Templates/Default/
+    ENCODING: UTF-8
+
+View::XSLT:
+    INCLUDE_PATH:
+      - /var/www/t.paracamplus.com/static/
+    ENCODING: UTF-8
+
+# end.

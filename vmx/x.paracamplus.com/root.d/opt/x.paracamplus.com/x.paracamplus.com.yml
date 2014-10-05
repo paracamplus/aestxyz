@@ -2,7 +2,13 @@
 # This is the deployment configuration of the X server onto x.paracamplus.com
 
 name: Paracamplus::FW4EX::X
+encoding: UTF-8
 default_view: TT
+parse_on_demand: 1
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
+private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Catalyst::Engine:
     uploadtmp: /tmp/x/upload
@@ -10,7 +16,6 @@ Catalyst::Engine:
 Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
-#       - dbi:Pg:dbname=fw4ex host=db.paracamplus.com
        - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7
