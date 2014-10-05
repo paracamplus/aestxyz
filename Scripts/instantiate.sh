@@ -53,7 +53,8 @@ FRAGMENT='$SHORTNAME'
 EOF
 fi
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare.sh .)
-(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-20*.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-20-tar-Templates.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-40-path.sh .)
 
 mkdir -p $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME
 if ! [ -f $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml ]
