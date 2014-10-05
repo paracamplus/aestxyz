@@ -51,7 +51,7 @@ else
         -o $TODIR/$HOSTNAME
 fi
 
-# Generating Catalyst Controller
+# Generating Catalyst Controllers
 if [ -n "$SRCDIR" ]
 then
     SanitizedHOSTNAME=${HOSTNAME//./_}
@@ -64,8 +64,11 @@ then
         --perlmodule Paracamplus-FW4EX-$MODULE \
         --version "$VERSION" \
         -o $TODIR/${SanitizedHOSTNAME}.pm
-    cp -p $PARACAMPLUSDIR/perllib/Paracamplus/FW4EX/${MODULE}.pm $TODIR.pm
-    patchPerlfile $TODIR.pm
+    echo "Generating Catalyst controller $MODULE.pm"
+    $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
+        --perlmodule Paracamplus-FW4EX-$MODULE \
+        --version "$VERSION" \
+        -o $TODIR.pm
 fi
 
 # Checking Catalyst YAML configuration

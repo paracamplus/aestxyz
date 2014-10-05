@@ -38,15 +38,23 @@ docker run -d \
     bash -x /root/RemoteScripts/start.sh
 
 rsync -avu ./root.d/ /
-for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
-do (
-        cd /etc/apache2/sites-enabled/
-        ln -sf ../sites-available/$conf 499-$conf
-    )
-done
+if [ -d ./root.d/etc/apache2/sites-available/ ]
+then
+    for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
+    do (
+            cd /etc/apache2/sites-enabled/
+            ln -sf ../sites-available/$conf 499-$conf
+        )
+    done
+fi
 if ! /etc/init.d/apache2 restart
 then
-    tail /var/log/apache2/$HOSTNAME-error.log
+    if [ -f /var/log/apache2/$HOSTNAME-error.log ]
+    then
+        tail /var/log/apache2/$HOSTNAME-error.log
+    else
+        tail /var/log/apache2/error.log
+    fi
 fi
 
 # Make sure that this container is run after boot:

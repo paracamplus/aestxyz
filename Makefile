@@ -44,10 +44,9 @@ clean.useless :
 # Docker copies them as links not as files.
 # Caution: install*sh scripts are specific to every server!
 unify.common.scripts : clean.useless
-	for f in setup.sh start.sh ;\
-	do lastf=`ls -t1 */RemoteScripts/$$f | head -n1` ;\
-	   for g in */RemoteScripts/$$f ;\
-		do cp -f $$lastf $$g ; done ; done
+	-for f in remote-common/?*.sh ;\
+	do for g in */RemoteScripts/$${f##*/} ;\
+		do cp -pf $$f $$g ; done ; done
 
 #recreate.all : erase.all
 recreate.all : clean.useless
@@ -361,12 +360,11 @@ instantiate_${COURSE} :
 	./Scripts/instantiate.sh ${COURSE}
 create.aestxyz_${COURSE} : ${COURSE}/Dockerfile unify.common.scripts 
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
-	exit 1
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
-#	docker push paracamplus/aestxyz_${COURSE}
+	docker push paracamplus/aestxyz_${COURSE}
 deploy.${COURSE}.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-	    t.paracamplus.com root@ns353482.ovh.net':'Docker/
+	    ${COURSE}.paracamplus.com root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh
 # }}}
 

@@ -1,0 +1,285 @@
+---
+# Deployment of li314.paracamplus.com 
+#
+name: Paracamplus::FW4EX::LI314
+encoding: UTF-8
+default_view: TT
+parse_on_demand: 1
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
+private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+
+tmpDir: /opt/tmp/li314.paracamplus.com
+version: 1210
+controllers :
+   - Authenticate
+   - Doc
+   - History
+   - OneLiner
+   - Proxy
+   - Profile
+   - Root
+#   - Skill
+   - Stats
+   - TopScore
+   - Whoswho
+   - FromUPMC
+   - Embody
+#   - SaveRestaure
+# Stats, TopScore et Whoswho ajoutes
+
+lang: fr
+decoration:
+    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/LI314-2014oct/
+    ue_code: LI314
+    lcAppName: li314
+    ue_title: Programmation objet
+    siteUrl: http://li314.paracamplus.com/
+
+Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=localhost
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/li314.paracamplus.com/
+    mime_types:
+        xsl: application/xslt+xml
+
+############### Deployment
+deployment:
+   shortName: li314
+   serverName: li314.paracamplus.com
+   topSrcDir: Servers/w.li314
+   apacheRank: 402
+
+############### Path
+
+exercises:
+  kind: and
+  1:
+     title: Annales
+     kind: set
+     1: fr.upmc.chailloux.emmanuel.li314.partiel2010nov.3
+     2: fr.upmc.chailloux.emmanuel.li314.partiel2011nov
+     3: fr.upmc.chailloux.emmanuel.li314.partiel2012nov.1
+
+############### Views
+
+View::Identity:
+
+View::XSLT:
+   INCLUDE_PATH:
+      - /var/www/li314.paracamplus.com/static/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/li314.paracamplus.com/Templates
+        - /opt/li314.paracamplus.com/Templates/Default
+    ENCODING: UTF-8
+    render_die: 1
+
+################## Controllers
+
+Controller::Authenticate:
+   private_key_file:  /opt/li314.paracamplus.com/fw4excookie.insecure.key
+# FIXME prendre en compte ces dates si elles existent!!!!!!!!!!!!!!!!!!!
+   startTime: 2014-08-22T00:00
+   endTime:   2015-02-01T00:00
+   sendLinkBaseUrl: http://li314.paracamplus.com/authenticate/checklink/
+   smtpfrom: webmaster@paracamplus.com <WebMaster@paracamplus.com>
+   sendLinkSubject: "Accès à li314.paracamplus.com"
+   smtpservers:
+       - localhost:25
+   message:
+     fr:
+       missingLogin: "Nom de connexion (du genre upmc:1234567) manquant!"
+       missingPassword: "Mot de passe manquant!"
+       wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
+       missingLoginOrEmail: "Nom de connexion ou courriel absent!"
+       unknownEmail: "Courriel inconnu!"
+       ambiguousEmail: "Courriel ambigü ?"
+       unknownLogin: "Nom de connexion inconnu!"
+       ambiguousLogin: "Nom de connexion ambigü ?"
+       missingLink: "Lien temporaire absent!"
+       obsoleteLink: "Lien temporaire inconnu ou périmé!"
+       changePassword: "N'oubliez pas de changer votre mot de passe!"
+     en:
+       missingLogin: "Missing login!"
+       missingPassword: "Missing password!"
+       wrongCombination: "Wrong combination of login and password!"
+       missingLoginOrEmail: "Missing login or email!"
+       unknownEmail: "Unknown email!"
+       ambiguousEmail: "Ambiguous email!"
+       unknownLogin: "Unknown login!"
+       ambiguousLogin: "Ambiguous login!"
+       missingLink: "Missing link!"
+       obsoleteLink: "Obsolete or unknown link!"
+       changePassword: "Change your password!"
+   decoration:
+       login: "upmc:"
+       loginOrEmail: "upmc:1234567 ou x@truc.fr"
+       siteUrl: http://li314.paracamplus.com/
+
+Controller::Profile:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   message:
+      fr:
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Les mots de passe diffèrent ?"
+        badPassword: "Mauvais caractère(s) dans mot de passe!"
+        missingOnePassword: "Un des mots de passe manque!"
+        badPseudo: "Mauvais caractère(s) dans pseudo!"
+        badEmail: "Courriel bizarre!"
+        emailAlreadyUsed: "Courriel déjà utilisé!"
+        OK: "Modifications enregistrées!"
+
+Controller::Doc:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   decoration:
+      exoPath: /xh/path/li314
+   defaultPage: toc
+   pages:
+      toc:
+      begin:
+        decoration:
+            exoPath: /xh/path/li314
+      howto:
+      legal:
+      exercises:
+      skill:
+      authentication:
+
+Controller::Root:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   startTime: 2014-09-01T00:00:00z
+   endTime:   2015-01-31T23:59:00Z
+
+Controller::History:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   eServerUrl: /sh/s/
+   jobsPerPage: 20
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::TopScore:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   before: 4
+   justBefore: 4
+   after: 3
+
+Controller::Whoswho:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+
+Controller::Skill:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   personGroupName: li314-2014oct
+   exerciseGroupName: li314-2014oct
+   startTime: 2014-09-01
+   endTime:   2015-02-01
+   decoration: 
+      waitingImage: /static/5-1.gif
+
+Controller::Embody:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::OneLiner:
+   version: 1210
+# Use the same insecure key as the A server:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   stylesheet: /static/li314.xsl
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::FromUPMC:
+# Use the same insecure key as the A server:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+
+Controller::Stats:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+
+Controller::SaveRestaure:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+
+# The stylesheet (.xsl) must be reachable as a template (.tt)
+Controller::Proxy:
+  private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+  version: 1210
+  x:
+     prefix: /x/
+     remote: x.paracamplus.com
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li314.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://li314.paracamplus.com/static/li314.css
+  s:
+     prefix: /
+     remote: s.paracamplus.com
+  sh:
+     prefix: /sh/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li314.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://li314.paracamplus.com/static/li314.css
+  shp:
+     prefix: /shp/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li314.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://li314.paracamplus.com/static/li314.css
+  e:
+     prefix: /e/
+     remote: e.paracamplus.com
+  eh:
+     prefix: /eh/
+     remote: e.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li314.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://li314.paracamplus.com/static/li314.css
+  a:
+     prefix: /a/
+     remote: a.paracamplus.com
+
+#end.

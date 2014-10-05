@@ -10,13 +10,13 @@ db.paracamplus.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzcR6m0oqAcjmetHswKMaumD3B
 EOF
 fi
 
-chmod 400 /opt/x.paracamplus.com/private/dbuser_ecdsa
+chmod 400 /opt/$HOSTNAME/private/dbuser_ecdsa
 
-if ssh -i /opt/x.paracamplus.com/private/dbuser_ecdsa \
+if ssh -i /opt/$HOSTNAME/private/dbuser_ecdsa \
     dbuser@db.paracamplus.com hostname
 then
     if ! ssh -n -N -C -o TCPKeepAlive=yes \
-        -i /opt/x.paracamplus.com/private/dbuser_ecdsa \
+        -i /opt/$HOSTNAME/private/dbuser_ecdsa \
         -L 5432:127.0.0.1:5432 dbuser@db.paracamplus.com    
     then 
         echo "Cannot create a tunnel towards db.paracamplus.com"
