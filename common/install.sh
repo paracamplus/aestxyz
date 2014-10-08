@@ -24,18 +24,42 @@ then (
      )
 fi
 
+# Container's apache logs are kept on the Docker host
+# but they should be rotated by the container.
+mkdir -p /var/log/apache2/$HOSTNAME
+
 docker stop ${DOCKERNAME}
 docker rm ${DOCKERNAME}
 docker pull ${DOCKERIMAGE}
-docker run -d \
+CID=$(docker run -d \
     -p "127.0.0.1:${HOSTPORT}:80" \
     -p "127.0.0.1:${HOSTSSHPORT}:22" \
     --name=${DOCKERNAME} -h $HOSTNAME \
     -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
     -v `pwd`/.ssh:/root/.ssh \
+    -v /var/log/apache2/$HOSTNAME:/var/log/apache2 \
     ${ADDITIONAL_FLAGS} \
     ${DOCKERIMAGE} \
-    bash -x /root/RemoteScripts/start.sh
+    bash -x /root/RemoteScripts/start.sh)
+
+if ${PROVIDE_SMTP:-false}
+then
+    # Leave time for the container to start sshd:
+    # @bijou: 3 seconds
+    for t in 1 2 3 4 5 6 7 8 9 10 11 
+    do
+        sleep 1
+        echo "Trying($t) to ssh the container"
+        if ssh -p ${HOSTSSHPORT} -i ./root_rsa root@127.0.0.1 hostname
+        then
+            nohup ssh -nNC -o TCPKeepAlive=yes \
+                -i ./root_rsa \
+                -R 25:127.0.0.1:25 \
+                -p ${HOSTSSHPORT} root@127.0.0.1 &
+            break
+        fi
+    done
+fi
 
 rsync -avu ./root.d/ /
 if [ -d ./root.d/etc/apache2/sites-available/ ]

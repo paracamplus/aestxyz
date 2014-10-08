@@ -42,7 +42,6 @@ clean.useless :
 
 # setup*.sh and start*.sh scripts cannot be symbolically linked.
 # Docker copies them as links not as files.
-# Caution: install*sh scripts are specific to every server!
 unify.common.scripts : clean.useless
 	-for f in remote-common/?*.sh ;\
 	do for g in */RemoteScripts/$${f##*/} ;\
@@ -73,6 +72,7 @@ deploy.all : deploy.a.paracamplus.com
 deploy.all : deploy.e.paracamplus.com
 deploy.all : deploy.x.paracamplus.com
 deploy.all : deploy.t.paracamplus.com
+deploy.all : deploy.li314.paracamplus.com
 
 # {{{ Base images
 # To ease tuning, let's create the base container in small steps
@@ -268,7 +268,7 @@ create.aestxyz_vmy : vmy/Dockerfile unify.common.scripts
 # @bijou 1min
 deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-		y.paracamplus.com root@ns353482.ovh.net':'Docker/
+		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
 	y/y.paracamplus.net/check-outer-availability.sh \
 		-i y.paracamplus.com -p 80 -s 4 \
@@ -284,15 +284,15 @@ create.aestxyz_vma : vma/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_vma
 deploy.a.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-		a.paracamplus.com root@ns353482.ovh.net':'Docker/
+		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
-	a/a.paracamplus.net/check-outer-availability.sh \
-		-i a0.paracamplus.com -p 80 -s 4 \
-		a0.paracamplus.com
-	a/a.paracamplus.net/check-outer-availability.sh \
+	common/check-outer-availability.sh \
 		-i a.paracamplus.com -p 80 -s 4 \
 		a.paracamplus.com
+	common/check-outer-availability.sh \
+		-i a0.paracamplus.com -p 80 -s 4 \
+		a0.paracamplus.com
 	ssh -t root@ns353482.ovh.net \
 	  ssh -v -p 51022 -i Docker/a.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
@@ -304,10 +304,10 @@ create.aestxyz_vme : vme/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_vme
 deploy.e.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-	    e.paracamplus.com root@ns353482.ovh.net':'Docker/
+	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
-	e/e.paracamplus.net/check-outer-availability.sh \
+	common/check-outer-availability.sh \
 		-i e.paracamplus.com -p 80 -s 4 \
 		e.paracamplus.com
 	ssh -t root@ns353482.ovh.net \
@@ -323,10 +323,10 @@ create.aestxyz_vmx : vmx/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_vmx
 deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-	    x.paracamplus.com root@ns353482.ovh.net':'Docker/
+	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
-	x/x.paracamplus.net/check-outer-availability.sh \
+	common/check-outer-availability.sh \
 		-i x.paracamplus.com -p 80 -s 4 \
 		x.paracamplus.com
 	ssh -t root@ns353482.ovh.net \
@@ -340,10 +340,10 @@ create.aestxyz_vmt : vmt/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_vmt
 deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-	    t.paracamplus.com root@ns353482.ovh.net':'Docker/
+	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
-	t/t.paracamplus.net/check-outer-availability.sh \
+	common/check-outer-availability.sh \
 		-i t.paracamplus.com -p 80 -s 4 \
 		t.paracamplus.com
 	ssh -t root@ns353482.ovh.net \
@@ -364,8 +364,11 @@ create.aestxyz_${COURSE} : ${COURSE}/Dockerfile unify.common.scripts
 	docker push paracamplus/aestxyz_${COURSE}
 deploy.${COURSE}.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
-	    ${COURSE}.paracamplus.com root@ns353482.ovh.net':'Docker/
+	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh
+	common/check-outer-availability.sh \
+		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
+		${COURSE}.paracamplus.com
 # }}}
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile

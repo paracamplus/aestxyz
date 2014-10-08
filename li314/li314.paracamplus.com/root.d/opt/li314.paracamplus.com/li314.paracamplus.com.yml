@@ -11,7 +11,7 @@ using_frontend_proxy: 1
 private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li314.paracamplus.com
-version: 1210
+version: 1211
 controllers :
    - Authenticate
    - Doc
@@ -68,7 +68,7 @@ exercises:
      1: fr.upmc.chailloux.emmanuel.li314.partiel2010nov.3
      2: fr.upmc.chailloux.emmanuel.li314.partiel2011nov
      3: fr.upmc.chailloux.emmanuel.li314.partiel2012nov.1
-########### ajout 2013.............................................
+     4: fr.upmc.chailloux.emmanuel.li314.partiel2013nov.2
 
 ############### Views
 
@@ -203,7 +203,7 @@ Controller::Embody:
          firstname: Christian
 
 Controller::OneLiner:
-   version: 1210
+   version: 1211
 # Use the same insecure key as the A server:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
@@ -227,7 +227,7 @@ Controller::SaveRestaure:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
-  version: 1210
+  version: 1211
   x:
      prefix: /x/
      remote: x.paracamplus.com

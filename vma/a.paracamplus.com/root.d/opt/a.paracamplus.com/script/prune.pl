@@ -1,0 +1,1 @@
+../../../../../../../Servers/a/Paracamplus-FW4EX-A/script/prune.pl

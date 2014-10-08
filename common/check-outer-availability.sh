@@ -7,11 +7,7 @@
 #    URL       the URL to get (by default http://127.0.0.1/
 #    FRAGMENT  the fragment of text that must be present in the response.
 
-
-export HOSTNAME="$(cd ${0%/*} ; pwd)"
-HOSTNAME=${HOSTNAME##*/}
-
-PORT=50080
+PORT=80
 IP=127.0.0.1
 
 while getopts p:s:i: opt
@@ -34,12 +30,11 @@ do
 done
 shift $(( $OPTIND - 1 ))
 
-VERSION=$(cat ${0%/*}/root.d/opt/$HOSTNAME/VERSION.txt)
-
 rm -f /tmp/wget_code.txt
 for HOSTNAME
 do (
         echo "Outer check of $HOSTNAME"
+        VERSION=$(cat */$HOSTNAME/root.d/opt/$HOSTNAME/VERSION.txt)
         wget -O - -o /dev/null \
             --header="HOST:$HOSTNAME" \
             http://$IP:$PORT/ > /tmp/wget_$HOSTNAME.txt

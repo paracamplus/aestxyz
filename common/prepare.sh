@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 # Prepare the Docker build process on the Docker host.
 # This script is supposed to be run in the Docker/ directory.
 # Errors are signalled with a 1x code.
@@ -64,11 +64,14 @@ then
         --perlmodule Paracamplus-FW4EX-$MODULE \
         --version "$VERSION" \
         -o $TODIR/${SanitizedHOSTNAME}.pm
-    echo "Generating Catalyst controller $MODULE.pm"
-    $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
-        --perlmodule Paracamplus-FW4EX-$MODULE \
-        --version "$VERSION" \
-        -o $TODIR.pm
+    if ! [ -f $PARACAMPLUSDIR/perllib/Paracamplus/FW4EX/${MODULE}.pm ]
+    then
+        echo "Generating Catalyst controller $MODULE.pm"
+        $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
+            --perlmodule Paracamplus-FW4EX-$MODULE \
+            --version "$VERSION" \
+            -o $TODIR.pm
+    fi
 fi
 
 # Checking Catalyst YAML configuration
