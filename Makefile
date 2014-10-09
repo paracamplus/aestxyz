@@ -57,6 +57,7 @@ recreate.all : create.aestxyz_vma
 recreate.all : create.aestxyz_vme
 recreate.all : create.aestxyz_vmx
 recreate.all : create.aestxyz_vmt
+recreate.all : create.aestxyz_vmz
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
 
@@ -65,6 +66,7 @@ deploy.all : deploy.a.paracamplus.com
 deploy.all : deploy.e.paracamplus.com
 deploy.all : deploy.x.paracamplus.com
 deploy.all : deploy.t.paracamplus.com
+deploy.all : deploy.z.paracamplus.com
 deploy.all : deploy.li314.paracamplus.com
 
 # {{{ Base images
@@ -347,6 +349,27 @@ deploy.t.paracamplus.com :
 	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css
 	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css
 	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css
+
+create.aestxyz_vmz : vmz/Dockerfile
+	vmz/z.paracamplus.com/prepare.sh
+	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
+	docker push paracamplus/aestxyz_vmz
+deploy.z.paracamplus.com :
+	rsync ${RSYNC_FLAGS} -avuL \
+	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/z.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:56080/
+	common/check-outer-availability.sh \
+		-i z.paracamplus.com -p 80 -s 4 \
+		z.paracamplus.com
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 56022 -i Docker/z.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/z.paracamplus.com/fw4excookie.insecure.key
+	wget -qO /dev/stdout http://z.paracamplus.com/static/t.css
+	wget -qO /dev/stdout http://z.paracamplus.com/static//t.css
+	wget -qO /dev/stdout http://z.paracamplus.com//static/t.css
+	wget -qO /dev/stdout http://z.paracamplus.com//static//t.css
 
 COURSE=li314
 instantiate_${COURSE} :
