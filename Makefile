@@ -40,13 +40,6 @@ clean.useless :
 	rm -f $$(find . -name '*~')
 	rm -f $$(find . -name '*.bak')
 
-# setup*.sh and start*.sh scripts cannot be symbolically linked.
-# Docker copies them as links not as files.
-unify.common.scripts : clean.useless
-	-for f in remote-common/?*.sh ;\
-	do for g in */RemoteScripts/$${f##*/} ;\
-		do cp -pf $$f $$g ; done ; done
-
 #recreate.all : erase.all
 recreate.all : clean.useless
 #recreate.all : create.aestxyz_apt
@@ -121,7 +114,7 @@ local.ensure.cpan :
 
 # {{{ Local images for local tests
 # Install an A server:  a.paracamplus.net
-create.aestxyz_a : a/Dockerfile unify.common.scripts 
+create.aestxyz_a : a/Dockerfile
 	a/a.paracamplus.net/prepare.sh
 	cd a/ && docker build -t paracamplus/aestxyz_a .
 # @bijou 1min
@@ -141,7 +134,7 @@ create.aestxyz_a : a/Dockerfile unify.common.scripts
 		"paracamplus/aestxyz_a:$$(date +%Y%m%d_%H%M%S)"
 
 # Install an E server:  e.paracamplus.net
-create.aestxyz_e : e/Dockerfile unify.common.scripts 
+create.aestxyz_e : e/Dockerfile
 	e/e.paracamplus.net/prepare.sh
 	cd e/ && docker build -t paracamplus/aestxyz_e .
 # @bijou 
@@ -162,7 +155,7 @@ create.aestxyz_e : e/Dockerfile unify.common.scripts
 
 # Install an S server: s.paracamplus.net
 # S is not a Catalyst webapp
-create.aestxyz_s : s/Dockerfile unify.common.scripts 
+create.aestxyz_s : s/Dockerfile
 	s/s.paracamplus.net/prepare.sh
 	cd s/ && docker build -t paracamplus/aestxyz_s .
 # inner check of the S server:
@@ -182,7 +175,7 @@ create.aestxyz_s : s/Dockerfile unify.common.scripts
 
 # Install an X server: x.paracamplus.net
 # requires access to the database
-create.aestxyz_x : x/Dockerfile unify.common.scripts 
+create.aestxyz_x : x/Dockerfile
 	x/x.paracamplus.net/prepare.sh
 	cd x/ && docker build -t paracamplus/aestxyz_x .
 # inner check of the X server:
@@ -202,7 +195,7 @@ create.aestxyz_x : x/Dockerfile unify.common.scripts
 
 # Install a T server: t.paracamplus.net
 # T proxies to the previous servers
-create.aestxyz_t : t/Dockerfile unify.common.scripts 
+create.aestxyz_t : t/Dockerfile
 	t/t.paracamplus.net/prepare.sh
 	cd t/ && docker build -t paracamplus/aestxyz_t .
 # inner check of the T server:
@@ -221,7 +214,7 @@ create.aestxyz_t : t/Dockerfile unify.common.scripts
 		"paracamplus/aestxyz_t:$$(date +%Y%m%d_%H%M%S)"
 
 # Install a Z server: z.paracamplus.net
-create.aestxyz_z : z/Dockerfile unify.common.scripts 
+create.aestxyz_z : z/Dockerfile
 	z/z.paracamplus.net/prepare.sh
 	cd z/ && docker build -t paracamplus/aestxyz_z .
 # inner check of the Z server:
@@ -240,7 +233,7 @@ create.aestxyz_z : z/Dockerfile unify.common.scripts
 		"paracamplus/aestxyz_z:$$(date +%Y%m%d_%H%M%S)"
 
 # Install a Y server: y.paracamplus.net
-create.aestxyz_y : y/Dockerfile unify.common.scripts 
+create.aestxyz_y : y/Dockerfile
 	y/y.paracamplus.net/prepare.sh
 	cd y/ && docker build -t paracamplus/aestxyz_y .
 # inner check of the Y server:
@@ -261,7 +254,7 @@ create.aestxyz_y : y/Dockerfile unify.common.scripts
 
 # {{{ Images for servers in *.paracamplus.com
 # A container with a single Y server in it.
-create.aestxyz_vmy : vmy/Dockerfile unify.common.scripts 
+create.aestxyz_vmy : vmy/Dockerfile
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 	docker push paracamplus/aestxyz_vmy
@@ -278,7 +271,7 @@ deploy.y.paracamplus.com :
 # instance) in the same container. Scripts are tailored for just one server!
 # A container with an A server in it.
 # CAUTION: don't divulge fw4ex or ssh private keys.
-create.aestxyz_vma : vma/Dockerfile unify.common.scripts 
+create.aestxyz_vma : vma/Dockerfile
 	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker push paracamplus/aestxyz_vma
@@ -298,7 +291,7 @@ deploy.a.paracamplus.com :
 		root@127.0.0.1 \
 		ls -l /opt/a.paracamplus.com/fw4excookie.insecure.key
 
-create.aestxyz_vme : vme/Dockerfile unify.common.scripts 
+create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker push paracamplus/aestxyz_vme
@@ -317,7 +310,7 @@ deploy.e.paracamplus.com :
 
 # Caution: take care of the size of the Apache logs!!!!!!!!!!
 
-create.aestxyz_vmx : vmx/Dockerfile unify.common.scripts 
+create.aestxyz_vmx : vmx/Dockerfile
 	vmx/x.paracamplus.com/prepare.sh
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
 	docker push paracamplus/aestxyz_vmx
@@ -334,7 +327,7 @@ deploy.x.paracamplus.com :
 		root@127.0.0.1 \
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
 
-create.aestxyz_vmt : vmt/Dockerfile unify.common.scripts 
+create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker push paracamplus/aestxyz_vmt
@@ -358,7 +351,7 @@ deploy.t.paracamplus.com :
 COURSE=li314
 instantiate_${COURSE} :
 	./Scripts/instantiate.sh ${COURSE}
-create.aestxyz_${COURSE} : ${COURSE}/Dockerfile unify.common.scripts 
+create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker push paracamplus/aestxyz_${COURSE}
