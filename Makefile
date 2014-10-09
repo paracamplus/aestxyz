@@ -366,10 +366,10 @@ deploy.z.paracamplus.com :
 	  ssh -v -p 56022 -i Docker/z.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/z.paracamplus.com/fw4excookie.insecure.key
-	wget -qO /dev/stdout http://z.paracamplus.com/static/t.css
-	wget -qO /dev/stdout http://z.paracamplus.com/static//t.css
-	wget -qO /dev/stdout http://z.paracamplus.com//static/t.css
-	wget -qO /dev/stdout http://z.paracamplus.com//static//t.css
+	wget -qO /dev/stdout http://z.paracamplus.com/static/z.css
+	wget -qO /dev/stdout http://z.paracamplus.com/static//z.css
+	wget -qO /dev/stdout http://z.paracamplus.com//static/z.css
+	wget -qO /dev/stdout http://z.paracamplus.com//static//z.css
 
 COURSE=li314
 instantiate_${COURSE} :
