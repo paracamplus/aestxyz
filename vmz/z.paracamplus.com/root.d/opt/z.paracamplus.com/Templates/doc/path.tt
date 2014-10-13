@@ -1,0 +1,52 @@
+[%# -*- coding: utf-8 -*- 
+ Automatically generated, don't touch!
+ Generated from vmz/z.paracamplus.com/root.d/opt/z.paracamplus.com/z.paracamplus.com.yml
+ with private key /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Scripts/../Servers/.ssh/fw4excookie.insecure.key
+ on 2014-10-09T23:10:56
+-%]
+
+<fieldset><legend>Exercice en C</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- com.paracamplus.li205.function.1 -->
+<span class='title'><a href='[% base %]/oneliner/UUjE-j8u57dgmp5w9d-qin_ttwVPv8_oAJAJUXn3xGk02VplJEL9kF9dvWPnS_YnkH-RbJMl3gFRUnepqMsWFuIE9KFMztj-GqUh0lB7lALPj9rBOdRa-iwjDJPbF2N1MDLhTOM_3oB9HTm9Rlfq_xYF4iAM1prmb_q2THSoNhqFhdIp3LNvEI9R_KTuwW_Le5G49tWMsuih00EcuMeyFPhSVSGoFQLyQkwfmtnbfI7SCxIki0_bhs-oeTtgS-6p9vYOhz4vpD8ITAcrw5Z-aAww_ZJV_ihNIhokkCGrqcTBApdODoJx4U6qvabZ6jRI4wrsbZQWuBDuEw5XTqTBRPQ@@'>min</a></span><span class='detail hidable'> Fonction <code>min</code> </span></div>
+</fieldset>
+<fieldset><legend>Exercice en Java</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- com.paracamplus.li314.java.3 -->
+<span class='title'><a href='[% base %]/oneliner/UQ_ffsnbOUvAdht6j8AkSR-DeG5XaqBQHrYrF6zKgxr48PYiPcLk3szLrsWBgZzVsJurmp8GyUMP1RQ_3tHR45aDqqOWDttTUeF_4aLifCyDff2KL35pynB6BuoAZsF7EsxN1rjdY7en8FD_E91TnGQq5pKzjL29Svx5uf95gdMQwzmw-LQSYNdkGsBupsbxG6eQtVCbNcQi77p4WT4IcSiyxO88x5EQ7_jUad7O5sH4LBMH-dV-AJer-ehqHUFJpV2FDQDA0_PXX-RO2g1LOpSHK6w1hLCw3OJX-MCz1VTcSg8gHvotImsQZEuLd4BBh9nUKyKgnVqM3KpXZjKAAMg@@'>imin3</a></span><span class='detail hidable'> Méthode <code>min3</code> </span></div>
+</fieldset>
+<fieldset><legend>Exercice en bash</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- com.paracamplus.li362.sh.7 -->
+<span class='title'><a href='[% base %]/oneliner/UUVCWv1mZjLszh5cGB1tLEUxeCmqeCNLUFLYq0-18U5GOKch6a5Dg8fEp1bpFNc7RYtEE_hSW_K2P1iAQP20-fKq21KgBKXXngqjBZSWjzLqbO2WADf9zv3v3xyOJsJZQwTM0ZxCwYyYbBYkIBFRVBzbXzZdb-BCqwYMSlOYSpJt6--IoitDd647cTJ3AG1_pxZn8MSLyYwJk8XWzaKgpvDxbpQweJbgb9dObC0uLP_Ygy5tmNVIrYr7M_Vus7grLzCPaAi8_m7BXPnSBQFThbdUVgSI1vTLPQFnBNkJBuwsp0UuS8VTb21dTG0l3JMiGwDK66ZZBqqfPCDoyYI-Vpg@@'>reparation</a></span><span class='detail hidable'> Restauration de fichiers involontairement supprimés </span></div>
+</fieldset>
+<fieldset><legend>Exercices sur commandes Posix</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- com.paracamplus.li362.tr.4 -->
+<span class='title'><a href='[% base %]/oneliner/Ut-QwZAegWJS86q8x9YkADT-cFvWyaB5QCzKwycVlWvaUXVYtRM54K90_9EAVMoO5ab7hb5tuBSqvsEz512wI0hBeZ-atQgIvWej4I7S6EdE-1ppHfAXhpbFJoa5SHR5nUa3usmCe1BXzVp9mgsqNLxx-zxQPRJ3_U0Goo57ELPGnEL4l6fZR2-uzKsnVCXGT1BFhwdvTX-htfp3Pi_3vA_m-x7ziM80mrtAM9pupF7clrJY_bMZyDXDpY1KbJG-D4XncvbLejqL-CZWktkwCbw14j4kho7ov3WJSPPQz8641iDoJstbd9XamdxMB38DCPw-Rsg0wI28Lwj3fsMDKOA@@'>deblanchir</a></span><span class='detail hidable'> Normaliser les espaces entre mots </span></div>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- org.fw4ex.li218.devoir.2010nov.3 -->
+<span class='title'><a href='[% base %]/oneliner/Uo5IzacU2OLh72tTCVyYW3sq01eFjg2Vl5XU0F_BRsGPsA8I0Gm7NjJgkVX3-4XpP9gmkoKQE6XsIaUC8Ksd8vr3pXeE8JRNV7ivPIn-X41Q_nqyA-bQf1-PUpKPUtKoFCoj5Z2n3fBkQtH-ySTLb8j5DbIOt8Dp2F-3IAx0TRCelZyHF8ZQOWom_XHV-p7Qq39eWgMAc9QHUp9FV-wsXCX5-JclD8DDGVn1ssbFyYFH0WaOkPjnX-arQilypicRdHh8Mq6JCnoxoKJsJqEY5HKNd67No0MkJFBvOGIoEt_E6F3sq-OBpMzxPC8M_Y-9uz91H-7bHjEbi6Yx8mfsHgQ@@'>max_mots</a></span><span class='detail hidable'> Ligne de plus grand nombre de mots </span></div>
+</fieldset>
+<fieldset><legend>Exercice en Octave</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- com.paracamplus.lt216.1 -->
+<span class='title'><a href='[% base %]/oneliner/UAHg7by-XqjYgMVN0aTOU7zfpUYT17PdPfAQ9qX7sH-emiVUO_IwFCvFE-RAGWWb0Haa7e2SmxWLKr5LgN6YfgnSAQLdPYBo6drEnobBD0tbW8GpLKzN6mWRiukAS8IUOjAlqQqZmf0jSa2n1Hxa7W4VOFE1rzXkxeLPRnyqC9Uu5tXU-E2IpXr3gvF7HgO4p2zz2c_kE58p92OITFpl8gIPS-izVAEkHNUPyRaGUkDWiHaxrBAayiySnQGK0StxN526eZ2A9vny_0hjgo6zMsZ4ssCQvdNOx3fVLOK0Dl1zIRcuXklp1AGn5bzMRJgfj7lM6U_IS6xp72U05N3_LdA@@'>issorted</a></span><span class='detail hidable'> Fonction issorted </span></div>
+</fieldset>
+<fieldset><legend>Exercice en Scheme</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- org.fw4ex.li101.l2p -->
+<span class='title'><a href='[% base %]/oneliner/UUH9FBHEW7H57FpkdJhc4EG-tv6XYQXkjExt6Fk6BQmD2d48SYF5ese4aRpMRt48pzSKiEeT-lV_Up3GB-tp_Gvd0lAWFDBdSo7csW5F1aTb-w8YLcM7ghJZRazmS85YdoeMDaoNXafGYEdwCy6IM4tfxWkil33IUfzjIhbItcBx8ij0VZbLXgD0aYPZOXpDQYpyNXP817lN1ekVv4Ro3kL7CrqLneGSJQzkGHaPL4IFaWvQfz1W4ED3QOO9Rh3LrXiGuSaGH6mLpwX5Bj9Vue2ipqrhjFBuVnUOxlrFFFzZeEFoRz4AkFhX3XOcUGDiU1buXtmTsAPufTPdkjI87gg@@'>l2p</a></span><span class='detail hidable'> Deux premiers termes d'une liste </span></div>
+</fieldset>
+<fieldset><legend>Exercice en O'Caml</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- org.fw4ex.ocaml.1 -->
+<span class='title'><a href='[% base %]/oneliner/UQKteMSWXVeoBHzScrmGoL_R8fqrcFO6cSTS9L1gecLUAWtbiWlK10Ude9S020gstfoEbsyhNrQIcJlUYuvo4Jt1kdijaSEsaQcARDm3hvRTuQi_zGhqVfTMm-sqx5W0Hur8pMV03L1pMNnZKW2p8nWsuRIqFz409TyiKChzdQPsoxQR52nWmBBGyOf2jX6PYLs7VpYEdLdI0PHiXD46mi3xbIMcqsonk5nMLmf0CCHGONkL2PG8KA2qtlDL4izUaWL57PzAm5ZAIv9yUgjMIIVj-t2hyy_Zpagz-OWHqW21k5EneCm6VYVSQfhzQanKIJ-5KbGZhFwVkZKGD6SMZ7A@@'>ocaml1</a></span><span class='detail hidable'> Extraction de termes d'une liste </span></div>
+</fieldset>
+<fieldset><legend>Exercice pour le MOOC Programmation récursive</legend>
+<div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
+<!-- org.fw4ex.li101.pgcd.0 -->
+<span class='title'><a href='[% base %]/oneliner/UGeLwkQf4k7rqKSaT3JXEgRumvPjSCdRzywqCjgKQbobBsjpkvVdsKQ-0bh68JwOgEMl1aia-f_jJXg7HzhMhZF0AiurTSs2-4QoBjoxCZpjo7YUya064leKFgbNp3sIckbpv487SeA9bv_eqE3MZXkUqROcVzgGnBUC9cO0ibk8StjxvI8LHm2eM4cef8NP-LpQdV5a0JdZ-qeK-RxXXhfbCRAU6BBpoIMmHwArphh87WsmSusb9W397tydjJIK9nhLHLRVdqq0oWKNiADAOR49aZth7-O-zO3lB9D1kOS_osh7pENYhi7vbhCLGMOftHNnfG67LWipwRs8UnasNbg@@'>pgcd</a></span><span class='detail hidable'>
+Calcul du PGCD
+      </span></div>
+</fieldset>

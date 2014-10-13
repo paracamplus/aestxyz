@@ -5,7 +5,7 @@ name: Paracamplus::FW4EX::Z
 encoding: UTF-8
 default_view: TT
 tmpDir: /opt/tmp/z.paracamplus.net
-version: 1209
+version: 1212
 lang: fr
 decoration:
     ue_url: http://info.paracamplus.net/
@@ -199,7 +199,7 @@ Controller::Skill:
       waitingImage: /static/5-1.gif
 
 Controller::OneLiner:
-   version: 1209
+   version: 1212
 # Use the same insecure key as the A server:
    private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
    campaignName: free
@@ -220,7 +220,7 @@ Controller::Stats:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/z.paracamplus.net/fw4excookie.insecure.key
-  version: 1209
+  version: 1212
   x:
      prefix: /x/
      remote: x.paracamplus.net

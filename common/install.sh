@@ -42,6 +42,22 @@ CID=$(docker run -d \
     ${DOCKERIMAGE} \
     bash -x /root/RemoteScripts/start.sh)
 
+if [ -z "$CID" ]
+then 
+    echo "Starting Docker container $DOCKERNAME failure!"
+    exit 52
+fi
+
+# Make smoothless the connection between the Docker host and the container:
+echo $CID > docker.cid
+docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub .
+KEY="$(cat ./ssh_host_ecdsa_key.pub)"
+KEY="${KEY%root@*}"
+IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
+sed -i -e '/^$IP/d' /root/.ssh/known_hosts
+echo "$IP $KEY" >> /root/.ssh/known_hosts
+
+# Allow the container to send mails:
 if ${PROVIDE_SMTP:-false}
 then
     # Leave time for the container to start sshd:
@@ -61,6 +77,8 @@ then
     done
 fi
 
+# Install specific files on the Docker host and mainly the Apache
+# configuration proxying towards the container:
 rsync -avu ./root.d/ /
 if [ -d ./root.d/etc/apache2/sites-available/ ]
 then
@@ -81,7 +99,7 @@ then
     fi
 fi
 
-# Make sure that this container is run after boot:
+# Make sure that this container is run after reboot of the Docker host:
 ( 
     cd ./root.d/
     chmod a+x etc/init.d/qnc-docker.sh

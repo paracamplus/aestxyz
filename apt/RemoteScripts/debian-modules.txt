@@ -8,8 +8,10 @@ rsync
 net-tools
 bind9-host
 openssh-server
+# ntp and ntpdate are useless in a Docker container:
 ntp
 ntpdate
+autoconf
 zlib1g-dev
 xml2
 libxml2-utils
@@ -29,6 +31,7 @@ postgresql-server
 libpq-dev
 libgdbm-dev
 cron
+telnet
 uuid-runtime
 apache2-mpm-prefork
 libapache2-mod-perl2

@@ -11,7 +11,7 @@ using_frontend_proxy: 1
 #private_key_file: /opt/y.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Root:
-  version: 1209
+  version: 1212
 
 redirections:
     a.paracamplus.com:

@@ -28,7 +28,7 @@ docker.wheezy :
 
 # Caution, we will be in / rather than /root/
 start.wheezy :
-	docker run --rm -it --name 'tmp:wheezy' 'debian:wheezy' '/bin/bash'
+	docker run --rm -it --name 'tmp-wheezy' 'debian:wheezy' '/bin/bash'
 
 # NOTA: tags must respect only [a-z0-9_] are allowed, size between 4 and 30!
 
@@ -42,8 +42,8 @@ clean.useless :
 
 #recreate.all : erase.all
 recreate.all : clean.useless
-#recreate.all : create.aestxyz_apt
-#recreate.all : create.aestxyz_cpan
+recreate.all : create.aestxyz_apt
+recreate.all : create.aestxyz_cpan
 recreate.all : create.aestxyz_fw4ex
 recreate.all : create.aestxyz_a
 recreate.all : create.aestxyz_e
@@ -370,6 +370,49 @@ deploy.z.paracamplus.com :
 	wget -qO /dev/stdout http://z.paracamplus.com/static//z.css
 	wget -qO /dev/stdout http://z.paracamplus.com//static/z.css
 	wget -qO /dev/stdout http://z.paracamplus.com//static//z.css
+
+start.squeeze :
+	docker run --rm -it --name 'tmp-squeeze' 'debian:squeeze' '/bin/bash'
+
+create.aestxyz_oldapt : oldapt/Dockerfile
+	cd oldapt/ && docker build -t paracamplus/aestxyz_oldapt .
+# aptitude update and upgrade are done. Perl is 5.10.1
+	docker run --rm -it paracamplus/aestxyz_oldapt
+create.aestxyz_oldcpan : oldcpan/Dockerfile
+	cd oldcpan/RemoteScripts/ && tar czf root-A.tgz -C ../root.d/ .
+	cd oldcpan/ && docker build -t paracamplus/aestxyz_oldcpan .
+# should update /usr/{lib,share}/perl5 
+#               /usr/{lib,share}/perl/5.10.1
+# all directories mentioned in perl -V
+# start vmplayer Debian6-64bit-VMfw4exForAuthor 172.16.82.128
+create.aestxyz_vmolda : vmolda/Dockerfile
+	tar czf vmolda/perllib.tgz -C ../perllib \
+	  $$( cd ../perllib/ && find Paracamplus -name '*.pm' )
+	vmolda/a6.paracamplus.com/prepare.sh
+	cd vmolda/ && docker build -t paracamplus/aestxyz_vmolda .
+	docker push paracamplus/aestxyz_vmolda
+deploy.a6.paracamplus.com :
+	rsync ${RSYNC_FLAGS} -avuL \
+		a6.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net Docker/a6.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:57080/
+	common/check-outer-availability.sh \
+		-i a6.paracamplus.com -p 80 -s 4 \
+		a6.paracamplus.com
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 57022 -i Docker/a6.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/a6.paracamplus.com/fw4excookie.insecure.key
+
+
+create.aestxyz_vmmd : vmmd/Dockerfile
+#	vmmd/vmmd.paracamplus.com/vmmd-prepare.sh
+	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd0 .
+	vmmd.paracamplus.com/local-install.sh
+	docker commit $$(cat vmmd.paracamplus.com/docker.cid) \
+		paracamplus/aestxyz_vmmd
+	echo "Scripts/connect.sh vmmd"
+#	docker push paracamplus/aestxyz_vmmd
 
 COURSE=li314
 instantiate_${COURSE} :

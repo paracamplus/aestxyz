@@ -226,6 +226,7 @@ Controller::SaveRestaure:
 
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
+  verbose: 0
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
   version: 1212
   x:

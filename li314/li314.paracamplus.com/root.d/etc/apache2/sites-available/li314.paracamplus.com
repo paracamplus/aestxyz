@@ -55,6 +55,11 @@ PerlModule Paracamplus::FW4EX::LI314::li314_paracamplus_com
                 ExpiresByType text/javascript A108000
         </Location>
 
+        RedirectMatch /a/(.*)$ http://a.paracamplus.com/$1
+        RedirectMatch /e/(.*)$ http://e.paracamplus.com/$1
+        RedirectMatch (/s/.*)$ http://s.paracamplus.com/$1
+        RedirectMatch /x/(.*)$ http://x.paracamplus.com/$1
+
         # Coalesce all problems in one place:
         Errorlog /var/log/apache2/error.log
 

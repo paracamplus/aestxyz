@@ -5,7 +5,7 @@ name: Paracamplus::FW4EX::Y
 default_view: TT
 
 Controller::Root:
-  version: 1209
+  version: 1212
 
 redirections:
     mooc-li101-2014fev.fw4ex.org:
