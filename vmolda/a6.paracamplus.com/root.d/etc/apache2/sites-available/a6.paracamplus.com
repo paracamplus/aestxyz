@@ -1,17 +1,17 @@
 <VirtualHost *:80>
 # Check syntax with /usr/sbin/apache2ctl -t
+# generated on 2014-10-13T13:49:31
+# Catalyst needs apache2-mpm-prefork!
 
-  ServerName  li314.paracamplus.com
-              # temporary:
-              ServerAlias li314.fw4ex.org
+  ServerName  a6.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/li314.paracamplus.com/
+  DocumentRoot /var/www/a6.paracamplus.com/
   AddDefaultCharset UTF-8
 
-  AddType text/javascript .js
-  AddType text/css        .css
-  AddType application/xslt+xml .xsl
-  ExpiresActive On
+AddType text/javascript .js
+AddType text/css        .css
+AddType application/xslt+xml .xsl
+ExpiresActive On
 
         <Directory />
                 Options FollowSymLinks
@@ -21,20 +21,20 @@
                 Deny from all
         </Directory>
 
-        <Directory /var/www/li314.paracamplus.com/ >
+        <Directory /var/www/a6.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
+# Beware: Location directives are sorted from less precise to most precise
+PerlModule Paracamplus::FW4EX::A::a6_paracamplus_com
 
         <Location / >
+              SetHandler modperl
+              PerlResponseHandler Paracamplus::FW4EX::A::a6_paracamplus_com
               Order allow,deny
               allow from all
-              # FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:55080/
-              ProxyPassReverse http://localhost:55080/
+# FUTURE limit number of request/second
         </Location>
 
         <Location /favicon.ico>
@@ -42,7 +42,7 @@
               ExpiresDefault A2592000
         </Location>
 
-        Alias /static/ /var/www/li314.paracamplus.com/static/
+        Alias /static/ /var/www/a6.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
                 FileETag none
@@ -55,16 +55,14 @@
                 ExpiresByType text/javascript A108000
         </Location>
 
-        ProxyPass     /a/      http://a.paracamplus.com/
-        RedirectMatch (/s/.*)$ http://s.paracamplus.com/$1
-
-        Errorlog /var/log/apache2/li314.paracamplus.com-error.log
+        # Coalesce all problems in one place:
+        Errorlog /var/log/apache2/error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/li314.paracamplus.com-access.log combined
+        CustomLog /var/log/apache2/a6.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>

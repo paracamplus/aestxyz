@@ -43,21 +43,25 @@ clean.useless :
 #recreate.all : erase.all
 recreate.all : clean.useless
 recreate.all : create.aestxyz_apt
-recreate.all : create.aestxyz_cpan
-recreate.all : create.aestxyz_fw4ex
-recreate.all : create.aestxyz_a
-recreate.all : create.aestxyz_e
-recreate.all : create.aestxyz_s
-recreate.all : create.aestxyz_x
-recreate.all : create.aestxyz_t
-recreate.all : create.aestxyz_z
-recreate.all : create.aestxyz_y
-recreate.all : create.aestxyz_vmy
-recreate.all : create.aestxyz_vma
-recreate.all : create.aestxyz_vme
-recreate.all : create.aestxyz_vmx
-recreate.all : create.aestxyz_vmt
-recreate.all : create.aestxyz_vmz
+recreate.all :   create.aestxyz_cpan
+recreate.all :     create.aestxyz_fw4ex
+#recreate.all :      create.aestxyz_a
+#recreate.all :      create.aestxyz_e
+#recreate.all :      create.aestxyz_s
+#recreate.all :      create.aestxyz_x
+#recreate.all :      create.aestxyz_t
+#recreate.all :      create.aestxyz_z
+#recreate.all :      create.aestxyz_y
+recreate.all :       create.aestxyz_vmy
+recreate.all :       create.aestxyz_vma
+recreate.all :       create.aestxyz_vme
+recreate.all :       create.aestxyz_vmx
+recreate.all :       create.aestxyz_vmt
+recreate.all :       create.aestxyz_vmz
+recreate.all :       create.aestxyz_li314
+#recreate.all : create.aestxyz_oldapt  # a6 with Debian6
+#recreate.all : create.aestxyz_oldcpan # a6 with Debian6
+#recreate.all : create.aestxyz_vmolda  # a6 with Debian6
 #recreate.all : adjoin.docker.io
 # @bijou 87 min
 
@@ -68,6 +72,7 @@ deploy.all : deploy.x.paracamplus.com
 deploy.all : deploy.t.paracamplus.com
 deploy.all : deploy.z.paracamplus.com
 deploy.all : deploy.li314.paracamplus.com
+#deploy.all : deploy.a6.paracamplus.com # with Debian6
 
 # {{{ Base images
 # To ease tuning, let's create the base container in small steps

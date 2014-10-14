@@ -1,0 +1,51 @@
+---
+# This is the deployment configuration of a A server on a6.paracamplus.com
+# that is OVHedite
+
+name: Paracamplus::FW4EX::A
+encoding: UTF-8
+default_view: TT
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
+Catalyst::Engine:
+    uploadtmp: /tmp/a6/upload
+
+Controller::Root:
+    version: 1212
+
+Controller::Exercise:
+    version: 1212
+    job_dir:          /opt/a6.paracamplus.com/jobdir
+    batch_dir:        /opt/a6.paracamplus.com/batchdir
+    tmp_dir:          /opt/a6.paracamplus.com/tmpdir
+    private_key_file: /opt/a6.paracamplus.com/fw4excookie.insecure.key
+    RNGschemaFile:    /opt/a6.paracamplus.com/fw4ex.rng
+    statefilename:    /opt/a6.paracamplus.com/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+Controller::Job:
+    version: 1212
+    job_dir:          /opt/a6.paracamplus.com/jobdir
+    batch_dir:        /opt/a6.paracamplus.com/batchdir
+    tmp_dir:          /opt/a6.paracamplus.com/tmpdir
+    private_key_file: /opt/a6.paracamplus.com/fw4excookie.insecure.key
+    RNGschemaFile:    /opt/a6.paracamplus.com/fw4ex.rng
+    statefilename:    /opt/a6.paracamplus.com/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+Controller::Batch:
+    version: 1212
+    job_dir:          /opt/a6.paracamplus.com/jobdir
+    batch_dir:        /opt/a6.paracamplus.com/batchdir
+    tmp_dir:          /opt/a6.paracamplus.com/tmpdir
+    private_key_file: /opt/a6.paracamplus.com/fw4excookie.insecure.key
+    RNGschemaFile:    /opt/a6.paracamplus.com/fw4ex.rng
+    statefilename:    /opt/a6.paracamplus.com/tmpdir/jobstates.csv
+    max_ensure_counter: 20
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/a6.paracamplus.com/Templates
+
+#end.

@@ -5,7 +5,6 @@
 name: Paracamplus::FW4EX::A
 encoding: UTF-8
 default_view: TT
-parse_on_demand: 1
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
 
