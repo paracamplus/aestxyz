@@ -1,0 +1,55 @@
+work : test.headtail
+clean :: cleanMakefile
+
+test.headtail : headtail
+	echo 1 | headtail
+	[ 1 -eq ` echo 1 | headtail | wc -l` ]
+	{ echo 1 ; echo 2 ; } | headtail
+	[ 2 -eq `{ echo 1; echo 2; } | headtail | wc -l` ]
+	{ echo 1;echo 2;echo 3;echo 4;echo 5; } | headtail | tee /tmp/ht1
+	[ 5 = `tail -n 1 < /tmp/ht1` ]
+	[ 5 -eq `{ echo 1;echo 2;echo 3;echo 4;echo 5; } | headtail | wc -l` ]
+	{ echo 1;echo 2;echo 3;echo 4;echo 5;echo 6; } | headtail | tee /tmp/ht1
+	[ 6 = `tail -n 1 < /tmp/ht1` ]
+	[ 6 -eq `{ echo 1;echo 2;echo 3;echo 4;echo 5;echo 6; } | headtail | wc -l` ]
+	cat /etc/passwd | headtail
+	[ 10 -eq `cat /etc/passwd | headtail | wc -l` ]
+	tail -2 < /etc/passwd >/tmp/ht1
+	headtail < /etc/passwd | tail -2 >/tmp/ht2
+	cmp /tmp/ht[12]
+	head -2 < /etc/passwd >/tmp/ht1
+	headtail < /etc/passwd | head -2 >/tmp/ht2
+	cmp /tmp/ht[12]
+	rm -f /tmp/ht[12]
+	{ echo 1;echo 2;echo 3;echo 4;echo 5; } | headtail -1
+# test option -1 pour ne sortir que la 1ere et derniere ligne:
+	[ 2 -eq `{ echo 1;echo 2;echo 3;echo 4;echo 5; } | headtail -1 | wc -l` ]
+
+# ##### recuperer l'ancienne version de org.fw4ex.junit
+recup :
+	hg clone -r 972 ${HOME}/Paracamplus/ExerciseFrameWork/ /tmp/j
+# adding changesets
+# adding manifests
+# adding file changes
+# transaction abort!
+# rollback completed
+# abort: empty or missing revlog for perllib/Paracamplus/FW4EX/t/00_pod.t
+	hg verify
+# 3439 files, 996 changesets, 8819 total revisions
+# 471 warnings encountered!
+# 273 integrity errors encountered!
+# (first damaged changeset appears to be 0)
+	mkdir /tmp/e
+	hg convert --config convert.hg.ignoreerrors=True \
+		${HOME}/Paracamplus/ExerciseFrameWork/ /tmp/e
+	cd ${HOME}/Paracamplus/ExerciseFrameWork/ ; tar czf dotHG.tgz .hg
+# sauvegarde par unison sur bayou
+	rm -rf ${HOME}/Paracamplus/ExerciseFrameWork/.hg/
+	rsync -avu /tmp/e/.hg ${HOME}/Paracamplus/ExerciseFrameWork/
+	hg verify # OK!
+	hg clone -r 972 ${HOME}/Paracamplus/ExerciseFrameWork/ /tmp/j
+	ls /tmp/j/Mlib/authorlib/java/src/
+# Retrouves!
+
+
+# end of Imakefile

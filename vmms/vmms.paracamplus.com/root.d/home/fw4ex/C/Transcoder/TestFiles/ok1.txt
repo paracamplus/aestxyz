@@ -1,0 +1,1 @@
+Petit texte: une ligne seulement et en ascii.

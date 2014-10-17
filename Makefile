@@ -409,6 +409,28 @@ deploy.a6.paracamplus.com :
 		root@127.0.0.1 \
 		ls -l /opt/a6.paracamplus.com/fw4excookie.insecure.key
 
+create.aestxyz_vmms0 : vmms0/Dockerfile
+	chmod a+x vmms0/RemoteScripts/?*.sh
+	vmms0/vmms0.paracamplus.com/prepare.sh
+	cd vmms0/ && docker build -t paracamplus/aestxyz_vmms0 .
+create.aestxyz_vmms : vmms/Dockerfile
+	-cd ../CPANmodules/FW4EXagent/ && m distribution
+	chmod a+x vmms/RemoteScripts/?*.sh
+	vmms/vmms.paracamplus.com/prepare.sh
+	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
+test.local.vmms :
+	sudo chown -R 'queinnec:' vmms.paracamplus.com/.ssh/
+	vmms.paracamplus.com/install.sh -i -e '/bin/hostname' </dev/null | \
+		grep vmms.paracamplus.com
+	sleep 2
+	vmms.paracamplus.com/install.sh -s 5 ; sleep 1
+	ssh -i vmms.paracamplus.com/root \
+		root@$$(cat vmms.paracamplus.com/docker.ip) hostname
+	docker ps -l
+	ssh -p 58022 -i vmms.paracamplus.com/root root@127.0.0.1 hostname
+	docker ps -l
+	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
+
 
 create.aestxyz_vmmd : vmmd/Dockerfile
 #	vmmd/vmmd.paracamplus.com/vmmd-prepare.sh

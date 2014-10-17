@@ -1,0 +1,101 @@
+# $Id$
+
+#if defined(SITE_is_bayou)
+HOSTTYPE	=	macosx86_64
+#elif defined(SITE_is_bijou)
+HOSTTYPE	=	x86_64
+#endif
+
+TRANSCODE	=	bin/${HOSTTYPE}/transcode
+
+work : ${TRANSCODE} tests
+clean :: cleanMakefile
+
+CFLAGS	+=	-std=c99 -Wall -pedantic -Werror
+
+${TRANSCODE} : transcode.c
+	[ "${HOSTTYPE}" ] || { echo Missing HOSTTYPE ; exit 1 ; }
+	-mkdir -p bin/${HOSTTYPE}
+	${CC} ${CFLAGS} -o ${TRANSCODE} transcode.c
+
+test tests : 	test.transcode \
+		test.transcode.utf8 \
+		test.options
+	@echo; echo '		ALL TESTS SUCCESSFUL'
+
+TRANSCODE_FLAGS	=	
+
+test.transcode : ${TRANSCODE}
+	${TRANSCODE} ${TRANSCODE_FLAGS} < TestFiles/ok1.txt > /tmp/ok1
+	cmp TestFiles/ok1.txt /tmp/ok1
+	${TRANSCODE} ${TRANSCODE_FLAGS} < TestFiles/ok2.txt > /tmp/ok2
+	cmp TestFiles/ok2.txt /tmp/ok2
+	[ 4 -eq `printf "&'<>" | ${TRANSCODE} | tr '&' '\n' | grep -c ';'` ]
+	[ 4 -eq `printf '&"<>' | ${TRANSCODE} | tr '&' '\n' | grep -c ';'` ]
+
+test.transcode.utf8 :
+	printf "\351t\351" | ${TRANSCODE} | grep 271c
+	printf "\351t\351" | ${TRANSCODE} | grep E9
+	printf "\351t\351" | ${TRANSCODE} | grep t
+	printf "\303\251t\303\251" | ${TRANSCODE} | grep -v 271c
+
+test.options : 	test.option.verbose \
+		test.option.help \
+		test.option.s \
+		test.option.b \
+		test.option.g \
+		test.option.l \
+		test.option.c
+
+test.option.c :
+	echo abc | ${TRANSCODE} -c
+	[ 'abc' = `echo abc | ${TRANSCODE} -c` ]
+	[ 'abc' = `echo abc | ${TRANSCODE} --charHTML` ]
+	[ '<&>' = `echo '<&>' | ${TRANSCODE} -c` ]
+
+test.option.help :
+	${TRANSCODE} --help 2>/tmp/v
+	[ `wc -l </tmp/v` -ge 2 ]
+	${TRANSCODE} --h 2>/tmp/v
+	[ `wc -l </tmp/v` -ge 2 ]
+
+test.option.verbose :
+	make test.transcode TRANSCODE_FLAGS=-v 2>/tmp/v
+	[ `grep transcode < /tmp/v | wc -l` -ge 100 ]
+
+test.option.s :
+	${TRANSCODE} --s=-10 ; [ "$$?" -ne 0 ]
+	${TRANSCODE} --s=ab ; [ "$$?" -ne 0 ]
+	[ 1 = `echo "12345678" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 1 = `echo "123456789" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 1 = `echo "1234567890" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 2 = `echo "12345678901" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 2 = `echo "1234567890123456789" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 2 = `echo "12345678901234567890" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 3 = `echo "123456789012345678901" | ${TRANSCODE} --s=10 | wc -l` ]
+	[ 1 = `echo "123456789012345678901" | ${TRANSCODE} --s=0 | wc -l` ]
+
+test.option.b :
+	${TRANSCODE} --b=a ; [ "$$?" -ne 0 ]
+	[ 4 -eq `echo 123 | ${TRANSCODE} --b=1 | wc -c` ]
+	printf 'a\7c' | ${TRANSCODE} --b=1 | grep 275a
+	printf 'a\7c' | ${TRANSCODE} --b=1 | grep -v 2639
+	printf 'a\7\2c' | ${TRANSCODE} --b=1 | grep 2639
+	printf 'a\7\2c' | ${TRANSCODE} --b=0 | grep -v 2639
+
+test.option.g :
+	${TRANSCODE} --g=1b ; [ "$$?" -ne 0 ]
+	[ 4 -eq `echo 123 | ${TRANSCODE} --g=0 | wc -c` ]
+	[ 4 -eq `echo abc | ${TRANSCODE} --g=10 | wc -c` ]
+	[ 4 -eq `echo abc | ${TRANSCODE} --g=4 | wc -c` ]
+	[ 4 -lt `echo abc | ${TRANSCODE} --g=3 | wc -c` ]
+	[ 4 -lt `echo abc | ${TRANSCODE} --g=2 | wc -c` ]
+	echo abc | ${TRANSCODE} --g=3 | grep abc
+	echo abc | ${TRANSCODE} --g=2 | grep 2340
+
+test.option.l :
+	printf "a\nbc\n" | ${TRANSCODE} --l | grep lineNumber
+	printf "a\nbc\n" | ${TRANSCODE} --l | grep 1
+	printf "a\nbc\n" | ${TRANSCODE} --l | grep 2
+
+# end of Imakefile

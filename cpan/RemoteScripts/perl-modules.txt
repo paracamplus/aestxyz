@@ -147,6 +147,10 @@ Logfile::Rotate
 HTML::Scrubber
 JSON::Schema
 
+# Basic things
+HTTP::Date
+HOP::Lexer
+
 # Problematic ones:
 #RRDTool::OO # requiert une interaction manuelle
 # Patch the source after emacs /usr/local/share/perl/5.10.1/Google/Chart.pm

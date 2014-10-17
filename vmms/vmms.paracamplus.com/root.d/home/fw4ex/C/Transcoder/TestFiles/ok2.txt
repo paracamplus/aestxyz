@@ -1,0 +1,3 @@
+une tabul	un newline
+et quelques autres !#$%()*+,-./:;=?@[]\^_`{}|~
+et tout en ascii.

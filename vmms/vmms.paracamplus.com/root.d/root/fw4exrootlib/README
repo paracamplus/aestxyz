@@ -1,0 +1,101 @@
+
+                FW4EX scripts for root on VM
+
+These scripts will be available within the VM in the
+~root/fw4exrootlib/ directory. They are intended to be used only by
+root since they require very special rights (create user, change
+rights).
+
+In case of errors, their exit code lies above 50.
+
+commonLib.sh
+        contain the main parameters for all these scripts.
+
+# determine the EXERCISEID, fetch the associated exercise.tgz
+# determine the JOBID.
+
+available-author.sh EXERCISEID JOBID
+        echo the userName of an available account ready to serve as 
+        an author of an exercise.
+# NOTA: JOBID is not really necessary but useful for debug.
+
+# now, AUTHOR is known, transfer the exercise.tgz 
+
+deploy-exercise.sh AUTHOR EXERCISEID EXERCISETGZ
+        deploy an exercise in the author's account.
+
+initialize-exercise.sh AUTHOR EXERCISEID
+        initialize an exercise: the tgz is inflated in the author's account, 
+        the fw4ex.xml descriptor is compiled a first time to get the bash 
+        script to factorize stuff common to all markings. The fw4ex.xml
+        descriptor is compiled a second time in order to get the grading 
+        script to mark student's files. These compilers are:
+
+exercise-xml2sh-init.pl
+        compile an fw4ex.xml descriptor into the bash script to initialize
+        an exercise.
+
+exercise-xml2sh.pl
+        compile an fw4ex.xml descriptor into the grading script.
+
+# These scripts are stored in EXERCISE_CACHE_DIR/$EXERCISEID/
+# the exercise is now ready.
+# NOTA: a single script install-exercise.sh EXERCISEID EXERCISETGZ 
+# should take care of the three previous scripts!
+
+available-student.sh JOBID
+        echo the userName of an available account ready to serve as
+        a student.
+
+# now, STUDENT is known, transfer the job.tgz
+# and deploy it with ../fw4exlib/deploy-job.sh JOBTGZ
+# ran from the student's account. This is an unprivileged account.
+
+mark-student.sh STUDENT JOBID AUTHOR EXERCISEID
+        mark the files of one student.
+# NOTA: same for exercises, the two previous scripts should be merged into
+# a single one: install-and-mark-student.sh JOBID JOBTGZ AUTHOR EXERCISEID
+
+# The following script is used when marking the student's files
+
+confine-author.sh
+        limit the resources an author may consume.
+
+# After marking, get the report (as a .tgz)
+
+clean-student.sh STUDENT JOBID
+        remove a job after marking.
+
+clean-exercise.sh EXERCISEID JOBID
+        remove an exercise unless the cache parameter is set; in that case,
+        the real work is done by clear-cached-exercises.sh
+
+# When the cache of exercises is in action:
+
+clean-old-exercises.sh 
+        ran via crontab to purge cached and useless deployed exercises.
+
+
+
+# I don't know why the two following scripts are there ???
+
+clean-unused-exercises.sh
+
+clear-cached-exercises.sh 
+
+# Given the notes, we can reduce the interactions with the VM to:
+#   scp exercise.tgz root@vm:EXERCISETGZ
+#   install-exercise.sh EXERCISEID EXERCISETGZ
+#   scp student.tgz root@vm:JOBTGZ
+#   install-and-mark-student.sh JOBID JOBTGZ EXERCISEID
+#   scp root@vm:JOBRESULTTGZ .
+#   clean-student.sh JOBID
+#   clean-exercise.sh EXERCISEID
+#   state.sh     # returns the state of the vm.
+#   get-log.sh    
+
+# or as a protocol
+#   fw4exd-client install-exercise EXERCISEID < EXERCISETGZ (shar mode ?)
+
+
+#end.

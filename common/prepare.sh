@@ -38,12 +38,13 @@ echo "Current servers' VERSION is $VERSION"
 
 # Generate Apache configuration:
 TODIR=$ROOTDIR/etc/apache2/sites-available
-mkdir -p $TODIR
 if [ -r $TODIR/$HOSTNAME ]
 then
     echo "Keeping current Apache configuration"
-else
+elif ${GENERATE_APACHE_CONF:-true}
+then
     echo "Generating missing Apache configuration"
+    mkdir -p $TODIR
     $PARACAMPLUSDIR/Scripts/compilePath.pl --apache \
         --servername $HOSTNAME \
         --perlmodule Paracamplus-FW4EX-$MODULE \

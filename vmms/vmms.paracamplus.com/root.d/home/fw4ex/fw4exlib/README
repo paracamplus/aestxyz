@@ -1,0 +1,11 @@
+
+               FW4EX scripts
+
+These scripts will be available within the VM in the ~fw4ex/bin
+directory. They are intended to be used by the fw4ex account, the
+author's accounts or the students' accounts. They should not require
+any special rights but they may not be executable for anybody.
+
+In case of errors, their exit code lies above 100.
+
+#end.

@@ -13,6 +13,12 @@ then
     exit 51
 fi
 
+if [ -f /opt/common-${HOSTNAME#*.}/dbuser_ecdsa ]
+then
+    chown -R root: /opt/common-${HOSTNAME#*.}/
+    chmod -R 444   /opt/common-${HOSTNAME#*.}/
+fi
+
 # Prepare ssh keys
 if ! [ -r .ssh/authorized_keys ]
 then ( 

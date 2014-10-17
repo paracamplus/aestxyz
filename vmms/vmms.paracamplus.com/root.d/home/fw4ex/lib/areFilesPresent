@@ -1,0 +1,35 @@
+#! /usr/bin/perl
+
+use diagnostics;
+diagnostics::enable();
+use strict;
+
+use XML::DOM;
+use Paracamplus::FW4EX::XML::ExpectationsChecker;
+
+my $questionName = $ENV{'FW4EX_QUESTION_NAME'};
+die "Missing $questionName!" unless defined $questionName;
+
+my $fw4exXmlFileName = $ENV{'FW4EX_EXERCISE_DIR'} . "/fw4ex.xml";
+die "Missing $fw4exXmlFileName!" unless -f $fw4exXmlFileName;
+
+my $ec = Paracamplus::FW4EX::XML::ExpectationsChecker->new(
+    rootdir => '.' );
+$ec->load($fw4exXmlFileName);
+eval { 
+    $ec->check($questionName);
+};
+if ( $@ ) {
+    # FUTURE: i18n ?
+    if ( $@ =~ /Missing file: (.*)$/i ) {
+        print STDOUT $@;
+    } elsif ( $@ =~ /Missing directory: (.*)$/i ) {
+        print STDOUT $@;
+    } else {
+        # Probably an internal error:
+        die $@;
+    }
+    exit(1);
+}
+
+# end of areFilesPresent

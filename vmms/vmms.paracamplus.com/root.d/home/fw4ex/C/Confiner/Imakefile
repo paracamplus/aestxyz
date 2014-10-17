@@ -1,0 +1,360 @@
+# $Id: Makefile 191 2008-01-21 09:26:35Z queinnec $
+
+#if defined(SITE_is_veaunou)
+#undef i386
+#elif defined(SITE_is_bayou)
+HOSTTYPE	=	macosx86_64
+#endif
+
+CONFINE	=	bin/${HOSTTYPE}/confine
+
+work : ${CONFINE} tests
+clean :: cleanMakefile
+
+CFLAGS	+=	-std=c99 -Wall -pedantic -Werror -g
+
+${CONFINE} : confine.c Imakefile
+	[ "$$HOSTTYPE" ] || { echo Missing HOSTTYPE ; exit 1 ; }
+	-mkdir -p bin/$$HOSTTYPE
+	${CC} ${CFLAGS} -o ${CONFINE} confine.c
+
+test tests : test.confine test.heavy.confine
+	@echo; echo '            TESTS SUCCESSFUL'
+all.test all.tests : tests prepare.test.suid test.suid
+	@echo; echo '            ALL TESTS SUCCESSFUL'
+
+# ###########################
+
+TMPDIR	=	/tmp/fw4ex/log
+
+test.confine : ${CONFINE}
+# erronous confine without argument:
+	${CONFINE} || [ $$? -eq 210 ]
+	if [ -f /bin/uname ] ; then ${CONFINE} /bin/uname ; else exit 0 ; fi
+	if [ -f /usr/bin/uname ] ; then ${CONFINE} /usr/bin/uname ; fi
+# one program:
+	if [ -f /bin/uname ] ; then \
+		[ Linux = $$( ${CONFINE} /bin/uname ) ] ; fi
+	if [ -f /usr/bin/uname ] ; then \
+		[ Darwin = $$( ${CONFINE} /usr/bin/uname ) ] ; fi
+	${CONFINE} /bin/echo Coucou
+# unexistent program:
+	${CONFINE} /bin/ || [ $$? -eq 211 ]
+# one program with one argument:
+	[ Coucou = $$( ${CONFINE} /bin/echo Coucou ) ]
+	${CONFINE} /bin/echo foo    bar
+	[ 'foo bar' = "$$( ${CONFINE} /bin/echo foo   bar )" ]
+# one program with two arguments:
+	${CONFINE} ${CONFINE} /bin/echo OK
+	[ OK = $$( ${CONFINE} ${CONFINE} /bin/echo OK ) ]
+# use PATH:
+	${CONFINE} echo OK
+	[ OK = $$( ${CONFINE} echo OK ) ]
+# use PATH with user defined script:
+	echo 'echo $$@' > /tmp/coucou.sh
+	chmod a+x /tmp/coucou.sh
+	PATH=/tmp:$$PATH ; ${CONFINE} coucou.sh OK
+	[ OK = $$( PATH=/tmp:$$PATH ; ${CONFINE} coucou.sh OK ) ]
+	PATH=$$PATH:/tmp ; ${CONFINE} coucou.sh OK
+	[ OK = $$( PATH=$$PATH:/tmp ; ${CONFINE} coucou.sh OK ) ]
+# use PATH with compiled script:
+	cp -p /bin/echo bin/$$HOSTTYPE/echoecho
+	PATH=bin/$$HOSTTYPE:$$PATH ; which echoecho
+	PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} echoecho OK
+	[ OK = $$( PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} echoecho OK ) ]
+# use . in PATH and recursive call to confine:
+## NOTA: md.vld7net.fr/install.sh passe tous les tests sauf les 2 suivants
+## par contre, refaire un 'make' dans la VM fonctionne ???
+	sleep 1
+	PATH=bin/$$HOSTTYPE:$$PATH ; which confine ; echo code=$$?
+	PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} -v -v confine echo OK
+	[ OK = $$( PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} confine echo OK ) ]
+# single option
+	${CONFINE} -v echo OK
+	[ OK = $$( ${CONFINE} -v echo OK ) ]
+	${CONFINE} --version
+# help options
+	[ $$( ${CONFINE} --error-codes | wc -l ) -ge 10 ]
+	[ $$( ${CONFINE} --help | wc -l ) -ge 10 ]
+# unknown option
+	${CONFINE} ---asdfadf- echo KO || [ $$? -eq 209 ]
+	-mkdir /tmp/fw4ex
+	-rm -f /tmp/fw4ex/confine.log
+	${CONFINE} -v --log /tmp/fw4ex/confine.log ---asdfadf- echo KO || [ $$? -eq 209 ]
+	grep 209 < /tmp/fw4ex/confine.log
+	-rm -f /tmp/fw4ex/confine.log
+# single option without program
+	${CONFINE} -v || [ $$? -eq 210 ]
+# two options, one long
+	${CONFINE} -v --verbose echo OK
+	[ OK = $$( ${CONFINE} -v --verbose echo OK ) ]
+# use of -- long option
+	${CONFINE} -v -- echo OK
+	[ OK = $$( ${CONFINE} -v -- echo OK ) ]
+	[ OK = $$( ${CONFINE} --verbose -- echo OK ) ]
+# --log option
+	-rm -f /tmp/fw4ex/ttt 
+	${CONFINE} --log /tmp/fw4ex/ttt -v -v -- echo OK | grep OK
+	grep 'Clean process group' < /tmp/fw4ex/ttt 
+	@echo 'cannot create log file'
+	${CONFINE} --log /tmp/fw4ex/ttt/tt -v -v -- echo OK || [ $$? -eq 231 ]
+# --exit-file option
+	-rm -f /tmp/lastExitCode
+	${CONFINE} --exit-file /tmp/lastExitCode -- echo OK | grep OK
+	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
+	[ 0 -eq "$$( cat /tmp/lastExitCode )" ]
+	[ 0 -eq "$$( wc -l < /tmp/lastExitCode )" ]
+
+	-rm -f /tmp/lastExitCode
+	if ${CONFINE} --exit-file /tmp/lastExitCode -- \
+		bash -c 'exit 3' ; then exit 1 ;\
+	else exit 0 ; fi
+	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
+	[ 3 -eq "$$( cat /tmp/lastExitCode )" ]
+	[ 0 -eq "$$( wc -l < /tmp/lastExitCode )" ]
+
+# check that an error of the confiner is well reported (check \n):
+	-rm -f /tmp/lastExitCode
+	if ${CONFINE} --exit-file /tmp/lastExitCode -- ; then exit 1 ;\
+	else exit 0 ; fi
+	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
+	[ 210 -eq "$$( cat /tmp/lastExitCode )" ]
+	[ 1 -eq "$$( wc -l < /tmp/lastExitCode )" ]
+# use of --append-dot-to-path
+	${CONFINE} -v --append-dot-to-path ${CONFINE} echo OK
+	${CONFINE} -v --append-dot-to-path ./echo.sh OK
+	${CONFINE} -v --append-dot-to-path echo.sh OK
+	[ OK = $$( ${CONFINE} --append-dot-to-path ${CONFINE} echo OK ) ]
+	[ OK = $$( ${CONFINE} --append-dot-to-path echo.sh OK ) ]
+# use of --append-pwd-to-path
+	${CONFINE} -v --append-pwd-to-path ${CONFINE} echo OK
+	${CONFINE} -v --append-pwd-to-path ./echo.sh OK
+	${CONFINE} -v --append-pwd-to-path echo.sh OK
+	[ OK = $$( ${CONFINE} --append-pwd-to-path ${CONFINE} echo OK ) ]
+	[ OK = $$( ${CONFINE} --append-pwd-to-path echo.sh OK ) ]
+# FUTURE mieux differencier les tests append-*-to-path
+# removal of some variables
+	export FW4EX1=abc ; bash -c "echo $$FW4EX1"
+	[ abc = $$( export FW4EX1=abc ; bash -c "echo $$FW4EX1" ) ]
+	export FW4EXa=a ; ${CONFINE} --hide FW4EXa printenv 
+	export FW4EXa=a ; ${CONFINE} --hide FW4EXa printenv | grep -vq FW4EX
+	${CONFINE} --hide SHELL true
+	${CONFINE} --hide SHELL printenv | grep -vq SHELL
+	${CONFINE} --hide SHELL --hide PWD printenv | grep -vq SHELL
+	${CONFINE} --hide SHELL --hide PWD printenv | grep -vq PWD
+# verbose removal
+	${CONFINE} -v --hide SHELL printenv | tee /tmp/confine.printenv
+	${CONFINE} -v --hide SHELL printenv 2>&1 | grep -q PWD
+## two exported variables, only one hidden
+	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv 
+	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv  | \
+		grep -vq FW4EXa
+	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv  | \
+		grep -q FW4EXb 
+## three exported variables, two hidden
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXa --hide FW4EXc printenv 
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | \
+			grep -vq FW4EXa
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | \
+			grep -q FW4EXb 
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | \
+			grep -vq FW4EXc
+# removal of all FW4EX variables
+	export FW4EX1=a ; ${CONFINE} --fw4ex-hide printenv
+	export FW4EX1=a ; ${CONFINE} --fw4ex-hide printenv | \
+		grep -vq FW4EX
+	export FW4EX1=a ; ${CONFINE} --fw4ex-hide bash -c 'echo $${FW4EX1:-z}'
+	[ z = $$( export FW4EX1=a ; ${CONFINE} --fw4ex-hide bash -c 'echo $${FW4EX1:-z}' ) ]
+# removal of FW4EX variables and other variables to hide
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --fw4ex-hide --hide FW4EXc printenv 
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --fw4ex-hide --hide FW4EXc printenv | \
+			grep -vqi FW4EX
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXc --fw4ex-hide printenv 
+	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide FW4EXc --fw4ex-hide printenv | \
+			grep -vqi FW4EX
+# removal of some variables and other variables to hide
+	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --fw4ex-hide --hide fw4exa printenv 
+	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --fw4ex-hide --hide fw4exa printenv | \
+			grep -vqi fw4ex
+	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide fw4exa --fw4ex-hide printenv 
+	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; \
+		${CONFINE} --hide fw4exa --fw4ex-hide printenv | \
+			grep -vqi fw4ex
+# limit cpu: confined process stops before watchdog:
+	${CONFINE} -v -v --cpu=5 sleep 1
+	${CONFINE} -v -v --cpu 5 sleep 1
+# limit cpu: confined process stops after watchdog:
+	${CONFINE} -v -v --cpu=1 sleep 5 || [ $$? -eq 222 ]
+
+	-rm -f /tmp/lastExitCode
+	if ${CONFINE} --exit-file /tmp/lastExitCode --cpu=1 -- \
+		sleep 5 ; then exit 1 ;	else exit 0 ; fi
+	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
+	[ 0 -ne "$$( cat /tmp/lastExitCode )" ]
+	-rm -f /tmp/lastExitCode
+# limit cpu with many confined (sleep) processes
+	${CONFINE} -v -v --cpu=5 bash -c 'for P in a b c d e f g h i j k l m n o ; do ( echo Starting $$P... ; sleep 3 ) & sleep 1 ; done' || [ $$? -eq 222 ]
+# limit cpu with many confined (bee) processes
+	${CONFINE} -v -v --cpu=5 bash -c 'for P in a b c d e f g h i j k l m n o ; do ( echo Starting $$P... ; ./bee.sh 3 ) & true ; done' || [ $$? -eq 222 ]
+# limit stdout
+	${CONFINE} --maxout=1000 ./bee.sh -v || [ $$? -eq 228 ]
+	-mkdir -p ${TMPDIR}
+	${CONFINE} --maxout=1000 ./bee.sh -v > ${TMPDIR}/t || [ $$? -eq 228 ]
+	wc -c < ${TMPDIR}/t
+	[ 1000 -eq $$( wc -c < ${TMPDIR}/t ) ]
+	${CONFINE} -v --maxout=1k ./bee.sh -v || [ $$? -eq 228 ]
+# limit stderr
+	${CONFINE} --maxerr=2k bash -c './bee.sh -v -l 1>&2' || [ $$? -eq 228 ]
+	${CONFINE} --maxerr=2022 bash -c './bee.sh -v -l 1>&2' 2>${TMPDIR}/t || [ $$? -eq 228 ]
+	wc -c < ${TMPDIR}/t
+	[ 2022 -eq $$( wc -c < ${TMPDIR}/t ) ]
+	${CONFINE} --maxerr=2k bash -c './bee.sh -v -l 1>&2' 3>&2 || [ $$? -eq 228 ]
+# with use of some internal buffering
+	${CONFINE} --maxout=12345 ./bee.sh -v > ${TMPDIR}/t || [ $$? -eq 228 ]
+	wc -c < ${TMPDIR}/t
+	[ 12345 -eq $$( wc -c < ${TMPDIR}/t ) ]
+	${CONFINE} --maxerr=14321 bash -c './bee.sh -v -l 1>&2' 2>${TMPDIR}/t || [ $$? -eq 228 ]
+	wc -c < ${TMPDIR}/t
+	[ 14321 -eq $$( wc -c < ${TMPDIR}/t ) ]
+	-rm -f /tmp/lastExitCode
+	@echo; echo '   Simple tests done.'
+# 
+
+#if SITE_is_bijou
+SUDO	=	sudo
+SUID	=	root
+SGID	=	staff
+# id returns: uid=1299(queinnec) gid=100(users) groups=24(cdrom),25(floppy),
+#29(audio),30(dip),46(plugdev),100(users),109(lpadmin),114(admin),123(fuse),
+#1002(cvsusers),1300(svn)
+
+#elif SITE_is_veaunou
+SUDO	=	su - guru sudo -i
+SUID	=	guru
+SGID	=	wheel
+# id returns: uid=502(queinnec) gid=502(queinnec) groups=502(queinnec),
+#103(com.apple.access_ssh),98(_lpadmin),101(com.apple.sharepoint.group.1),
+#102(com.apple.sharepoint.group.2),209staff)
+#endif
+
+# 2008 may 06 @veanou: SUDO does not work (wrong invocation
+# interface), chown may only be set by root and test.suid fails.
+
+prepare.test.suid : ${CONFINE}
+# bug fixed (appearing in glibc free() on a non closed fd):
+	@echo 'Check bug in child in fprintf in debug_info'
+	-rm -f /tmp/lastExitCode
+	${CONFINE} -v -v --exit-file /tmp/lastExitCode -- pwd
+# prepare a suid confiner:
+	@echo 'Build a suid+sgid confiner...'
+	-rm -rf ${CONFINE}.suid
+	cp -p ${CONFINE} ${CONFINE}.suid
+	${SUDO} `which chown` ${SUID}:${SGID} `pwd`/${CONFINE}.suid
+	${SUDO} `which chmod` +s `pwd`/${CONFINE}.suid
+
+test.suid :
+	ls -l ${CONFINE}.suid
+	[ `ls -l ${CONFINE}.suid | awk '{print $$3}'` = ${SUID} ]
+	[ `ls -l ${CONFINE}.suid | awk '{print $$4}'` = ${SGID} ]
+# check that the confined process is not ${SUID} (ruid and euid):
+	${CONFINE}.suid -- whoami
+	[ `${CONFINE}.suid -- whoami` = $$USER ]
+	${CONFINE}.suid -- id -run
+	[ `${CONFINE}.suid -- id -run` = `id -run` ]
+# check that the confined process is not within ${SGID} (rgid and egid):
+	${CONFINE}.suid -- id -g
+	[ `${CONFINE}.suid -- id -g` = `id -g` ]
+	[ `${CONFINE}.suid -- id -rg` = `id -rg` ]
+# check that /tmp/lastExitCode belongs to ${SUID}:${SGID}
+	-${SUDO} rm -f /tmp/lastExitCode
+	${CONFINE}.suid -v -v --exit-file /tmp/lastExitCode -- whoami 3>&2
+	ls -l /tmp/lastExitCode
+	[ `cat /tmp/lastExitCode` -eq 0 ]
+	[ `ls -l /tmp/lastExitCode | awk '{print $$3}'` = ${SUID} ]
+	[ `ls -l /tmp/lastExitCode | awk '{print $$4}'` = ${SGID} ]
+	-${SUDO} rm -f /tmp/lastExitCode
+# check that a file created by the confined process is not ${SUID}:${SGID}:
+	${CONFINE}.suid -v -v -- touch /tmp/belongToUser 3>&2
+	[ `ls -l /tmp/belongToUser | awk '{print $$3}'` = $$USER ]
+## pb macosx sur ce qui suit:                                         FIXME
+	[ `ls -l /tmp/belongToUser | awk '{print $$4}'` = `id -gn` ]
+	${SUDO} rm -f /tmp/belongToUser
+# check all other tests
+	@echo 'Run all common tests with the suid confiner...'
+	make test.confine test.heavy.confine CONFINE=${CONFINE}.suid
+# FUTURE try also to see the saved uid, gid are correct.
+# FUTURE check also the supplementary groups
+	-${SUDO} rm -f /tmp/lastExitCode
+	@echo '*** end of test.suid ***'
+
+
+VALGRIND_FLAGS	=	--log-file=/tmp/vg \
+			--trace-children=yes \
+			--track-fds=yes \
+			--run-libc-freeres=no
+test.with.valgrind :
+	-rm -f /tmp/vg.*
+	-rm -f /tmp/lastExitCode
+	valgrind ${VALGRIND_FLAGS} ${CONFINE} -v -v \
+		--exit-file /tmp/lastExitCode -- whoami
+# faire attention aux fd ouverts passes au processus fils!
+
+
+# Heavy (but stochastic tests).
+
+test.heavy.confine : ${CONFINE}
+# start sequentially many 'echo' 
+	-for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ${CONFINE} -v -v echo Coucou ; echo exit=$$? ; \
+	done 
+	-mkdir -p  /tmp/fw4ex/log
+	-rm -f /tmp/fw4ex/log/t
+	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ${CONFINE} -v -v /bin/echo Coucou ; echo exit=$$? ; done 2>&1 | tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; \
+	  then exit 0 ; \
+	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; \
+	fi
+# start sequentially many bees
+	@echo; echo '	************ start sequentially many bees...'
+	-for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ; \
+	done
+	ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep || exit 0
+	sleep 2
+	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
+	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ; done 2>&1 | \
+		tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; \
+	  then exit 0 ; \
+	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; \
+	fi
+# start concurrently many bees
+	@echo; echo '    ************ start concurrently many bees...'
+	-for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ( ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ) & true ; \
+	done
+	sleep 5
+	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
+	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do \
+	  ( ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ) & true ; done 2>&1 | tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; \
+	  then exit 0 ; \
+	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; \
+	fi
+	sleep 5
+	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
+	@echo '	heavy tests done.'
+
+# test with much output
+
+# end of Makefile
