@@ -45,7 +45,8 @@ then
 fi
 
 # Prepare ssh keys
-if ! [ -r .ssh/authorized_keys ]
+SSHDIR=${SSHDIR:-.ssh}
+if ! [ -r ${SSHDIR}/authorized_keys ]
 then
     if ! [ -f root_rsa ]
     then
@@ -53,15 +54,15 @@ then
             -C "root@$HOSTNAME" \
             -f root_rsa
     fi
-    mkdir -p .ssh
-    cat root_rsa.pub > .ssh/authorized_keys
+    mkdir -p ${SSHDIR}
+    cat root_rsa.pub > ${SSHDIR}/authorized_keys
 fi
 # These are the names expected by Paracamplus/FW4EX/VM.pm
 ln -sf root_rsa.pub root.pub
 ln -sf root_rsa     root
 
 # Copy ssh keys for authors and students:
-rsync -avu ../../Servers/.ssh/{author,student}* .ssh/ 2>/dev/null
+rsync -avu ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
 
 # Container's fw4ex logs are kept on the Docker host
 # but they should be rotated by the container.
@@ -81,7 +82,7 @@ then
         ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
-        -v `pwd`/.ssh:/root/.ssh \
+        -v ${SSHDIR}:/root/.ssh \
         -v /var/log/fw4ex:/var/log/fw4ex \
         ${DOCKERIMAGE} \
         "$COMMAND"
@@ -91,7 +92,7 @@ else
         ${ADDITIONAL_FLAGS:- '-d' } \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
-        -v `pwd`/.ssh:/root/.ssh \
+        -v ${SSHDIR}:/root/.ssh \
         -v /var/log/fw4ex:/var/log/fw4ex \
         ${DOCKERIMAGE} \
         bash -x /root/RemoteScripts/start.sh -s $SLEEP )
@@ -141,6 +142,8 @@ then
     )
 fi
 
+# Leave time for the container to be up and accept ssh connections:
+sleep 1
 docker ps -l
 
 # end of install.sh
