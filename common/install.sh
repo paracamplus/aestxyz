@@ -34,9 +34,9 @@ fi
 # but they should be rotated by the container.
 mkdir -p /var/log/apache2/$HOSTNAME
 
+docker pull ${DOCKERIMAGE}
 docker stop ${DOCKERNAME}
 docker rm ${DOCKERNAME}
-docker pull ${DOCKERIMAGE}
 CID=$(docker run -d \
     -p "127.0.0.1:${HOSTPORT}:80" \
     -p "127.0.0.1:${HOSTSSHPORT}:22" \

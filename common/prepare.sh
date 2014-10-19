@@ -1,6 +1,6 @@
 #! /bin/bash -ex
 # Prepare the Docker build process on the Docker host.
-# This script is supposed to be run in the Docker/ directory.
+# This script is supposed to be run in the /Docker directory.
 # Errors are signalled with a 1x code.
 
 # The structure of the directory (say a/) where the Dockerfile stays

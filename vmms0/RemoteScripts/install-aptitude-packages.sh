@@ -21,6 +21,7 @@ while read m flags
 do
     echo "===installing $m..."
     aptitude -q -y install $m
+    aptitude clean
 done | tee /tmp/${0##*/}.log
 
 # Check that all packages are correctly installed:

@@ -41,6 +41,7 @@ clean.useless :
 	rm -f $$(find . -name '*.bak')
 
 #recreate.all : erase.all
+# Indentation figures inheritance:
 recreate.all : clean.useless
 recreate.all : create.aestxyz_apt
 recreate.all :   create.aestxyz_cpan
@@ -59,6 +60,8 @@ recreate.all :       create.aestxyz_vmx
 recreate.all :       create.aestxyz_vmt
 recreate.all :       create.aestxyz_vmz
 recreate.all :       create.aestxyz_li314
+recreate.all :       create.aestxyz_vmms0
+recreate.all :         create.aestxyz_vmms
 #recreate.all : create.aestxyz_oldapt  # a6 with Debian6
 #recreate.all : create.aestxyz_oldcpan # a6 with Debian6
 #recreate.all : create.aestxyz_vmolda  # a6 with Debian6
@@ -265,6 +268,8 @@ create.aestxyz_vmy : vmy/Dockerfile
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 	docker push paracamplus/aestxyz_vmy
+	docker tag paracamplus/aestxyz_vmy \
+		"paracamplus/aestxyz_vmy:$$(date +%Y%m%d_%H%M%S)"
 # @bijou 1min
 deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -282,6 +287,8 @@ create.aestxyz_vma : vma/Dockerfile
 	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker push paracamplus/aestxyz_vma
+	docker tag paracamplus/aestxyz_vma \
+		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
 deploy.a.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -302,6 +309,8 @@ create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker push paracamplus/aestxyz_vme
+	docker tag paracamplus/aestxyz_vme \
+		"paracamplus/aestxyz_vme:$$(date +%Y%m%d_%H%M%S)"
 deploy.e.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -321,6 +330,8 @@ create.aestxyz_vmx : vmx/Dockerfile
 	vmx/x.paracamplus.com/prepare.sh
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
 	docker push paracamplus/aestxyz_vmx
+	docker tag paracamplus/aestxyz_vmx \
+		"paracamplus/aestxyz_vmx:$$(date +%Y%m%d_%H%M%S)"
 deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -338,6 +349,8 @@ create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker push paracamplus/aestxyz_vmt
+	docker tag paracamplus/aestxyz_vmt \
+		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
 deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -359,6 +372,8 @@ create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh
 	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
 	docker push paracamplus/aestxyz_vmz
+	docker tag paracamplus/aestxyz_vmz \
+		"paracamplus/aestxyz_vmz:$$(date +%Y%m%d_%H%M%S)"
 deploy.z.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -391,8 +406,6 @@ create.aestxyz_oldcpan : oldcpan/Dockerfile
 # all directories mentioned in perl -V
 # start vmplayer Debian6-64bit-VMfw4exForAuthor 172.16.82.128
 create.aestxyz_vmolda : vmolda/Dockerfile
-	tar czf vmolda/perllib.tgz -C ../perllib \
-	  $$( cd ../perllib/ && find Paracamplus -name '*.pm' )
 	vmolda/a6.paracamplus.com/prepare.sh
 	cd vmolda/ && docker build -t paracamplus/aestxyz_vmolda .
 	docker push paracamplus/aestxyz_vmolda
@@ -413,11 +426,19 @@ create.aestxyz_vmms0 : vmms0/Dockerfile
 	chmod a+x vmms0/RemoteScripts/?*.sh
 	vmms0/vmms0.paracamplus.com/prepare.sh
 	cd vmms0/ && docker build -t paracamplus/aestxyz_vmms0 .
+#@bijou: 
+	docker push paracamplus/aestxyz_vmms0
+#@bijou: 
 create.aestxyz_vmms : vmms/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmms/RemoteScripts/?*.sh
 	vmms/vmms.paracamplus.com/prepare.sh
 	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
+#@bijou: 
+	docker push paracamplus/aestxyz_vmms
+#@bijou: 
+	docker tag paracamplus/aestxyz_vmms \
+		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
 test.local.vmms :
 	sudo chown -R 'queinnec:' vmms.paracamplus.com/.ssh/
 	vmms.paracamplus.com/install.sh -i -e '/bin/hostname' </dev/null | \
@@ -444,7 +465,7 @@ create.aestxyz_vmmd : vmmd/Dockerfile
 COURSE=li314
 instantiate_${COURSE} :
 	./Scripts/instantiate.sh ${COURSE}
-create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
+create.aestxyz_${COURSE} : ${COURSE}/Dockerfile	
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker push paracamplus/aestxyz_${COURSE}

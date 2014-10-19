@@ -12,6 +12,7 @@ ENV HOSTNAME vmms.paracamplus.com
 
 WORKDIR /root/
 ENV HOME /root/
+ADD perllib.tgz   /usr/local/lib/site_perl/
 ADD RemoteScripts /root/RemoteScripts
 
 EXPOSE 22

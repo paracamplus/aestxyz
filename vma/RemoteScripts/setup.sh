@@ -1,4 +1,4 @@
-#! /bin/bash 
+#! /bin/bash -x
 # Initialize the Docker container from within the container.
 # Errors are signalled with a 2x code.
 
@@ -20,7 +20,8 @@ then (
      )
 fi
 
-(
+if ${GENERATE_APACHE_CONF:-true}
+then (
     echo "Configure extra modules for Apache"
     cd /etc/apache2/mods-enabled/ 
     ln -sf ../mods-available/expires.load .
@@ -41,6 +42,7 @@ fi
     echo "Apache virtual hosts:"
     ls
 )
+fi
 
 ( 
     cd /usr/local/lib/site_perl
@@ -64,26 +66,29 @@ fi
     fi
 )
 
-if [ -f /root/RemoteScripts/$MODULE.tgz ]
-then (
-        echo "Install Catalyst /opt/$HOSTNAME/Templates"
-        mkdir -p /opt/$HOSTNAME
-        cd /opt/$HOSTNAME
-        tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
-     )
-     (
-        echo "Install /var/www/$HOSTNAME"
-        mkdir -p /var/www/$HOSTNAME
-        cd /var/www/$HOSTNAME
-        tar xvzf /root/RemoteScripts/$MODULE.tgz 
-        rm -rf Templates
-     )
-     rm -f /root/RemoteScripts/$MODULE.tgz 
+if ${GENERATE_APACHE_CONF:-true}
+then
+    if [ -f /root/RemoteScripts/$MODULE.tgz ]
+    then (
+            echo "Install Catalyst /opt/$HOSTNAME/Templates"
+            mkdir -p /opt/$HOSTNAME
+            cd /opt/$HOSTNAME
+            tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
+         )
+         (
+             echo "Install /var/www/$HOSTNAME"
+             mkdir -p /var/www/$HOSTNAME
+             cd /var/www/$HOSTNAME
+             tar xvzf /root/RemoteScripts/$MODULE.tgz 
+             rm -rf Templates
+         )
+         rm -f /root/RemoteScripts/$MODULE.tgz 
+    fi
 fi
 
-if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh 2>/dev/null | wc -l ) ]
+if [ 1 -le $( ls -1 ${0%/*}/setup-??*.sh 2>/dev/null | wc -l ) ]
 then 
-    for f in ${0%/*}/setup-$MODULE-??.sh
+    for f in ${0%/*}/setup-??*.sh
     do
         echo "Sourcing $f"
         source $f 

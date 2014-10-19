@@ -25,6 +25,7 @@ FROM paracamplus/aestxyz_fw4ex
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME $HOSTNAME
 WORKDIR /root/
+ADD perllib.tgz                  /usr/local/lib/site_perl/
 ADD RemoteScripts                /root/RemoteScripts
 EXPOSE 80 22
 RUN /root/RemoteScripts/setup.sh
@@ -53,8 +54,11 @@ FRAGMENT='$SHORTNAME'
 EOF
 fi
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-05-update.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-09-perllib.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-20-tar-Templates.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-40-path.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-80-cleanup.sh .)
 
 mkdir -p $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME
 if ! [ -f $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml ]

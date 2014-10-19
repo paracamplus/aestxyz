@@ -3,12 +3,18 @@
 # Errors are signalled with a 4x code.
 
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
+INTERACTIVE=false
 
-while getopts s: opt
+while getopts s:i opt
 do
     case "$opt" in
         s)
+            # Exit from the container after that number of seconds:
             SLEEP=$OPTARG
+            ;;
+        i)
+            # Start an interactive session (useful for debug):
+            INTERACTIVE=true
             ;;
         \?)
             echo "Bad option $opt"
@@ -30,6 +36,11 @@ then
     done
 fi
 
-sleep $SLEEP
+if ${INTERACTIVE}
+then 
+    bash -i
+else
+    sleep $SLEEP
+fi
 
 # end of start.sh
