@@ -1,0 +1,102 @@
+#           Debian7 packages required for MS within VMmd
+#
+####EXIT   skip the rest with one single leading hash
+
+build-essential
+rsync
+# same hardware clock so probably useless:
+#ntp
+#ntpdate
+apt-utils
+libglib2.0-dev
+linux-headers-amd64
+zlib1g-dev
+xml2
+libxml2-utils
+libxml-xslt-perl
+libxml-libxslt-perl
+libxslt1-dev
+xsltproc
+libssl-dev
+libnet-ssh-perl
+libssh2-1-dev
+cron    # implies exim
+bsdmainutils
+
+# Ajout pour marking slave (cf. Mlib/Init/packages.txt)
+openssl
+gnupg
+ntpdate
+pkg-config
+libglib2.0-dev
+
+# These are useful for cpan:
+unzip
+lynx
+ncftp
+
+# for PAUSE ?
+ca-certificates
+
+imagemagick
+
+# pour com.paracamplus.li362.final.2008dec.1 
+aspell
+aspell-fr
+#dvi2tty now in texlive-extra-utils
+
+# pour xmllint and other xml-related programs:
+tidy
+xml-core
+libxml2
+libxml2-dev
+libxml2-utils
+libexpat1
+libexpat1-dev
+
+libmath-gmp-perl
+libmath-bigint-gmp-perl
+libgmp3-dev
+libpari-dev
+
+# langages divers
+tcl
+guile-2.0
+ocaml
+ocaml-findlib
+libounit-ocaml-dev
+menhir
+ghc
+
+autoconf
+
+# pour examen li362 2008dec
+texlive-latex-base
+texlive-latex-recommended
+texlive-extra-utils # with dvi2tty
+
+# pour examen li362 2008dec
+aspell-fr
+
+# pour examen li362 2009jan (force l'installation de lpr):
+a2ps
+
+# pour jfp1, jfp2, etc.
+gnat
+php5-cli
+python3
+python3-pip
+python3-pytest
+#mzscheme # N'existe plus
+ruby1.9.3
+lua5.2
+octave
+mono-runtime
+#mono-devel  #Errors were encountered while processing: libnunit2.6-cil
+
+# Garder seulement en_US, fr_FR UTF-8 (se fait a la main):
+#localepurge
+
+# end.
+
+

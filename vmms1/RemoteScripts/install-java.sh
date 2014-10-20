@@ -56,7 +56,6 @@ fi
 # install the orgFW4EXjunitTest library
 mkdir -p /home/fw4ex/lib
 cp -p /opt/TGZ/orgFW4EXjunitTest.jar /home/fw4ex/lib/
-chown fw4ex:fw4ex /home/fw4ex/lib/orgFW4EXjunitTest.jar
-chmod 444 /home/fw4ex/lib/orgFW4EXjunitTest.jar
+# setup-31-fw4exUser.sh will fix the ownership!
 
 # end of setup-36-java.sh

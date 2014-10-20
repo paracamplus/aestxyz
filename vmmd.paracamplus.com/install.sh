@@ -1,12 +1,12 @@
-#! /bin/bash
+#! /bin/bash -x
 # This script should be run on the Docker host as root.
-# Inspired by common/install.sh but adapted for a Marking Slave.
+# Inspired by vmms.*/install.sh but adapted for a Marking Driver.
 
 cd ${0%/*}
 
 INTERACTIVE=false
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
-LOGDIR=/var/log/fw4ex/ms
+LOGDIR=/var/log/fw4ex/md
 source config.sh
 
 while getopts s:ie: opt
@@ -46,7 +46,7 @@ then
 fi
 
 # Prepare ssh keys
-SSHDIR=${SSHDIR:-.ssh}
+SSHDIR=${SSHDIR:-`pwd`/.ssh}
 if ! [ -r ${SSHDIR}/authorized_keys ]
 then
     if ! [ -f root_rsa ]
@@ -58,22 +58,26 @@ then
     mkdir -p ${SSHDIR}
     cat root_rsa.pub > ${SSHDIR}/authorized_keys
 fi
-# These are the names expected by Paracamplus/FW4EX/VM.pm
-ln -sf root_rsa.pub root.pub
-ln -sf root_rsa     root
+# # These are the names expected by Paracamplus/FW4EX/VM.pm
+# ln -sf root_rsa.pub root.pub
+# ln -sf root_rsa     root
 
-# Copy ssh keys for authors and students:
-rsync -avu ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
+# Expand the keys for authors and students:
+cp keys.tgz ${SSHDIR}/
+( 
+    cd $SSHDIR
+    tar xzf keys.tgz
+)
+
+# # Copy ssh keys for authors and students:
+# rsync -avu ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
 
 # Container's fw4ex logs are kept on the Docker host
 # but they should be rotated by the container.
 mkdir -p $LOGDIR
 
-# No need for /opt/$HOSTNAME/private/, fw4excookie.insecure.key should
-# not be available to the Marking Slave.
-
 docker pull ${DOCKERIMAGE}
-docker stop ${DOCKERNAME} && docker rm   ${DOCKERNAME}
+docker stop ${DOCKERNAME} && docker rm ${DOCKERNAME}
 
 if $INTERACTIVE
 then
@@ -104,7 +108,6 @@ docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub .
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
 KEY="${KEY%root@*}"
 IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
-echo $IP > docker.ip
 sed -i -e '/^$IP/d' $HOME/.ssh/known_hosts
 echo "$IP $KEY"  >> $HOME/.ssh/known_hosts
 

@@ -6,3 +6,4 @@ fw4excookie.*.key
 *.tgz
 docker.cid
 docker.ip
+dbuser_ecdsa*

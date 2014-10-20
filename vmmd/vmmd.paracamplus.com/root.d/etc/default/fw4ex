@@ -1,0 +1,14 @@
+#! /bin/bash
+# Configuration of the MD on the Docker container vmmd. 
+# This file is sourced from qnc-fw4ex.sh
+CONFNAME=vmmd
+HOSTNAME=vmmd.paracamplus.com
+export VERSION=1094
+# MD_DIR is where the MD will run:
+export MD_DIR=/home/md
+# MDTOP is where are stored the files needed to populate MD_DIR (we need
+# Servers/.ssh, C, Exercises, Grammars, Mlib, perllib, QEmu, Scripts)
+export MDTOP=/opt/$HOSTNAME
+export MD_CONFIG=$MDTOP/md-config.yml
+export MD_START=$MDTOP/md-start.pl
+#end

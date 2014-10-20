@@ -35,8 +35,7 @@ fi
 mkdir -p /var/log/apache2/$HOSTNAME
 
 docker pull ${DOCKERIMAGE}
-docker stop ${DOCKERNAME}
-docker rm ${DOCKERNAME}
+docker stop ${DOCKERNAME} && docker rm ${DOCKERNAME}
 CID=$(docker run -d \
     -p "127.0.0.1:${HOSTPORT}:80" \
     -p "127.0.0.1:${HOSTSSHPORT}:22" \
@@ -60,8 +59,8 @@ docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub .
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
 KEY="${KEY%root@*}"
 IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
-sed -i -e '/^$IP/d' /root/.ssh/known_hosts
-echo "$IP $KEY" >> /root/.ssh/known_hosts
+sed -i -e '/^$IP/d' $HOME/.ssh/known_hosts
+echo "$IP $KEY" >>  $HOME/.ssh/known_hosts
 
 # Allow the container to send mails:
 if ${PROVIDE_SMTP:-false}

@@ -378,7 +378,8 @@ deploy.z.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/z.paracamplus.com/install.sh
-	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:56080/
+	ssh -t root@ns353482.ovh.net \
+		wget -qO /dev/stdout http':'//127.0.0.1:56080/
 	common/check-outer-availability.sh \
 		-i z.paracamplus.com -p 80 -s 4 \
 		z.paracamplus.com
@@ -426,25 +427,31 @@ create.aestxyz_vmms0 : vmms0/Dockerfile
 	chmod a+x vmms0/RemoteScripts/?*.sh
 	vmms0/vmms0.paracamplus.com/prepare.sh
 	cd vmms0/ && docker build -t paracamplus/aestxyz_vmms0 .
-#@bijou: 
+#@bijou: 40 min
 	docker push paracamplus/aestxyz_vmms0
-#@bijou: 
+#@bijou: 120 min ?
+create.aestxyz_vmms1 :
+	chmod a+x vmms1/RemoteScripts/?*.sh
+	vmms1/vmms1.paracamplus.com/prepare.sh
+	cd vmms1/ && docker build -t paracamplus/aestxyz_vmms1 .
+#@bijou: 35min
+	docker push paracamplus/aestxyz_vmms1
 create.aestxyz_vmms : vmms/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmms/RemoteScripts/?*.sh
 	vmms/vmms.paracamplus.com/prepare.sh
 	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
 #@bijou: 
-	docker push paracamplus/aestxyz_vmms
-#@bijou: 
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
+	docker push paracamplus/aestxyz_vmms
+#@bijou: 
 test.local.vmms :
-	sudo chown -R 'queinnec:' vmms.paracamplus.com/.ssh/
-	vmms.paracamplus.com/install.sh -i -e '/bin/hostname' </dev/null | \
+	sudo vmms.paracamplus.com/install.sh \
+	    -i -e '/bin/hostname' </dev/null | \
 		grep vmms.paracamplus.com
 	sleep 2
-	vmms.paracamplus.com/install.sh -s 5 ; sleep 1
+	sudo vmms.paracamplus.com/install.sh -s 5 ; sleep 1
 	ssh -i vmms.paracamplus.com/root \
 		root@$$(cat vmms.paracamplus.com/docker.ip) hostname
 	docker ps -l
@@ -452,11 +459,17 @@ test.local.vmms :
 	docker ps -l
 	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
 
-
 create.aestxyz_vmmd : vmmd/Dockerfile
-#	vmmd/vmmd.paracamplus.com/vmmd-prepare.sh
-	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd0 .
-	vmmd.paracamplus.com/local-install.sh
+	-cd ../CPANmodules/FW4EXagent/ && m distribution
+	chmod a+x vmms/RemoteScripts/?*.sh
+	vmmd/vmmd.paracamplus.com/prepare.sh
+	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd .
+#docker push........
+test.local.vmmd :
+	sudo vmmd.paracamplus.com/install.sh
+
+tt:
+	exit 4
 	docker commit $$(cat vmmd.paracamplus.com/docker.cid) \
 		paracamplus/aestxyz_vmmd
 	echo "Scripts/connect.sh vmmd"
@@ -469,6 +482,7 @@ create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker push paracamplus/aestxyz_${COURSE}
+# @bijou: < 80sec
 deploy.${COURSE}.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/

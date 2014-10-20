@@ -14,8 +14,8 @@ then (
      )
 fi
 
-/root/RemoteScripts/install-java.sh && \
-/root/RemoteScripts/install-racket.sh && \
+/root/RemoteScripts/install-java.sh
+/root/RemoteScripts/install-racket.sh
 /root/RemoteScripts/install-bigloo.sh
 
 # end of setup-22-languages.sh
