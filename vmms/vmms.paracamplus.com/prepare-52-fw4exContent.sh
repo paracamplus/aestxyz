@@ -10,7 +10,6 @@ RSYNC_FLAGS='
 echo "Preparing root HOME"
 TODIR=$ROOTDIR/root
 rsync -avuL $RSYNC_FLAGS ../Mlib/fw4exrootlib $TODIR/
-rsync -avuL $RSYNC_FLAGS ../Servers/.ssh $TODIR/.sshnew
 
 echo "Preparing fw4ex HOME"
 TODIR=$ROOTDIR/home/fw4ex

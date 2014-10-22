@@ -7,9 +7,10 @@ cd ${0%/*}
 INTERACTIVE=false
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
 LOGDIR=/var/log/fw4ex/ms
+DEBUG=false
 source config.sh
 
-while getopts s:ie: opt
+while getopts s:ie:d opt
 do
     case "$opt" in
         i)
@@ -21,6 +22,9 @@ do
             # Run this command in the container then exit. 
             # Only with -i
             COMMAND="$OPTARG"
+            ;;
+        d)
+            DEBUG=true
             ;;
         s)
             # Exit from the container after that number of seconds.
@@ -37,6 +41,8 @@ done
 if $INTERACTIVE
 then
     COMMAND="${COMMAND:- bash -x /root/RemoteScripts/start.sh -i }"
+else
+    ADDITIONAL_FLAGS=" $ADDITIONAL_FLAGS -d "
 fi
 
 if ! [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
@@ -63,7 +69,7 @@ ln -sf root_rsa.pub root.pub
 ln -sf root_rsa     root
 
 # Copy ssh keys for authors and students:
-rsync -avu ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
+rsync -au ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
 
 # Container's fw4ex logs are kept on the Docker host
 # but they should be rotated by the container.
@@ -73,11 +79,16 @@ mkdir -p $LOGDIR
 # not be available to the Marking Slave.
 
 docker pull ${DOCKERIMAGE}
-docker stop ${DOCKERNAME} && docker rm   ${DOCKERNAME}
+docker stop ${DOCKERNAME} 
+docker rm   ${DOCKERNAME}
+
+if $DEBUG
+then
+    ADDITIONAL_FLAGS=" $ADDITIONAL_FLAGS  -v /dev/log:/dev/log "
+fi
 
 if $INTERACTIVE
 then
-    # NOTA: sometimes useful:   -v /dev/log:/dev/log \
     docker run \
         ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
@@ -85,11 +96,11 @@ then
         -v ${SSHDIR}:/root/.ssh \
         -v ${LOGDIR}:/var/log/fw4ex \
         ${DOCKERIMAGE} \
-        "$COMMAND"
+        bash -c "$COMMAND"
     exit $?
 else
     CID=$(docker run \
-        ${ADDITIONAL_FLAGS:- '-d' } \
+        ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
         -v ${SSHDIR}:/root/.ssh \

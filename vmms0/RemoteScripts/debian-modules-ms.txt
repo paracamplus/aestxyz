@@ -29,6 +29,7 @@ gnupg
 ntpdate
 pkg-config
 libglib2.0-dev
+iptables
 
 # These are useful for cpan:
 unzip
