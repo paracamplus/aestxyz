@@ -176,24 +176,13 @@ markEngine:
           DEBUG_VERBOSITY:        0
           # Should also set confineAuthor.sh!!!!!!!!!!! FUTURE
 
-    # Version with an inner Marking Slave:
-    XXXXvmname: Paracamplus::FW4EX::VM::LXC
-    Paracamplus::FW4EX::VM::LXC:
-        lxcname: ms
-        lxcctlcommand: /opt/vmmd.paracamplus.com/Scripts/lxcctl.sh
-        rootfstoclone: /var/lib/lxc/fw4exms/rootfs
-        rootfs:        /var/lib/lxc/ms/rootfs
-        ip: 172.16.83.2
-        keydir: /home/md/.ssh
-
-    # Version with an external Marking Slave (already started):
+    # Version with an internal Marking Slave:
     vmname: Paracamplus::FW4EX::VM::MSbySSH
     Paracamplus::FW4EX::VM::MSbySSH:
-        #command: /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.paracamplus.com/install.sh
+        command: /root/Docker/vmms.paracamplus.com/install.sh
         ip: 127.0.0.1
         port: 58022
-        keydir: /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.paracamplus.com
-        vmfw4exrootlib: 
+        keydir: /root/Docker/vmms.paracamplus.com
 
 
     exerciseFetcher:

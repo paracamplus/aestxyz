@@ -39,33 +39,35 @@ erase.all :
 clean.useless :
 	rm -f $$(find . -name '*~')
 	rm -f $$(find . -name '*.bak')
+	Scripts/remove-exited-containers.sh
+	Scripts/remove-useless-images.sh
 
 #recreate.all : erase.all
 # Indentation figures inheritance:
 recreate.all : clean.useless
 recreate.all : create.aestxyz_apt
 recreate.all :   create.aestxyz_cpan
-recreate.all :     create.aestxyz_fw4ex
-#recreate.all :      create.aestxyz_a
-#recreate.all :      create.aestxyz_e
-#recreate.all :      create.aestxyz_s
-#recreate.all :      create.aestxyz_x
-#recreate.all :      create.aestxyz_t
-#recreate.all :      create.aestxyz_z
-#recreate.all :      create.aestxyz_y
-recreate.all :       create.aestxyz_vmy
-recreate.all :       create.aestxyz_vma
-recreate.all :       create.aestxyz_vme
-recreate.all :       create.aestxyz_vmx
-recreate.all :       create.aestxyz_vmt
-recreate.all :       create.aestxyz_vmz
-recreate.all :       create.aestxyz_li314
-recreate.all :       create.aestxyz_vmms0
+#recreate.all :    create.aestxyz_a
+#recreate.all :    create.aestxyz_e
+#recreate.all :    create.aestxyz_s
+#recreate.all :    create.aestxyz_x
+#recreate.all :    create.aestxyz_t
+#recreate.all :    create.aestxyz_z
+#recreate.all :    create.aestxyz_y
+recreate.all :     create.aestxyz_vmy
+recreate.all :     create.aestxyz_vma
+recreate.all :     create.aestxyz_vme
+recreate.all :     create.aestxyz_vmx
+recreate.all :     create.aestxyz_vmt
+recreate.all :     create.aestxyz_vmz
+recreate.all :     create.aestxyz_li314
+recreate.all :     create.aestxyz_vmms0
+recreate.all :       create.aestxyz_vmms1
 recreate.all :         create.aestxyz_vmms
+recreate.all :     create.aestxyz_vmmd0
 #recreate.all : create.aestxyz_oldapt  # a6 with Debian6
 #recreate.all : create.aestxyz_oldcpan # a6 with Debian6
 #recreate.all : create.aestxyz_vmolda  # a6 with Debian6
-#recreate.all : adjoin.docker.io
 # @bijou 87 min
 
 deploy.all : deploy.y.paracamplus.com
@@ -87,7 +89,7 @@ create.aestxyz_apt : apt/Dockerfile
 		"paracamplus/aestxyz_apt:$$(date +%Y%m%d_%H%M%S)"
 # @bijou 19min
 archive.aestxyz_apt :
-	docker push paracamplus/aestxyz_apt
+	docker push 'paracamplus/aestxyz_apt:latest'
 # @bijou 27min
 
 # and the other one with the required Perl modules:
@@ -96,23 +98,14 @@ create.aestxyz_cpan : cpan/Dockerfile
 	docker run --rm paracamplus/aestxyz_cpan perl -MMoose -e 1
 	docker tag paracamplus/aestxyz_cpan \
 		"paracamplus/aestxyz_cpan:$$(date +%Y%m%d_%H%M%S)"
+	docker tag paracamplus/aestxyz_cpan paracamplus/aestxyz_base
 # @bijou 63min
 archive.aestxyz_cpan :
-	docker push paracamplus/aestxyz_cpan
+	docker push 'paracamplus/aestxyz_base:latest'
+	docker push 'paracamplus/aestxyz_fw4ex:latest'
 # @bijou 4min
-
-# install Paracamplus/FW4EX perl modules:
-create.aestxyz_fw4ex : fw4ex/Dockerfile	
-	tar czf fw4ex/perllib.tgz -C ../perllib \
-	  $$( cd ../perllib/ && find Paracamplus -name '*.pm' )
-	cd fw4ex/ && docker build -t paracamplus/aestxyz_fw4ex .
-	docker run --rm paracamplus/aestxyz_fw4ex \
-	   ls -l /usr/local/lib/site_perl/Paracamplus/FW4EX/
-	docker tag paracamplus/aestxyz_fw4ex \
-		"paracamplus/aestxyz_fw4ex:$$(date +%Y%m%d_%H%M%S)"
-	docker tag paracamplus/aestxyz_fw4ex \
-		"paracamplus/aestxyz_fw4ex:latest"
-# paracamplus/aestxyz_fw4ex is the base image for all the next ones.
+# paracamplus/aestxyz_base is the base image for all the next ones.
+# For historical reason, we also name it paracamplus/aestxyz_fw4ex
 
 # These are CPAN modules required to run prepare.sh on the Docker host:
 local.ensure.cpan :
@@ -267,7 +260,7 @@ create.aestxyz_y : y/Dockerfile
 create.aestxyz_vmy : vmy/Dockerfile
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
-	docker push paracamplus/aestxyz_vmy
+	docker push 'paracamplus/aestxyz_vmy:latest'
 	docker tag paracamplus/aestxyz_vmy \
 		"paracamplus/aestxyz_vmy:$$(date +%Y%m%d_%H%M%S)"
 # @bijou 1min
@@ -286,7 +279,7 @@ deploy.y.paracamplus.com :
 create.aestxyz_vma : vma/Dockerfile
 	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
-	docker push paracamplus/aestxyz_vma
+	docker push 'paracamplus/aestxyz_vma:latest'
 	docker tag paracamplus/aestxyz_vma \
 		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
 deploy.a.paracamplus.com :
@@ -308,7 +301,7 @@ deploy.a.paracamplus.com :
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
-	docker push paracamplus/aestxyz_vme
+	docker push 'paracamplus/aestxyz_vme:latest'
 	docker tag paracamplus/aestxyz_vme \
 		"paracamplus/aestxyz_vme:$$(date +%Y%m%d_%H%M%S)"
 deploy.e.paracamplus.com :
@@ -329,7 +322,7 @@ deploy.e.paracamplus.com :
 create.aestxyz_vmx : vmx/Dockerfile
 	vmx/x.paracamplus.com/prepare.sh
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
-	docker push paracamplus/aestxyz_vmx
+	docker push 'paracamplus/aestxyz_vmx:latest'
 	docker tag paracamplus/aestxyz_vmx \
 		"paracamplus/aestxyz_vmx:$$(date +%Y%m%d_%H%M%S)"
 deploy.x.paracamplus.com :
@@ -348,7 +341,7 @@ deploy.x.paracamplus.com :
 create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
-	docker push paracamplus/aestxyz_vmt
+	docker push 'paracamplus/aestxyz_vmt:latest'
 	docker tag paracamplus/aestxyz_vmt \
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
 deploy.t.paracamplus.com :
@@ -371,7 +364,7 @@ deploy.t.paracamplus.com :
 create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh
 	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
-	docker push paracamplus/aestxyz_vmz
+	docker push 'paracamplus/aestxyz_vmz:latest'
 	docker tag paracamplus/aestxyz_vmz \
 		"paracamplus/aestxyz_vmz:$$(date +%Y%m%d_%H%M%S)"
 deploy.z.paracamplus.com :
@@ -409,7 +402,7 @@ create.aestxyz_oldcpan : oldcpan/Dockerfile
 create.aestxyz_vmolda : vmolda/Dockerfile
 	vmolda/a6.paracamplus.com/prepare.sh
 	cd vmolda/ && docker build -t paracamplus/aestxyz_vmolda .
-	docker push paracamplus/aestxyz_vmolda
+	docker push 'paracamplus/aestxyz_vmolda:latest'
 deploy.a6.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		a6.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -427,25 +420,20 @@ create.aestxyz_vmms0 : vmms0/Dockerfile
 	chmod a+x vmms0/RemoteScripts/?*.sh
 	vmms0/vmms0.paracamplus.com/prepare.sh
 	cd vmms0/ && docker build -t paracamplus/aestxyz_vmms0 .
-#@bijou: 40 min
-	docker push paracamplus/aestxyz_vmms0
-#@bijou: 120 min ?
 create.aestxyz_vmms1 :
 	chmod a+x vmms1/RemoteScripts/?*.sh
 	vmms1/vmms1.paracamplus.com/prepare.sh
 	cd vmms1/ && docker build -t paracamplus/aestxyz_vmms1 .
-#@bijou: 35min
-	docker push paracamplus/aestxyz_vmms1
 create.aestxyz_vmms : vmms/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmms/RemoteScripts/?*.sh
 	vmms/vmms.paracamplus.com/prepare.sh
 	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
-#@bijou: 
+#@bijou: 45 min
+	docker push 'paracamplus/aestxyz_vmms:latest'
+#@bijou: 300 min
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
-	docker push paracamplus/aestxyz_vmms
-#@bijou: 
 test.local.vmms :
 	sudo vmms.paracamplus.com/install.sh \
 	    -i -e '/bin/hostname' </dev/null | \
@@ -458,22 +446,37 @@ test.local.vmms :
 	ssh -p 58022 -i vmms.paracamplus.com/root root@127.0.0.1 hostname
 	docker ps -l
 	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
+# Sometimes useful to refresh the test database!
 
-create.aestxyz_vmmd : vmmd/Dockerfile
+create.aestxyz_vmmd0 : vmmd0/Dockerfile
+	chmod a+x vmmd0/RemoteScripts/?*.sh
+	vmmd0/vmmd0.paracamplus.com/prepare.sh
+	cd vmmd0/ && docker build -t paracamplus/aestxyz_vmmd0 .
+create.aestxyz_vmmd1 : vmmd/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
-	chmod a+x vmms/RemoteScripts/?*.sh
+	chmod a+x vmmd/RemoteScripts/?*.sh
 	vmmd/vmmd.paracamplus.com/prepare.sh
-	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd .
+	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd1 .
+create.aestxyz_vmmd : 
+	-docker rmi paracamplus/aestxyz_vmmd
+	Scripts/remove-exited-containers.sh 
+	Scripts/remove-useless-images.sh
+	sudo vmmd.paracamplus.com/install.sh
+	docker commit vmmd1 paracamplus/aestxyz_vmmd
+
 #docker push........
 test.local.vmmd :
+	Scripts/remove-exited-containers.sh 
+	Scripts/remove-useless-images.sh
 	sudo vmmd.paracamplus.com/install.sh
+	echo Scripts/connect.sh vmmd
 
 tt:
 	exit 4
 	docker commit $$(cat vmmd.paracamplus.com/docker.cid) \
 		paracamplus/aestxyz_vmmd
 	echo "Scripts/connect.sh vmmd"
-#	docker push paracamplus/aestxyz_vmmd
+#	docker push 'paracamplus/aestxyz_vmmd:latest'
 
 COURSE=li314
 instantiate_${COURSE} :
@@ -481,7 +484,7 @@ instantiate_${COURSE} :
 create.aestxyz_${COURSE} : ${COURSE}/Dockerfile	
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
-	docker push paracamplus/aestxyz_${COURSE}
+	docker push 'paracamplus/aestxyz_${COURSE}:latest'
 # @bijou: < 80sec
 deploy.${COURSE}.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -501,14 +504,6 @@ create.aestxyz_vmauthor : vmauthor/Dockerfile
 # servers are installed in the container.
 fill.exercises :
 	echo to be done ; exit 3
-
-adjoin.docker.io : dockerio/Dockerfile
-	cd dockerio/ && docker build -t paracamplus/aestxyz_dockerio .
-# FIXME how to run docker within docker ?????????????????????????????????
-#	docker run --rm paracamplus/aestxyz_dockerio \
-#		/root/RemoteScripts/check-docker.sh
-	docker tag paracamplus/aestxyz_dockerio \
-		"paracamplus/aestxyz_dockerio:$$(date +%Y%m%d_%H%M%S)"
 
 # let start the sshd daemon:
 create.aestxyz_daemons : daemons/Dockerfile

@@ -8,6 +8,12 @@ RSYNC_FLAGS='
  --exclude=*~ --exclude=.\#* --exclude=\#*\# --exclude=*.bak
  --exclude=*.sql.gz --exclude=disk*\.qcow2 --exclude=EclipseWS '
 
+echo "Preparing root HOME"
+TODIR=$ROOTDIR/root/fw4exrootlib
+mkdir -p $TODIR
+# In fact, we just need fw4exrootlib/fw4exms.sh
+rsync -avuL $RSYNC_FLAGS ../Mlib/fw4exrootlib/ $TODIR/
+
 echo "Final cleanup"
 rm -f $(find $ROOTDIR -name '*~')
 

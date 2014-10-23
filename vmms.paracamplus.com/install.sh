@@ -65,8 +65,9 @@ then
     cat root_rsa.pub > ${SSHDIR}/authorized_keys
 fi
 # These are the names expected by Paracamplus/FW4EX/VM.pm
-ln -sf root_rsa.pub root.pub
-ln -sf root_rsa     root
+cp root_rsa.pub $SSHDIR/root.pub
+cp root_rsa     $SSHDIR/root
+chmod a=r $SSHDIR/{root,root.pub}
 
 # Copy ssh keys for authors and students:
 rsync -au ../../Servers/.ssh/{author,student}* ${SSHDIR}/ 2>/dev/null
@@ -78,6 +79,11 @@ mkdir -p $LOGDIR
 # No need for /opt/$HOSTNAME/private/, fw4excookie.insecure.key should
 # not be available to the Marking Slave.
 
+if ! docker version 
+then
+    echo "Docker is not available"
+    exit 48
+fi
 docker pull ${DOCKERIMAGE}
 docker stop ${DOCKERNAME} 
 docker rm   ${DOCKERNAME}

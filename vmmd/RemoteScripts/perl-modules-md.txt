@@ -16,6 +16,7 @@ ExtUtils::ParseXS
 Module::Build
 Module::Metadata
 Module::Signature
+Net::FTP
 
 # to handle XML
 XML::LibXML::Common

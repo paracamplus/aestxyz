@@ -7,7 +7,7 @@ sudo
 rsync
 ntp
 ntpdate
-lib-glib2.0-dev
+libglib2.0-dev
 linux-headers
 zlib1g-dev
 xml2

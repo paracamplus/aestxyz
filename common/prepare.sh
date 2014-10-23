@@ -127,7 +127,7 @@ fi
 # this way is much faster but requires cooperation from setup.sh:
 echo "Tar-ing root.d"
 tar czhf ${0%/*}/../RemoteScripts/root-$MODULE.tgz \
-    --exclude='*~' --exclude='*.bak' -C $ROOTDIR .
+    --exclude='*~' --exclude='*.bak' --exclude=bin -C $ROOTDIR .
 
 # Make sure RemoteScripts has the same configuration:
 cp -p ${0%/*}/$HOSTNAME.sh ${0%/*}/../RemoteScripts/$HOSTNAME.sh 

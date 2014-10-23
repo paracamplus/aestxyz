@@ -18,17 +18,20 @@ chown -R root: /root/.ssh/
 chmod -R a-w   /root/.ssh/
 chmod go-rw,a+x /root/.ssh
 
-if ! /etc/init.d/ssh start
-then 
-    echo "Cannot start sshd"
-    exit 44
+if [ -f /root/RemoteScripts/booted ]
+then
+    if ! /etc/init.d/ssh start
+    then 
+        echo "Cannot start sshd"
+        exit 44
+    fi
 fi
 
 #DEBUG
 if [ -d /root/.ssh ]
 then
     echo "Content of /root/.ssh/"
-    ls -l /root/.ssh/
+    ls -l /root/.ssh/ | head
     if [ -r /root/.ssh/authorized_keys ]
     then
         echo "Content of /root/.ssh/authorized_keys"

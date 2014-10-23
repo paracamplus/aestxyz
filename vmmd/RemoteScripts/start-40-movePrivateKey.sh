@@ -6,7 +6,7 @@
 if [ -r /opt/$HOSTNAME/private/fw4excookie.insecure.key ]
 then (
         cd /opt/$HOSTNAME
-        cp -p private/fw4excookie.insecure.key .
+        cp -fp private/fw4excookie.insecure.key .
      )
 else
     echo "Missing /opt/$HOSTNAME/private/fw4excookie.insecure.key"

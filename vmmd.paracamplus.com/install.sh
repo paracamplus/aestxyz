@@ -7,16 +7,28 @@ cd ${0%/*}
 INTERACTIVE=false
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
 LOGDIR=/var/log/fw4ex/md
+SETUP=true
 source config.sh
 
-while getopts s:ie: opt
+usage () {
+    cat <<EOF
+Usage: ${0##*/} [option]
+  -s N      sleep N seconds then stop the container
+  -i        interactive mode, start a bash interpreter
+  -n        interactive mode, start a bash interpreter but do not
+            run any setup-*.sh sub-scripts
+  -e CMD    run CMD instead of start.sh in the container
+Default option is -s $SLEEP
+
+This script should be run on a Docker host. It installs and starts a
+new container. Most of these options (s, i, n)are mainly passed to the
+starting script of the container. Option -e imposes the starting script.
+EOF
+}
+
+while getopts e:s:in opt
 do
     case "$opt" in
-        i)
-            # Start an interactive session (useful for debug):
-            INTERACTIVE=true
-            ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS"
-            ;;
         e)
             # Run this command in the container then exit. 
             # Only with -i
@@ -24,19 +36,39 @@ do
             ;;
         s)
             # Exit from the container after that number of seconds.
-            # Useless with -i
             SLEEP=$OPTARG
+            SETUP=true
+            INTERACTIVE=false
+            ;;
+        i)
+            # Start an interactive session (useful for debug):
+            SETUP=true
+            INTERACTIVE=true
+            ;;
+        n)
+            # Don't run setup-*.sh sub-scripts
+            SETUP=false
+            INTERACTIVE=true
             ;;
         \?)
             echo "Bad option $opt"
+            usage
             exit 41
             ;;
     esac
 done
 
+START_FLAGS=
 if $INTERACTIVE
 then
-    COMMAND="${COMMAND:- bash -x /root/RemoteScripts/start.sh -i }"
+    if $SETUP
+    then
+        START_FLAGS='-i'
+    else
+        START_FLAGS='-n'
+    fi
+else
+    START_FLAGS="-s $SLEEP"
 fi
 
 if ! [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
@@ -66,7 +98,7 @@ fi
 cp keys.tgz ${SSHDIR}/
 ( 
     cd $SSHDIR
-    tar xzf keys.tgz
+    tar xzf keys.tgz && rm -f keys.tgz
 )
 
 # # Copy ssh keys for authors and students:
@@ -77,15 +109,17 @@ cp keys.tgz ${SSHDIR}/
 mkdir -p $LOGDIR
 
 docker pull ${DOCKERIMAGE}
-docker stop ${DOCKERNAME} && docker rm ${DOCKERNAME}
+docker stop ${DOCKERNAME} 
+docker rm ${DOCKERNAME}
 
-if $INTERACTIVE
+if [ -n "$COMMAND" ]
 then
     # NOTA: sometimes useful:   -v /dev/log:/dev/log \
     docker run \
         ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
+        -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
         -v ${SSHDIR}:/root/.ssh \
         -v ${LOGDIR}:/var/log/fw4ex \
         ${DOCKERIMAGE} \
@@ -96,10 +130,11 @@ else
         ${ADDITIONAL_FLAGS:- '-d' } \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
+        -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
         -v ${SSHDIR}:/root/.ssh \
         -v ${LOGDIR}:/var/log/fw4ex \
         ${DOCKERIMAGE} \
-        bash -x /root/RemoteScripts/start.sh -s $SLEEP )
+        bash -x /root/RemoteScripts/start.sh $START_FLAGS )
 fi
 
 # Make smoothless the connection between the Docker host and the container:

@@ -1,3 +1,5 @@
 #! /bin/bash
-ls -Ral /root
+
+true
+
 # end of start-90-debug.sh
