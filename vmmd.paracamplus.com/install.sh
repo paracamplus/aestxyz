@@ -13,11 +13,10 @@ source config.sh
 usage () {
     cat <<EOF
 Usage: ${0##*/} [option]
-  -s N      sleep N seconds then stop the container
   -i        interactive mode, start a bash interpreter
-  -n        interactive mode, start a bash interpreter but do not
-            run any setup-*.sh sub-scripts
-  -e CMD    run CMD instead of start.sh in the container
+  -s N      stop the container after N seconds
+  -n        do not run any setup-*.sh sub-scripts
+  -e CMD    run CMD instead of start.sh (and its options) in the container
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -31,24 +30,23 @@ do
     case "$opt" in
         e)
             # Run this command in the container then exit. 
-            # Only with -i
+            INTERACTIVE=true
             COMMAND="$OPTARG"
-            ;;
-        s)
-            # Exit from the container after that number of seconds.
-            SLEEP=$OPTARG
-            SETUP=true
-            INTERACTIVE=false
             ;;
         i)
             # Start an interactive session (useful for debug):
-            SETUP=true
             INTERACTIVE=true
+            #COMMAND is implicitly bash
+            ;;
+        s)
+            # Exit from the container after that number of seconds.
+            INTERACTIVE=false
+            SLEEP=$OPTARG
             ;;
         n)
             # Don't run setup-*.sh sub-scripts
+            INTERACTIVE=false
             SETUP=false
-            INTERACTIVE=true
             ;;
         \?)
             echo "Bad option $opt"
@@ -59,18 +57,17 @@ do
 done
 
 START_FLAGS=
-if $INTERACTIVE
+if ! $INTERACTIVE
 then
     if $SETUP
     then
-        START_FLAGS='-i'
+        START_FLAGS="-s $SLEEP"
     else
-        START_FLAGS='-n'
+        START_FLAGS="-n -s $SLEEP"
     fi
-else
-    START_FLAGS="-s $SLEEP"
 fi
 
+# Unify master key usage
 if ! [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
 then
     echo "Missing /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key"
@@ -98,7 +95,7 @@ fi
 cp keys.tgz ${SSHDIR}/
 ( 
     cd $SSHDIR
-    tar xzf keys.tgz && rm -f keys.tgz
+    tar xzf keys.tgz
 )
 
 # # Copy ssh keys for authors and students:
@@ -112,22 +109,34 @@ docker pull ${DOCKERIMAGE}
 docker stop ${DOCKERNAME} 
 docker rm ${DOCKERNAME}
 
-if [ -n "$COMMAND" ]
+if $INTERACTIVE
 then
     # NOTA: sometimes useful:   -v /dev/log:/dev/log \
-    docker run \
-        ${ADDITIONAL_FLAGS} \
-        -p "127.0.0.1:${HOSTSSHPORT}:22" \
-        --name=${DOCKERNAME} -h $HOSTNAME \
-        -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
-        -v ${SSHDIR}:/root/.ssh \
-        -v ${LOGDIR}:/var/log/fw4ex \
-        ${DOCKERIMAGE} \
-        "$COMMAND"
+    if [ -n "$COMMAND" ]
+    then 
+        docker run --rm \
+            ${ADDITIONAL_FLAGS} \
+            -p "127.0.0.1:${HOSTSSHPORT}:22" \
+            --name=${DOCKERNAME} -h $HOSTNAME \
+            -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
+            -v ${SSHDIR}:/root/.ssh \
+            -v ${LOGDIR}:/var/log/fw4ex \
+            ${DOCKERIMAGE} \
+            "$COMMAND"
+    else
+        docker run -it \
+            ${ADDITIONAL_FLAGS} \
+            -p "127.0.0.1:${HOSTSSHPORT}:22" \
+            --name=${DOCKERNAME} -h $HOSTNAME \
+            -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \
+            -v ${SSHDIR}:/root/.ssh \
+            -v ${LOGDIR}:/var/log/fw4ex \
+            ${DOCKERIMAGE} 
+    fi
     exit $?
 else
-    CID=$(docker run \
-        ${ADDITIONAL_FLAGS:- '-d' } \
+    CID=$(docker run -d \
+        ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
         -v /opt/common-${HOSTNAME#*.}/:/opt/$HOSTNAME/private \

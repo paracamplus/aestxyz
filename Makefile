@@ -65,6 +65,7 @@ recreate.all :     create.aestxyz_vmms0
 recreate.all :       create.aestxyz_vmms1
 recreate.all :         create.aestxyz_vmms
 recreate.all :     create.aestxyz_vmmd0
+recreate.all :       create.aestxyz_vmmd1
 #recreate.all : create.aestxyz_oldapt  # a6 with Debian6
 #recreate.all : create.aestxyz_oldcpan # a6 with Debian6
 #recreate.all : create.aestxyz_vmolda  # a6 with Debian6
@@ -452,17 +453,19 @@ create.aestxyz_vmmd0 : vmmd0/Dockerfile
 	chmod a+x vmmd0/RemoteScripts/?*.sh
 	vmmd0/vmmd0.paracamplus.com/prepare.sh
 	cd vmmd0/ && docker build -t paracamplus/aestxyz_vmmd0 .
+# @bijou: 15min
 create.aestxyz_vmmd1 : vmmd/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmmd/RemoteScripts/?*.sh
 	vmmd/vmmd.paracamplus.com/prepare.sh
 	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd1 .
+# @bijou: 3min
 create.aestxyz_vmmd : 
 	-docker rmi paracamplus/aestxyz_vmmd
-	Scripts/remove-exited-containers.sh 
-	Scripts/remove-useless-images.sh
-	sudo vmmd.paracamplus.com/install.sh
-	docker commit vmmd1 paracamplus/aestxyz_vmmd
+	-Scripts/remove-exited-containers.sh 
+	-Scripts/remove-useless-images.sh
+	sudo vmmd.paracamplus.com/install.sh -s 1
+	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
 
 #docker push........
 test.local.vmmd :
@@ -493,6 +496,12 @@ deploy.${COURSE}.paracamplus.com :
 	common/check-outer-availability.sh \
 		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
 		${COURSE}.paracamplus.com
+
+do.mooc-li101-2014fev :
+	if ! [ -d mooc-li101-2014fev.paracamplus.com ] ;\
+	  then m instantiate_mooc-li101-2014fev COURSE=mooc-li101-2014fev ; fi
+	m create.aestxyz_${COURSE} COURSE=mooc-li101-2014fev
+	m deploy.${COURSE}.paracamplus.com COURSE=mooc-li101-2014fev
 # }}}
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile

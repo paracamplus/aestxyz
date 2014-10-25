@@ -7,6 +7,7 @@ FROM paracamplus/aestxyz_vmmd0
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME vmmd.paracamplus.com
 WORKDIR /root/
+ENV HOME /root/
 
 RUN bash -xc 'wget -qO- https://get.docker.io/ | sh'
 

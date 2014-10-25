@@ -9,7 +9,7 @@ else
 fi
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 #
-ADDITIONAL_FLAGS=" -d --privileged "
+ADDITIONAL_FLAGS=" --privileged "
 # 
 SSHDIR=$(mktemp -d /tmp/ssh-XXXXXX)
 LOGDIR=/var/log/fw4ex/md

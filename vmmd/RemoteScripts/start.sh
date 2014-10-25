@@ -3,41 +3,31 @@
 # Errors are signalled with a 4x code.
 
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
-INTERACTIVE=false
 SETUP=true
 
 usage () {
     cat <<EOF
-Usage: ${0##*/} [option]
+Usage: ${0##*/} [-s N] [-n]
   -s N      sleep N seconds then stop the container
-  -i        interactive mode, start a bash interpreter
-  -n        interactive mode, start a bash interpreter but do not
-            run any setup-*.sh sub-scripts
+  -n        do not run any setup-*.sh sub-scripts
 Default option is -s $SLEEP
 
 This script defines what the container will run when started. This
-is the equivalent of the init process in a bootable Linux.
+is a rough equivalent of the init process in a bootable Linux.
 EOF
 }
 
-while getopts s:in opt
+while getopts s:n opt
 do
     case "$opt" in
         s)
             # Exit from the container after that number of seconds:
             SLEEP=$OPTARG
             SETUP=true
-            INTERACTIVE=false
-            ;;
-        i)
-            # Start an interactive session (useful for debug):
-            SETUP=true
-            INTERACTIVE=true
             ;;
         n)
             # Don't run setup-*.sh sub-scripts
             SETUP=false
-            INTERACTIVE=true
             ;;
         \?)
             echo "Bad option $opt"
@@ -63,11 +53,6 @@ then
     fi
 fi
 
-if ${INTERACTIVE}
-then 
-    bash
-else
-    sleep $SLEEP
-fi
+sleep $SLEEP
 
 # end of start.sh

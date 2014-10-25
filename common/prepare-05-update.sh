@@ -8,7 +8,7 @@ do
     f=${g##*/}
     if [ -f ${0%/*}/../../remote-common/$f ]
     then
-        cp -pf ${0%/*}/../../remote-common/$f $g
+        rsync -avu ${0%/*}/../../remote-common/$f $g
     fi
 done
 

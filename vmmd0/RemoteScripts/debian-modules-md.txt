@@ -45,6 +45,18 @@ ca-certificates
 # Garder seulement en_US, fr_FR UTF-8 (se fait a la main):
 #localepurge
 
+# For Docker ( see wget -qO- https://get.docker.io/ )
+git
+apparmor
+cgroupfs-mount
+apt-transport-https
+curl
+iptables 
+aufs-tools
+ca-certificates 
+lxc
+lxc-docker
+
 # end.
 
 

@@ -6,6 +6,7 @@ then
     echo "Cannot start docker"
     exit 45
 fi
+sleep 2
 
 for t in $(seq 1 20)
 do

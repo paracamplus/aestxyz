@@ -53,4 +53,11 @@ sed -e '/to saver/d' \
     -e '/to camplou/d' < /opt/$HOSTNAME/fw4ex.sql | psql fw4ex
 psql fw4ex -f /opt/$HOSTNAME/post-fw4ex.sql
 
+if ! /etc/init.d/postgresql stop
+then
+    echo "Cannot stop Postgresql"
+    tail -20 /var/log/postgresql/postgresql-*.log
+    exit 46
+fi
+
 # end of setup-63-postgresql.sh
