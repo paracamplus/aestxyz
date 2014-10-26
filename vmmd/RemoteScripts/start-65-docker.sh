@@ -29,6 +29,7 @@ then
     then
         mv /opt/vmmd.paracamplus.com/Docker /root/
         chmod u+x /root/Docker/*/*.sh
+        chown root: /root/Docker/*/*.sh
     fi
     if ! [ -d /root/Docker/vmms.paracamplus.com/ ]
     then
@@ -44,13 +45,15 @@ cp -p /opt/$HOSTNAME/private/fw4excookie.insecure.key \
 mkdir -p /root/.ssh
 touch /root/.ssh/known_hosts
 
-# Around 4G to download!
-echo "Downloading paracamplus/aestxyz_vmms ..."
-docker pull paracamplus/aestxyz_vmms
-
 if [ -f /root/RemoteScripts/booted ]
 then
     bash -x /root/Docker/vmms.paracamplus.com/install.sh
+else
+    # Around 4G to download!
+    echo "Downloading paracamplus/aestxyz_vmms ..."
+    docker pull paracamplus/aestxyz_vmms
+    # See https://github.com/jpetazzo/dind/issues/19
+    start-stop-daemon --stop --pidfile "/var/run/docker.pid"
 fi
 
 # end of start-65-docker.sh

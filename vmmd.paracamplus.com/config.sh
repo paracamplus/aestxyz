@@ -1,7 +1,7 @@
 #! /bin/bash
 HOSTNAME=vmmd.paracamplus.com
 HOSTSSHPORT=59022
-if docker pull paracamplus/aestxyz_vmmd
+if docker images | grep -q 'paracamplus/aestxyz_vmmd '
 then
     DOCKERNAME=vmmd
 else

@@ -466,6 +466,7 @@ create.aestxyz_vmmd :
 	-Scripts/remove-useless-images.sh
 	sudo vmmd.paracamplus.com/install.sh -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
+# 6.6G
 
 #docker push........
 test.local.vmmd :

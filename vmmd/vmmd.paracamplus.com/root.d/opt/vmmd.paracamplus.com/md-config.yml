@@ -179,11 +179,11 @@ markEngine:
     # Version with an internal Marking Slave:
     vmname: Paracamplus::FW4EX::VM::MSbySSH
     Paracamplus::FW4EX::VM::MSbySSH:
-        command: /root/Docker/vmms.paracamplus.com/install.sh
+        #command: /root/Docker/vmms.paracamplus.com/install.sh
         ip: 127.0.0.1
         port: 58022
         keydir: /root/Docker/vmms.paracamplus.com
-
+        keyprefix: root_rsa
 
     exerciseFetcher:
 # version pour exercices distants (ce qui permet d'envoyer de nouveaux

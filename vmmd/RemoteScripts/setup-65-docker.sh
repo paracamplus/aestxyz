@@ -23,6 +23,8 @@
 
 # See http://developerblog.redhat.com/2014/09/30/overview-storage-scalability-docker/
 
+chmod a+x /usr/local/bin/wrapdocker
+
 cat >>/etc/default/docker <<EOF
 DOCKER_OPTS=" 
   --storage-opt dm.loopdatasize=5G 
