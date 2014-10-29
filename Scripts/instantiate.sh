@@ -1,10 +1,13 @@
 #! /bin/bash
 
-SHORTNAME="${1:-nothing}"
+COURSE=$1
+SHORTNAME="${COURSE:-nothing}"
 HOSTNAME="$SHORTNAME.paracamplus.com"
 UPPERSHORTNAME="$( echo $SHORTNAME | tr a-z A-Z )"
 MODULENAME="Paracamplus-FW4EX-$UPPERSHORTNAME"
 MODULENAME=${MODULENAME//-/::}
+SHORTBASENAME=${SHORTNAME%%_*}
+UPPERSHORTBASENAME="$( echo $SHORTBASENAME | tr a-z A-Z )"
 
 if [ -d $SHORTNAME ]
 then 
@@ -33,9 +36,9 @@ RUN /root/RemoteScripts/setup.sh
 EOF
 fi
 
-if ! [ -d ../Servers/w.$SHORTNAME/Paracamplus-FW4EX-$UPPERSHORTNAME ]
+if ! [ -d ../Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME ]
 then
-    echo "Missing ../Servers/w.$SHORTNAME/Paracamplus-FW4EX-$UPPERSHORTNAME"
+    echo "Missing ../Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME"
     exit 72
 fi
 
@@ -46,7 +49,7 @@ then cat > $SHORTNAME/$HOSTNAME/$HOSTNAME.sh <<EOF
 HOSTNAME=$HOSTNAME
 APACHEUSER=www-data
 RANK=409
-SRCDIR=Servers/w.$SHORTNAME/Paracamplus-FW4EX-$UPPERSHORTNAME
+SRCDIR=Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME
 MODULE=$UPPERSHORTNAME
 FRAGMENT='$SHORTNAME'
 #DEBUG=true
@@ -58,7 +61,9 @@ fi
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-09-perllib.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-20-tar-Templates.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-40-path.sh .)
-(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-80-cleanup.sh .)
+#(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-80-cleanup.sh .)
+
+mkdir -p $SHORTNAME/$HOSTNAME/root.d/usr/local/lib/site_perl/Paracamplus/FW4EX/$UPPERSHORTNAME
 
 mkdir -p $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME
 if ! [ -f $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml ]

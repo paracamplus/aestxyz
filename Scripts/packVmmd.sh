@@ -13,6 +13,9 @@ do
     if docker logs $CONTAINER | grep -q 'This is the end'
     then 
         break
+    elif docker logs $CONTAINER | grep -q 'Could not connect to Docker daemon'
+    then
+        exit 49
     else
         docker logs $CONTAINER | tail -n4
     fi

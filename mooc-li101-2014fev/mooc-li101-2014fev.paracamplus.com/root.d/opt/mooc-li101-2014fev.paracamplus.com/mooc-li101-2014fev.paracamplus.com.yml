@@ -1,0 +1,455 @@
+---
+# This is the deployment configuration of the LI101 server onto OVHlicence
+
+name: Paracamplus::FW4EX::LI101
+encoding: UTF-8
+default_view: TT
+private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
+tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
+version: 1213
+controllers :
+   - Authenticate
+   - Doc
+   - History
+   - OneLiner
+   - Proxy
+   - Profile
+   - Progress
+   - Root
+#   - Skill
+   - Stats
+   - TopScore
+   - Whoswho
+   - Peeper
+   - FromUPMC
+   - Embody
+   - OpenID
+   - Badge
+#   - SaveRestaure
+# Stats, TopScore et Whoswho ajoutes
+
+lang: fr
+mooc: li101
+decoration:
+    ue_url: http://programmation-recursive.net/
+    ue_code: LI101
+    lcAppName: li101
+    ue_title: Programmation récursive
+    siteUrl: http://programmation-recursive.net/
+    title: Prog Rec
+    pagetitle: Programmation récursive
+#testing: 10
+
+Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=localhost
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Plugin::Static::Simple:
+#    logging: 1
+#    debug: 1
+    include_path:
+        - /var/www/mooc-li101-2014fev.paracamplus.com/
+    mime_types:
+        xsl: application/xslt+xml
+
+############### Deployment
+deployment:
+   shortName: li101
+   serverName: mooc-li101-2014fev.paracamplus.com
+   topSrcDir: Servers/w.li101
+   apacheRank: 400
+
+############### Path
+
+exercises:
+  kind: and
+  prologue: | 
+     Les exercices seront affichés semaine après semaine.
+  1: 
+     title: Bases du langage
+     kind: set
+     1: org.fw4ex.li101.perimeter.0
+     2: org.fw4ex.li101.cube.0
+     3: org.fw4ex.li101.max3.0
+     4: org.fw4ex.li101.max4.0
+# la 2eme semaine debute ici
+     5: org.fw4ex.li101.airecouronne.0
+     6: fr.heydemann.karine.mention
+     7: org.fw4ex.li101.equation.0
+# divise est trop long, est a couper au moins en 2 exercices............
+     8: fr.heydemann.karine.divise
+     9: fr.heydemann.karine.booleens
+     10: fr.heydemann.karine.mentioncond
+# la 3eme semaine debute ici
+  2:
+     title: Récursion sur entiers naturels
+     kind: set
+     1: org.fw4ex.li101.sommeimpair.0
+     2: org.fw4ex.li101.somme-carres.0
+     3: org.fw4ex.li101.multegypt.0
+     4: org.fw4ex.li101.somme-chiffres.0
+     5: org.fw4ex.li101.pgcd.0
+     6: org.fw4ex.li101.interet.0
+     7: org.fw4ex.li101.puissancecomp.0
+# la 4eme semaine debute ici
+  3:
+     title: Récursion sur listes
+     kind: set
+     1: org.fw4ex.li101.troisieme.0
+     2: org.fw4ex.li101.l2pn.0
+     3: org.fw4ex.li101.racines.0
+     4: org.fw4ex.li101.repetition.0
+     5: org.fw4ex.li101.intervalle.0
+     6: org.fw4ex.li101.somme-liste.0
+     7: org.fw4ex.li101.longueur.0
+     8: org.fw4ex.li101.member.0
+     9: org.fw4ex.li101.count.0
+     10: org.fw4ex.li101.croissante.0
+# surprise vendredi
+     11: org.fw4ex.li101.somme-cumulee.0
+# surprise second vendredi
+     12: org.fw4ex.li101.quicksort.0          
+# La 5eme semaine debute ici
+  4: 
+     title: Exercices graphiques
+     prologue: |
+        Les exercices graphiques(expérimentaux) sont tous regroupés ici.
+        Lisez le forum pour en savoir plus!
+     kind: set
+     1: org.fw4ex.li101.sablier.0
+     2: org.fw4ex.li101.sapin.0
+     3: org.fw4ex.li101.sierpinski.0         
+     4: org.fw4ex.li101.dragon.0             
+  5:
+     title: Fonctionnelles
+     kind: set
+     prologue: |
+         Cette section comprend également de nouveaux exercices 
+         sur les listes.
+     1: org.fw4ex.li101.liste-carres.0
+     2: org.fw4ex.li101.plus-grands.0
+     3: org.fw4ex.li101.moins-occurrences.0
+     4: org.fw4ex.li101.fact.0
+     5: org.fw4ex.li101.begaie.0
+     6: org.fw4ex.li101.taille.0
+     7: org.fw4ex.li101.nieme.0
+     8: org.fw4ex.li101.suivant.0
+# surprise du vendredi
+     9: org.fw4ex.li101.foldl.0
+  6:
+# ajout exercices sur citation, barriere
+     title: Citations
+     prologue: |
+       Cette section contient des exercices manipulant des symboles
+       et introduisant à l'emploi d'accumulateurs.
+     kind: set
+     1: org.fw4ex.li101.histogram.0
+     2: org.fw4ex.li101.flatten.0       
+     3: org.fw4ex.li101.reverse.0       
+# autres exos sur accumulateurs ? 
+  7:
+     title: Arbres binaires
+     kind: set
+     1: fr.heydemann.karine.ab-liste-inf
+     2: fr.heydemann.karine.ab-liste-pref
+     3: fr.heydemann.karine.ab-liste-post
+     4: fr.heydemann.karine.ab-hauteur
+     5: org.fw4ex.li101.ab-miroir.0
+     6: fr.heydemann.karine.ab-liste-feuilles
+     7: fr.heydemann.karine.ab-etiq
+     8: fr.heydemann.karine.ab-nb-feuilles
+     9: fr.heydemann.karine.ab-nb-noeuds
+# suprise du vendredi
+     10: fr.heydemann.karine.ab-equal
+  8:
+     title: Arbres de recherche
+     kind: set
+     1: fr.heydemann.karine.abr-ajout          
+     2: fr.heydemann.karine.abr-ajout-racine   
+     3: fr.heydemann.karine.abr-recherche
+     4: org.fw4ex.li101.abr-string.0
+     5: org.fw4ex.li101.abr-equilibrage.0
+# exos sur accumulateurs ?
+# barriere pour ensembles avec liste puis abr
+  9: 
+     title: Arbres généraux
+     kind: set
+     1: fr.heydemann.karine.ag-liste-feuilles
+     2: fr.heydemann.karine.ag-liste-post
+     3: fr.heydemann.karine.ag-liste-pref
+     4: fr.heydemann.karine.ag-max
+     5: fr.heydemann.karine.ag-nb-feuilles-niveau
+     6: fr.heydemann.karine.ag-nb-noeuds-niveau
+     7: fr.heydemann.karine.ag-nb-occ
+     8: fr.heydemann.karine.ag-replace
+     9: fr.heydemann.karine.ag-egal
+# est-pere-de?
+  10:
+     title: S-expressions
+     kind: set
+     1: org.fw4ex.li101.aritheval.0
+     2: org.fw4ex.li101.agparsexp.0
+     3: org.fw4ex.li101.abparag.0
+  11:
+     title: Évaluation
+     kind: set
+     1: org.fw4ex.li101.demoeval.0
+  12:
+     title: Examen final
+     kind: set
+     prologue: |
+       Ces problèmes comportant de nombreuses questions, pensez à 
+       sauvegarder très régulièrement votre travail! Assurez-vous de
+       disposer de 2 heures libres pour travailler cet examen.
+     1: org.fw4ex.li101.syracuse.0
+     2: org.fw4ex.li101.abrdag.0
+
+############### Views
+
+View::Identity:
+
+View::XSLT:
+   INCLUDE_PATH:
+      - /var/www/mooc-li101-2014fev.paracamplus.com/static/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/mooc-li101-2014fev.paracamplus.com/Templates
+        - /opt/mooc-li101-2014fev.paracamplus.com/Templates/Default
+    ENCODING: utf-8
+    render_die: 1
+#    DEBUG: all
+
+################## Controllers
+
+Controller::Authenticate:
+   campaignName: mooc-li101-2014fev
+# FIXME prendre en compte ces dates si elles existent!!!!!!!!!!!!!!!!!!!
+   startTime: 2013-08-22T00:00
+   endTime:   2014-06-01T00:00
+   sendLinkBaseUrl: http://mooc-li101-2014fev.paracamplus.com/authenticate/checklink/
+   smtpfrom: webmaster@paracamplus.com <WebMaster@paracamplus.com>
+   sendLinkSubject: "Acces a mooc-li101-2014fev.paracamplus.com"
+   smtpservers:
+       - localhost:25
+   message:
+     fr:
+       missingLogin: "Nom de connexion (du genre upmc:1234567) manquant!"
+       missingPassword: "Mot de passe manquant!"
+       wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
+       missingLoginOrEmail: "Nom de connexion ou courriel absent!"
+       unknownEmail: "Courriel inconnu!"
+       ambiguousEmail: "Courriel ambigü ?"
+       unknownLogin: "Nom de connexion inconnu!"
+       ambiguousLogin: "Nom de connexion ambigü ?"
+       missingLink: "Lien temporaire absent!"
+       obsoleteLink: "Lien temporaire inconnu ou périmé!"
+       changePassword: "N'oubliez pas de changer votre mot de passe mais seulement si vous souhaitez vous connecter directement sur ce site!"
+     en:
+       missingLogin: "Missing login!"
+       missingPassword: "Missing password!"
+       wrongCombination: "Wrong combination of login and password!"
+       missingLoginOrEmail: "Missing login or email!"
+       unknownEmail: "Unknown email!"
+       ambiguousEmail: "Ambiguous email!"
+       unknownLogin: "Unknown login!"
+       ambiguousLogin: "Ambiguous login!"
+       missingLink: "Missing link!"
+       obsoleteLink: "Obsolete or unknown link!"
+       changePassword: "Change your password!"
+   decoration:
+       login: "votre.courriel@quelquepart.monde"
+       loginOrEmail: "x@truc.fr"
+       siteUrl: http://mooc-li101-2014fev.paracamplus.com/
+
+Controller::Profile:
+   campaignName: mooc-li101-2014fev
+   mayChange: 1
+   message:
+      fr:
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Les mots de passe diffèrent ?"
+        badPassword: "Mauvais caractère(s) dans mot de passe!"
+        missingOnePassword: "Un des mots de passe manque!"
+        badPseudo: "Mauvais caractère(s) dans pseudo!"
+        badEmail: "Courriel bizarre!"
+        emailAlreadyUsed: "Courriel déjà utilisé!"
+        OK: "Modifications enregistrées!"
+
+Controller::Doc:
+   campaignName: mooc-li101-2014fev
+   decoration:
+      exoPath: /xh/path/li101
+   defaultPage: toc
+   pages:
+      - key: authentication
+        title: Authentification
+      - key: legal
+        title: Côté légal
+      - key: exercises
+        title: Exercices proposés
+      - key: mrscheme
+        title: MrScheme mode d'emploi
+      - key: howto
+        title: Correction automatisée mode d'emploi
+      - key: li101
+        title: Dialecte MrScheme-LI101
+      - key: skill
+        title: Performance
+      - key: notation
+        title: Correction et notation
+
+Controller::Root:
+   campaignName: mooc-li101-2014fev
+   startTime: 2013-08-25T00:00:00z
+   endTime:   2014-06-31T23:59:00Z
+
+Controller::FromUPMC:
+   campaignName: mooc-li101-2014fev
+   startTime: 2013-08-01T00:00:01Z
+   endTime:   2014-06-31T23:59:00Z
+
+Controller::History:
+   campaignName: mooc-li101-2014fev
+   eServerUrl: /sh/s/
+   jobsPerPage: 20
+   filter: 1
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::Progress:
+   campaignName: mooc-li101-2014fev
+   certificateServer: http://paracamplus.com
+
+Controller::Badge:
+   campaignName: mooc-li101-2014fev
+   certificateServer: http://paracamplus.com
+
+Controller::Skill:
+   campaignName: mooc-li101-2014fev
+   personGroupName: mooc-li101-2014fev
+   exerciseGroupName: mooc-li101-2014fev
+   startTime: 2013-09-01
+   endTime:   2014-06-01
+   decoration: 
+      waitingImage: /static/5-1.gif
+   message:
+     fr:
+        noSkill: "Performances non calculées!"
+     en:
+        noSkill: "Cannot compute skills!"
+
+Controller::OneLiner:
+# Use the same insecure key as the A server:
+   campaignName: mooc-li101-2014fev
+   template: mrscheme.tt
+   stylesheet: /static/li101.xsl
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::Whoswho:
+    campaignName: mooc-li101-2014fev
+
+Controller::Peeper:
+    campaignName: mooc-li101-2014fev
+    joblimit: 4
+    sPrefix: /s
+    annotations:
+       - badlyIndented
+       - missingSpec
+       - incoherentSpec
+       - tags
+       - comment
+       - helping
+
+Controller::Stats:
+   campaignName: mooc-li101-2014fev
+
+Controller::TopScore:
+   campaignName: mooc-li101-2014fev
+   before: 3
+   justBefore: 3
+   after: 3
+
+Controller::Embody:
+   campaignName: mooc-li101-2014fev
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::OpenID:
+    #verbose: 10
+    # Use the same insecure key as the A server:
+    provider:  'https://accounts.google.com/o/oauth2/auth?'
+    client_id: '1071555760360-bqi9hoesteh04npods0tjtnt8npu96n0.apps.googleusercontent.com'
+    redirect_uri:  'http://x.paracamplus.com/openid/check'
+    realm:         'http://*.paracamplus.com/'
+
+Controller::SaveRestaure:
+
+# The stylesheet (.xsl) must be rachable as a template (.tt)
+Controller::Proxy:
+# verbose: 10
+  x:
+     prefix: /x/
+     remote: x.paracamplus.com
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
+  s:
+     prefix: /
+     remote: s3.paracamplus.com
+  sh:
+     prefix: /sh/
+     remote: s3.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
+  shp:
+     prefix: /shp/
+     remote: s3.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
+  e:
+     prefix: /e/
+     remote: e3.paracamplus.com
+  eh:
+     prefix: /eh/
+     remote: e3.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
+  a:
+     prefix: /a/
+     remote: a1.paracamplus.com
+
+#end.

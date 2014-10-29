@@ -182,8 +182,8 @@ markEngine:
         #command: /root/Docker/vmms.paracamplus.com/install.sh
         ip: 127.0.0.1
         port: 58022
-        keydir: /root/Docker/vmms.paracamplus.com
-        keyprefix: root_rsa
+        keydir: /home/ms/.ssh
+#       keyprefix: root
 
     exerciseFetcher:
 # version pour exercices distants (ce qui permet d'envoyer de nouveaux

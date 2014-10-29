@@ -3,7 +3,7 @@
 #
 # Start a container running a proxy dedicated to one course
 #
-FROM paracamplus/aestxyz_fw4ex
+FROM paracamplus/aestxyz_base
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME z.paracamplus.com
 WORKDIR /root/

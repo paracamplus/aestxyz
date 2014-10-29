@@ -11,6 +11,10 @@ DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 #
 ADDITIONAL_FLAGS=" --privileged "
 # 
+LOGDIR=/var/log/fw4ex/md
+PROVIDE_APACHE=false
+NEED_FW4EX_MASTER_KEY_DIR=true
+SHARE_FW4EX_LOG=true
 SSHDIR=$(mktemp -d /tmp/ssh-XXXXXX)
 LOGDIR=/var/log/fw4ex/md
 # end of config.sh

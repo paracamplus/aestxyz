@@ -4,7 +4,7 @@
 # Prepare the basic part of a container only running a Marking Slave
 # (debian packages and perl modules)
 #
-FROM paracamplus/aestxyz_fw4ex
+FROM paracamplus/aestxyz_base
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME vmms0.paracamplus.com
 

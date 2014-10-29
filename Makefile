@@ -96,14 +96,15 @@ archive.aestxyz_apt :
 # and the other one with the required Perl modules:
 create.aestxyz_cpan : cpan/Dockerfile
 	cd cpan/ && docker build -t paracamplus/aestxyz_cpan .
+	docker run --rm paracamplus/aestxyz_cpan perl -M'URL::Encode' -e 1
+	docker run --rm paracamplus/aestxyz_cpan perl -M'Mail::Sendmail' -e 1
 	docker run --rm paracamplus/aestxyz_cpan perl -MMoose -e 1
 	docker tag paracamplus/aestxyz_cpan \
 		"paracamplus/aestxyz_cpan:$$(date +%Y%m%d_%H%M%S)"
 	docker tag paracamplus/aestxyz_cpan paracamplus/aestxyz_base
-# @bijou 63min
+# @bijou 65min
 archive.aestxyz_cpan :
 	docker push 'paracamplus/aestxyz_base:latest'
-	docker push 'paracamplus/aestxyz_fw4ex:latest'
 # @bijou 4min
 # paracamplus/aestxyz_base is the base image for all the next ones.
 # For historical reason, we also name it paracamplus/aestxyz_fw4ex
@@ -261,9 +262,9 @@ create.aestxyz_y : y/Dockerfile
 create.aestxyz_vmy : vmy/Dockerfile
 	vmy/y.paracamplus.com/prepare.sh
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
-	docker push 'paracamplus/aestxyz_vmy:latest'
 	docker tag paracamplus/aestxyz_vmy \
 		"paracamplus/aestxyz_vmy:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vmy:latest'
 # @bijou 1min
 deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -280,9 +281,9 @@ deploy.y.paracamplus.com :
 create.aestxyz_vma : vma/Dockerfile
 	vma/a.paracamplus.com/prepare.sh
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
-	docker push 'paracamplus/aestxyz_vma:latest'
 	docker tag paracamplus/aestxyz_vma \
 		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vma:latest'
 deploy.a.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -302,9 +303,9 @@ deploy.a.paracamplus.com :
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
-	docker push 'paracamplus/aestxyz_vme:latest'
 	docker tag paracamplus/aestxyz_vme \
 		"paracamplus/aestxyz_vme:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vme:latest'
 deploy.e.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -323,9 +324,9 @@ deploy.e.paracamplus.com :
 create.aestxyz_vmx : vmx/Dockerfile
 	vmx/x.paracamplus.com/prepare.sh
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
-	docker push 'paracamplus/aestxyz_vmx:latest'
 	docker tag paracamplus/aestxyz_vmx \
 		"paracamplus/aestxyz_vmx:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vmx:latest'
 deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -342,9 +343,9 @@ deploy.x.paracamplus.com :
 create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
-	docker push 'paracamplus/aestxyz_vmt:latest'
 	docker tag paracamplus/aestxyz_vmt \
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vmt:latest'
 deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -365,9 +366,9 @@ deploy.t.paracamplus.com :
 create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh
 	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
-	docker push 'paracamplus/aestxyz_vmz:latest'
 	docker tag paracamplus/aestxyz_vmz \
 		"paracamplus/aestxyz_vmz:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vmz:latest'
 deploy.z.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -431,11 +432,13 @@ create.aestxyz_vmms : vmms/Dockerfile
 	vmms/vmms.paracamplus.com/prepare.sh
 	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
 #@bijou: 45 min
-	docker push 'paracamplus/aestxyz_vmms:latest'
-#@bijou: 300 min
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
+	docker push 'paracamplus/aestxyz_vmms:latest'
+#@bijou: 300 min
 test.local.vmms :
+	-Scripts/remove-exited-containers.sh 
+	-Scripts/remove-useless-images.sh
 	sudo vmms.paracamplus.com/install.sh \
 	    -i -e '/bin/hostname' </dev/null | \
 		grep vmms.paracamplus.com
@@ -459,16 +462,16 @@ create.aestxyz_vmmd1 : vmmd/Dockerfile
 	chmod a+x vmmd/RemoteScripts/?*.sh
 	vmmd/vmmd.paracamplus.com/prepare.sh
 	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd1 .
-# @bijou: 3min
+# @bijou: 6min
 create.aestxyz_vmmd : 
 	-docker rmi paracamplus/aestxyz_vmmd
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
 	sudo vmmd.paracamplus.com/install.sh -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
-# 6.6G
-
+# 22 min, 7.2G
 #docker push........
+
 test.local.vmmd :
 	Scripts/remove-exited-containers.sh 
 	Scripts/remove-useless-images.sh
@@ -482,15 +485,20 @@ tt:
 	echo "Scripts/connect.sh vmmd"
 #	docker push 'paracamplus/aestxyz_vmmd:latest'
 
-COURSE=li314
+COURSE=ToBeDefined
+do.course :
+	if ! [ -d ${COURSE} ] ; then m instantiate_${COURSE} ; fi
+	m create.aestxyz_${COURSE} 
+	m deploy.${COURSE}.paracamplus.com 
 instantiate_${COURSE} :
-	./Scripts/instantiate.sh ${COURSE}
+	bash -x ./Scripts/instantiate.sh ${COURSE}
 create.aestxyz_${COURSE} : ${COURSE}/Dockerfile	
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker push 'paracamplus/aestxyz_${COURSE}:latest'
 # @bijou: < 80sec
 deploy.${COURSE}.paracamplus.com :
+	sudo chown ${USER}':' ${COURSE}.paracamplus.com/.ssh
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh
@@ -498,11 +506,13 @@ deploy.${COURSE}.paracamplus.com :
 		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
 		${COURSE}.paracamplus.com
 
+do.li314 :
+	m do.course COURSE=li314
+do.li314_2013oct :
+	m do.course COURSE=li314_2013oct
 do.mooc-li101-2014fev :
-	if ! [ -d mooc-li101-2014fev.paracamplus.com ] ;\
-	  then m instantiate_mooc-li101-2014fev COURSE=mooc-li101-2014fev ; fi
-	m create.aestxyz_${COURSE} COURSE=mooc-li101-2014fev
-	m deploy.${COURSE}.paracamplus.com COURSE=mooc-li101-2014fev
+	m do.course COURSE=mooc-li101-2014fev
+
 # }}}
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile

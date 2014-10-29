@@ -3,7 +3,7 @@
 #
 # base for a vmmd container
 #
-FROM paracamplus/aestxyz_fw4ex
+FROM paracamplus/aestxyz_base
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME vmmd0.paracamplus.com
 WORKDIR /root/
