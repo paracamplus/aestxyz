@@ -49,6 +49,7 @@ done
 
 if $SETUP
 then
+    chmod a+x ${0%/*}/*.sh
     if [ 1 -le $( ls -1 ${0%/*}/start-*.sh 2>/dev/null | wc -l ) ]
     then 
         for f in ${0%/*}/start-*.sh
@@ -57,12 +58,15 @@ then
             source $f 
             status=$?
             if [ $status -gt 0 ]
-            then exit $status
+            then 
+                echo "Failed to run $f ($status)"
+                exit $status
             fi
         done
     fi
 fi
 
+echo "========== End of start.sh ============"
 if ${INTERACTIVE}
 then 
     bash

@@ -4,9 +4,12 @@
 name: Paracamplus::FW4EX::LI101
 encoding: UTF-8
 default_view: TT
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
 private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
-version: 1213
+version: 1214
 controllers :
    - Authenticate
    - Doc

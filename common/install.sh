@@ -282,4 +282,6 @@ fi
 sleep 1
 docker ps -l
 
+#check "end of start.sh" ???
+
 # end of install.sh

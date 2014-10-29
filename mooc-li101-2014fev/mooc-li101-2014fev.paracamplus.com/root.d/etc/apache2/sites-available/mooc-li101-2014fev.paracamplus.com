@@ -27,7 +27,9 @@ ExpiresActive On
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::LI101::mooc_li101_2014fev_paracamplus_com
+
+#PerlModule fills /opt/tmp with root:root thus preventing
+#PerlModule Paracamplus::FW4EX::LI101::mooc_li101_2014fev_paracamplus_com
 
         <Location / >
               SetHandler modperl
