@@ -155,7 +155,12 @@ then
     echo "Docker is not available"
     exit 48
 fi
-docker pull ${DOCKERIMAGE}
+
+if docker images | grep -E -q "^${DOCKERIMAGE} "
+then :
+else
+    docker pull ${DOCKERIMAGE}
+fi
 docker stop ${DOCKERNAME} 
 docker rm   ${DOCKERNAME}
 
