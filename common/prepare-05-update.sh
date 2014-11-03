@@ -1,5 +1,5 @@
 #! /bin/bash
-# setup*.sh and start*.sh scripts cannot be symbolically linked.
+# setup*.sh and start*.sh scripts cannot be symbolically linked since
 # Docker copies them as links not as files so update the shared scripts
 # from Docker/remote-common/ inside RemoteScripts/
 
@@ -8,7 +8,14 @@ do
     f=${g##*/}
     if [ -f ${0%/*}/../../remote-common/$f ]
     then
-        rsync -avu ${0%/*}/../../remote-common/$f $g
+        if [ $f -ot ${0%/*}/../../remote-common/$f ]
+        then
+            rsync -avu ${0%/*}/../../remote-common/$f $g
+        else
+            echo "ATTENTION: $g is newer!"
+            diff ${0%/*}/../../remote-common/$f $g
+            exit 1
+        fi
     fi
 done
 

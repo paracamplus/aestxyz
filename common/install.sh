@@ -2,7 +2,11 @@
 # This script should be run on the Docker host as root.
 # Install a container in the Docker host and start it.
 
-cd ${0%/*}
+# Usually, this script is run in /root/Docker/HOSTNAME/ where
+# - it will find the specific configuration: config.sh
+# - and write some files describing the container: docker.{cid,ip}
+# - meanwhile, keys are generated to connect to the container via ssh.
+cd ${0%/*}/
 
 INTERACTIVE=false
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
@@ -17,11 +21,11 @@ PROVIDE_SMTP=false
 source config.sh
 
 # Does the container needs to know the FW4EX master key. This key is
-# required for all authenticated requests to the FW4EX machinery.
+# required for all authenticated requests to the FW4EX machinery. This
+# key is named fw4excookie.insecure.key
 if ${NEED_FW4EX_MASTER_KEY_DIR}
 then
     # Or the master key is in a directory specified by FW4EX_MASTER_KEY_DIR
-    # or it is, by default, in /opt/common-paracamplus.com/
     if [ -n "$FW4EX_MASTER_KEY_DIR" ]
     then
         if [ -d $FW4EX_MASTER_KEY_DIR/ ]
@@ -35,11 +39,12 @@ then
             echo "Not a directory $FW4EX_MASTER_KEY_DIR/"
             exit 51
         fi
+    # or it is, by default, in /opt/common-paracamplus.com/
     elif [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
     then
         FW4EX_MASTER_KEY_DIR=/opt/common-${HOSTNAME#*.}
     else
-        echo "Missing /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key"
+        echo "Cannot find fw4excookie.insecure.key"
         exit 51
     fi
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v $FW4EX_MASTER_KEY_DIR:/opt/$HOSTNAME/private "
@@ -52,6 +57,8 @@ Usage: ${0##*/} [option]
   -s N      stop the container after N seconds
   -n        do not run any setup-*.sh sub-scripts
   -e CMD    run CMD instead of start.sh (and its options) in the container
+  -D V=v    exports the variable V with value v in the container
+  -o STR    adds STR to the options of start.sh
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -60,7 +67,8 @@ starting script of the container. Option -e imposes the starting script.
 EOF
 }
 
-while getopts e:s:in opt
+START_FLAGS=
+while getopts e:s:inD:o: opt
 do
     case "$opt" in
         e)
@@ -83,6 +91,14 @@ do
             INTERACTIVE=false
             SETUP=false
             ;;
+        D)
+            START_FLAGS="$START_FLAGS -D $OPTARG"
+            ;;
+        o)
+            # additional flags for start.sh in the container
+            INTERACTIVE=false
+            START_FLAGS="$START_FLAGS $OPTARG"
+            ;;
         \?)
             echo "Bad option $opt"
             usage
@@ -91,18 +107,20 @@ do
     esac
 done
 
-START_FLAGS=
 if ! $INTERACTIVE
 then
     if $SETUP
     then
-        START_FLAGS="-s $SLEEP"
+        START_FLAGS="$START_FLAGS -s $SLEEP"
     else
-        START_FLAGS="-n -s $SLEEP"
+        START_FLAGS="$START_FLAGS -n -s $SLEEP"
     fi
 fi
 
-# Prepare ssh keys
+# Prepare ssh keys to let the Docker host access the container via
+# ssh. The generated keys are left in the current directory besides
+# the current script (install.sh). SSHDIR will become the /root/.ssh/
+# directory in the container:
 if ! [ -r ${SSHDIR}/authorized_keys ]
 then
     if ! [ -f root_rsa ]
@@ -111,26 +129,39 @@ then
             -C "root@$HOSTNAME" \
             -f root_rsa
     fi
-    mkdir -p ${SSHDIR}
-    cp root* ${SSHDIR}/
-    cat root_rsa.pub > ${SSHDIR}/authorized_keys
 fi
+mkdir -p ${SSHDIR}
+cat root_rsa.pub > ${SSHDIR}/authorized_keys
 # These are the names expected by Paracamplus/FW4EX/VM.pm          HACK
 cp root_rsa.pub root.pub
 cp root_rsa     root
-chmod a=r $SSHDIR/root*
+cp root* $SSHDIR/
+chmod a=r $SSHDIR/*.pub
 
-# Expand the keys for authors and students:
-if [ -f keys.tgz ]
+# Move the keys (mentioned in keys.txt) into SSHDIR:
+if [ -f keys.txt ]
 then
-    cp keys.tgz ${SSHDIR}/
-    ( 
-        cd $SSHDIR
-        tar xzf keys.tgz
-    )
-else
-    echo "Missing `pwd`/keys.tgz"
-    exit 42
+    cat keys.txt | while read command keyfile
+    do
+        case "$command" in
+            UNTAR)
+                echo "Untaring $keyfile..."
+                cp "$keyfile" ${SSHDIR}/
+                ( 
+                    cd $SSHDIR
+                    tar xzf $keyfile
+                )
+                ;;
+            FILE)
+                echo "Copying $keyfile..."
+                cp "$keyfile" ${SSHDIR}/
+                ;;
+            *)
+                echo "Unrecognized command $command"
+                exit 41
+                ;;
+            esac
+    done
 fi
 
 if ${SHARE_FW4EX_LOG}
@@ -157,8 +188,10 @@ then
 fi
 
 if docker images | grep -E -q "^${DOCKERIMAGE} "
-then :
+then 
+    echo "*** Using current local copy of ${DOCKERIMAGE}"
 else
+    echo "*** Download fresh copy of ${DOCKERIMAGE}"
     docker pull ${DOCKERIMAGE}
 fi
 docker stop ${DOCKERNAME} 
@@ -166,22 +199,23 @@ docker rm   ${DOCKERNAME}
 
 if $DEBUG
 then
-    ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS  -v /dev/log:/dev/log "
+    ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /dev/log:/dev/log "
 fi
 
 if $INTERACTIVE
 then
-    # NOTA: sometimes useful:   -v /dev/log:/dev/log \
     if [ -n "$COMMAND" ]
     then 
+        echo "Run a specific command within the container and exit"
         docker run --rm \
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
             --name=${DOCKERNAME} -h $HOSTNAME \
             -v ${SSHDIR}:/root/.ssh \
             ${DOCKERIMAGE} \
-            "$COMMAND"
+            $COMMAND
     else
+        echo "Run a single bash (without daemon) in the container then exit"
         docker run -it \
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
@@ -191,6 +225,7 @@ then
     fi
     exit $?
 else
+    echo "Start the container with all its daemons"
     CID=$(docker run -d \
         ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
@@ -216,20 +251,26 @@ echo $IP > docker.ip
 touch $HOME/.ssh/known_hosts
 sed -i -e '/^$IP/d' $HOME/.ssh/known_hosts
 echo "$IP $KEY"  >> $HOME/.ssh/known_hosts
+if [ "$USER" = root ]
+then
+    echo "$IP $KEY"  >> /etc/ssh/ssh_known_hosts
+fi
 if [ -d /var/lib/docker/devicemapper/mnt/$CID/rootfs/ ]
 then
-    echo "$DOCKERNAME file system: /var/lib/docker/devicemapper/mnt/$CID/rootfs/"
+    ln -sf /var/lib/docker/devicemapper/mnt/$CID/rootfs .
 elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
 then
-    echo "$DOCKERNAME file system: /var/lib/docker/aufs/mnt/$CID/"
+    ln -sf /var/lib/docker/aufs/mnt/$CID rootfs
 fi
 
-# Allow the container to send mails:
+# Allow the container to send mails. This tunnel can only be setup by
+# the Docker host so we must wait for the container's sshd daemon to
+# be ready.
 if ${PROVIDE_SMTP}
 then
     # Leave time for the container to start sshd:
-    # @bijou: 3 seconds
-    for t in 1 2 3 4 5 6 7 8 9 10 11 
+    # @bijou: 3-7 seconds
+    for t in $(seq 1 20)
     do
         sleep 1
         echo "Trying($t) to ssh the container"
@@ -245,48 +286,61 @@ then
 fi
 
 # Install specific files on the Docker host:
-if [ -d root.d ]
+if [ "$USER" = root ]
 then
-    # Install specific files on the Docker host 
-    rsync -avu ./root.d/ /
-
-    # and mainly the Apache configuration proxying towards the container:
-    if ${PROVIDE_APACHE}
+    if [ -d root.d ]
     then
-        if [ -d ./root.d/etc/apache2/sites-available/ ]
+        # Install specific files on the Docker host 
+        rsync -avu ./root.d/ /
+
+        # and mainly the Apache configuration proxying towards the container:
+        if ${PROVIDE_APACHE}
         then
-            for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
-            do (
-                    cd /etc/apache2/sites-enabled/
-                    ln -sf ../sites-available/$conf 499-$conf
-                )
-            done
-        fi
-        if ! /etc/init.d/apache2 restart
-        then
-            if [ -f /var/log/apache2/$HOSTNAME-error.log ]
+            if [ -d ./root.d/etc/apache2/sites-available/ ]
             then
-                tail /var/log/apache2/$HOSTNAME-error.log
-            else
-                tail /var/log/apache2/error.log
+                for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
+                do (
+                        cd /etc/apache2/sites-enabled/
+                        ln -sf ../sites-available/$conf 499-$conf
+                    )
+                done
+            fi
+            if ! /etc/init.d/apache2 restart
+            then
+                if [ -f /var/log/apache2/$HOSTNAME-error.log ]
+                then
+                    tail /var/log/apache2/$HOSTNAME-error.log
+                else
+                    tail /var/log/apache2/error.log
+                fi
             fi
         fi
-    fi
 
-    # Make sure that this container is run after reboot of the Docker host:
-    ( 
-        cd ./root.d/
-        chmod a+x etc/init.d/qnc-docker.sh
-        rsync -avu etc/init.d/qnc-docker.sh /etc/init.d/qnc-docker-$HOSTNAME.sh
-        rm -f /etc/init.d/qnc-docker.sh
-        update-rc.d qnc-docker-$HOSTNAME.sh defaults
-    )
+        # Make sure that this container is run after reboot of the Docker host:
+        ( 
+            cd ./root.d/
+            chmod a+x etc/init.d/qnc-docker.sh
+            # the content of qnc-docker.sh must be fixed before         FIXME
+            rsync -avu etc/init.d/qnc-docker.sh \
+                /etc/init.d/qnc-docker-$HOSTNAME.sh
+            rm -f /etc/init.d/qnc-docker.sh
+            update-rc.d qnc-docker-$HOSTNAME.sh defaults
+        )
+    fi
 fi
 
 # Leave time for the container to be up and accept ssh connections:
-sleep 1
-docker ps -l
+for t in $(seq 1 20)
+do
+    echo "Attempting($t) to ssh the container"
+    if ssh -p ${HOSTSSHPORT} -i ./root_rsa root@127.0.0.1 hostname
+    then 
+        docker ps -l
+        break
+    fi
+    sleep 1
+done
 
-#check "end of start.sh" ???
+#check "end of start.sh" at the end of docker logs ${DOCKERNAME}
 
 # end of install.sh

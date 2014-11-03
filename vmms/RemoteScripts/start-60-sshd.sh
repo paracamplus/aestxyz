@@ -18,6 +18,12 @@ chown -R root: /root/.ssh/
 chmod -R a-w   /root/.ssh/
 chmod go-rw,a+x /root/.ssh
 
+if [ -f /root/RemoteScripts/knownhosts.txt ]
+then
+    cat /root/RemoteScripts/knownhosts.txt >> /etc/ssh/ssh_known_hosts
+    chmod a=r /etc/ssh/ssh_known_hosts
+fi
+
 if ! /etc/init.d/ssh start
 then 
     echo "Cannot start sshd"
@@ -28,7 +34,7 @@ fi
 if [ -d /root/.ssh ]
 then
     echo "Content of /root/.ssh/"
-    ls -l /root/.ssh/
+    ls -l /root/.ssh/ | head -n5
     if [ -r /root/.ssh/authorized_keys ]
     then
         echo "Content of /root/.ssh/authorized_keys"

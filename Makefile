@@ -20,7 +20,8 @@ RSYNC_FLAGS     =     \
         --exclude='\#*\#' \
         --exclude='*.bak' \
         --exclude='*.sql.gz' \
-        --exclude='disk*\.qcow2' 
+        --exclude='*\.qcow'  \
+        --exclude='disk*\.qcow2'
 
 # We start from a Debian7 image
 docker.wheezy :
@@ -419,13 +420,17 @@ deploy.a6.paracamplus.com :
 		ls -l /opt/a6.paracamplus.com/fw4excookie.insecure.key
 
 create.aestxyz_vmms0 : vmms0/Dockerfile
+# install debian packages and perl modules:
 	chmod a+x vmms0/RemoteScripts/?*.sh
 	vmms0/vmms0.paracamplus.com/prepare.sh
 	cd vmms0/ && docker build -t paracamplus/aestxyz_vmms0 .
+# @bijou: 26 min
 create.aestxyz_vmms1 :
+# install some languages with specific (non-debian) installations:
 	chmod a+x vmms1/RemoteScripts/?*.sh
 	vmms1/vmms1.paracamplus.com/prepare.sh
 	cd vmms1/ && docker build -t paracamplus/aestxyz_vmms1 .
+# @bijou: 11 min
 create.aestxyz_vmms : vmms/Dockerfile
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmms/RemoteScripts/?*.sh
@@ -434,13 +439,13 @@ create.aestxyz_vmms : vmms/Dockerfile
 #@bijou: 45 min
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vmms:latest'
+##	docker push 'paracamplus/aestxyz_vmms:latest'
 #@bijou: 300 min
 test.local.vmms :
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
 	sudo vmms.paracamplus.com/install.sh \
-	    -i -e '/bin/hostname' </dev/null | \
+	    -e '/bin/hostname' </dev/null | \
 		grep vmms.paracamplus.com
 	sleep 2
 	sudo vmms.paracamplus.com/install.sh -s 5 ; sleep 1
@@ -449,8 +454,36 @@ test.local.vmms :
 	docker ps -l
 	ssh -p 58022 -i vmms.paracamplus.com/root root@127.0.0.1 hostname
 	docker ps -l
-	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
+tlv :
+#	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
+	./vmms.on.bijou/run.md.with.docker.ms.sh
 # Sometimes useful to refresh the test database!
+
+fix.ssh.and.keys :
+	sudo chown -R queinnec':' $$(find . -type d -name .ssh)
+	sudo chown -R queinnec':' $$(find . -type f -name 'root*')
+	sudo chown -R queinnec':' $$(find . -type f -name 'keys.t*')
+	rm -f */keys.txt */keys.tgz \
+		*/root */root_rsa */root*.pub */rootfs \
+		*/ssh_host_ecdsa_key.pub \
+		*/nohup.out
+
+deploy.vmms.on.ovhlicence : fix.ssh.and.keys
+	ssh -t root@ns353482.ovh.net \
+		rm -f /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/vmms.paracamplus.com/ssh_host_ecdsa_key.pub
+	chmod a+x vmms.on.ovhlicence/run.md.with.docker.ms.sh
+	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus ns353482.ovh.net':'
+	ssh -t ns353482.ovh.net \
+	  rsync -avu Paracamplus/ExerciseFrameWork/perllib/ \
+		/usr/local/lib/site_perl/
+	ssh -t root@ns353482.ovh.net \
+	   /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.ovhlicence/run.md.with.docker.ms.sh
+
+deploy.vmms.on.youpou : fix.ssh.and.keys
+	chmod a+x vmms.on.youpou/run.md.with.docker.ms.sh
+	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus youpou.rsr.lip6.fr':'
+	ssh -t youpou.rsr.lip6.fr \
+	    sudo /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.youpou/run.md.with.docker.ms.sh
 
 create.aestxyz_vmmd0 : vmmd0/Dockerfile
 	chmod a+x vmmd0/RemoteScripts/?*.sh
@@ -467,7 +500,7 @@ create.aestxyz_vmmd :
 	-docker rmi paracamplus/aestxyz_vmmd
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
-	sudo vmmd.paracamplus.com/install.sh -s 1
+	sudo vmmd.paracamplus.com/install.sh -D QNC=1 -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
 # 22 min, 7.2G
 #docker push........
@@ -485,6 +518,11 @@ tt:
 	echo "Scripts/connect.sh vmmd"
 #	docker push 'paracamplus/aestxyz_vmmd:latest'
 
+test.D.option.in.install.sh :
+	vmz/z.paracamplus.com/prepare.sh
+	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
+	z.paracamplus.com/install.sh -D A=3 -s 10 -o '-c printenv'
+
 COURSE=ToBeDefined
 do.course :
 	if ! [ -d ${COURSE} ] ; then m instantiate_${COURSE} ; fi
@@ -497,8 +535,7 @@ create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker push 'paracamplus/aestxyz_${COURSE}:latest'
 # @bijou: < 80sec
-deploy.${COURSE}.paracamplus.com :
-	sudo chown ${USER}':' ${COURSE}.paracamplus.com/.ssh
+deploy.${COURSE}.paracamplus.com : fix.ssh.and.keys
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh

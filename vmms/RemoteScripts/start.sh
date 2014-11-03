@@ -5,6 +5,7 @@
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
 INTERACTIVE=false
 SETUP=true
+COMMAND=bash
 
 usage () {
     cat <<EOF
@@ -20,7 +21,7 @@ is the equivalent of the init process in a bootable Linux.
 EOF
 }
 
-while getopts s:in opt
+while getopts s:inD:c: opt
 do
     case "$opt" in
         s)
@@ -39,6 +40,13 @@ do
             SETUP=false
             INTERACTIVE=true
             ;;
+        D)
+            eval "export $OPTARG"
+            ;;
+        c)
+            COMMAND="$OPTARG"
+            INTERACTIVE=true
+            ;;
         \?)
             echo "Bad option $opt"
             usage
@@ -49,6 +57,7 @@ done
 
 if $SETUP
 then
+    chmod a+x ${0%/*}/*.sh
     if [ 1 -le $( ls -1 ${0%/*}/start-*.sh 2>/dev/null | wc -l ) ]
     then 
         for f in ${0%/*}/start-*.sh
@@ -57,15 +66,18 @@ then
             source $f 
             status=$?
             if [ $status -gt 0 ]
-            then exit $status
+            then 
+                echo "Failed to run $f ($status)"
+                exit $status
             fi
         done
     fi
 fi
 
+echo "========== End of start.sh ============"
 if ${INTERACTIVE}
 then 
-    bash
+    $COMMAND
 else
     sleep $SLEEP
 fi

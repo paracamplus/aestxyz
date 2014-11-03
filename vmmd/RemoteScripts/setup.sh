@@ -105,6 +105,8 @@ then
     # This is necessary when removing generated catalyst controllers:
     echo "Removing automatically generated sub-classes code from /opt/tmp/"
     rm -rf /opt/tmp/$HOSTNAME 2>/dev/null
+    mkdir -p /opt/tmp/$HOSTNAME
+    chown -R www-data: /opt/tmp/$HOSTNAME
     echo "Checking Apache configuration"
     /usr/sbin/apache2ctl configtest || \
         tail -n20 /var/log/apache2/error.log

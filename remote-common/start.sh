@@ -5,6 +5,7 @@
 SLEEP=$(( 60 * 60 * 24 * 365 * 10 ))
 INTERACTIVE=false
 SETUP=true
+COMMAND=bash
 
 usage () {
     cat <<EOF
@@ -20,7 +21,7 @@ is the equivalent of the init process in a bootable Linux.
 EOF
 }
 
-while getopts s:in opt
+while getopts s:inD:c: opt
 do
     case "$opt" in
         s)
@@ -37,6 +38,13 @@ do
         n)
             # Don't run setup-*.sh sub-scripts
             SETUP=false
+            INTERACTIVE=true
+            ;;
+        D)
+            eval "export $OPTARG"
+            ;;
+        c)
+            COMMAND="$OPTARG"
             INTERACTIVE=true
             ;;
         \?)
@@ -69,7 +77,7 @@ fi
 echo "========== End of start.sh ============"
 if ${INTERACTIVE}
 then 
-    bash
+    $COMMAND
 else
     sleep $SLEEP
 fi

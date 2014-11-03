@@ -58,7 +58,7 @@ scheduler:
          debug: 0
          verbose: 1
          rdbclass: Paracamplus::FW4EX::Schema::RFW4EXDB
-         rdbhost: db.paracamplus.org
+         rdbhost: db.paracamplus.com
          rdbname: fw4ex
          rdbport: 55432
          rdbuser: fw4exmd
@@ -68,15 +68,16 @@ scheduler:
          ldbport: 5432
          ldbuser: transmitter
          ldbpassword: Glyrywel3
-         tunneluser: camplou
+         tunneluser: saver
+         tunneluserkey: saver_dsa
 #
 # On sauve systematiquement sur s.paracamplus.com Il faut que sur
-# s.paracamplus.com, les repertoires bes appartiennent a fw4ex:fw4ex.
+# s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
        - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
          server: s.paracamplus.com
          destination: /var/www/s.paracamplus.com/s/
          username: fw4ex
-         privateKeyFile: /home/md/.ssh/fw4ex
+         privateKeyFile: /home/fw4ex/.ssh/fw4ex
          period: 0
          recountperiod: 30
          rsyncFlags: --ignore-existing
@@ -93,7 +94,7 @@ scheduler:
 #
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 59
-         directory: /var/lib/lxc/ms/
+         directory: /var/lib/docker/
          maxpercentage: 90
          action: /etc/init.d/qnc-fw4ex.sh restart
 #
@@ -134,6 +135,14 @@ test_eServerURLs:
      - file:///tmp/incoming/exercises
 incomingExerciseDir: /home/md/incoming
 
+
+DBtunnel :
+    remoteHost: db.paracamplus.com
+    forwardedPort: 5432
+    remotePort: 5432
+    remoteUser: saver
+    privateKey: /home/fw4ex/.ssh/saver_dsa
+    dbtunnelpidfile: /home/md/dbtunnel.pid
 
 # Base locale
 db:
@@ -182,8 +191,8 @@ markEngine:
         #command: /root/Docker/vmms.paracamplus.com/install.sh
         ip: 127.0.0.1
         port: 58022
-        keydir: /home/ms/.ssh
-#       keyprefix: root
+        keydir: /home/fw4ex/.ssh
+        keyprefix: root_rsa
 
     exerciseFetcher:
 # version pour exercices distants (ce qui permet d'envoyer de nouveaux

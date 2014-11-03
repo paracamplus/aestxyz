@@ -28,7 +28,7 @@ fi
 if [ -d /root/.ssh ]
 then
     echo "Content of /root/.ssh/"
-    ls -l /root/.ssh/
+    ls -l /root/.ssh/ | head -n5
     if [ -r /root/.ssh/authorized_keys ]
     then
         echo "Content of /root/.ssh/authorized_keys"

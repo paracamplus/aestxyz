@@ -10,7 +10,12 @@ end () {
 }
 trap "end" 0
 
-if ${USE_WRAPDOCKER:-false}
+rm -f /var/run/docker.pid 2>/dev/null
+
+if /etc/init.d/docker status | grep running
+then 
+    echo "Docker is already running"
+elif ${USE_WRAPDOCKER:-false}
 then 
     # Use wrapdocker:
     ( 
@@ -57,6 +62,7 @@ then
         echo "Missing /root/Docker/vmms.paracamplus.com/"
         exit 46
     fi
+    cp /root/.ssh/keys.tgz /root/Docker/vmms.paracamplus.com/
 fi
 
 mkdir -p /opt/common-${HOSTNAME#*.}
@@ -78,7 +84,7 @@ then
     cp -p /root/Docker/vmmd.paracamplus.com/root* /home/ms/.ssh/
     chmod 700 /home/ms/.ssh/root*
     chown -R fw4ex: /home/ms/
-    echo "SSHDIR=/home/ms/.ssh" >> /root/Docker/vmms.paracamplus.com/config.sh
+    #echo "SSHDIR=/home/ms/.ssh" >> /root/Docker/vmms.paracamplus.com/config.sh
 
     bash -x /root/Docker/vmms.paracamplus.com/install.sh
 

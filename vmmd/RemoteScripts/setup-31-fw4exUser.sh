@@ -10,7 +10,8 @@ then
     echo "Creating user fw4ex"
     adduser --quiet --shell /bin/bash \
         --disabled-password \
-        --gecos "FW4EX user" fw4ex
+        --gecos "FW4EX user" \
+        fw4ex
 fi
 chown -R fw4ex: /home/fw4ex
 
