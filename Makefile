@@ -43,6 +43,9 @@ clean.useless :
 	Scripts/remove-exited-containers.sh
 	Scripts/remove-useless-images.sh
 
+start.squeeze :
+	docker run --rm -it --name 'tmp-squeeze' 'debian:squeeze' '/bin/bash'
+
 #recreate.all : erase.all
 # Indentation figures inheritance:
 recreate.all : clean.useless
@@ -258,6 +261,7 @@ create.aestxyz_y : y/Dockerfile
 		"paracamplus/aestxyz_y:$$(date +%Y%m%d_%H%M%S)"
 # }}}
 
+# ###########################################################################
 # {{{ Images for servers in *.paracamplus.com
 # A container with a single Y server in it.
 create.aestxyz_vmy : vmy/Dockerfile
@@ -270,6 +274,7 @@ create.aestxyz_vmy : vmy/Dockerfile
 deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmy:latest'
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
 	y/y.paracamplus.net/check-outer-availability.sh \
 		-i y.paracamplus.com -p 80 -s 4 \
@@ -288,6 +293,7 @@ create.aestxyz_vma : vma/Dockerfile
 deploy.a.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
 	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
 	common/check-outer-availability.sh \
@@ -310,6 +316,7 @@ create.aestxyz_vme : vme/Dockerfile
 deploy.e.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vme:latest'
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
 	common/check-outer-availability.sh \
@@ -331,6 +338,7 @@ create.aestxyz_vmx : vmx/Dockerfile
 deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
 	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
 	common/check-outer-availability.sh \
@@ -350,6 +358,7 @@ create.aestxyz_vmt : vmt/Dockerfile
 deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
 	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
 	common/check-outer-availability.sh \
@@ -373,6 +382,7 @@ create.aestxyz_vmz : vmz/Dockerfile
 deploy.z.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmz:latest'
 	ssh -t root@ns353482.ovh.net Docker/z.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net \
 		wget -qO /dev/stdout http':'//127.0.0.1:56080/
@@ -388,9 +398,6 @@ deploy.z.paracamplus.com :
 	wget -qO /dev/stdout http://z.paracamplus.com//static/z.css
 	wget -qO /dev/stdout http://z.paracamplus.com//static//z.css
 
-start.squeeze :
-	docker run --rm -it --name 'tmp-squeeze' 'debian:squeeze' '/bin/bash'
-
 create.aestxyz_oldapt : oldapt/Dockerfile
 	cd oldapt/ && docker build -t paracamplus/aestxyz_oldapt .
 # aptitude update and upgrade are done. Perl is 5.10.1
@@ -401,7 +408,7 @@ create.aestxyz_oldcpan : oldcpan/Dockerfile
 # should update /usr/{lib,share}/perl5 
 #               /usr/{lib,share}/perl/5.10.1
 # all directories mentioned in perl -V
-# start vmplayer Debian6-64bit-VMfw4exForAuthor 172.16.82.128
+# start vmplayer Debian6-64bit-VMfw4exForAuthor 172.16.82.128 to compare
 create.aestxyz_vmolda : vmolda/Dockerfile
 	vmolda/a6.paracamplus.com/prepare.sh
 	cd vmolda/ && docker build -t paracamplus/aestxyz_vmolda .
@@ -409,6 +416,7 @@ create.aestxyz_vmolda : vmolda/Dockerfile
 deploy.a6.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		a6.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmolda:latest'
 	ssh -t root@ns353482.ovh.net Docker/a6.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:57080/
 	common/check-outer-availability.sh \
@@ -436,7 +444,7 @@ create.aestxyz_vmms : vmms/Dockerfile
 	chmod a+x vmms/RemoteScripts/?*.sh
 	vmms/vmms.paracamplus.com/prepare.sh
 	cd vmms/ && docker build -t paracamplus/aestxyz_vmms .
-#@bijou: 45 min
+#@bijou: 9 min
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
 ##	docker push 'paracamplus/aestxyz_vmms:latest'
@@ -460,17 +468,18 @@ tlv :
 # Sometimes useful to refresh the test database!
 
 fix.ssh.and.keys :
-	sudo chown -R queinnec':' $$(find . -type d -name .ssh)
-	sudo chown -R queinnec':' $$(find . -type f -name 'root*')
-	sudo chown -R queinnec':' $$(find . -type f -name 'keys.t*')
-	rm -f */keys.txt */keys.tgz \
+	-sudo chown -R queinnec':' $$(find . -type d -name .ssh)
+	-sudo chown -R queinnec':' $$(find . -type f -name 'root*')
+	-sudo chown -R queinnec':' $$(find . -type f -name 'keys.t*')
+	-rm -f */keys.txt */keys.tgz \
 		*/root */root_rsa */root*.pub */rootfs \
 		*/ssh_host_ecdsa_key.pub \
-		*/nohup.out
+		*/nohup.out */docker.ip */docker.cid
 
 deploy.vmms.on.ovhlicence : fix.ssh.and.keys
 	ssh -t root@ns353482.ovh.net \
 		rm -f /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/vmms.paracamplus.com/ssh_host_ecdsa_key.pub
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmms:latest'
 	chmod a+x vmms.on.ovhlicence/run.md.with.docker.ms.sh
 	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus ns353482.ovh.net':'
 	ssh -t ns353482.ovh.net \
@@ -486,30 +495,42 @@ deploy.vmms.on.youpou : fix.ssh.and.keys
 	    sudo /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.youpou/run.md.with.docker.ms.sh
 
 create.aestxyz_vmmd0 : vmmd0/Dockerfile
+# install debian packages and perl modules:
 	chmod a+x vmmd0/RemoteScripts/?*.sh
 	vmmd0/vmmd0.paracamplus.com/prepare.sh
 	cd vmmd0/ && docker build -t paracamplus/aestxyz_vmmd0 .
 # @bijou: 15min
 create.aestxyz_vmmd1 : vmmd/Dockerfile
+# Restart from here when changing start*sh scripts!
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
 	chmod a+x vmmd/RemoteScripts/?*.sh
 	vmmd/vmmd.paracamplus.com/prepare.sh
 	cd vmmd/ && docker build -t paracamplus/aestxyz_vmmd1 .
 # @bijou: 6min
 create.aestxyz_vmmd : 
+# Finish to prepare the fully complete paracamplus/aestxyz_vmmd image
+# and mainly download last paracamplus/aestxyz_vmms image
+	-docker stop vmmd
+	-docker rm vmmd
+	-docker stop vmmd1
+	-docker rm vmmd1
+	-docker stop vmmd0
+	-docker rm vmmd0
 	-docker rmi paracamplus/aestxyz_vmmd
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
 	sudo vmmd.paracamplus.com/install.sh -D QNC=1 -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
 # 22 min, 7.2G
-#docker push........
+# docker push 'paracamplus/aestxyz_vmmd;latest'
 
-test.local.vmmd :
+test.local.vmmd : fix.ssh.and.keys
+	-docker stop vmmd
+	-docker rm vmmd
 	Scripts/remove-exited-containers.sh 
 	Scripts/remove-useless-images.sh
-	sudo vmmd.paracamplus.com/install.sh
-	echo Scripts/connect.sh vmmd
+	vmmd.paracamplus.com/install.sh
+	Scripts/connect.sh vmmd
 
 tt:
 	exit 4

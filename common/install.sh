@@ -102,7 +102,7 @@ do
         \?)
             echo "Bad option $opt"
             usage
-            exit 41
+            exit 52
             ;;
     esac
 done
@@ -135,7 +135,7 @@ cat root_rsa.pub > ${SSHDIR}/authorized_keys
 # These are the names expected by Paracamplus/FW4EX/VM.pm          HACK
 cp root_rsa.pub root.pub
 cp root_rsa     root
-cp root* $SSHDIR/
+cp root root.pub root_rsa* $SSHDIR/
 chmod a=r $SSHDIR/*.pub
 
 # Move the keys (mentioned in keys.txt) into SSHDIR:
@@ -158,7 +158,7 @@ then
                 ;;
             *)
                 echo "Unrecognized command $command"
-                exit 41
+                exit 53
                 ;;
             esac
     done
@@ -184,7 +184,7 @@ fi
 if ! docker version 
 then
     echo "Docker is not available"
-    exit 48
+    exit 54
 fi
 
 if docker images | grep -E -q "^${DOCKERIMAGE} "
@@ -210,7 +210,7 @@ then
         docker run --rm \
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
-            --name=${DOCKERNAME} -h $HOSTNAME \
+            --name=tmp${DOCKERNAME} -h $HOSTNAME \
             -v ${SSHDIR}:/root/.ssh \
             ${DOCKERIMAGE} \
             $COMMAND
@@ -219,7 +219,7 @@ then
         docker run -it \
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
-            --name=${DOCKERNAME} -h $HOSTNAME \
+            --name=tmpi${DOCKERNAME} -h $HOSTNAME \
             -v ${SSHDIR}:/root/.ssh \
             ${DOCKERIMAGE} 
     fi
@@ -238,7 +238,7 @@ fi
 if [ -z "$CID" ]
 then 
     echo "Starting Docker container $DOCKERNAME failure!"
-    exit 52
+    exit 55
 fi
 
 # Make smoothless the connection between the Docker host and the container:
@@ -247,6 +247,11 @@ docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub .
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
 KEY="${KEY%root@*}"
 IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
+if [ -z "$IP" ]
+then
+    echo "No IP allocated!"
+    exit 56
+fi
 echo $IP > docker.ip
 touch $HOME/.ssh/known_hosts
 sed -i -e '/^$IP/d' $HOME/.ssh/known_hosts
@@ -329,17 +334,7 @@ then
     fi
 fi
 
-# Leave time for the container to be up and accept ssh connections:
-for t in $(seq 1 20)
-do
-    echo "Attempting($t) to ssh the container"
-    if ssh -p ${HOSTSSHPORT} -i ./root_rsa root@127.0.0.1 hostname
-    then 
-        docker ps -l
-        break
-    fi
-    sleep 1
-done
+docker ps -l
 
 #check "end of start.sh" at the end of docker logs ${DOCKERNAME}
 

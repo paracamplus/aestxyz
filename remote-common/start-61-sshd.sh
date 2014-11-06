@@ -27,8 +27,10 @@ fi
 
 # Copy this private key to allow the MD to access s.paracamplus.com 
 mkdir -p /home/md/.ssh
-cp -p /root/RemoteScripts/fw4ex     /home/md/.ssh/
-cp -p /root/RemoteScripts/fw4ex.pub /home/md/.ssh/
+cp -p /root/.ssh/fw4ex     /home/md/.ssh/
+cp -p /root/.ssh/fw4ex.pub /home/md/.ssh/
+cp -p /root/.ssh/saver_dsa     /home/md/.ssh/
+cp -p /root/.ssh/saver_dsa.pub /home/md/.ssh/
 
 if [ -f /root/RemoteScripts/booted ]
 then

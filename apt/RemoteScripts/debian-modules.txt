@@ -36,6 +36,9 @@ uuid-runtime
 apache2-mpm-prefork
 libapache2-mod-perl2
 
+# Debian packages installing perl modules that won't install with cpan
+libdevel-stacktrace-withlexicals-perl
+
 # These are useful for cpan:
 unzip
 wget

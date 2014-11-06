@@ -4,7 +4,7 @@ HOSTSSHPORT=58022
 DOCKERNAME=vmms
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
 # 
-SSHDIR=$(mktemp -d /tmp/ssh-XXXXXX)
+SSHDIR=$(mktemp -d /tmp/ssh--XXXXXXXX)
 # The --privileged option is required to set iptables
 ADDITIONAL_FLAGS=' --privileged '
 LOGDIR=/var/log/fw4ex/ms

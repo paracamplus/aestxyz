@@ -1,4 +1,6 @@
 #! /bin/bash
+# This script analyses the output of make create.aestxyz_vmmd and
+# determine when to commit the final image.
 
 CONTAINER=$1
 IMAGE=$2
@@ -10,14 +12,15 @@ do
     echo "Waiting ($I)"
     I=$(( $I+1 ))
     sleep 60
-    if docker logs $CONTAINER | grep -q 'This is the end'
+    if docker logs $CONTAINER 2>&1 | grep -q 'This is the end'
     then 
         break
-    elif docker logs $CONTAINER | grep -q 'Could not connect to Docker daemon'
+    elif docker logs $CONTAINER 2>&1 | grep -q 'exit 4'
     then
+        docker logs $CONTAINER 2>&1 | tail -n20
         exit 49
     else
-        docker logs $CONTAINER | tail -n4
+        docker logs $CONTAINER 2>&1 | tail -n4
     fi
 done
 

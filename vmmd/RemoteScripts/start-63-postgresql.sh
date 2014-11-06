@@ -5,7 +5,7 @@ then
     if ! /etc/init.d/postgresql start
     then
         echo "Cannot start Postgresql"
-        exit 46
+        exit 42
     fi
 fi
 

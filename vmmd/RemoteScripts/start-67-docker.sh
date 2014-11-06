@@ -41,7 +41,7 @@ if docker version | grep -q 'Server version'
 then :
 else
     echo "Could not connect to Docker daemon"
-    exit 49
+    exit 47
 fi
 
 # Prepare stuff in order to start a marking slave container.
@@ -52,7 +52,7 @@ if ! [ -d /root/Docker/vmms.paracamplus.com/ ]
 then
     if [ -d /opt/vmmd.paracamplus.com/Docker ]
     then
-        cp -rp /opt/vmmd.paracamplus.com/Docker /root/
+        rsync -avuL /opt/vmmd.paracamplus.com/Docker /root/
         chmod u+x /root/Docker/*/*.sh
         chown root: /root/Docker/*/*.sh
     fi
@@ -91,7 +91,7 @@ else
     # Around 4G to download!
     echo "Downloading paracamplus/aestxyz_vmms ..."
     docker pull paracamplus/aestxyz_vmms
-    # after that, 'end' will stop the Docker daemon.
+    # after that, 'end' will stop the Docker daemon (and release /dev/loop*)
 fi
 
 # end of start-65-docker.sh

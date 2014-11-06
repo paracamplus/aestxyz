@@ -12,7 +12,7 @@ MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME t.paracamplus.com
 
 WORKDIR /root/
-ADD perllib.tgz                  /usr/local/lib/site_perl/
+ADD RemoteScripts/perllib.tgz    /usr/local/lib/site_perl/
 ADD RemoteScripts                /root/RemoteScripts
 
 EXPOSE 80 22

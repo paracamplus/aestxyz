@@ -7,7 +7,7 @@
     # Return to the /Docker/ directory:
     cd ${0%/*}/../../
     mkdir -p $ROOTDIR/opt/$HOSTNAME/Docker/$VMMS
-    rsync -avu $VMMS/{install,config}.sh $ROOTDIR/opt/$HOSTNAME/Docker/$VMMS/
+    rsync -avuL $VMMS/{install,config}.sh $ROOTDIR/opt/$HOSTNAME/Docker/$VMMS/
     #NOTA: in the vmmd container, /opt/$HOSTNAME/Docker/$VMMS/
     #      will be moved to /root/Docker/$VMMS/
 )
