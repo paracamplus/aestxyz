@@ -1,4 +1,5 @@
 <VirtualHost *:80>
+# This is the Apache configuration on the Docker host.
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  li314.paracamplus.com
@@ -56,7 +57,9 @@
         </Location>
 
         ProxyPass     /a/      http://a.paracamplus.com/
-        RedirectMatch (/s/.*)$ http://s.paracamplus.com/$1
+        ProxyPass     /s/      http://s.paracamplus.com/
+        ProxyPass     /x/      http://x.paracamplus.com/
+        ProxyPass     /e/      http://e.paracamplus.com/
 
         Errorlog /var/log/apache2/li314.paracamplus.com-error.log
 

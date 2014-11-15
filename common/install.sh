@@ -145,16 +145,28 @@ then
     do
         case "$command" in
             UNTAR)
-                echo "Untaring $keyfile..."
-                cp "$keyfile" ${SSHDIR}/
-                ( 
-                    cd $SSHDIR
-                    tar xzf $keyfile
-                )
+                if [ -f "$keyfile" ]
+                then
+                    echo "Untaring $keyfile..."
+                    cp "$keyfile" ${SSHDIR}/ 
+                    ( 
+                        cd $SSHDIR
+                        tar xzf $keyfile --overwrite
+                    )
+                else
+                    echo "Missing file $keyfile"
+                    exit 57
+                fi
                 ;;
             FILE)
-                echo "Copying $keyfile..."
-                cp "$keyfile" ${SSHDIR}/
+                if [ -f "$keyfile" ]
+                then
+                    echo "Copying $keyfile..."
+                    cp "$keyfile" ${SSHDIR}/ || exit 57
+                else
+                    echo "Missing file $keyfile"
+                    exit 57
+                fi
                 ;;
             *)
                 echo "Unrecognized command $command"
@@ -192,7 +204,7 @@ then
     echo "*** Using current local copy of ${DOCKERIMAGE}"
 else
     echo "*** Download fresh copy of ${DOCKERIMAGE}"
-    docker pull ${DOCKERIMAGE}
+    docker pull ${DOCKERIMAGE}:latest
 fi
 docker stop ${DOCKERNAME} 
 docker rm   ${DOCKERNAME}

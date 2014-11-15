@@ -9,7 +9,7 @@ using_frontend_proxy: 1
 
 private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
-version: 1214
+version: 1223
 controllers :
    - Authenticate
    - Doc
@@ -58,6 +58,13 @@ Plugin::Static::Simple:
         - /var/www/mooc-li101-2014fev.paracamplus.com/
     mime_types:
         xsl: application/xslt+xml
+
+Plugin::CustomErrorMessage:
+  uri-for-not-found: /
+  error-template:    error.tt
+  content-type:      'text/html; charset=utf-8'
+  view-name:         TT
+  response-status:   500
 
 ############### Deployment
 deployment:
@@ -415,10 +422,10 @@ Controller::Proxy:
            CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
   s:
      prefix: /
-     remote: s3.paracamplus.com
+     remote: s.paracamplus.com
   sh:
      prefix: /sh/
-     remote: s3.paracamplus.com
+     remote: s.paracamplus.com
      remotePrefix: /
      xslt:
         oldtype: (text|application)/xml
@@ -429,7 +436,7 @@ Controller::Proxy:
             CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
   shp:
      prefix: /shp/
-     remote: s3.paracamplus.com
+     remote: s.paracamplus.com
      remotePrefix: /
      xslt:
         oldtype: (text|application)/xml
@@ -440,10 +447,10 @@ Controller::Proxy:
             CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
   e:
      prefix: /e/
-     remote: e3.paracamplus.com
+     remote: e.paracamplus.com
   eh:
      prefix: /eh/
-     remote: e3.paracamplus.com
+     remote: e.paracamplus.com
      xslt:
         oldtype: (text|application)/xml
         newtype: text/xml; charset=UTF-8
@@ -453,6 +460,6 @@ Controller::Proxy:
            CSS: http://mooc-li101-2014fev.paracamplus.com/static/li101.css
   a:
      prefix: /a/
-     remote: a1.paracamplus.com
+     remote: a.paracamplus.com
 
 #end.

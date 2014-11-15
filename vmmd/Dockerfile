@@ -8,6 +8,7 @@ MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME vmmd.paracamplus.com
 WORKDIR /root/
 ENV HOME /root/
+ENV USER root
 
 RUN bash -xc 'wget -qO- https://get.docker.io/ | sh'
 

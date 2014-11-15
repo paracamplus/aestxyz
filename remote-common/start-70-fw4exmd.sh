@@ -7,7 +7,7 @@ chmod 444    /opt/$HOSTNAME/fw4excookie.insecure.key
 (
     mkdir -p /opt/$HOSTNAME/Servers/.ssh
     cd /opt/$HOSTNAME/Servers/.ssh/ && \
-    tar xzf /root/.ssh/keys.tgz
+    tar xzf /root/.ssh/keys.tgz --overwrite
 )
 
 rm -f /var/log/fw4ex/qnc-fw4ex.log.*

@@ -137,6 +137,7 @@ Catalyst::View::JSON
 Catalyst::Controller
 Catalyst::Controller::REST
 Catalyst::Plugin::Unicode
+Catalyst::Plugin::CustomErrorMessage
 Object::Signature
 Catalyst::Plugin::Session
 Catalyst::Plugin::Session::State::Cookie

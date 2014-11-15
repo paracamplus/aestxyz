@@ -12,4 +12,4 @@ UNTAR keys.tgz
 EOF
 )
 
-# end of prepare-50-keys.sh
+# end of prepare-52-keys.sh

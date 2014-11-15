@@ -10,6 +10,7 @@ do
     then
         if [ $f -ot ${0%/*}/../../remote-common/$f ]
         then
+            echo "Updating $f"
             rsync -avu ${0%/*}/../../remote-common/$f $g
         else
             echo "ATTENTION: $g is newer!"
@@ -18,5 +19,8 @@ do
         fi
     fi
 done
+
+# Normally no need to update prepare-*.sh scripts they must be links
+# towards Docker/common/ scripts.
 
 # end of prepare-05-update.sh

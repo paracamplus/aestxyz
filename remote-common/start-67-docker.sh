@@ -12,10 +12,7 @@ trap "end" 0
 
 rm -f /var/run/docker.pid 2>/dev/null
 
-if /etc/init.d/docker status | grep running
-then 
-    echo "Docker is already running"
-elif ${USE_WRAPDOCKER:-false}
+if ${USE_WRAPDOCKER:-false}
 then 
     # Use wrapdocker:
     ( 
@@ -44,22 +41,24 @@ if docker version | grep -q 'Server version'
 then :
 else
     echo "Could not connect to Docker daemon"
-    exit 49
+    exit 47
 fi
 
-# Prepare stuff in order to start a marking slave container:
+# Prepare stuff in order to start a marking slave container.
+# NOTA: /root/Docker/vmms.paracamplus.com/ is the directory holding
+#       the install.sh command to install and start the VMMS container.
 
 if ! [ -d /root/Docker/vmms.paracamplus.com/ ]
 then
     if [ -d /opt/vmmd.paracamplus.com/Docker ]
     then
-        cp -rp /opt/vmmd.paracamplus.com/Docker /root/
+        rsync -avuL /opt/vmmd.paracamplus.com/Docker /root/
         chmod u+x /root/Docker/*/*.sh
         chown root: /root/Docker/*/*.sh
     fi
     if ! [ -d /root/Docker/vmms.paracamplus.com/ ]
     then
-        echo "Missing /root/Docker/vmms.paracamplus.com/"
+        echo "Cannot create /root/Docker/vmms.paracamplus.com/"
         exit 46
     fi
     cp /root/.ssh/keys.tgz /root/Docker/vmms.paracamplus.com/
@@ -77,22 +76,25 @@ then
     # Start the Marking slave container:
     rm -rf /var/log/fw4ex/ms
     mkdir -p /var/log/fw4ex/ms
-    # chown ?
+    mkdir -p /home/fw4ex/.ssh
     
-    # Make keys to access vmms readable from user fw4ex which runs md-start
-    mkdir -p /home/ms/.ssh
-    cp -p /root/Docker/vmmd.paracamplus.com/root* /home/ms/.ssh/
-    chmod 700 /home/ms/.ssh/root*
-    chown -R fw4ex: /home/ms/
-    #echo "SSHDIR=/home/ms/.ssh" >> /root/Docker/vmms.paracamplus.com/config.sh
-
+    echo "Starting the VMMS container..."
     bash -x /root/Docker/vmms.paracamplus.com/install.sh
+    
+    # Get private key to ssh the vmms container for user fw4ex:
+    cp /root/Docker/vmms.paracamplus.com/root* /home/fw4ex/.ssh/
+
+    # Share the same known hosts:
+    cp /root/.ssh/known_hosts /home/fw4ex/.ssh/known_hosts
+    chown -R fw4ex: /home/fw4ex/.ssh/
 
 else
     # Around 4G to download!
-    echo "Downloading paracamplus/aestxyz_vmms ..."
-    docker pull paracamplus/aestxyz_vmms
-    # after that, 'end' will stop the Docker daemon.
+    echo "Downloading paracamplus/aestxyz_vmms:latest ..."
+    docker pull paracamplus/aestxyz_vmms:latest
+    # Check this is the latest version of vmms:
+    docker images | grep paracamplus/aestxyz_vmms
+    # after that, 'end' will stop the Docker daemon (and release /dev/loop*)
 fi
 
 # end of start-65-docker.sh

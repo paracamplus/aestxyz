@@ -8,7 +8,7 @@
 
     # Identify the keys to be copied (by install.sh) into container's SSHDIR:
     cat > $PARACAMPLUSDIR/Docker/${HOSTNAME}/keys.txt <<EOF
-keys.tgz
+UNTAR keys.tgz
 EOF
 )
 

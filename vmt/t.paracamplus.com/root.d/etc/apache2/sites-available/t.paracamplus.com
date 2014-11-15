@@ -1,4 +1,5 @@
 <VirtualHost *:80>
+# This is the Apache configuration of the Docker container.
 # Check syntax with /usr/sbin/apache2ctl -t
 # generated on 2014-10-03T19:48:22
 # Catalyst needs apache2-mpm-prefork!
@@ -54,6 +55,11 @@ PerlModule Paracamplus::FW4EX::T::t_paracamplus_com
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
         </LocationMatch>
+
+        ProxyPass     /a/      http://a.paracamplus.com/
+        ProxyPass     /s/      http://s.paracamplus.com/
+        ProxyPass     /x/      http://x.paracamplus.com/
+        ProxyPass     /e/      http://e.paracamplus.com/
 
         # Coalesce all problems in one place:
         Errorlog /var/log/apache2/error.log

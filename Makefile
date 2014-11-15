@@ -42,6 +42,7 @@ clean.useless :
 	rm -f $$(find . -name '*.bak')
 	Scripts/remove-exited-containers.sh
 	Scripts/remove-useless-images.sh
+	df -h /var/lib/docker
 
 start.squeeze :
 	docker run --rm -it --name 'tmp-squeeze' 'debian:squeeze' '/bin/bash'
@@ -368,10 +369,10 @@ deploy.t.paracamplus.com :
 	  ssh -v -p 54022 -i Docker/t.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/t.paracamplus.com/fw4excookie.insecure.key
-	wget -qO /dev/stdout http://t.paracamplus.com/static/t.css
-	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css
-	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css
-	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css
+	wget -qO /dev/stdout http://t.paracamplus.com/static/t.css | head 
+	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css | head 
+	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css | head 
+	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css | head 
 
 create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh
@@ -519,18 +520,37 @@ create.aestxyz_vmmd :
 	-docker rmi paracamplus/aestxyz_vmmd
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
+	chmod a+x vmmd/RemoteScripts/?*.sh
+	vmmd/vmmd.paracamplus.com/prepare.sh
 	sudo vmmd.paracamplus.com/install.sh -D QNC=1 -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
+	docker stop vmmd1
+	docker rm vmmd1
 # 22 min, 7.2G
 # docker push 'paracamplus/aestxyz_vmmd;latest'
 
-test.local.vmmd : fix.ssh.and.keys
+# Small patches to vmmd
+create.aestxyz_vmmda :
+	chmod a+x vmmda/RemoteScripts/?*.sh
+	vmmda/vmmda.paracamplus.com/prepare.sh
+	cd vmmda/ && docker build -t paracamplus/aestxyz_vmmda .
+
+VMMD=vmmda
+test.local.${VMMD} : fix.ssh.and.keys
+	-docker stop vmmda
+	-docker rm vmmda
 	-docker stop vmmd
 	-docker rm vmmd
 	Scripts/remove-exited-containers.sh 
 	Scripts/remove-useless-images.sh
-	vmmd.paracamplus.com/install.sh
-	Scripts/connect.sh vmmd
+	${VMMD}.paracamplus.com/install.sh
+	sleep 2
+	Scripts/connect.sh ${VMMD}
+# within md
+#     # check vmms is running
+#     docker ps -a | grep vmms
+#     docker logs vmms
+# 
 
 tt:
 	exit 4
@@ -554,6 +574,8 @@ instantiate_${COURSE} :
 create.aestxyz_${COURSE} : ${COURSE}/Dockerfile	
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
+	docker tag paracamplus/aestxyz_${COURSE} \
+		"paracamplus/aestxyz_${COURSE}:$$(date +%Y%m%d_%H%M%S)"
 	docker push 'paracamplus/aestxyz_${COURSE}:latest'
 # @bijou: < 80sec
 deploy.${COURSE}.paracamplus.com : fix.ssh.and.keys

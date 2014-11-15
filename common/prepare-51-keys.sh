@@ -17,7 +17,9 @@ FILE fw4ex
 FILE fw4ex.pub
 FILE saver_dsa
 FILE saver_dsa.pub
+FILE fw4ex
+FILE fw4ex.pub
 EOF
 )
 
-# end of prepare-50-keys.sh
+# end of prepare-51-keys.sh

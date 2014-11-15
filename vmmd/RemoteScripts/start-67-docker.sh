@@ -76,6 +76,7 @@ then
     # Start the Marking slave container:
     rm -rf /var/log/fw4ex/ms
     mkdir -p /var/log/fw4ex/ms
+    mkdir -p /home/fw4ex/.ssh
     
     echo "Starting the VMMS container..."
     bash -x /root/Docker/vmms.paracamplus.com/install.sh
@@ -89,8 +90,10 @@ then
 
 else
     # Around 4G to download!
-    echo "Downloading paracamplus/aestxyz_vmms ..."
-    docker pull paracamplus/aestxyz_vmms
+    echo "Downloading paracamplus/aestxyz_vmms:latest ..."
+    docker pull paracamplus/aestxyz_vmms:latest
+    # Check this is the latest version of vmms:
+    docker images | grep paracamplus/aestxyz_vmms
     # after that, 'end' will stop the Docker daemon (and release /dev/loop*)
 fi
 

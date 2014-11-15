@@ -1,4 +1,5 @@
 <VirtualHost *:80>
+# This is the Apache configuration of the Docker container
 # Check syntax with /usr/sbin/apache2ctl -t
 # generated on 2014-10-05T15:47:28
 # Catalyst needs apache2-mpm-prefork!
@@ -57,10 +58,10 @@ ExpiresActive On
                 ExpiresByType text/javascript A108000
         </Location>
 
-        RedirectMatch /a/(.*)$ http://a.paracamplus.com/$1
-        RedirectMatch /e/(.*)$ http://e.paracamplus.com/$1
-        RedirectMatch (/s/.*)$ http://s.paracamplus.com/$1
-        RedirectMatch /x/(.*)$ http://x.paracamplus.com/$1
+        ProxyPass     /a/      http://a.paracamplus.com/
+        ProxyPass     /s/      http://s.paracamplus.com/
+        ProxyPass     /x/      http://x.paracamplus.com/
+        ProxyPass     /e/      http://e.paracamplus.com/
 
         # Coalesce all problems in one place:
         Errorlog /var/log/apache2/error.log

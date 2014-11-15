@@ -1,4 +1,5 @@
 <VirtualHost *:80>
+# This is the Apache configuration on the Docker host.
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  t.paracamplus.com
@@ -54,6 +55,11 @@
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
         </Location>
+
+        ProxyPass     /a/      http://a.paracamplus.com/
+        ProxyPass     /s/      http://s.paracamplus.com/
+        ProxyPass     /x/      http://x.paracamplus.com/
+        ProxyPass     /e/      http://e.paracamplus.com/
 
         Errorlog /var/log/apache2/t.paracamplus.com-error.log
 
