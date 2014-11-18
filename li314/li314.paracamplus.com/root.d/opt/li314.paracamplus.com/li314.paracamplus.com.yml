@@ -10,7 +10,7 @@ using_frontend_proxy: 1
 private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li314.paracamplus.com
-version: 1223
+version: 1234
 controllers :
    - Authenticate
    - Doc
@@ -202,7 +202,7 @@ Controller::Embody:
          firstname: Christian
 
 Controller::OneLiner:
-   version: 1223
+   version: 1234
 # Use the same insecure key as the A server:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
@@ -227,7 +227,7 @@ Controller::SaveRestaure:
 Controller::Proxy:
   verbose: 0
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
-  version: 1223
+  version: 1234
   x:
      prefix: /x/
      remote: x.paracamplus.com

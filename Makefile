@@ -453,20 +453,22 @@ create.aestxyz_vmms : vmms/Dockerfile
 test.local.vmms :
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
+## check that the container has the right hostname:
 	sudo vmms.paracamplus.com/install.sh \
 	    -e '/bin/hostname' </dev/null | \
 		grep vmms.paracamplus.com
 	sleep 2
+## check that the container can be ssh-ed via its IP:
 	sudo vmms.paracamplus.com/install.sh -s 5 ; sleep 1
 	ssh -i vmms.paracamplus.com/root \
 		root@$$(cat vmms.paracamplus.com/docker.ip) hostname
 	docker ps -l
+## check that the local container can be ssh-ed via a tunnel:
 	ssh -p 58022 -i vmms.paracamplus.com/root root@127.0.0.1 hostname
 	docker ps -l
+# run MD with a Docker MS:
 tlv :
-#	cd ../Deployment/Coucou/ && m run.md.with.docker.ms
 	./vmms.on.bijou/run.md.with.docker.ms.sh
-# Sometimes useful to refresh the test database!
 
 fix.ssh.and.keys :
 	-sudo chown -R queinnec':' $$(find . -type d -name .ssh)
@@ -529,13 +531,29 @@ create.aestxyz_vmmd :
 # 22 min, 7.2G
 # docker push 'paracamplus/aestxyz_vmmd;latest'
 
+create.aestxyz_vmmdr :
+# finish to prepare a complete MD in a Docker container without inner MS
+	-cd ../CPANmodules/FW4EXagent/ && m distribution
+	vmmdr/vmmdr.paracamplus.com/prepare.sh
+	cd vmmdr/ && docker build -t paracamplus/aestxyz_vmmdr .
+	docker tag paracamplus/aestxyz_vmmdr \
+		"paracamplus/aestxyz_vmmdr:$$(date +%Y%m%d_%H%M%S)"
+# @bijou: 1 min
+#	docker push 'paracamplus/aestxyz_vmmdr:latest'
+test.vmmdr :
+	docker run --rm -it paracamplus/aestxyz_vmmdr
+# run Docker MD with an external Docker MS:
+tlmd :
+	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
+
+
 # Small patches to vmmd
 create.aestxyz_vmmda :
 	chmod a+x vmmda/RemoteScripts/?*.sh
 	vmmda/vmmda.paracamplus.com/prepare.sh
 	cd vmmda/ && docker build -t paracamplus/aestxyz_vmmda .
 
-VMMD=vmmda
+VMMD=vmmd
 test.local.${VMMD} : fix.ssh.and.keys
 	-docker stop vmmda
 	-docker rm vmmda

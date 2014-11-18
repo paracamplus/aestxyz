@@ -23,6 +23,8 @@ rm -rf /tmp/patches 2>/dev/null
 
 # remove remains from marking exercises
 /root/fw4exrootlib/clear-cached-exercises.sh
+rm -rf /home/md/cache/exercises.d/*
+rm -rf /home/md/cache/jobs.d/*
 rm -rf /home/md/exercisedir/*.tgz
 rm -rf /home/md/autocheck/*
 rm -rf /home/md/incoming/*

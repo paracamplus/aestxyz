@@ -13,6 +13,8 @@ log ${0##*/} $UUID
 recreate_user () {
     local U=$1
     local GECOS="FW4EX Student ${U#student}"
+    # deluser, adduser are Perl scripts that warn if not in C locale:
+    export LANG=C
 
     if grep -q "$U" < /etc/passwd 
     then deluser --quiet --remove-home $U

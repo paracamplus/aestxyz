@@ -176,6 +176,21 @@ then
     done
 fi
 
+for f in install-*.sh
+do
+    if [ -f $f ]
+    then
+        echo "Sourcing $f"
+        source $f 
+        status=$?
+        if [ $status -gt 0 ]
+        then 
+            echo "Failed to run $f ($status)"
+            exit $status
+        fi
+    fi
+done
+
 if ${SHARE_FW4EX_LOG}
 then
     # Container's fw4ex logs are kept on the Docker host
@@ -302,6 +317,27 @@ then
     done
 fi
 
+# Allow the container to open a tunnel to the Docker host.
+#NOTA: this code should be unified with PROVIDE_SMTP
+if [ -n "${PROVIDE_TUNNEL}" ]
+then
+    # Leave time for the container to start sshd:
+    # @bijou: 3-7 seconds
+    for t in $(seq 1 20)
+    do
+        sleep 1
+        echo "Trying($t) to ssh the container"
+        if ssh -p ${HOSTSSHPORT} -i ./root_rsa root@127.0.0.1 hostname
+        then
+            nohup ssh -nNC -o TCPKeepAlive=yes \
+                -i ./root_rsa \
+                -R ${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL} \
+                -p ${HOSTSSHPORT} root@127.0.0.1 &
+            break
+        fi
+    done
+fi
+
 # Install specific files on the Docker host:
 if [ "$USER" = root ]
 then
@@ -347,6 +383,9 @@ then
 fi
 
 docker ps -l
+
+# Give time for sshd to be up and running in the container:
+sleep 2
 
 #check "end of start.sh" at the end of docker logs ${DOCKERNAME}
 

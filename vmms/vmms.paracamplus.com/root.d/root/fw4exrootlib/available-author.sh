@@ -47,6 +47,8 @@ fi
 recreate_user () {
     local U=$1
     local GECOS="FW4EX Author ${U#author}"
+    # deluser, adduser are Perl scripts that warn if not in C locale:
+    export LANG=C
 
     if grep -q "$U" < /etc/passwd 
     then deluser --quiet --remove-home $U
