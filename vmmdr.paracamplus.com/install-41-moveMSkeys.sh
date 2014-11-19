@@ -1,6 +1,6 @@
 #! /bin/bash
 # Runs on the Docker container, install vmms private key in SSHDIR
-# sostart-41-moveMSkeys.sh may install them at the right place.
+# so start-41-moveMSkeys.sh may install them at the right place.
 
 ( 
     cd ../

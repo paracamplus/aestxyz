@@ -96,12 +96,6 @@ scheduler:
 #
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 59
-         directory: /var/lib/docker/
-         maxpercentage: 90
-         action: /etc/init.d/qnc-fw4ex.sh restart
-#
-       - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
-         period: 59
          directory: /opt/
          maxpercentage: 90
          action: /opt/vmmdr.paracamplus.com/Scripts/cleanOpt.sh
