@@ -1,9 +1,18 @@
 #! /bin/bash
-# Specific version for Marking Driver
 
 cd /root/
-#echo "Fixing rights on fw4exrootlib"
-#chmod -R 555 /root/fw4exrootlib/
+echo "Fixing ownership and rights on subdirectories of /root/"
+chown -R root: /root/RemoteScripts/
+chmod a+x /root/RemoteScripts/*.sh
+chown -R root: /root/fw4exrootlib/
+chmod -R 555   /root/fw4exrootlib/
+
+echo "Fixing ownership and rights on Perl modules"
+chown -R root: /usr/local/lib/site_perl/
+chmod -R 555   /usr/local/lib/site_perl/
+
+echo "Fixing ownership of /home"
+chown root: /home/
 
 if ! grep -q ':FW4EX user:' < /etc/passwd
 then
@@ -14,6 +23,7 @@ then
         fw4ex
 fi
 chown -R fw4ex: /home/fw4ex
+chown -R fw4ex: /home/fw4exlib
 
 # HOSTTYPE is not exported in vmms. This is useful to test utilities.
 export HOSTTYPE=$HOSTTYPE

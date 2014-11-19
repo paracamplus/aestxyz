@@ -13,6 +13,7 @@ do
         -e '/GSSAPIAuthentication *yes/d' \
         $f
 done
+echo 'HashKnownHosts no' >> /etc/ssh/ssh_config
 
 # This will also change the corresponding directory of the Docker host:
 chown -R root: /root/.ssh/

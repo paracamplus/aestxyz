@@ -221,6 +221,6 @@ storeEngine:
 # proprietaire. Il faut qu'ils soient lisibles par apache qui tourne
 # le serveur s. Les rapports sont stockes en local mais un greffon de
 # l'ordonnanceur les copie sur s1 et s3.
-      postCommand: /opt/vmmd.paracamplus.com/Scripts/hackJobResult.sh
+#      postCommand: /opt/vmmd.paracamplus.com/Scripts/hackJobResult.sh
 
 #end.

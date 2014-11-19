@@ -5,9 +5,9 @@
 # Goto the directory holding vmm[sd].paracamplus.com/ sub-directories
 cd ${0%/*}/../
 
-vmms.paracamplus.com/install.sh -s 300 #DEBUG
+vmms.paracamplus.com/install.sh
 
-vmmdr.paracamplus.com/install.sh -s 300
+vmmdr.paracamplus.com/install.sh
 
 # Show MD log:
 ssh -i vmmdr.paracamplus.com/root_rsa \
