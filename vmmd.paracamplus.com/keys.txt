@@ -5,3 +5,4 @@ FILE saver_dsa
 FILE saver_dsa.pub
 FILE fw4ex
 FILE fw4ex.pub
+FILE fw4excookie.insecure.key

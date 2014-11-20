@@ -3,17 +3,18 @@
 # DockHub, private keys are kept in a volume on the Docker host and
 # mounted when the container is run.
 
-if ! [ -r /opt/$HOSTNAME/fw4excookie.insecure.key ]
-then
-    if [ -r /opt/$HOSTNAME/private/fw4excookie.insecure.key ]
-    then (
-            cd /opt/$HOSTNAME
-            cp -p private/fw4excookie.insecure.key .
-        )
-    else
-        echo "Missing /opt/$HOSTNAME/private/fw4excookie.insecure.key"
-        exit 43
-    fi
+if [ -r /opt/$HOSTNAME/private/fw4excookie.insecure.key ]
+then (
+        # DEPRECATED!!!!!!!!!!!!!!!!!!!
+        cd /opt/$HOSTNAME
+        cp -p private/fw4excookie.insecure.key .
+     )
+elif [ -r /root/.ssh/fw4excookie.insecure.key ]
+then 
+    cp -pf /root/.ssh/fw4excookie.insecure.key /opt/$HOSTNAME/
+else
+    echo "Cannot find fw4excookie.insecure.key"
+    exit 43
 fi
 
 # end of start-40.sh

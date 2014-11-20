@@ -18,6 +18,7 @@ SSHDIR=`pwd`/.ssh
 SHARE_FW4EX_LOG=true
 PROVIDE_APACHE=true
 PROVIDE_SMTP=false
+FW4EX_MASTER_KEY=/opt/common-paracamplus.com/fw4excookie.insecure.key
 source config.sh
 
 # Does the container needs to know the FW4EX master key. This key is
@@ -50,6 +51,18 @@ then
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v $FW4EX_MASTER_KEY_DIR:/opt/$HOSTNAME/private "
 fi
 
+if $NEED_FW4EX_MASTER_KEY
+then
+    mkdir -p $SSHDIR/
+    if [ -r $FW4EX_MASTER_KEY ]
+    then
+        cp -f $FW4EX_MASTER_KEY $SSHDIR/
+    else
+        echo "Cannot find $FW4EX_MASTER_KEY"
+        exit 51
+    fi
+fi
+
 usage () {
     cat <<EOF
 Usage: ${0##*/} [option]
@@ -59,6 +72,7 @@ Usage: ${0##*/} [option]
   -e CMD    run CMD instead of start.sh (and its options) in the container
   -D V=v    exports the variable V with value v in the container
   -o STR    adds STR to the options of start.sh
+  -R        refresh docker images
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -68,7 +82,8 @@ EOF
 }
 
 START_FLAGS=
-while getopts e:s:inD:o: opt
+REFRESH_DOCKER_IMAGES=false
+while getopts e:s:inD:o:R opt
 do
     case "$opt" in
         e)
@@ -98,6 +113,10 @@ do
             # additional flags for start.sh in the container
             INTERACTIVE=false
             START_FLAGS="$START_FLAGS $OPTARG"
+            ;;
+        R)
+            # Force a refresh of the Docker images
+            REFRESH_DOCKER_IMAGES=true
             ;;
         \?)
             echo "Bad option $opt"
@@ -139,6 +158,7 @@ cp root root.pub root_rsa* $SSHDIR/
 chmod a=r $SSHDIR/*.pub
 
 # Move the keys (mentioned in keys.txt) into SSHDIR:
+rm -f while.code 2>/dev/null
 if [ -f keys.txt ]
 then
     cat keys.txt | while read command keyfile
@@ -155,6 +175,7 @@ then
                     )
                 else
                     echo "Missing file $keyfile"
+                    echo 57 > while.code
                     exit 57
                 fi
                 ;;
@@ -165,16 +186,20 @@ then
                     cp "$keyfile" ${SSHDIR}/ || exit 57
                 else
                     echo "Missing file $keyfile"
+                    echo 57 > while.code
                     exit 57
                 fi
                 ;;
             *)
                 echo "Unrecognized command $command"
+                echo 53 > while.code
                 exit 53
                 ;;
             esac
     done
 fi
+
+[ -r while.code ] && exit $(cat while.code)
 
 for f in install-*.sh
 do
@@ -214,7 +239,11 @@ then
     exit 54
 fi
 
-if docker images | grep -E -q "^${DOCKERIMAGE} "
+if ${REFRESH_DOCKER_IMAGES}
+then
+    echo "*** Download fresh copy of ${DOCKERIMAGE}"
+    docker pull ${DOCKERIMAGE}:latest
+elif docker images | grep -E -q "^${DOCKERIMAGE} "
 then 
     echo "*** Using current local copy of ${DOCKERIMAGE}"
 else
@@ -281,7 +310,7 @@ then
 fi
 echo $IP > docker.ip
 touch $HOME/.ssh/known_hosts
-sed -i -e '/^$IP/d' $HOME/.ssh/known_hosts
+sed -i -e "/^$IP/d" $HOME/.ssh/known_hosts
 echo "$IP $KEY"  >> $HOME/.ssh/known_hosts
 if [ "$USER" = root ]
 then

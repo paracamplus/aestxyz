@@ -1,10 +1,10 @@
 --- 
 # Configuration of a Docker container running a Marking Driver Daemon
 # on Bijou and using another (external) container running a Marking
-# Slave. It uses the real database.............FIXME
+# Slave. It uses the real database.
 # 
 #
-# Static unmodifiable files are stored in /opt/vmmd.paracamplus.com
+# Static unmodifiable files are stored in /opt/vmmdr.paracamplus.com
 # Files needed to run MD are in /home/md/ This directory may be safely erased
 #   to reconfigure the MD. 
 # Static libraries for the MD and MS are in /home/fw4ex
@@ -19,7 +19,7 @@ version: 1094
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
-privateKeyFile: /opt/vmmdr.paracamplus.com/fw4excookie.insecure.key
+privateKeyFile: /home/fw4ex/.ssh/fw4excookie.insecure.key
 
 # This loggerConfiguration will be written in loggerconf:
 loggerConfiguration: |
@@ -56,38 +56,38 @@ scheduler:
     pluginConfigs:
 # FUTURE: should try first to save in the remote db and, if not
 # possible, in the local database:
-#        - class: Paracamplus::FW4EX::MD_plugin::TransmitMarks
-#          debug: 0
-#          verbose: 1
-#          rdbclass: Paracamplus::FW4EX::Schema::RFW4EXDB
-#          rdbhost: db.paracamplus.com
-#          rdbname: fw4ex
-#          rdbport: 55432
-#          rdbuser: fw4exmd
-#          rdbpassword: du73vxYDj
-#          ldbclass: Paracamplus::FW4EX::Schema::LFW4EXDB
-#          ldbname: fw4ex
-#          ldbport: 5432
-#          ldbuser: transmitter
-#          ldbpassword: Glyrywel3
-#          tunneluser: saver
-#          tunneluserkey: saver_dsa
-# #
-# # On sauve systematiquement sur s.paracamplus.com Il faut que sur
-# # s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
-#        - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
-#          server: s.paracamplus.com
-#          destination: /var/www/s.paracamplus.com/s/
-#          username: fw4ex
-#          privateKeyFile: /home/fw4ex/.ssh/fw4ex
-#          period: 0
-#          recountperiod: 30
-#          rsyncFlags: --ignore-existing
-#          sources:
-#             - /var/www/s.paracamplus.com/s/
-#             - /var/www/s.paracamplus.com/b/
-#             - /var/www/s.paracamplus.com/e/
+       - class: Paracamplus::FW4EX::MD_plugin::TransmitMarks
+         debug: 0
+         verbose: 1
+         rdbclass: Paracamplus::FW4EX::Schema::RFW4EXDB
+         rdbhost: db.paracamplus.com
+         rdbname: fw4ex
+         rdbport: 55432
+         rdbuser: fw4exmd
+         rdbpassword: du73vxYDj
+         ldbclass: Paracamplus::FW4EX::Schema::LFW4EXDB
+         ldbname: fw4ex
+         ldbport: 5432
+         ldbuser: transmitter
+         ldbpassword: Glyrywel3
+         tunneluser: saver
+         tunneluserkey: saver_dsa
 #
+# On sauve systematiquement sur s.paracamplus.com Il faut que sur
+# s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
+       - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
+         server: s.paracamplus.com
+         destination: /var/www/s.paracamplus.com/s/
+         username: fw4ex
+         privateKeyFile: /home/fw4ex/.ssh/fw4ex
+         period: 0
+         recountperiod: 30
+         rsyncFlags: --ignore-existing
+         sources:
+            - /var/www/s.paracamplus.com/s/
+            - /var/www/s.paracamplus.com/b/
+            - /var/www/s.paracamplus.com/e/
+
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 51
          directory: /home/md/
@@ -149,7 +149,7 @@ markEngine:
     tmpDir:      /home/md/tmp
     binDir:      /home/fw4ex/bin
     rngschemafile:    /opt/vmmdr.paracamplus.com/fw4ex.rng
-    private_key_file: /opt/vmmdr.paracamplus.com/fw4excookie.insecure.key
+    private_key_file: /home/fw4ex/.ssh/fw4excookie.insecure.key
 #   sleeptime: 5
 
     # These directories are within the marking slave:
@@ -187,19 +187,19 @@ markEngine:
         exerciseDir: /home/md/cache/exercises.d
         eServerUrl: http://e.paracamplus.com
         seServerUrl: http://e.paracamplus.com
-        private_key_file: /opt/vmmdr.paracamplus.com/fw4excookie.insecure.key
+        private_key_file: /home/fw4ex/.ssh/fw4excookie.insecure.key
         eAdminName: 42
     test_exerciseFetcher:
         class: Paracamplus::FW4EX::ExerciseFetcherLWP
         exerciseDir: /home/md/cache/exercises.d
         eServerUrl: http://e.paracamplus.com
         seServerUrl: http://e1.paracamplus.com
-        private_key_file: /opt/vmmdr.paracamplus.com/fw4excookie.insecure.key
+        private_key_file: /home/fw4ex/.ssh/fw4excookie.insecure.key
         eAdminName: 42
 
 storeEngine:
       class: Paracamplus::FW4EX::LocalStoreEngine
-# Stockage direct sur VMmd:
+# Stockage direct interne sur VMmd:
       storageDir:          /var/www/s.paracamplus.com/s
       batchStorageDir:     /var/www/s.paracamplus.com/b
       autocheckStorageDir: /var/www/s.paracamplus.com/e
@@ -207,6 +207,6 @@ storeEngine:
 # proprietaire. Il faut qu'ils soient lisibles par apache qui tourne
 # le serveur s. Les rapports sont stockes en local mais un greffon de
 # l'ordonnanceur les copie sur s1 et s3.
-      postCommand: /opt/vmmdr.paracamplus.com/Scripts/hackJobResult.sh
+#      postCommand: /opt/vmmdr.paracamplus.com/Scripts/hackJobResult.sh
 
 #end.
