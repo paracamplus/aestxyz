@@ -289,6 +289,8 @@ else
         -v ${SSHDIR}:/root/.ssh \
         ${DOCKERIMAGE} \
         bash -x /root/RemoteScripts/start.sh $START_FLAGS )
+    CODE=$?
+    [ "$CODE" -ne 0 ] && exit $CODE
 fi
 
 if [ -z "$CID" ]

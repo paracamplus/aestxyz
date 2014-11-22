@@ -546,6 +546,21 @@ test.vmmdr :
 tlmd :
 	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
 
+# Generate keys for the install procedure:
+generate.install.keys :
+	ssh-keygen -t rsa -N '' -b 2048 \
+		-C 'vmmdr+vmms-transfer-key' \
+		-f vmmdr.on.ovhlicence/vmmdr+vmms
+	cd vmmdr.on.ovhlicence/ && mv vmmdr+vmms vmmdr+vmms.private.key
+# This creates a -----BEGIN PUBLIC KEY-----
+	cd vmmdr.on.ovhlicence/ && \
+	    openssl rsa -in vmmdr+vmms.private.key \
+		-pubout -outform pem > vmmdr+vmms.public.key
+# whereas this creates an unworkable -----BEGIN RSA PUBLIC KEY-----
+#	ssh-keygen -f vmmdr.on.ovhlicence/vmmdr+vmms.pub -e -m pem \
+#		> vmmdr.on.ovhlicence/vmmdr+vmms.public.key
+	rm -f vmmdr.on.ovhlicence/vmmdr+vmms.pub
+	head vmmdr.on.ovhlicence/vmmdr+vmms.*.key
 
 # Small patches to vmmd
 create.aestxyz_vmmda :

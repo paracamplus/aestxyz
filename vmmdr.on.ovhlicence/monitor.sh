@@ -30,6 +30,15 @@ refresh () {
     docker pull paracamplus/aestxyz_vmmdr
 }
 
+SUDO=sudo
+may_sudo () {
+    if ! sudo hostname
+    then
+        echo "WARNING: Cannot sudo!"
+        SUDO=
+    fi
+}
+
 start () {
     $VERBOSE vmms.paracamplus.com/install.sh
     local CODE=$?
@@ -76,30 +85,86 @@ stop () {
 
 clean () {
     ( cd vmms.paracamplus.com
-      rm docker.{cid,ip} \
+      rm docker.{cid,ip} rootfs \
          root root.pub root_rsa root_rsa.pub \
-         ssh_host_ecdsa_key.pub )
+         ssh_host_ecdsa_key.pub nohup.out ) 2>/dev/null
     ( cd vmmdr.paracamplus.com
-      rm docker.{cid,ip} \
+      rm docker.{cid,ip} rootfs \
          root root.pub root_rsa root_rsa.pub \
-         ssh_host_ecdsa_key.pub )
-    sudo rm -rf $(find . -type d -name ssh.d 2>/dev/null)
-    sudo rm -rf $(find . -type d -name log.d 2>/dev/null)
+         ssh_host_ecdsa_key.pub nohup.out ) 2>/dev/null
+    $SUDO rm -rf $(find . -type d -name ssh.d -o -name log.d 2>/dev/null)
 }
 
+dist () {
+    stop
+    clean
+    local OUT=$(date -u +vmmdr+vmms-%FT%H%M%S.tgz)
+    #trap "rm $OUT" 0
+    tar czhf $OUT --exclude='*~' \
+        monitor.sh \
+        vmms.paracamplus.com/ \
+        vmmdr.paracamplus.com/ 
+    cryptFile `pwd`/$OUT `pwd`/vmmdr+vmms.public.key `pwd`/$OUT.bf
+    rm -f $OUT
+    rsync -avu $OUT.bf info.fw4ex.org:/var/www/info.fw4ex.org/vmmdr+vmms/
+# create latest link........
+    # This will push all the tagged images with these names:
+    docker push paracamplus/aestxyz_vmms
+    docker push paracamplus/aestxyz_vmmdr
+}
+
+cryptFile () {
+    local INFILE="$1"
+    local PUBKEY="$2"
+    local OUTFILE="$3"
+    local DIR=$(mktemp -d -p $HOME XXXsslXXXX)
+    trap "rm -rf $DIR" 0
+    (
+        cd $DIR
+        dd if=/dev/random of=secretkey bs=1k count=1 2>/dev/null
+        # Crypt INFILE with a random key (kept in secretkey):
+        openssl enc -blowfish -pass 'file:secretkey' < $INFILE > all.bf
+        # Crypt the secretkey with a public key:
+        openssl rsautl -encrypt \
+            -inkey $PUBKEY -pubin \
+	    -in secretkey -out secretkey.rsa
+        # Pack these two files into OUTFILE:
+        tar czf $OUTFILE secretkey.rsa all.bf
+        cd && rm -rf $DIR
+    )
+}
+
+decryptFile () {
+    local INURL="$1"
+    local PRIVATEKEY="$2"
+    local OUTFILE="$3"
+    export LANG=C
+    local DIR=$(mktemp -d -p $HOME XXXsslXXXX)
+    trap "rm -rf $DIR" 0
+    (
+        cd $DIR
+        wget -q -O got.tgz $INURL
+        # Expand the tgz into secretkey.rsa and all.bf:
+        tar xzf got.tgz
+        # Decrypt the secretkey:
+        openssl rsautl -decrypt \
+	    -inkey $PRIVATEKEY \
+	    -in secretkey.rsa -out secretkey
+        # then decrypt all.bf:
+        openssl enc -d -blowfish -pass 'file:secretkey' \
+	    -in all.bf -out $OUTFILE
+        cd && rm -rf $DIR
+    )
+}
+
+# This should run on the host where we want to install the Docker containers.
 install () {
-    ssh ${USER}@$REMOTE "mkdir -p Docker"
-    rsync -avuL ${0} ${USER}@$REMOTE:Docker/
-    ssh ${USER}@$REMOTE "mkdir -p Docker/vmms.paracamplus.com"
-    rsync -avuL \
-        vmms.paracamplus.com/install.sh \
-        vmms.paracamplus.com/config.sh \
-        ${USER}@$REMOTE:Docker/vmms.paracamplus.com/
-    ssh ${USER}@$REMOTE "mkdir -p Docker/vmmdr.paracamplus.com"
-    rsync -avuL \
-        vmmdr.paracamplus.com/install.sh \
-        vmmdr.paracamplus.com/config.sh \
-        ${USER}@$REMOTE:Docker/vmmdr.paracamplus.com/
+    mkdir -p Docker
+    decryptFile 'http://info.fw4ex.org/vmmdr+vmms/latest' \
+        ${HOME}/.ssh/vmmdr+vmms.private.key \
+        `pwd`/Docker/vmmdr+vmms.tgz
+    exit 1
+    #rsync -avuL vmmdr.on.ovhlicence/ fw4ex@ns327071.ovh.net:Docker/
 }        
 
 COMMAND="$1"
@@ -156,6 +221,9 @@ case "$COMMAND" in
         ;;
     log)
         show_md_log
+        ;;
+    dist)
+        dist
         ;;
     install)
         # requires the -h option!

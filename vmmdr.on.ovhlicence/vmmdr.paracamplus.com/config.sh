@@ -31,4 +31,7 @@ NEED_FW4EX_MASTER_KEY_DIR=false
 NEED_FW4EX_MASTER_KEY=true
 FW4EX_MASTER_KEY=$BASEDIR/fw4excookie.insecure.key
 
+# link to vmms
+ADDITIONAL_FLAGS=" --link=vmms:vmms.paracamplus.com"
+
 # end of config.sh

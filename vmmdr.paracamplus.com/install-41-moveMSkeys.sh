@@ -11,4 +11,8 @@
     cp -p vmms.paracamplus.com/docker.ip              $SSHDIR/vmms.ip
 )
 
+#NOTA: with the --link option of Docker, the container vmms will be
+#known as vmms.paracamplus.com within the vmmdr container. This means
+#that copying docker.ip above is no longer necessary.
+
 # end of install-41-moveMSkeys.sh
