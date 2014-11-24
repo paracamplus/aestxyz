@@ -84,15 +84,22 @@ stop () {
 }
 
 clean () {
+    for m in vmmdr vmms
+    do for d in ssh.d log.d
+        do 
+            ${SUDO} /bin/rm -rf `pwd`/$m.paracamplus.com/$d/
+        done
+    done
     ( cd vmms.paracamplus.com
-      rm docker.{cid,ip} rootfs \
+      rm -rf ssh.d log.d
+      rm -f docker.{cid,ip} rootfs \
          root root.pub root_rsa root_rsa.pub \
          ssh_host_ecdsa_key.pub nohup.out ) 2>/dev/null
     ( cd vmmdr.paracamplus.com
-      rm docker.{cid,ip} rootfs \
+      rm -rf ssh.d log.d
+      rm -f docker.{cid,ip} rootfs \
          root root.pub root_rsa root_rsa.pub \
          ssh_host_ecdsa_key.pub nohup.out ) 2>/dev/null
-    $SUDO rm -rf $(find . -type d -name ssh.d -o -name log.d 2>/dev/null)
 }
 
 dist () {
@@ -230,7 +237,7 @@ case "$COMMAND" in
         install
         ;;
     *)
-        echo "Unknown command $COMMAND"
+        echo "Unknown command '$COMMAND'"
         exit 12
         ;;
 esac

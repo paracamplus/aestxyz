@@ -28,6 +28,7 @@ chown -R fw4ex: /home/fw4exlib
 # HOSTTYPE is not exported in vmms. This is useful to test utilities.
 export HOSTTYPE=$HOSTTYPE
 
+mkdir -p /home/fw4ex/bin
 if [ -d /home/fw4ex/C ]
 then 
     echo "Compiling C utilities"
@@ -47,5 +48,6 @@ then
     done
     rm -rf /home/fw4ex/C
 fi
+chown -R fw4ex: /home/fw4ex/bin
 
 # end of setup-31-fw4exUser.sh

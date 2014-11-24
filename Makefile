@@ -270,9 +270,9 @@ create.aestxyz_vmy : vmy/Dockerfile
 	cd vmy/ && docker build -t paracamplus/aestxyz_vmy .
 	docker tag paracamplus/aestxyz_vmy \
 		"paracamplus/aestxyz_vmy:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vmy:latest'
 # @bijou 1min
 deploy.y.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vmy:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmy:latest'
@@ -290,8 +290,8 @@ create.aestxyz_vma : vma/Dockerfile
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker tag paracamplus/aestxyz_vma \
 		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vma:latest'
 deploy.a.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vma:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
@@ -313,8 +313,8 @@ create.aestxyz_vme : vme/Dockerfile
 	cd vme/ && docker build -t paracamplus/aestxyz_vme .
 	docker tag paracamplus/aestxyz_vme \
 		"paracamplus/aestxyz_vme:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vme:latest'
 deploy.e.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vme:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vme:latest'
@@ -335,8 +335,8 @@ create.aestxyz_vmx : vmx/Dockerfile
 	cd vmx/ && docker build -t paracamplus/aestxyz_vmx .
 	docker tag paracamplus/aestxyz_vmx \
 		"paracamplus/aestxyz_vmx:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vmx:latest'
 deploy.x.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vmx:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
@@ -355,8 +355,8 @@ create.aestxyz_vmt : vmt/Dockerfile
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker tag paracamplus/aestxyz_vmt \
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vmt:latest'
 deploy.t.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vmt:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
@@ -379,8 +379,8 @@ create.aestxyz_vmz : vmz/Dockerfile
 	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
 	docker tag paracamplus/aestxyz_vmz \
 		"paracamplus/aestxyz_vmz:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_vmz:latest'
 deploy.z.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vmz:latest'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmz:latest'
@@ -480,6 +480,7 @@ fix.ssh.and.keys :
 		*/nohup.out */docker.ip */docker.cid
 
 deploy.vmms.on.ovhlicence : fix.ssh.and.keys
+	docker push 'paracamplus/aestxyz_vmms:latest'
 	ssh -t root@ns353482.ovh.net \
 		rm -f /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/vmms.paracamplus.com/ssh_host_ecdsa_key.pub
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmms:latest'
@@ -492,6 +493,7 @@ deploy.vmms.on.ovhlicence : fix.ssh.and.keys
 	   /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.ovhlicence/run.md.with.docker.ms.sh
 
 deploy.vmms.on.youpou : fix.ssh.and.keys
+	docker push 'paracamplus/aestxyz_vmms:latest'
 	chmod a+x vmms.on.youpou/run.md.with.docker.ms.sh
 	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus youpou.rsr.lip6.fr':'
 	ssh -t youpou.rsr.lip6.fr \

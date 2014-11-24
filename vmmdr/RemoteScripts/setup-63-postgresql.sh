@@ -11,6 +11,13 @@
     cd /etc/postgresql/$PGVERSION/main/
     chown -R postgres: .
     #ls -l #DEBUG
+
+    # Set timezone in Postgres
+    f=/etc/postgresql/$PGVERSION/main/postgresql.conf
+    if grep -q "timezone = 'UTC'" < $f
+    then
+        echo "timezone = 'UTC' " >> $f
+    fi
 )
 
 if ! /etc/init.d/postgresql start

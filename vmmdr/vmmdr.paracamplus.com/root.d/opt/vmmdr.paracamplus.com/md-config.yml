@@ -57,8 +57,7 @@ scheduler:
 # FUTURE: should try first to save in the remote db and, if not
 # possible, in the local database:
        - class: Paracamplus::FW4EX::MD_plugin::TransmitMarks
-         debug: 0
-         verbose: 1
+         verbose: 6
          rdbclass: Paracamplus::FW4EX::Schema::RFW4EXDB
          rdbhost: db.paracamplus.com
          rdbname: fw4ex
@@ -175,8 +174,10 @@ markEngine:
     # Version with an external Marking Slave:
     vmname: Paracamplus::FW4EX::VM::MSbySSH
     Paracamplus::FW4EX::VM::MSbySSH:
-        ip: 127.0.0.1
-        port: 58022
+#        ip: 127.0.0.1
+#        port: 58022
+        ip: vmms.paracamplus.com
+        port: 22
         keydir: /home/fw4ex/.ssh
         keyprefix: vmms_rsa
 
