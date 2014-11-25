@@ -111,7 +111,6 @@ do
             ;;
         o)
             # additional flags for start.sh in the container
-            INTERACTIVE=false
             START_FLAGS="$START_FLAGS $OPTARG"
             ;;
         R)
@@ -130,9 +129,9 @@ if ! $INTERACTIVE
 then
     if $SETUP
     then
-        START_FLAGS="$START_FLAGS -s $SLEEP"
+        START_FLAGS="-s $SLEEP $START_FLAGS"
     else
-        START_FLAGS="$START_FLAGS -n -s $SLEEP"
+        START_FLAGS="-s $SLEEP $START_FLAGS -n"
     fi
 fi
 

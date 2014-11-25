@@ -587,17 +587,13 @@ test.local.${VMMD} : fix.ssh.and.keys
 #     docker logs vmms
 # 
 
-tt:
-	exit 4
-	docker commit $$(cat vmmd.paracamplus.com/docker.cid) \
-		paracamplus/aestxyz_vmmd
-	echo "Scripts/connect.sh vmmd"
-#	docker push 'paracamplus/aestxyz_vmmd:latest'
+test.batch :
+
 
 test.D.option.in.install.sh :
-	vmz/z.paracamplus.com/prepare.sh
-	cd vmz/ && docker build -t paracamplus/aestxyz_vmz .
-	z.paracamplus.com/install.sh -D A=3 -s 10 -o '-c printenv'
+	vmms.paracamplus.com/install.sh -s 10 -D A=3 -o '-c printenv' | grep A=3
+# @bijou: 2014nov25: OK
+
 
 COURSE=ToBeDefined
 do.course :
