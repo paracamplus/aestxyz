@@ -30,15 +30,6 @@ refresh () {
     docker pull paracamplus/aestxyz_vmmdr
 }
 
-SUDO=sudo
-may_sudo () {
-    if ! sudo hostname
-    then
-        echo "WARNING: Cannot sudo!"
-        SUDO=
-    fi
-}
-
 start () {
     $VERBOSE vmms.paracamplus.com/install.sh
     local CODE=$?
@@ -87,7 +78,7 @@ clean () {
     for m in vmmdr vmms
     do for d in ssh.d log.d
         do 
-            ${SUDO} /bin/rm -rf `pwd`/$m.paracamplus.com/$d/
+            /bin/rm -rf `pwd`/$m.paracamplus.com/$d/
         done
     done
     ( cd vmms.paracamplus.com

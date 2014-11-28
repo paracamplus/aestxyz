@@ -13,7 +13,15 @@ fi
 
 # Rectify if need be the rights of the private key of dbuser, the 
 # identity with which we connect 
-chmod 400 /opt/$HOSTNAME/private/dbuser_ecdsa
+if [ -r /root/.ssh/dbuser_ecdsa ]
+then 
+    mkdir -p /opt/$HOSTNAME/
+    cp /root/.ssh/dbuser_ecdsa /opt/$HOSTNAME/
+else
+    echo "Missing /root/.ssh/dbuser_ecdsa"
+    exit 46
+fi
+chmod 400 /opt/$HOSTNAME/dbuser_ecdsa
 
 DBHOST=db.paracamplus.com
 LOG=/var/log/apache2/$HOSTNAME/dbtunnel.log
@@ -39,7 +47,7 @@ is_alive () {
 
 # Checks whether the DB server may be reached via ssh
 is_sshable () {
-    ssh -i /opt/$HOSTNAME/private/dbuser_ecdsa \
+    ssh -i /opt/$HOSTNAME/dbuser_ecdsa \
         $REMOTEUSER@$DBHOST true
 }
 
@@ -92,7 +100,7 @@ open_tunnel () {
     kill_previous_tunnels 2>/dev/null
     nohup ssh -nNC -o TCPKeepAlive=yes \
         -L 5432:127.0.0.1:5432 \
-        -i /opt/$HOSTNAME/private/dbuser_ecdsa \
+        -i /opt/$HOSTNAME/dbuser_ecdsa \
         $REMOTEUSER@$DBHOST &
     echo $! > $PIDFILE2
     sleep 2

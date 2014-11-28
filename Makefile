@@ -272,7 +272,7 @@ create.aestxyz_vmy : vmy/Dockerfile
 		"paracamplus/aestxyz_vmy:$$(date +%Y%m%d_%H%M%S)"
 # @bijou 1min
 deploy.y.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vmy:latest'
+	docker push 'paracamplus/aestxyz_vmy'
 	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmy:latest'
@@ -283,7 +283,6 @@ deploy.y.paracamplus.com :
 
 # NOTA: this was a bad idea to put two different servers (A and E for
 # instance) in the same container. Scripts are tailored for just one server!
-# A container with an A server in it.
 # CAUTION: don't divulge fw4ex or ssh private keys.
 create.aestxyz_vma : vma/Dockerfile
 	vma/a.paracamplus.com/prepare.sh
@@ -291,7 +290,7 @@ create.aestxyz_vma : vma/Dockerfile
 	docker tag paracamplus/aestxyz_vma \
 		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
 deploy.a.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vma:latest'
+	docker push 'paracamplus/aestxyz_vma'
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
@@ -314,7 +313,7 @@ create.aestxyz_vme : vme/Dockerfile
 	docker tag paracamplus/aestxyz_vme \
 		"paracamplus/aestxyz_vme:$$(date +%Y%m%d_%H%M%S)"
 deploy.e.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vme:latest'
+	docker push 'paracamplus/aestxyz_vme'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vme:latest'
@@ -336,7 +335,7 @@ create.aestxyz_vmx : vmx/Dockerfile
 	docker tag paracamplus/aestxyz_vmx \
 		"paracamplus/aestxyz_vmx:$$(date +%Y%m%d_%H%M%S)"
 deploy.x.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vmx:latest'
+	docker push 'paracamplus/aestxyz_vmx'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
@@ -349,16 +348,22 @@ deploy.x.paracamplus.com :
 	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
+	ssh -t root@ns353482.ovh.net \
+	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/x.paracamplus.com/dbuser_ecdsa
 
 create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker tag paracamplus/aestxyz_vmt \
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
-deploy.t.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vmt:latest'
+# T depends on X
+deploy.t.paracamplus.com : 
+	docker push 'paracamplus/aestxyz_vmt'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
+	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
 	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
@@ -454,12 +459,12 @@ test.local.vmms :
 	-Scripts/remove-exited-containers.sh 
 	-Scripts/remove-useless-images.sh
 ## check that the container has the right hostname:
-	sudo vmms.paracamplus.com/install.sh \
+	vmms.paracamplus.com/install.sh \
 	    -e '/bin/hostname' </dev/null | \
 		grep vmms.paracamplus.com
 	sleep 2
 ## check that the container can be ssh-ed via its IP:
-	sudo vmms.paracamplus.com/install.sh -s 5 ; sleep 1
+	vmms.paracamplus.com/install.sh -s 5 ; sleep 1
 	ssh -i vmms.paracamplus.com/root \
 		root@$$(cat vmms.paracamplus.com/docker.ip) hostname
 	docker ps -l
@@ -471,9 +476,9 @@ tlv :
 	./vmms.on.bijou/run.md.with.docker.ms.sh
 
 fix.ssh.and.keys :
-	-sudo chown -R queinnec':' $$(find . -type d -name .ssh)
-	-sudo chown -R queinnec':' $$(find . -type f -name 'root*')
-	-sudo chown -R queinnec':' $$(find . -type f -name 'keys.t*')
+	-chown -R queinnec':' $$(find . -type d -name .ssh)
+	-chown -R queinnec':' $$(find . -type f -name 'root*')
+	-chown -R queinnec':' $$(find . -type f -name 'keys.t*')
 	-rm -f */keys.txt */keys.tgz \
 		*/root */root_rsa */root*.pub */rootfs \
 		*/ssh_host_ecdsa_key.pub \
@@ -497,7 +502,7 @@ deploy.vmms.on.youpou : fix.ssh.and.keys
 	chmod a+x vmms.on.youpou/run.md.with.docker.ms.sh
 	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus youpou.rsr.lip6.fr':'
 	ssh -t youpou.rsr.lip6.fr \
-	    sudo /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.youpou/run.md.with.docker.ms.sh
+	    /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.youpou/run.md.with.docker.ms.sh
 
 create.aestxyz_vmmd0 : vmmd0/Dockerfile
 # install debian packages and perl modules:
@@ -526,7 +531,7 @@ create.aestxyz_vmmd :
 	-Scripts/remove-useless-images.sh
 	chmod a+x vmmd/RemoteScripts/?*.sh
 	vmmd/vmmd.paracamplus.com/prepare.sh
-	sudo vmmd.paracamplus.com/install.sh -D QNC=1 -s 1
+	vmmd.paracamplus.com/install.sh -D QNC=1 -s 1
 	Scripts/packVmmd.sh vmmd1 paracamplus/aestxyz_vmmd 
 	docker stop vmmd1
 	docker rm vmmd1
@@ -588,7 +593,8 @@ test.local.${VMMD} : fix.ssh.and.keys
 # 
 
 test.batch :
-
+	cd ../Deployment/VMmd/Samples/Batch0/ && \
+	m IP=127.0.0.1 IPPORT=61022 send.batch
 
 test.D.option.in.install.sh :
 	vmms.paracamplus.com/install.sh -s 10 -D A=3 -o '-c printenv' | grep A=3

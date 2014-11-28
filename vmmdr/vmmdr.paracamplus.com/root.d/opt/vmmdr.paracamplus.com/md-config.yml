@@ -15,7 +15,7 @@
 
 # Descriptive:
 configname: VMmdr
-version: 1237
+version: 1240
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
@@ -76,16 +76,16 @@ scheduler:
 # s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
        - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
          server: s.paracamplus.com
-         destination: /var/www/s.paracamplus.com/s/
+         destination: /var/www/s.paracamplus.com/
          username: fw4ex
          privateKeyFile: /home/fw4ex/.ssh/fw4ex
          period: 0
          recountperiod: 30
          rsyncFlags: --ignore-existing
          sources:
-            - /var/www/s.paracamplus.com/s/
-            - /var/www/s.paracamplus.com/b/
-            - /var/www/s.paracamplus.com/e/
+            - /var/www/s.paracamplus.com/s
+            - /var/www/s.paracamplus.com/b
+            - /var/www/s.paracamplus.com/e
 
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 51
@@ -142,7 +142,7 @@ db:
 
 markEngine:
     class: Paracamplus::FW4EX::SimplisticMarkEngine
-    version: 1237
+    version: 1240
     jobDir:      /home/md/cache/jobs.d
     resultsDir:  /home/md/results
     exerciseDir: /home/md/autocheck

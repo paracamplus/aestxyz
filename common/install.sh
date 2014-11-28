@@ -18,39 +18,13 @@ SSHDIR=`pwd`/.ssh
 SHARE_FW4EX_LOG=true
 PROVIDE_APACHE=true
 PROVIDE_SMTP=false
-FW4EX_MASTER_KEY=/opt/common-paracamplus.com/fw4excookie.insecure.key
+DOCKERIMAGETAG=latest
+FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 source config.sh
 
 # Does the container needs to know the FW4EX master key. This key is
 # required for all authenticated requests to the FW4EX machinery. This
 # key is named fw4excookie.insecure.key
-if ${NEED_FW4EX_MASTER_KEY_DIR}
-then
-    # Or the master key is in a directory specified by FW4EX_MASTER_KEY_DIR
-    if [ -n "$FW4EX_MASTER_KEY_DIR" ]
-    then
-        if [ -d $FW4EX_MASTER_KEY_DIR/ ]
-        then
-            if ! [ -r $FW4EX_MASTER_KEY_DIR/fw4excookie.insecure.key ]
-            then
-                echo "Unreadable $FW4EX_MASTER_KEY_DIR/fw4excookie.insecure.key"
-                exit 51
-            fi
-        else
-            echo "Not a directory $FW4EX_MASTER_KEY_DIR/"
-            exit 51
-        fi
-    # or it is, by default, in /opt/common-paracamplus.com/
-    elif [ -r /opt/common-${HOSTNAME#*.}/fw4excookie.insecure.key ]
-    then
-        FW4EX_MASTER_KEY_DIR=/opt/common-${HOSTNAME#*.}
-    else
-        echo "Cannot find fw4excookie.insecure.key"
-        exit 51
-    fi
-    ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v $FW4EX_MASTER_KEY_DIR:/opt/$HOSTNAME/private "
-fi
-
 if $NEED_FW4EX_MASTER_KEY
 then
     mkdir -p $SSHDIR/
@@ -241,16 +215,23 @@ fi
 if ${REFRESH_DOCKER_IMAGES}
 then
     echo "*** Download fresh copy of ${DOCKERIMAGE}"
-    docker pull ${DOCKERIMAGE}:latest
-elif docker images | grep -E -q "^${DOCKERIMAGE} "
+    docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
+elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
 then 
     echo "*** Using current local copy of ${DOCKERIMAGE}"
 else
-    echo "*** Download fresh copy of ${DOCKERIMAGE}"
-    docker pull ${DOCKERIMAGE}:latest
+    echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
+    docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
 fi
-docker stop ${DOCKERNAME} 
-docker rm   ${DOCKERNAME}
+
+# Remove all related containers:
+( docker stop ${DOCKERNAME} 
+  docker rm   ${DOCKERNAME} ) &
+( docker stop tmp${DOCKERNAME}
+  docker rm tmp${DOCKERNAME} ) &
+( docker stop tmpi${DOCKERNAME}
+  docker rm tmpi${DOCKERNAME} ) &
+wait
 
 if $DEBUG
 then
@@ -266,7 +247,7 @@ then
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
             --name=tmp${DOCKERNAME} -h $HOSTNAME \
-            -v ${SSHDIR}:/root/.ssh \
+            -v ${SSHDIR}:/root/ssh.d \
             ${DOCKERIMAGE} \
             $COMMAND
     else
@@ -275,7 +256,7 @@ then
             ${ADDITIONAL_FLAGS} \
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
             --name=tmpi${DOCKERNAME} -h $HOSTNAME \
-            -v ${SSHDIR}:/root/.ssh \
+            -v ${SSHDIR}:/root/ssh.d \
             ${DOCKERIMAGE} 
     fi
     exit $?
@@ -285,7 +266,7 @@ else
         ${ADDITIONAL_FLAGS} \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
-        -v ${SSHDIR}:/root/.ssh \
+        -v ${SSHDIR}:/root/ssh.d \
         ${DOCKERIMAGE} \
         bash -x /root/RemoteScripts/start.sh $START_FLAGS )
     CODE=$?
@@ -300,7 +281,8 @@ fi
 
 # Make smoothless the connection between the Docker host and the container:
 echo $CID > docker.cid
-docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub .
+# BUG in Docker 1.3.2: don't use . as target of 'docker cp':
+docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub `pwd`/
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
 KEY="${KEY%root@*}"
 IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
@@ -356,7 +338,7 @@ then
     for t in $(seq 1 20)
     do
         sleep 1
-        echo "Trying($t) to ssh the container"
+        echo "Trying($t) to SSH the container"
         if ssh -p ${HOSTSSHPORT} -i ./root_rsa root@127.0.0.1 hostname
         then
             nohup ssh -nNC -o TCPKeepAlive=yes \

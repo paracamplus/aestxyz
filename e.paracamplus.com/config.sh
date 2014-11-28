@@ -4,5 +4,5 @@ HOSTPORT=52080
 HOSTSSHPORT=52022
 DOCKERNAME=vme
 DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
-ADDITIONAL_FLAGS="-d -v /opt/$HOSTNAME/exercisedir/:/opt/$HOSTNAME/exercisedir/"
+ADDITIONAL_FLAGS="-v /opt/$HOSTNAME/exercisedir/:/opt/$HOSTNAME/exercisedir/"
 # end of config.sh
