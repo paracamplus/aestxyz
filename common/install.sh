@@ -111,8 +111,13 @@ fi
 
 # Prepare ssh keys to let the Docker host access the container via
 # ssh. The generated keys are left in the current directory besides
-# the current script (install.sh). SSHDIR will become the /root/.ssh/
-# directory in the container:
+# the current script (install.sh). SSHDIR will become the image from
+# which the /root/.ssh/ directory will be created in the container.
+# This intermediate copy allows SSHDIR to still belong to the current
+# user on the Docker host since, in the container, root will chown
+# /root/.ssh in order to comply with sshd policy. Changing ownership
+# in the container to root would make SSHDIR belong to root in the
+# Docker host and hence would need sudo to be removed.
 if ! [ -r ${SSHDIR}/authorized_keys ]
 then
     if ! [ -f root_rsa ]

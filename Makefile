@@ -552,6 +552,18 @@ test.vmmdr :
 # run Docker MD with an external Docker MS:
 tlmd :
 	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
+deploy.vmmdr.paracamplus.com : fix.ssh.and.keys
+	cd vmmdr.on.ovhlicence/ && \
+	    rsync -avuL monitor.sh \
+	    	fw4ex@ns353482.ovh.net:Docker/
+	cd vmmdr.on.ovhlicence/vmms.paracamplus.com/ && \
+	    rsync -avuL *.sh fw4ex* saver* \
+	    	fw4ex@ns353482.ovh.net:Docker/vmms.paracamplus.com/
+	cd vmmdr.on.ovhlicence/vmmdr.paracamplus.com/ && \
+	    rsync -avuL *.sh fw4ex* saver* \
+	    	fw4ex@ns353482.ovh.net:Docker/vmmdr.paracamplus.com/
+	docker push 'paracamplus/aestxyz_vmms:latest' & \
+	docker push 'paracamplus/aestxyz_vmmdr:latest' & wait
 
 # Generate keys for the install procedure:
 generate.install.keys :

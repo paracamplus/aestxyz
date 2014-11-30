@@ -2,7 +2,7 @@
 
 #if defined(SITE_is_veaunou)
 #undef i386
-#elif defined(SITE_is_bayou)
+#elif defined(SITE_is_bibou)
 HOSTTYPE	=	macosx86_64
 #endif
 
@@ -197,6 +197,9 @@ test.confine : ${CONFINE}
 # limit cpu: confined process stops after watchdog:
 	${CONFINE} -v -v --cpu=1 sleep 5 || [ $$? -eq 222 ]
 
+	-rm -f /tmp/lastExitCode
+	${CONFINE} --exit-file /tmp/lastExitCode --cpu=1 -- sleep 5 ; echo $$?
+	echo `cat /tmp/lastExitCode`
 	-rm -f /tmp/lastExitCode
 	if ${CONFINE} --exit-file /tmp/lastExitCode --cpu=1 -- \
 		sleep 5 ; then exit 1 ;	else exit 0 ; fi

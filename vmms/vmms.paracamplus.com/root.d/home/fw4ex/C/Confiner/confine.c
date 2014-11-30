@@ -516,6 +516,9 @@ static pid_t child_pid;
 static int exit_value = 217;
 static exit_value_type evt = CONFINEE_CODE;
 static int should_stop = 0;
+static int received_sigchld = 0;
+static int received_sigalrm = 0;
+static int received_sigpipe = 0;
 
 void
 clean_process_group ()
@@ -590,6 +593,18 @@ watchdog_loop ()
      fd_set readfds, writefds, exceptfds;
      struct timeval t;
 
+     if ( received_sigchld ) {
+          /* The confined process is terminated, let waitpid() get the
+           exit value and exit from the confiner. */
+          received_sigchld = 0;
+          debug_info("Received SIGCHLD");
+     }
+     if ( received_sigpipe ) {
+          /* Ignore SIGPIPE so write() returns with EPIPE. */
+          received_sigpipe = 0;
+          debug_info("Received SIGPIPE");
+     }
+
      while (!should_stop) {
           int channels_number = 0;
           int nfds = 2; /* fileno(stderr) */
@@ -635,35 +650,41 @@ watchdog_loop ()
                debug_info("Both confined streams closed.");
                handle_children_death(0);
           }
+
+          if ( received_sigalrm ) {
+               received_sigalrm = 0;
+               /* The confined process has not yet finished, note that 
+                  the watchdog should finish (and drain child output). */
+               /* Whenever exit_value is filled, should_stop is true! */
+               exit_value = 222;
+               evt = CONFINER_CODE;
+               should_stop = 1;
+               debug_info("Received SIGALRM");
+          }
      }
 }
 
 /* }}} */
 
+/*
+  watchdog_signal_handler should be the fastest possible and should
+  not invoke IO operation otherwise a new signal may appear before the
+  current one is completely handled. We just set variables and let 
+  watchdog_loop process them.
+ */
+
 void
 watchdog_signal_handler (int signum) 
 {
       if (signum == SIGCHLD) {
-          /* The confined process is terminated, let waitpid() get the
-           exit value and exit from the confiner. */
-          debug_info("Received SIGCHLD");
-
+           received_sigchld = 1;
      } else if (signum == SIGALRM) {
-          /* The confined process has not yet finished, note that 
-             the watchdog should finish (and drain child output). */
-          debug_info("Received SIGALRM");
-          /* Whenever exit_value is filled, should_stop is true! */
-          exit_value = 222;
-          evt = CONFINER_CODE;
-          should_stop = 1;
-
+           received_sigalrm = 1;
      } else if (signum == SIGPIPE) {
-          debug_info("Received SIGPIPE");
-          /* Ignore SIGPIPE so write() returns with EPIPE. */
-
+           received_sigpipe = 1;
      } else {
-          errno = 0;
-          error_exit(216, "Received unknown signal!");
+           errno = 0;
+           error_exit(216, "Received unknown signal!");
      }
 }
 
@@ -1055,7 +1076,7 @@ handle_one_option (char* option_name, int *argc, char ***argv)
                exit_file_chan_out = result;
           } else {
                error_exit(231, "Failed fopen() - for exit-file!");
-          }      
+          }
 
      } else {
           char *prefix = "Unknown option: ";

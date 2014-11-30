@@ -15,7 +15,7 @@
 
 # Descriptive:
 configname: VMmdr
-version: 1240
+version: 1241
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
@@ -142,7 +142,7 @@ db:
 
 markEngine:
     class: Paracamplus::FW4EX::SimplisticMarkEngine
-    version: 1240
+    version: 1241
     jobDir:      /home/md/cache/jobs.d
     resultsDir:  /home/md/results
     exerciseDir: /home/md/autocheck

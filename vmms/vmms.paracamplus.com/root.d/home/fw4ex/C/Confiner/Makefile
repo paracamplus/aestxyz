@@ -46,7 +46,8 @@ JING	=	${HOME}/Cours/ILP/Java/jars/jing.jar
 # circular constraints that exist.
 .SUFFIXES: .epelle .spell .ind .idx .pdf .ps .dvi .bbl .aux .tex .bk .hbk
 
-.tex.dvi: ;	${LATEX} $*.tex
+.tex.pdf: ; 	pdflatex $*.tex
+# .tex.dvi: ;	${LATEX} $*.tex
 .tex.aux: ;	${LATEX} $*.tex
 .tex.bbl: ;	-${BIBTEX} $*
 .idx.ind: ;	${MAKEINDEX} $*
@@ -82,6 +83,7 @@ L2TFLAGS   = -vU -I/usr/local/lib/l2t
 .xfig.eps : ;	fig2dev -L eps $*.xfig > $*.eps
 .fig.eps : ;	fig2dev -L eps ${FIG2DEV_FLAGS} $*.fig > $*.eps
 .xfig.tex : ;	fig2dev -L latex $*.xfig > $*.tex
+.fig.pdf : ;	fig2dev -L pdf $*.fig > $*.pdf
 .fig.tex : ;	fig2dev -L latex ${FIG2DEV_FLAGS} $*.fig > $*.tex
 .xfig.gif :
 	fig2dev -L gif -t '#ffffff' $*.xfig $*.gf
@@ -113,8 +115,8 @@ clean :: cleanMakefile
 CFLAGS	+=	-std=c99 -Wall -pedantic -Werror -g
 
 ${CONFINE} : confine.c Imakefile
-	[ "${HOSTTYPE}" ] || { echo Missing HOSTTYPE ; exit 1 ; }
-	-mkdir -p bin/${HOSTTYPE}
+	[ "$$HOSTTYPE" ] || { echo Missing HOSTTYPE ; exit 1 ; }
+	-mkdir -p bin/$$HOSTTYPE
 	${CC} ${CFLAGS} -o ${CONFINE} confine.c
 
 test tests : test.confine test.heavy.confine
@@ -133,9 +135,7 @@ test.confine : ${CONFINE}
 	if [ -f /usr/bin/uname ] ; then ${CONFINE} /usr/bin/uname ; fi
 # one program:
 	if [ -f /bin/uname ] ; then 		[ Linux = $$( ${CONFINE} /bin/uname ) ] ; fi
-
 	if [ -f /usr/bin/uname ] ; then 		[ Darwin = $$( ${CONFINE} /usr/bin/uname ) ] ; fi
-
 	${CONFINE} /bin/echo Coucou
 # unexistent program:
 	${CONFINE} /bin/ || [ $$? -eq 211 ]
@@ -157,13 +157,15 @@ test.confine : ${CONFINE}
 	PATH=$$PATH:/tmp ; ${CONFINE} coucou.sh OK
 	[ OK = $$( PATH=$$PATH:/tmp ; ${CONFINE} coucou.sh OK ) ]
 # use PATH with compiled script:
-	cp -p /bin/echo bin/${HOSTTYPE}/echoecho
+	cp -p /bin/echo bin/$$HOSTTYPE/echoecho
+	PATH=bin/$$HOSTTYPE:$$PATH ; which echoecho
 	PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} echoecho OK
 	[ OK = $$( PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} echoecho OK ) ]
 # use . in PATH and recursive call to confine:
 # # NOTA: md.vld7net.fr/install.sh passe tous les tests sauf les 2 suivants
 # # par contre, refaire un 'make' dans la VM fonctionne ???
 	sleep 1
+	PATH=bin/$$HOSTTYPE:$$PATH ; which confine ; echo code=$$?
 	PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} -v -v confine echo OK
 	[ OK = $$( PATH=bin/$$HOSTTYPE:$$PATH ; ${CONFINE} confine echo OK ) ]
 # single option
@@ -204,7 +206,6 @@ test.confine : ${CONFINE}
 
 	-rm -f /tmp/lastExitCode
 	if ${CONFINE} --exit-file /tmp/lastExitCode -- 		bash -c 'exit 3' ; then exit 1 ;	else exit 0 ; fi
-
 	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
 	[ 3 -eq "$$( cat /tmp/lastExitCode )" ]
 	[ 0 -eq "$$( wc -l < /tmp/lastExitCode )" ]
@@ -212,7 +213,6 @@ test.confine : ${CONFINE}
 # check that an error of the confiner is well reported (check \n):
 	-rm -f /tmp/lastExitCode
 	if ${CONFINE} --exit-file /tmp/lastExitCode -- ; then exit 1 ;	else exit 0 ; fi
-
 	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
 	[ 210 -eq "$$( cat /tmp/lastExitCode )" ]
 	[ 1 -eq "$$( wc -l < /tmp/lastExitCode )" ]
@@ -244,42 +244,27 @@ test.confine : ${CONFINE}
 # # two exported variables, only one hidden
 	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv
 	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv  | 		grep -vq FW4EXa
-
 	export FW4EXa=a ; export FW4EXb=b ; ${CONFINE} --hide FW4EXa printenv  | 		grep -q FW4EXb
-
 # # three exported variables, two hidden
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXa --hide FW4EXc printenv
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | 			grep -vq FW4EXa
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | 			grep -q FW4EXb
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXa --hide FW4EXc printenv  | 			grep -vq FW4EXc
-
 # removal of all FW4EX variables
 	export FW4EX1=a ; ${CONFINE} --fw4ex-hide printenv
 	export FW4EX1=a ; ${CONFINE} --fw4ex-hide printenv | 		grep -vq FW4EX
-
 	export FW4EX1=a ; ${CONFINE} --fw4ex-hide bash -c 'echo $${FW4EX1:-z}'
 	[ z = $$( export FW4EX1=a ; ${CONFINE} --fw4ex-hide bash -c 'echo $${FW4EX1:-z}' ) ]
 # removal of FW4EX variables and other variables to hide
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --fw4ex-hide --hide FW4EXc printenv
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --fw4ex-hide --hide FW4EXc printenv | 			grep -vqi FW4EX
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXc --fw4ex-hide printenv
-
 	export FW4EXa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide FW4EXc --fw4ex-hide printenv | 			grep -vqi FW4EX
-
 # removal of some variables and other variables to hide
 	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --fw4ex-hide --hide fw4exa printenv
-
 	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --fw4ex-hide --hide fw4exa printenv | 			grep -vqi fw4ex
-
 	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide fw4exa --fw4ex-hide printenv
-
 	export fw4exa=a ; export FW4EXb=b ; export FW4EXc=c ; 		${CONFINE} --hide fw4exa --fw4ex-hide printenv | 			grep -vqi fw4ex
-
 # limit cpu: confined process stops before watchdog:
 	${CONFINE} -v -v --cpu=5 sleep 1
 	${CONFINE} -v -v --cpu 5 sleep 1
@@ -287,8 +272,10 @@ test.confine : ${CONFINE}
 	${CONFINE} -v -v --cpu=1 sleep 5 || [ $$? -eq 222 ]
 
 	-rm -f /tmp/lastExitCode
+	${CONFINE} --exit-file /tmp/lastExitCode --cpu=1 -- sleep 5 ; echo $$?
+	echo `cat /tmp/lastExitCode`
+	-rm -f /tmp/lastExitCode
 	if ${CONFINE} --exit-file /tmp/lastExitCode --cpu=1 -- 		sleep 5 ; then exit 1 ;	else exit 0 ; fi
-
 	[ -f /tmp/lastExitCode ] && cat /tmp/lastExitCode
 	[ 0 -ne "$$( cat /tmp/lastExitCode )" ]
 	-rm -f /tmp/lastExitCode
@@ -378,12 +365,10 @@ test.suid :
 	@echo '*** end of test.suid ***'
 
 VALGRIND_FLAGS	=	--log-file=/tmp/vg 			--trace-children=yes 			--track-fds=yes 			--run-libc-freeres=no
-
 test.with.valgrind :
 	-rm -f /tmp/vg.*
 	-rm -f /tmp/lastExitCode
 	valgrind ${VALGRIND_FLAGS} ${CONFINE} -v -v 		--exit-file /tmp/lastExitCode -- whoami
-
 # faire attention aux fd ouverts passes au processus fils!
 
 # Heavy (but stochastic tests).
@@ -391,28 +376,22 @@ test.with.valgrind :
 test.heavy.confine : ${CONFINE}
 # start sequentially many 'echo'
 	-for i in 1 2 3 4 5 6 7 8 9 ; do 	  ${CONFINE} -v -v echo Coucou ; echo exit=$$? ; 	done
-
 	-mkdir -p  /tmp/fw4ex/log
 	-rm -f /tmp/fw4ex/log/t
 	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do 	  ${CONFINE} -v -v /bin/echo Coucou ; echo exit=$$? ; done 2>&1 | tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; 	  then exit 0 ; 	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; 	fi
-
 # start sequentially many bees
 	@echo; echo '	************ start sequentially many bees...'
 	-for i in 1 2 3 4 5 6 7 8 9 ; do 	  ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ; 	done
-
 	ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep || exit 0
 	sleep 2
 	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
 	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do 	  ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ; done 2>&1 | 		tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; 	  then exit 0 ; 	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; 	fi
-
 # start concurrently many bees
 	@echo; echo '    ************ start concurrently many bees...'
 	-for i in 1 2 3 4 5 6 7 8 9 ; do 	  ( ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ) & true ; 	done
-
 	sleep 5
 	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
 	if [ 0 -eq $$( for i in 1 2 3 4 5 6 7 8 9 ; do 	  ( ${CONFINE} -v -v ./bee.sh 1 ; echo exit=$$? ) & true ; done 2>&1 | tee /tmp/fw4ex/log/t | grep exit= | grep -v exit=0 | wc -l ) ] ; 	  then exit 0 ; 	  else { echo "At least one confined process returns an exit value different from 0!" ; cat /tmp/fw4ex/log/t ; exit 1 ; } ; 	fi
-
 	sleep 5
 	export N=$$( ps auxwww | fgrep 'bash ./bee.sh' | fgrep -v grep | wc -l ) ; echo $$N ; [ 0 -eq $$N ]
 	@echo '	heavy tests done.'
@@ -487,25 +466,6 @@ compress ::
 # Usually one uses it as                clean :: cleanMakefile
 cleanMakefile :
 	-@if [ -f Imakefile ] ; then ${RM} -f Makefile ; fi
-
-# This entry depends on FILE, STAMP and DATE
-# It changes all occurrences of STAMP...tar into STAMPDATE.tar
-# This is used to keep track of files within html pages.
-
-update.file :
-	@if [ -z "${FILE}" ] ; then echo Define FILE first ; exit 1 ;		else exit 0 ; fi
-
-	@if [ -z "${STAMP}" ] ; then echo Define STAMP first ; exit 1 ;		else exit 0 ; fi
-
-	@if [ -z "${DATE}" ] ; then echo Define DATE first ; exit 1 ;		else exit 0 ; fi
-
-	@echo
-	@echo "	Updating ${FILE} ..."
-	@echo
-	if [ -f ${FILE}.BAK ]; then exit 0; else 	  mv ${FILE} ${FILE}.BAK ; cp ${FILE}.BAK ${FILE} ; fi
-
-	$$HOME/perl/updatefile.prl -stamp="${STAMP}" -date="${DATE}" -- ${FILE}
-	chmod u+w ${FILE}
 
 # Turn off the screen saver during a talk
 
