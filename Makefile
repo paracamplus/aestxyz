@@ -605,8 +605,9 @@ test.local.${VMMD} : fix.ssh.and.keys
 # 
 
 test.batch :
+	export KEY=`pwd`/vmmdr.on.ovhlicence/vmmdr.paracamplus.com/root ;\
 	cd ../Deployment/VMmd/Samples/Batch0/ && \
-	m IP=127.0.0.1 IPPORT=61022 send.batch
+	m IP=127.0.0.1 IPPORT=61022 KEY=$$KEY send.batch
 
 test.D.option.in.install.sh :
 	vmms.paracamplus.com/install.sh -s 10 -D A=3 -o '-c printenv' | grep A=3

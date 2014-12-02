@@ -51,24 +51,24 @@ M=$K$K
 # virtual memory          (kbytes, -v) unlimited
 # file locks                      (-x) unlimited
 
-
+# 2014nov30: removed limits on process sizes. java7 needs lots of memory!
 rt_ulimit -c      0 # bloc (maximum size of core files created)
-rt_ulimit -d  900$K # 400 meg (maximum size of a process's data segment)
+#rt_ulimit -d  900$K # 400 meg (maximum size of a process's data segment)
 # -e does not seem important here ???
 rt_ulimit -f   10$K # 10 meg (maximum size of files created by the shell)
 rt_ulimit -i    100 # (pending signals)
 rt_ulimit -l     32 # kb (max locked memory)
-rt_ulimit -m   100$K # 50 meg (maximum resident set size)
+#rt_ulimit -m   100$K # 50 meg (maximum resident set size)
 rt_ulimit -n    200 # (maximum number of open file descriptors)
 #rt_ulimit -p      8 # default pipe size           # cannot modify limit!
 rt_ulimit -q   10$K # 10 k (POSIX message queues)
 # -r does not seem important here ???
-rt_ulimit -s   20$K # 10 meg (maximum stack size)
-rt_ulimit -t    100 # 100 seconds (maximum amount of cpu time)
+#rt_ulimit -s   20$K # 10 meg (maximum stack size)
+rt_ulimit -t    120 # 100 seconds (maximum amount of cpu time)
 rt_ulimit -u    300 # maximum number of processes available to a single user
 # 400k is not sufficient for java7
 #rt_ulimit -v  400$K # 400 meg (virtual memory)
-rt_ulimit -v  1500$K # 1200 meg (virtual memory)
+#rt_ulimit -v  1500$K # 1200 meg (virtual memory)
 rt_ulimit -x    100 # file locks
 
 # end of confine-author.sh
