@@ -1,4 +1,4 @@
-#! /bin/bash 
+#! /bin/bash -x
 # Initialize the Docker container from within the container.
 # Errors are signalled with a 2x code.
 
@@ -15,12 +15,13 @@ if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
 then ( 
         echo "Populate container"
         cd /
-        tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
+        tar xvzf /root/RemoteScripts/root-$MODULE.tgz --overwrite || exit 21
         rm -f /root/RemoteScripts/root-$MODULE.tgz
      )
 fi
 
-(
+if ${GENERATE_APACHE_CONF:-true}
+then (
     echo "Configure extra modules for Apache"
     cd /etc/apache2/mods-enabled/ 
     ln -sf ../mods-available/expires.load .
@@ -41,6 +42,7 @@ fi
     echo "Apache virtual hosts:"
     ls
 )
+fi
 
 ( 
     cd /usr/local/lib/site_perl
@@ -64,26 +66,29 @@ fi
     fi
 )
 
-if [ -f /root/RemoteScripts/$MODULE.tgz ]
-then (
-        echo "Install Catalyst /opt/$HOSTNAME/Templates"
-        mkdir -p /opt/$HOSTNAME
-        cd /opt/$HOSTNAME
-        tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
-     )
-     (
-        echo "Install /var/www/$HOSTNAME"
-        mkdir -p /var/www/$HOSTNAME
-        cd /var/www/$HOSTNAME
-        tar xvzf /root/RemoteScripts/$MODULE.tgz 
-        rm -rf Templates
-     )
-     rm -f /root/RemoteScripts/$MODULE.tgz 
+if ${GENERATE_APACHE_CONF:-true}
+then
+    if [ -f /root/RemoteScripts/$MODULE.tgz ]
+    then (
+            echo "Install Catalyst /opt/$HOSTNAME/Templates"
+            mkdir -p /opt/$HOSTNAME
+            cd /opt/$HOSTNAME
+            tar xvzf /root/RemoteScripts/$MODULE.tgz --overwrite Templates
+         )
+         (
+             echo "Install /var/www/$HOSTNAME"
+             mkdir -p /var/www/$HOSTNAME
+             cd /var/www/$HOSTNAME
+             tar xvzf /root/RemoteScripts/$MODULE.tgz --overwrite
+             rm -rf Templates
+         )
+         rm -f /root/RemoteScripts/$MODULE.tgz 
+    fi
 fi
 
-if [ 1 -le $( ls -1 ${0%/*}/setup-$MODULE-??.sh 2>/dev/null | wc -l ) ]
+if [ 1 -le $( ls -1 ${0%/*}/setup-??*.sh 2>/dev/null | wc -l ) ]
 then 
-    for f in ${0%/*}/setup-$MODULE-??.sh
+    for f in ${0%/*}/setup-??*.sh
     do
         echo "Sourcing $f"
         source $f 
@@ -100,6 +105,8 @@ then
     # This is necessary when removing generated catalyst controllers:
     echo "Removing automatically generated sub-classes code from /opt/tmp/"
     rm -rf /opt/tmp/$HOSTNAME 2>/dev/null
+    mkdir -p /opt/tmp/$HOSTNAME
+    chown -R www-data: /opt/tmp/$HOSTNAME
     echo "Checking Apache configuration"
     /usr/sbin/apache2ctl configtest || \
         tail -n20 /var/log/apache2/error.log

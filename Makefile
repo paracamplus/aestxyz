@@ -188,11 +188,13 @@ create.aestxyz_s : s/Dockerfile
 create.aestxyz_x : x/Dockerfile
 	x/x.paracamplus.net/prepare.sh
 	cd x/ && docker build -t paracamplus/aestxyz_x .
+tx1 :
 # inner check of the X server:
 	docker run --rm -h x.paracamplus.net \
 		paracamplus/aestxyz_x \
 		/root/RemoteScripts/check-inner-availability.sh \
 			x.paracamplus.net
+tx2 :
 # outer check of the X server:
 	docker run -d -p '127.0.0.1:50080:80' -h x.paracamplus.net \
 	    paracamplus/aestxyz_x \
