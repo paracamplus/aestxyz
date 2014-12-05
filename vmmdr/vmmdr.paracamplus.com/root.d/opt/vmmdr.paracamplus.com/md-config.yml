@@ -15,7 +15,7 @@
 
 # Descriptive:
 configname: VMmdr
-version: 1242
+version: 1243
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
@@ -41,7 +41,8 @@ scheduler:
     class: Paracamplus::FW4EX::MD_smartShufflingRoundRobinScheduler
     # sleep time before asking remote servers for jobs or exercises.
     sleeptime: 10
-    batchFrequency: 3
+    batchFrequency: 5
+    exerciseFrequency: 11
     test_pluginConfigs:
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 301
@@ -74,6 +75,7 @@ scheduler:
 #
 # On sauve systematiquement sur s.paracamplus.com Il faut que sur
 # s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
+# Pour [es] on n'ecrase pas la version deja telechargee.
        - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
          server: s.paracamplus.com
          destination: /var/www/s.paracamplus.com/
@@ -84,8 +86,18 @@ scheduler:
          rsyncFlags: --ignore-existing
          sources:
             - /var/www/s.paracamplus.com/s
-            - /var/www/s.paracamplus.com/b
             - /var/www/s.paracamplus.com/e
+# Pour les rapports de batch, on met a jour le rapport
+       - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
+         server: s.paracamplus.com
+         destination: /var/www/s.paracamplus.com/
+         username: fw4ex
+         privateKeyFile: /home/fw4ex/.ssh/fw4ex
+         period: 0
+         recountperiod: 30
+         rsyncFlags:
+         sources:
+            - /var/www/s.paracamplus.com/b
 
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 51
@@ -142,7 +154,7 @@ db:
 
 markEngine:
     class: Paracamplus::FW4EX::SimplisticMarkEngine
-    version: 1242
+    version: 1243
     jobDir:      /home/md/cache/jobs.d
     resultsDir:  /home/md/results
     exerciseDir: /home/md/autocheck

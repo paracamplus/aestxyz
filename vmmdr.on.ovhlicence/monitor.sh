@@ -9,10 +9,11 @@ cd ${0%/*}/
 
 usage () {
     cat <<EOF
-Usage: ${0##*/} start [-l]
+Usage: ${0##*/} start [-r] [-l]
        ${0##*/} connect [-h vmmdr|vmms]
        ${0##*/} log
        ${0##*/} stop
+       ${0##*/} status
        ${0##*/} clean
        ${0##*/} refresh
        ${0##*/} install -h remote.server [-u user]
@@ -20,14 +21,18 @@ Usage: ${0##*/} start [-l]
 Option -l display the log of the Marking Driver
        -h specifies on which host to install the couple of Docker containers
        -u is the account name on this host
+       -r update the Docker images
 EOF
 }
 
-SOURCE=http://info.fw4ex.org/VMmdms/latest.tgz.ssl
 refresh () {
-    #wget $SOURCE
     docker pull paracamplus/aestxyz_vmms
     docker pull paracamplus/aestxyz_vmmdr
+}
+
+status () {
+    docker images | grep vmm | grep -v latest
+    docker ps
 }
 
 start () {
@@ -172,11 +177,15 @@ LOG=false
 HOST=no.such.host
 USER=${USER:-nobody}
 VERBOSE=
-while getopts lh:u:v opt
+REFRESH=false
+while getopts lrh:u:v opt
 do
     case "$opt" in
         l)
             LOG=true
+            ;;
+        r)
+            REFRESH=true
             ;;
         h)
             REMOTE=$OPTARG
@@ -199,6 +208,7 @@ case "$COMMAND" in
     start)
         stop
         clean
+        $REFRESH && refresh
         start
         CODE=$?
         [ "$CODE" -ne 0 ] && exit $CODE
@@ -219,6 +229,9 @@ case "$COMMAND" in
         ;;
     log)
         show_md_log
+        ;;
+    status)
+        status
         ;;
     dist)
         dist

@@ -14,7 +14,7 @@ LOGDIR=/var/log/fw4ex
 SETUP=true
 DEBUG=false
 NEED_FW4EX_MASTER_KEY_DIR=true
-SSHDIR=`pwd`/.ssh
+SSHDIR=`pwd`/ssh.d
 SHARE_FW4EX_LOG=true
 PROVIDE_APACHE=true
 PROVIDE_SMTP=false
@@ -310,6 +310,12 @@ then
 elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
 then
     ln -sf /var/lib/docker/aufs/mnt/$CID rootfs
+fi
+
+if [ -n "${HOSTSSHPORT}" ]
+then
+    sed -i -e "/^\[$IP\]:${HOSTSSHPORT}/d" $HOME/.ssh/known_hosts
+    echo "[$IP]:$HOSTSSHPORT $KEY"  >> $HOME/.ssh/known_hosts
 fi
 
 # Allow the container to send mails. This tunnel can only be setup by
