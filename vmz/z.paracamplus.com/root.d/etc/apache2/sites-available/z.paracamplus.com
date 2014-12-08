@@ -4,6 +4,16 @@
 # Catalyst needs apache2-mpm-prefork!
 
   ServerName  z.paracamplus.com
+  ServerAlias z0.paracamplus.com
+  ServerAlias z1.paracamplus.com
+  ServerAlias z2.paracamplus.com
+  ServerAlias z3.paracamplus.com
+  ServerAlias z4.paracamplus.com
+  ServerAlias z5.paracamplus.com
+  ServerAlias z6.paracamplus.com
+  ServerAlias z7.paracamplus.com
+  ServerAlias z8.paracamplus.com
+  ServerAlias z9.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/z.paracamplus.com/
   AddDefaultCharset UTF-8

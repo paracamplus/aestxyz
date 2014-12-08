@@ -379,7 +379,28 @@ deploy.t.paracamplus.com :
 	wget -qO /dev/stdout http://t.paracamplus.com/static/t.css | head 
 	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css | head 
 	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css | head 
-	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css | head 
+	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css | head
+
+# Apache2 requires modules expire.load and proxy*
+deploy.t9.paracamplus.com : 
+	docker push 'paracamplus/aestxyz_vmt'
+	rsync ${RSYNC_FLAGS} -avuL \
+	    t9.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
+	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
+	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh
+	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54980/
+	common/check-outer-availability.sh \
+		-i t9.paracamplus.com -p 80 -s 4 \
+		t9.paracamplus.com
+	ssh -t root@ns327071.ovh.net \
+	  ssh -v -p 54922 -i Docker/t9.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/t9.paracamplus.com/fw4excookie.insecure.key
+	wget -qO /dev/stdout http://t9.paracamplus.com/static/t.css | head 
+	wget -qO /dev/stdout http://t9.paracamplus.com/static//t.css | head 
+	wget -qO /dev/stdout http://t9.paracamplus.com//static/t.css | head 
+	wget -qO /dev/stdout http://t9.paracamplus.com//static//t.css | head 
 
 create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh

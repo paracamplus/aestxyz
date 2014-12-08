@@ -38,7 +38,7 @@ loggerconf: /home/md/md-log4perl.conf
 #test: 1
 
 scheduler:
-    class: Paracamplus::FW4EX::MD_smartShufflingRoundRobinScheduler
+    class: Paracamplus::FW4EX::MD_smarterScheduler
     # sleep time before asking remote servers for jobs or exercises.
     sleeptime: 10
     batchFrequency: 5

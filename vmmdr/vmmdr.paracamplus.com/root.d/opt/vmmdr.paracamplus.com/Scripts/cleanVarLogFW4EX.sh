@@ -1,0 +1,1 @@
+../../../../../../../Deployment/VMmd/vmmd.fw4ex.net/root.d/opt/vmmd.fw4ex.net/Scripts/cleanVarLogFW4EX.sh

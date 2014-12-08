@@ -317,6 +317,10 @@ then
     sed -i -e "/^\[$IP\]:${HOSTSSHPORT}/d" $HOME/.ssh/known_hosts
     echo "[$IP]:$HOSTSSHPORT $KEY"  >> $HOME/.ssh/known_hosts
 fi
+# To avoid a question for the first access to the container:
+touch $HOME/.ssh/config
+sed -i -e '/NoHostAuthenticationForLocalhost/d' $HOME/.ssh/config
+echo 'NoHostAuthenticationForLocalhost yes' >> $HOME/.ssh/config
 
 # Allow the container to send mails. This tunnel can only be setup by
 # the Docker host so we must wait for the container's sshd daemon to

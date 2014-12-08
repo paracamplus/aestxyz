@@ -1,27 +1,16 @@
 <VirtualHost *:80>
+# This is the Apache configuration on the Docker host.
 # Check syntax with /usr/sbin/apache2ctl -t
-# generated on 2014-09-26T15:03:01
-# Catalyst needs apache2-mpm-prefork!
 
-  ServerName  e.paracamplus.com
-  ServerAlias e0.paracamplus.com
-  ServerAlias e1.paracamplus.com
-  ServerAlias e2.paracamplus.com
-  ServerAlias e3.paracamplus.com
-  ServerAlias e4.paracamplus.com
-  ServerAlias e5.paracamplus.com
-  ServerAlias e6.paracamplus.com
-  ServerAlias e7.paracamplus.com
-  ServerAlias e8.paracamplus.com
-  ServerAlias e9.paracamplus.com
+  ServerName  t9.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/e.paracamplus.com/
+  DocumentRoot /var/www/t9.paracamplus.com/
   AddDefaultCharset UTF-8
 
-AddType text/javascript .js
-AddType text/css        .css
-AddType application/xslt+xml .xsl
-ExpiresActive On
+  AddType text/javascript .js
+  AddType text/css        .css
+  AddType application/xslt+xml .xsl
+  ExpiresActive On
 
         <Directory />
                 Options FollowSymLinks
@@ -31,20 +20,20 @@ ExpiresActive On
                 Deny from all
         </Directory>
 
-        <Directory /var/www/e.paracamplus.com/ >
+        <Directory /var/www/t9.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
 
-# Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::E::e_paracamplus_com
+# <Location> directives should be sorted from less to most precise:
 
         <Location / >
-              SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::E::e_paracamplus_com
               Order allow,deny
               allow from all
-# FUTURE limit number of request/second
+# FUTURE limit the number of requests/second
+              # Relay to the Docker container
+              ProxyPass        http://localhost:54980/
+              ProxyPassReverse http://localhost:54980/
         </Location>
 
         <Location /favicon.ico>
@@ -52,7 +41,7 @@ PerlModule Paracamplus::FW4EX::E::e_paracamplus_com
               ExpiresDefault A2592000
         </Location>
 
-        Alias /static/ /var/www/e.paracamplus.com/static/
+        Alias /static/ /var/www/t9.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
                 FileETag none
@@ -65,14 +54,18 @@ PerlModule Paracamplus::FW4EX::E::e_paracamplus_com
                 ExpiresByType text/javascript A108000
         </Location>
 
-        # Coalesce all problems in one place:
-        Errorlog /var/log/apache2/error.log
+        ProxyPass     /a/      http://a.paracamplus.com/
+        ProxyPass     /s/      http://s.paracamplus.com/
+        ProxyPass     /x/      http://x.paracamplus.com/
+        ProxyPass     /e/      http://e.paracamplus.com/
+
+        Errorlog /var/log/apache2/t9.paracamplus.com-error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/e.paracamplus.com-access.log combined
+        CustomLog /var/log/apache2/t9.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>
