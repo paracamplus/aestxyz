@@ -18,16 +18,40 @@ Usage: ${0##*/} start [-r] [-l]
        ${0##*/} refresh
        ${0##*/} install -h remote.server [-u user]
 
-Option -l display the log of the Marking Driver
+Option for start:
+       -t LOG   log output to the LOG file
+       -r fetch new versions of Docker images (as the refresh command)
+       -l display the log of the Marking Driver after starting it
+
+Option for connect
+       -h specifies to which host (vmmdr or vmms) to connect
+
+Option for install      TO BE DONE
        -h specifies on which host to install the couple of Docker containers
        -u is the account name on this host
-       -r update the Docker images
+
 EOF
 }
 
 refresh () {
     docker pull paracamplus/aestxyz_vmms
+    remove_former_images vmms
     docker pull paracamplus/aestxyz_vmmdr
+    remove_former_images vmmdr
+}
+
+remove_former_images () {
+    local NAME="$1"
+    docker images | grep latest | grep "$NAME " | \
+    while read name tag id rest
+    do
+        ID=$id
+        docker images | grep "$NAME " | grep -v "$ID" | \
+            while read name tag id rest 
+            do 
+               docker rmi $id
+            done
+    done
 }
 
 status () {
@@ -168,7 +192,7 @@ install () {
         `pwd`/Docker/vmmdr+vmms.tgz
     exit 1
     #rsync -avuL vmmdr.on.ovhlicence/ fw4ex@ns327071.ovh.net:Docker/
-}        
+}
 
 COMMAND="$1"
 shift
@@ -178,23 +202,38 @@ HOST=no.such.host
 USER=${USER:-nobody}
 VERBOSE=
 REFRESH=false
-while getopts lrh:u:v opt
+while getopts lrh:u:vt: opt
 do
     case "$opt" in
         l)
+            # After starting the Marking Driver and Slave, display the log
             LOG=true
             ;;
         r)
+            # Fetch fresh images
             REFRESH=true
             ;;
         h)
+            # Specify the Docker image to ssh to. Can only be vmmdr or vmms
             REMOTE=$OPTARG
             ;;
         u)
+            # Only used with install. TO BE DONE!
             USER=$OPTARG
             ;;
         v)
+            # Run verbosely the installation of the two Docker images:
             VERBOSE='bash -x'
+            ;;
+        t)
+            # Log what happened in this script:
+            LOGFILE=$OPTARG
+            if ! touch $LOGFILE 
+            then
+                echo "Cannot write into $LOGFILE"
+                exit 1
+            fi
+            exec 1>>$LOGFILE 2>&1
             ;;
         \?)
             echo "Bad option $opt"
