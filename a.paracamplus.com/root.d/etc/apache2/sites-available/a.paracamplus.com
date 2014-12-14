@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-# Check syntax with /usr/sbin/apache2ctl -t
+# Version avec equilibreur de charges entre a0 et a1.
 
   ServerName  a.paracamplus.com
               # temporary:
@@ -30,7 +30,7 @@
         ProxyRequests off
         <Proxy balancer://mycluster>
                 BalancerMember http://a0.paracamplus.com
- #               BalancerMember http://a1.paracamplus.com
+                BalancerMember http://a1.paracamplus.com
                 Order Deny,Allow
                 Deny from none
                 Allow from all

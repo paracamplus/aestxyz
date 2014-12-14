@@ -308,6 +308,20 @@ deploy.a.paracamplus.com :
 	  ssh -v -p 51022 -i Docker/a.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/a.paracamplus.com/fw4excookie.insecure.key
+deploy.a1.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vma'
+	rsync ${RSYNC_FLAGS} -avuL \
+		a1.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
+	ssh -t root@ns327071.ovh.net Docker/a1.paracamplus.com/install.sh
+	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
+	common/check-outer-availability.sh \
+		-i a1.paracamplus.com -p 80 -s 4 \
+		a1.paracamplus.com
+	ssh -t root@ns327071.ovh.net \
+	  ssh -v -p 51022 -i Docker/a1.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/a1.paracamplus.com/fw4excookie.insecure.key
 
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
@@ -362,6 +376,7 @@ create.aestxyz_vmt : vmt/Dockerfile
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
 # T depends on X
 deploy.t.paracamplus.com : 
+	echo "Deploy t.paracamplus.com on OVHlicence"
 	docker push 'paracamplus/aestxyz_vmt'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
@@ -382,7 +397,8 @@ deploy.t.paracamplus.com :
 	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css | head
 
 # Apache2 requires modules expire.load and proxy*
-deploy.t9.paracamplus.com : 
+deploy.t9.paracamplus.com : 	
+	echo "Deploy t9.paracamplus.com on Kimsufi"
 	docker push 'paracamplus/aestxyz_vmt'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t9.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
@@ -408,7 +424,7 @@ create.aestxyz_vmz : vmz/Dockerfile
 	docker tag paracamplus/aestxyz_vmz \
 		"paracamplus/aestxyz_vmz:$$(date +%Y%m%d_%H%M%S)"
 deploy.z.paracamplus.com :
-	docker push 'paracamplus/aestxyz_vmz:latest'
+	docker push 'paracamplus/aestxyz_vmz'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    z.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmz:latest'
@@ -575,16 +591,9 @@ test.vmmdr :
 # run Docker MD with an external Docker MS:
 tlmd :
 	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
-deploy.vmmdr.paracamplus.com : fix.ssh.and.keys
-	cd vmmdr.on.ovhlicence/ && \
-	    rsync -avuL monitor.sh \
-	    	fw4ex@ns353482.ovh.net:Docker/
-	cd vmmdr.on.ovhlicence/vmms.paracamplus.com/ && \
-	    rsync -avuL *.sh fw4ex* saver* \
-	    	fw4ex@ns353482.ovh.net:Docker/vmms.paracamplus.com/
-	cd vmmdr.on.ovhlicence/vmmdr.paracamplus.com/ && \
-	    rsync -avuL *.sh fw4ex* saver* \
-	    	fw4ex@ns353482.ovh.net:Docker/vmmdr.paracamplus.com/
+
+deploy.vmmdr+vmms.on.remote : fix.ssh.and.keys
+	cd vmmdr+vmms.on.remote/ && m install.on.REMOTE.as.fw4ex
 	docker push 'paracamplus/aestxyz_vmms:latest' & \
 	docker push 'paracamplus/aestxyz_vmmdr:latest' & wait
 

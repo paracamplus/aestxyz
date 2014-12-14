@@ -70,6 +70,7 @@ PerlModule Paracamplus::FW4EX::T::t_paracamplus_com
         ProxyPass     /s/      http://s.paracamplus.com/
         ProxyPass     /x/      http://x.paracamplus.com/
         ProxyPass     /e/      http://e.paracamplus.com/
+        ProxyPass     /z/      http://z.paracamplus.com/
 
         # Coalesce all problems in one place:
         Errorlog /var/log/apache2/error.log

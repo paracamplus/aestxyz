@@ -1,10 +1,9 @@
 <VirtualHost *:80>
-# This is the Apache configuration on the Docker host.
 # Check syntax with /usr/sbin/apache2ctl -t
 
-  ServerName  t9.paracamplus.com
+  ServerName  a1.paracamplus.com
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/t9.paracamplus.com/
+  DocumentRoot /var/www/a1.paracamplus.com/
   AddDefaultCharset UTF-8
 
   AddType text/javascript .js
@@ -20,7 +19,7 @@
                 Deny from all
         </Directory>
 
-        <Directory /var/www/t9.paracamplus.com/ >
+        <Directory /var/www/a1.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
@@ -32,8 +31,8 @@
               allow from all
 # FUTURE limit the number of requests/second
               # Relay to the Docker container
-              ProxyPass        http://localhost:54980/
-              ProxyPassReverse http://localhost:54980/
+              ProxyPass        http://localhost:51080/
+              ProxyPassReverse http://localhost:51080/
         </Location>
 
         <Location /favicon.ico>
@@ -41,7 +40,7 @@
               ExpiresDefault A2592000
         </Location>
 
-        Alias /static/ /var/www/t9.paracamplus.com/static/
+        Alias /static/ /var/www/a1.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
                 FileETag none
@@ -54,19 +53,13 @@
                 ExpiresByType text/javascript A108000
         </Location>
 
-        ProxyPass     /a/      http://a.paracamplus.com/
-        ProxyPass     /s/      http://s.paracamplus.com/
-        ProxyPass     /x/      http://x.paracamplus.com/
-        ProxyPass     /e/      http://e.paracamplus.com/
-        ProxyPass     /z/      http://z.paracamplus.com/
-
-        Errorlog /var/log/apache2/t9.paracamplus.com-error.log
+        Errorlog /var/log/apache2/a1.paracamplus.com-error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/t9.paracamplus.com-access.log combined
+        CustomLog /var/log/apache2/a1.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>
