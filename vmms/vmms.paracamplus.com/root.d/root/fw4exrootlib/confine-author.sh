@@ -51,7 +51,7 @@ M=$K$K
 # virtual memory          (kbytes, -v) unlimited
 # file locks                      (-x) unlimited
 
-
+# 2014nov30: removed limits on process sizes. java7 needs lots of memory!
 rt_ulimit -c      0 # bloc (maximum size of core files created)
 #rt_ulimit -d  900$K # 400 meg (maximum size of a process's data segment)
 # -e does not seem important here ???

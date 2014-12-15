@@ -20,6 +20,9 @@
     fi
 )
 
+# This is to avoid an 'absent parent directory':
+cd
+
 if ! /etc/init.d/postgresql start
 then
     echo "Cannot start Postgresql"
