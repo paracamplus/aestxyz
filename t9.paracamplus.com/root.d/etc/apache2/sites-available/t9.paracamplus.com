@@ -25,16 +25,28 @@
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
+        <Directory /var/www/t9.paracamplus.com/static/ >
+                Order allow,deny
+                allow from all
+                FileETag none
+                ExpiresActive On
+                # expire images after 30 hours
+                ExpiresByType image/gif A108000
+                ExpiresByType image/png A108000
+                # expires css and js after 30 hours
+                ExpiresByType text/css        A108000
+                ExpiresByType text/javascript A108000
+        </Directory>
 
-        <Location / >
-              Order allow,deny
-              allow from all
-# FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:54980/
-              ProxyPassReverse http://localhost:54980/
-        </Location>
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /s/ http://s.paracamplus.com/s/
+        ProxyPass /a/ http://a.paracamplus.com/
+        ProxyPass /x/ http://x.paracamplus.com/
+        ProxyPass /e/ http://e.paracamplus.com/
+        ProxyPass /static/ !
+        ProxyPass /   http://localhost:54980/
+
+# <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
               SetHandler default_handler
@@ -44,21 +56,7 @@
         Alias /static/ /var/www/t9.paracamplus.com/static/
         <Location /static/ >
                 SetHandler default_handler
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
         </Location>
-
-        ProxyPass     /a/      http://a.paracamplus.com/
-        ProxyPass     /s/      http://s.paracamplus.com/
-        ProxyPass     /x/      http://x.paracamplus.com/
-        ProxyPass     /e/      http://e.paracamplus.com/
-        ProxyPass     /z/      http://z.paracamplus.com/
 
         Errorlog /var/log/apache2/t9.paracamplus.com-error.log
 
@@ -70,3 +68,16 @@
         ServerSignature On
 
 </VirtualHost>
+
+# Tests
+# url retransmise au serveur S:
+# wget -S -o /dev/stdout -O /dev/null http://t.paracamplus.com/s/9/9/9/F/9/4/E/6/4/5/E/E/1/1/E/3/B/D/B/0/A/A/C/C/3/2/B/5/C/0/9/6/999F94E6-45EE-11E3-BDB0-AACC32B5C096.xml
+
+# url servie directement par t:
+# wget -S -o /dev/stdout -O /dev/null http://t.paracamplus.com/static/5-1.gif
+
+# transmis telle quelle a Docker (mais ne devrait pas):
+# wget -S -o /dev/stdout -O /dev/null http://t.paracamplus.com/favicon.ico
+
+# transmis telle quelle a Docker:
+# wget -S -o /dev/stdout -O /dev/stdout http://t.paracamplus.com/ | head -40

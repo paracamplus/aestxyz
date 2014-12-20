@@ -14,6 +14,12 @@ then
     echo "WARNING: $SHORTNAME is already existing!"
 fi
 
+if ! host $HOSTNAME
+then
+    echo "ERROR: $HOSTNAME does not exist"
+    exit 1
+fi
+
 echo "Configuring a Docker image to build:"
 
 mkdir -p $SHORTNAME
@@ -24,14 +30,17 @@ then cat > $SHORTNAME/Dockerfile <<EOF
 #
 # Start a container running a proxy dedicated to one course
 #
-FROM paracamplus/aestxyz_fw4ex
+FROM paracamplus/aestxyz_base
 MAINTAINER ChristianQueinnec "christian.queinnec@paracamplus.com"
 ENV HOSTNAME $HOSTNAME
+
 WORKDIR /root/
-ADD perllib.tgz                  /usr/local/lib/site_perl/
+ADD RemoteScripts/perllib.tgz    /usr/local/lib/site_perl/
 ADD RemoteScripts                /root/RemoteScripts
+
 EXPOSE 80 22
 RUN /root/RemoteScripts/setup.sh
+
 #end.
 EOF
 fi
@@ -90,6 +99,7 @@ cp -fp remote-common/start-40-movePrivateKey.sh  $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-50-apache.sh          $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-60-sshd.sh            $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-65-dbtunnel.sh        $SHORTNAME/RemoteScripts/
+cp -fp remote-common/dbtunnel.sh                 $SHORTNAME/RemoteScripts/
 cp -fp remote-common/check-inner-availability.sh $SHORTNAME/RemoteScripts/
 
 echo "Configuring the deployment of $HOSTNAME:"
@@ -100,10 +110,11 @@ if ! [ -f $HOSTNAME/config.sh ]
 then cat > $HOSTNAME/config.sh <<EOF
 #! /bin/bash
 HOSTNAME=$HOSTNAME
-HOSTPORT=X54080
-HOSTSSHPORT=X54022
+HOSTPORT=X54080                # To be set!!!!!!
+HOSTSSHPORT=X54022             # To be set!!!!!!
 DOCKERNAME=${SHORTNAME}
-DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
+DOCKERIMAGE=paracamplus/aestxyz_\${DOCKERNAME}
+PROVIDE_SMTP=true
 # end of $HOSTNAME/config.sh
 EOF
 fi
@@ -118,14 +129,15 @@ fi
 mkdir -p $HOSTNAME/root.d/etc/apache2/sites-available
 if ! [ -f $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME ]
 then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
-<VirtualHost *:80>
+<VirtualHost *:80> 
+# This is the Apache configuration on the Docker host.
 # Check syntax with /usr/sbin/apache2ctl -t
 
-  ServerName  li314.paracamplus.com
+  ServerName  ${SHORTNAME}.paracamplus.com
               # temporary:
-              ServerAlias li314.fw4ex.org
+              ServerAlias ${SHORTNAME}.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
-  DocumentRoot /var/www/li314.paracamplus.com/
+  DocumentRoot /var/www/${SHORTNAME}.paracamplus.com/
   AddDefaultCharset UTF-8
 
   AddType text/javascript .js
@@ -141,30 +153,14 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
                 Deny from all
         </Directory>
 
-        <Directory /var/www/li314.paracamplus.com/ >
+        <Directory /var/www/${SHORTNAME}.paracamplus.com/ >
                 Order allow,deny
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
-
-        <Location / >
-              Order allow,deny
-              allow from all
-# FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:X54080/
-              ProxyPassReverse http://localhost:X54080/
-        </Location>
-
-        <Location /favicon.ico>
-              SetHandler default_handler
-              ExpiresDefault A2592000
-        </Location>
-
-        Alias /static/ /var/www/li314.paracamplus.com/static/
-        <Location /static/ >
-                SetHandler default_handler
+        <Directory /var/www/${SHORTNAME}.paracamplus.com/static/ >
+                Order allow,deny
+                allow from all
                 FileETag none
                 ExpiresActive On
                 # expire images after 30 hours
@@ -173,15 +169,35 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
                 # expires css and js after 30 hours
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
+        </Directory>
+
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /s/ http://s.paracamplus.com/s/
+        ProxyPass /a/ http://a.paracamplus.com/
+        ProxyPass /x/ http://x.paracamplus.com/
+        ProxyPass /e/ http://e.paracamplus.com/
+        ProxyPass /static/ !
+        ProxyPass /   http://localhost:X54080/
+
+# <Location> directives should be sorted from less to most precise:
+
+        <Location /favicon.ico>
+              SetHandler default_handler
+              ExpiresDefault A2592000
         </Location>
 
-        Errorlog /var/log/apache2/li314.paracamplus.com-error.log
+        Alias /static/ /var/www/${SHORTNAME}.paracamplus.com/static/
+        <Location /static/ >
+                SetHandler default_handler
+        </Location>
+
+        Errorlog /var/log/apache2/${SHORTNAME}.paracamplus.com-error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog /var/log/apache2/li314.paracamplus.com-access.log combined
+        CustomLog /var/log/apache2/${SHORTNAME}.paracamplus.com-access.log combined
         ServerSignature On
 
 </VirtualHost>

@@ -10,10 +10,13 @@ do
     sed -i.bak \
         -e 's/^# *GSSAPIAuthentication no/GSSAPIAuthentication no/' \
         -e '/GSSAPIAuthentication *yes/d' \
+        -e '/HashKnownHosts/d' \
         $f
 done
+echo 'HashKnownHosts no' >> /etc/ssh/ssh_config
 
 # This will also change the corresponding directory of the Docker host:
+mkdir -p /root/.ssh/
 chown -R root: /root/.ssh/
 chmod -R a-w   /root/.ssh/
 chmod go-rw,a+x /root/.ssh

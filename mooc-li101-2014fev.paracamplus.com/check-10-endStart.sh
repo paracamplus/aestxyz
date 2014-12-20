@@ -1,0 +1,1 @@
+../common/check-10-endStart.sh

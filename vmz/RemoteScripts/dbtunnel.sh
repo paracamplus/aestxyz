@@ -1,7 +1,9 @@
 #! /bin/bash
-# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
+#
+# Open a tunnel towards the central database and try to keep it available.
 
 # Insert public key of the DB server in order to avoid a question.
+# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
 mkdir -p /root/.ssh
 touch /root/.ssh/known_hosts
 if ! grep -q 'db.paracamplus.com' < /root/.ssh/known_hosts
@@ -224,4 +226,4 @@ do
     sleep $SLEEPTIME
 done
 
-# end of start-65-dbtunnel.sh
+# end of dbtunnel.sh

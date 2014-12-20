@@ -1,6 +1,7 @@
 <VirtualHost *:80>
+# Apache configuration on Docker container
+
 # Check syntax with /usr/sbin/apache2ctl -t
-# generated on 2014-09-29T18:09:54
 # Catalyst needs apache2-mpm-prefork!
 
   ServerName  a.paracamplus.com
@@ -34,6 +35,7 @@ ExpiresActive On
         <Directory /var/www/a.paracamplus.com/ >
                 Order allow,deny
                 allow from all
+                Header append 'X-originator' 'docker A'
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise

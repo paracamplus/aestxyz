@@ -1,5 +1,6 @@
 #! /bin/bash
-# Gather keys for a course frontend:
+# Gather keys for a course frontend.
+# We just need the key to access the database.
 
 (
     cd $PARACAMPLUSDIR/Servers/.ssh
@@ -8,7 +9,7 @@
 
     # Identify the keys to be copied (by install.sh) into container's SSHDIR:
     cat > $PARACAMPLUSDIR/Docker/${HOSTNAME}/keys.txt <<EOF
-UNTAR keys.tgz
+FILE dbuser_ecdsa
 EOF
 )
 

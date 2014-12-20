@@ -1,7 +1,9 @@
 #! /bin/bash
-# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
+#
+# Open a tunnel towards the central database and try to keep it available.
 
 # Insert public key of the DB server in order to avoid a question.
+# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
 mkdir -p /root/.ssh
 touch /root/.ssh/known_hosts
 if ! grep -q 'db.paracamplus.com' < /root/.ssh/known_hosts
@@ -111,14 +113,14 @@ state () {
     then 
         if ps -p $(cat $PIDFILE1) >/dev/null
         then 
-            echo "the tunnel should be running $(cat $PIDFILE1)"
+            echo "the tunnel monitoring should be running $(cat $PIDFILE1)"
         fi
     fi
     if [[ -f $PIDFILE2 ]]
     then
         if ps -p $(cat $PIDFILE2) >/dev/null
         then 
-            echo "transmit.pl should be running $(cat $PIDFILE1)"
+            echo "The tunnel should be running $(cat $PIDFILE2)"
         fi
     fi
     ps -opid,cmd | grep $DBHOST | grep -v grep
@@ -127,53 +129,51 @@ state () {
 mkdir -p ${LOG%/*}
 touch $LOG
 
-if [ $# -gt 0 ]
-then
-    while true
-    do
-        case "$1" in
-            # Options
-            -v)
-                VERBOSE=true
-                shift
-                ;;
-            -s)
-                state
-                shift
-                ;;
-            # Immediate actions
-            -1)
-                COUNT=1
-                SLEEPTIME=1
-                break
-                ;;
-            -2)
-                COUNT=2
-                SLEEPTIME=1
-                break
-                ;;
-            -t)
-                open_tunnel
-                ;;
-            -d) 
-                # Runs as a daemon:
-                exec 1>$LOG 2>&1
-                break
-                ;;
-            -x)
-                # Stops the daemon
-                cleanup
-                ;; 
-            -h)
-                usage
-                ;;
-            *)
-                echo "Ignore unknown argument '$1' ???"
-                shift
-                ;;
-        esac
-    done
-fi
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        # Options
+        -v)
+            VERBOSE=true
+            ;;
+        -s)
+            state
+            exit
+            ;;
+        # Immediate actions
+        -1)
+            COUNT=1
+            SLEEPTIME=1
+            break
+            ;;
+        -2)
+            COUNT=2
+            SLEEPTIME=1
+            break
+            ;;
+        -t)
+            open_tunnel
+            ;;
+        -d) 
+            # Runs as a daemon:
+            exec 1>$LOG 2>&1
+            ;;
+        -x)
+            # Stops the daemon
+            cleanup
+            exit
+            ;; 
+        -h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Ignore unknown argument '$1' ???"
+            exit 47
+            ;;
+    esac
+    shift
+done
 
 if [ -f $PIDFILE1 -o -f $PIDFILE2 ]
 then
@@ -224,4 +224,4 @@ do
     sleep $SLEEPTIME
 done
 
-# end of start-65-dbtunnel.sh
+# end of dbtunnel.sh

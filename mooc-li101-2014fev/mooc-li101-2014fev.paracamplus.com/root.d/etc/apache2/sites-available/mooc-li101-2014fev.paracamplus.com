@@ -25,6 +25,7 @@ ExpiresActive On
         <Directory /var/www/mooc-li101-2014fev.paracamplus.com/ >
                 Order allow,deny
                 allow from all
+                Header append 'X-originator' 'docker mooc-li101-2014fev'
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise

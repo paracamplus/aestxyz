@@ -15,7 +15,7 @@ SETUP=true
 DEBUG=false
 NEED_FW4EX_MASTER_KEY_DIR=true
 SSHDIR=`pwd`/ssh.d
-SHARE_FW4EX_LOG=true
+SHARE_FW4EX_LOG=false
 PROVIDE_APACHE=true
 PROVIDE_SMTP=false
 DOCKERIMAGETAG=latest
@@ -286,6 +286,8 @@ fi
 
 # Make smoothless the connection between the Docker host and the container:
 echo $CID > docker.cid
+# Record the version of the Docker image:
+docker ps -l | awk '/paracamplus/ {print $2}' > docker.tag
 # BUG in Docker 1.3.2: don't use . as target of 'docker cp':
 docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub `pwd`/
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
@@ -414,6 +416,23 @@ docker ps -l
 # Give time for sshd to be up and running in the container:
 sleep 2
 
-#check "end of start.sh" at the end of docker logs ${DOCKERNAME}
+# Perform some check on the Docker container:
+for f in check-??-*.sh
+do
+    if [ -f $f ]
+    then
+        echo "Sourcing $f"
+        source $f 
+        status=$?
+        if [ $status -gt 0 ]
+        then 
+            echo "Failed check $f ($status), stopping Docker container"
+            docker stop ${DOCKERNAME}
+            exit $status
+        fi
+    fi
+done
+
+echo "Docker container ${DOCKERNAME} ready"
 
 # end of install.sh

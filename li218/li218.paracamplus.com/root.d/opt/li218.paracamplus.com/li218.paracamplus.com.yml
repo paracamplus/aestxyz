@@ -1,0 +1,351 @@
+---
+# This is the deployment configuration of the LI218 server on Docker
+
+name: Paracamplus::FW4EX::LI218
+encoding: UTF-8
+default_view: TT
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+
+private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+
+tmpDir: /opt/tmp/li218.paracamplus.com
+version: 1246
+controllers :
+   - Authenticate
+   - Doc
+   - History
+   - OneLiner
+   - Proxy
+   - Profile
+   - Root
+   - Skill
+   - Stats
+   - TopScore
+   - Whoswho
+   - FromUPMC
+   - Embody
+# Stats, TopScore et Whoswho ajoutes
+
+lang: fr
+decoration:
+    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2013/ue/LI218-2013oct/
+    siteUrl: http://li218.paracamplus.com/
+    ue_code: LI218
+    lcAppName: li218
+    ue_title: Automatisation des taches
+
+Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=localhost
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Plugin::Static::Simple:
+    include_path:
+        - /var/www/li218.paracamplus.com/
+    mime_types:
+        xsl: application/xslt+xml
+
+############### Deployment
+deployment:
+   shortName: li218
+   serverName: li218.paracamplus.com
+   topSrcDir: Servers/w.li218
+   apacheRank: 402
+
+############### Path
+
+exercises:
+  kind: and
+  1:
+     title: Autour de la commande <code>tr</code>
+     kind: set
+     1: com.paracamplus.li362.tr.1
+     2: com.paracamplus.li362.tr.2
+     3: com.paracamplus.li362.tr.3
+     4: com.paracamplus.li362.tr.4
+  2:
+     title: Autour des commandes <code>sort</code> et <code>uniq</code>
+     kind: set
+     1: com.paracamplus.li362.sort.1
+     2: com.paracamplus.li362.sort.2
+     3: com.paracamplus.li362.sort.3
+     4: com.paracamplus.li362.sort.4
+     5: com.paracamplus.li362.sort.5
+     6: com.paracamplus.li362.uniq.1
+     7: com.paracamplus.li362.uniq.2
+     8: com.paracamplus.li218.uniq.3
+     9: com.paracamplus.li218.uniq.4
+  3:
+     title: Autour des commandes <code>head</code>, <code>tail</code> et <code>cut</code>
+     kind: set
+     1: com.paracamplus.li362.headtailcut.1
+     2: com.paracamplus.li362.headtailcut.2
+     3: com.paracamplus.li362.headtailcut.3
+     4: com.paracamplus.li362.headtailcut.4
+     5: com.paracamplus.li362.headtailcut.5
+     6: com.paracamplus.li362.headtailcut.6
+  4:
+     title: Autour de la commande <code>grep</code>
+     kind: set
+     1: com.paracamplus.li362.grep.1
+     2: com.paracamplus.li362.grep.2
+     3: com.paracamplus.li362.grep.3
+     4: com.paracamplus.li362.grep.4
+     5: com.paracamplus.li362.grep.5
+  5:
+     title: Autour de la commande <code>sed</code>
+     kind: set
+     1: com.paracamplus.li362.sed.1
+     2: com.paracamplus.li362.sed.2
+     3: com.paracamplus.li362.sed.3
+     4: com.paracamplus.li362.sed.4
+     5: com.paracamplus.li362.sed.5
+     6: com.paracamplus.li362.sed.6
+     7: com.paracamplus.li362.sed.7
+     8: com.paracamplus.li362.sed.8
+  6:
+     title: Autour des expressions rationnelles de <code>bash</code>
+     kind: set
+     1: com.paracamplus.li362.sh.1
+     2: com.paracamplus.li362.sh.2
+     3: com.paracamplus.li362.sh.3
+     4: com.paracamplus.li362.sh.4
+  7:
+     title: Devoir novembre 2010
+     kind: set
+     1: org.fw4ex.li218.devoir.2010nov.3
+  8:
+     title: Petits scripts <code>bash</code> de quelques lignes
+     kind: set
+     1: com.paracamplus.li362.sh.5
+     2: com.paracamplus.li362.sh.6
+     3: com.paracamplus.li362.sh.7
+  9:
+     title: Examens entiers
+     kind: set
+     1: com.paracamplus.li362.partiel.2008nov.2
+     2: com.paracamplus.li362.final.2008dec.1
+     3: com.paracamplus.li362.final.2009jan.1
+
+
+############### Views
+
+View::Identity:
+
+View::XSLT:
+   INCLUDE_PATH:
+      - /var/www/li218.paracamplus.com/static/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/li218.paracamplus.com/Templates
+        - /opt/li218.paracamplus.com/Templates/Default
+    ENCODING: UTF-8
+    render_die: 1
+
+################## Controllers
+
+Controller::Authenticate:
+   private_key_file:  /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+# FIXME prendre en compte ces dates si elles existent!!!!!!!!!!!!!!!!!!!
+   startTime: 2013-08-22T00:00
+   endTime:   2014-08-01T00:00
+   sendLinkBaseUrl: http://li218.paracamplus.com/authenticate/checklink/
+   smtpfrom: webmaster@paracamplus.com <WebMaster@paracamplus.com>
+   sendLinkSubject: "Acces a li218.paracamplus.com"
+   smtpservers:
+       - localhost:25
+   message:
+     fr:
+       missingLogin: "Nom de connexion (du genre upmc:1234567) manquant!"
+       missingPassword: "Mot de passe manquant!"
+       wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
+       missingLoginOrEmail: "Nom de connexion ou courriel absent!"
+       unknownEmail: "Courriel inconnu!"
+       ambiguousEmail: "Courriel ambigü ?"
+       unknownLogin: "Nom de connexion inconnu!"
+       ambiguousLogin: "Nom de connexion ambigü ?"
+       missingLink: "Lien temporaire absent!"
+       obsoleteLink: "Lien temporaire inconnu ou périmé!"
+       changePassword: "N'oubliez pas de changer votre mot de passe mais seulement si vous souhaitez vous connecter directement sur ce site!"
+     en:
+       missingLogin: "Missing login!"
+       missingPassword: "Missing password!"
+       wrongCombination: "Wrong combination of login and password!"
+       missingLoginOrEmail: "Missing login or email!"
+       unknownEmail: "Unknown email!"
+       ambiguousEmail: "Ambiguous email!"
+       unknownLogin: "Unknown login!"
+       ambiguousLogin: "Ambiguous login!"
+       missingLink: "Missing link!"
+       obsoleteLink: "Obsolete or unknown link!"
+       changePassword: "Change your password!"
+   decoration:
+       login: "upmc:"
+       loginOrEmail: "upmc:1234567 ou x@truc.fr"
+       siteUrl: http://li218.paracamplus.com/
+
+Controller::Profile:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   message:
+      fr:
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Les mots de passe diffèrent ?"
+        badPassword: "Mauvais caractère(s) dans mot de passe!"
+        missingOnePassword: "Un des mots de passe manque!"
+        badPseudo: "Mauvais caractère(s) dans pseudo!"
+        badEmail: "Courriel bizarre!"
+        emailAlreadyUsed: "Courriel déjà utilisé!"
+        OK: "Modifications enregistrées!"
+
+Controller::Doc:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   decoration:
+      exoPath: /xh/path/li218
+   defaultPage: toc
+   pages:
+      toc:
+        title: Table des matières
+      howto:
+        title: Mode d'emploi
+      legal:
+        title: Côté légal
+      exercises:
+        title: Exercices proposés
+      skill:
+        title: Performance
+      authentication:
+        title: Authentification
+
+Controller::Root:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   startTime: 2013-09-01T00:00:00z
+   endTime:   2014-08-1T23:59:00Z
+
+Controller::History:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   eServerUrl: /sh/s/
+   jobsPerPage: 20
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::TopScore:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   before: 4
+   justBefore: 4
+   after: 3
+
+Controller::Embody:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Whoswho:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+
+Controller::Skill:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   personGroupName: li218-2013oct
+   exerciseGroupName: li218-2013oct
+   startTime: 2013-09-01
+   endTime:   2014-02-01
+   decoration: 
+      waitingImage: /static/5-1.gif
+
+Controller::OneLiner:
+   version: 1246
+# Use the same insecure key as the A server:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+   stylesheet: /static/li218.xsl
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::FromUPMC:
+# Use the same insecure key as the A server:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+
+Controller::Stats:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2013oct
+
+# The stylesheet (.xsl) must be reachable as a template (.tt)
+Controller::Proxy:
+  private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+  version: 1246
+#  verbose : 110
+  x:
+     prefix: /x/
+     remote: x.paracamplus.com
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li218.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://li218.paracamplus.com/static/li218.css
+  s:
+     prefix: /
+     remote: s.paracamplus.com
+  sh:
+     prefix: /sh/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li218.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://li218.paracamplus.com/static/li218.css
+  shp:
+     prefix: /shp/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li218.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://li218.paracamplus.com/static/li218.css
+  e:
+     prefix: /e/
+     remote: e.paracamplus.com
+  eh:
+     prefix: /eh/
+     remote: e.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li218.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://li218.paracamplus.com/static/li218.css
+  a:
+     prefix: /a/
+     remote: a.paracamplus.com
+
+
+#end.

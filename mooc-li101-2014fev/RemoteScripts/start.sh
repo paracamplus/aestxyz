@@ -7,6 +7,16 @@ INTERACTIVE=false
 SETUP=true
 COMMAND=bash
 
+# Docker mounts private information in /root/ssh.d/ that must be
+# copied in /root/.ssh/. Since ownership and right of /root/.ssh/ will
+# be fixed by the container (to belong to root and be compatible with
+# sshd policy), this allows ssh.d to stay as a regular directory on
+# the Docker host that can be removed without help of sudo. The copy
+# must be done immediately so we may ssh the container.
+
+mkdir -p /root/.ssh
+rsync -avu /root/ssh.d/ /root/.ssh/
+
 usage () {
     cat <<EOF
 Usage: ${0##*/} [option]

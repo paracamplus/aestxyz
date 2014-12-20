@@ -381,8 +381,7 @@ deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
-	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh -R
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
 	common/check-outer-availability.sh \
 		-i t.paracamplus.com -p 80 -s 4 \
@@ -403,8 +402,7 @@ deploy.t9.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t9.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
 	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmt:latest'
-	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh
+	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh -R
 	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54980/
 	common/check-outer-availability.sh \
 		-i t9.paracamplus.com -p 80 -s 4 \
@@ -523,7 +521,7 @@ fix.ssh.and.keys :
 		*/ssh_host_ecdsa_key.pub \
 		*/nohup.out */docker.ip */docker.cid
 
-deploy.vmms.on.ovhlicence : fix.ssh.and.keys
+deploy.vmms.on.ovhlicence : 
 	docker push 'paracamplus/aestxyz_vmms:latest'
 	ssh -t root@ns353482.ovh.net \
 		rm -f /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/vmms.paracamplus.com/ssh_host_ecdsa_key.pub
@@ -536,7 +534,7 @@ deploy.vmms.on.ovhlicence : fix.ssh.and.keys
 	ssh -t root@ns353482.ovh.net \
 	   /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.ovhlicence/run.md.with.docker.ms.sh
 
-deploy.vmms.on.youpou : fix.ssh.and.keys
+deploy.vmms.on.youpou : 
 	docker push 'paracamplus/aestxyz_vmms:latest'
 	chmod a+x vmms.on.youpou/run.md.with.docker.ms.sh
 	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus youpou.rsr.lip6.fr':'
@@ -592,10 +590,8 @@ test.vmmdr :
 tlmd :
 	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
 
-deploy.vmmdr+vmms.on.remote : fix.ssh.and.keys
-	cd vmmdr+vmms.on.remote/ && m install.on.REMOTE.as.fw4ex
-	docker push 'paracamplus/aestxyz_vmms:latest' & \
-	docker push 'paracamplus/aestxyz_vmmdr:latest' & wait
+deploy.vmmdr+vmms.on.remote : 
+	cd vmmdr+vmms.on.remote/ && m deploy
 
 # Generate keys for the install procedure:
 generate.install.keys :
@@ -620,7 +616,7 @@ create.aestxyz_vmmda :
 	cd vmmda/ && docker build -t paracamplus/aestxyz_vmmda .
 
 VMMD=vmmd
-test.local.${VMMD} : fix.ssh.and.keys
+test.local.${VMMD} : 
 	-docker stop vmmda
 	-docker rm vmmda
 	-docker stop vmmd
@@ -653,20 +649,25 @@ do.course :
 	m deploy.${COURSE}.paracamplus.com 
 instantiate_${COURSE} :
 	bash -x ./Scripts/instantiate.sh ${COURSE}
-create.aestxyz_${COURSE} : ${COURSE}/Dockerfile	
+create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
 	${COURSE}/${COURSE}.paracamplus.com/prepare.sh
 	cd ${COURSE}/ && docker build -t paracamplus/aestxyz_${COURSE} .
 	docker tag paracamplus/aestxyz_${COURSE} \
 		"paracamplus/aestxyz_${COURSE}:$$(date +%Y%m%d_%H%M%S)"
-	docker push 'paracamplus/aestxyz_${COURSE}:latest'
 # @bijou: < 80sec
-deploy.${COURSE}.paracamplus.com : fix.ssh.and.keys
+deploy.${COURSE}.paracamplus.com : 
+	docker push 'paracamplus/aestxyz_${COURSE}'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net Docker/${COURSE}.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net \
+		Docker/${COURSE}.paracamplus.com/install.sh -R
 	common/check-outer-availability.sh \
 		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
 		${COURSE}.paracamplus.com
+	wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static/${COURSE}.css | head -n10
+	wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static//${COURSE}.css| head -n10
+	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static/${COURSE}.css| head -n10
+	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static//${COURSE}.css| head -n10
 
 do.li314 :
 	m do.course COURSE=li314
@@ -674,6 +675,8 @@ do.li314_2013oct :
 	m do.course COURSE=li314_2013oct
 do.mooc-li101-2014fev :
 	m do.course COURSE=mooc-li101-2014fev
+do.li218 :
+	m do.course COURSE=li218
 
 # }}}
 

@@ -34,6 +34,7 @@ ExpiresActive On
         <Directory /var/www/x.paracamplus.com/ >
                 Order allow,deny
                 allow from all
+                Header append 'X-originator' 'docker X'
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise

@@ -35,7 +35,27 @@ ExpiresActive On
         <Directory /var/www/t.paracamplus.com/ >
                 Order allow,deny
                 allow from all
+                Header append 'X-originator' 'docker T'
         </Directory>
+
+        <Directory /var/www/t.paracamplus.com/static/ >
+                Order allow,deny
+                allow from all
+                FileETag none
+                ExpiresActive On
+                # expire images after 30 hours
+                ExpiresByType image/gif A108000
+                ExpiresByType image/png A108000
+                # expires css and js after 30 hours
+                ExpiresByType text/css        A108000
+                ExpiresByType text/javascript A108000
+        </Directory>
+
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /s/ http://s.paracamplus.com/
+        ProxyPass /a/ http://a.paracamplus.com/
+        ProxyPass /x/ http://x.paracamplus.com/
+        ProxyPass /e/ http://e.paracamplus.com/
 
 # Beware: Location directives are sorted from less precise to most precise
 PerlModule Paracamplus::FW4EX::T::t_paracamplus_com
@@ -65,12 +85,6 @@ PerlModule Paracamplus::FW4EX::T::t_paracamplus_com
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
         </LocationMatch>
-
-        ProxyPass     /a/      http://a.paracamplus.com/
-        ProxyPass     /s/      http://s.paracamplus.com/
-        ProxyPass     /x/      http://x.paracamplus.com/
-        ProxyPass     /e/      http://e.paracamplus.com/
-        ProxyPass     /z/      http://z.paracamplus.com/
 
         # Coalesce all problems in one place:
         Errorlog /var/log/apache2/error.log

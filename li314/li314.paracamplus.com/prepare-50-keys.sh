@@ -1,0 +1,1 @@
+../../common/prepare-50-keys.sh
