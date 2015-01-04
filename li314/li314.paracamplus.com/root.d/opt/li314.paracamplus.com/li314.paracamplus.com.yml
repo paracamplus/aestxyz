@@ -10,7 +10,7 @@ using_frontend_proxy: 1
 private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li314.paracamplus.com
-version: 1246
+version: 1249
 controllers :
    - Authenticate
    - Doc
@@ -19,12 +19,13 @@ controllers :
    - Proxy
    - Profile
    - Root
-#   - Skill
+   - Skill
    - Stats
    - TopScore
    - Whoswho
    - FromUPMC
    - Embody
+   - Admin
 #   - SaveRestaure
 # Stats, TopScore et Whoswho ajoutes
 
@@ -201,8 +202,16 @@ Controller::Embody:
          lastname: Queinnec
          firstname: Christian
 
+Controller::Admin:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
 Controller::OneLiner:
-   version: 1246
+   version: 1249
 # Use the same insecure key as the A server:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
@@ -227,7 +236,7 @@ Controller::SaveRestaure:
 Controller::Proxy:
   verbose: 0
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
-  version: 1246
+  version: 1249
   x:
      prefix: /x/
      remote: x.paracamplus.com

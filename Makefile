@@ -355,7 +355,7 @@ deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh -R
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
 	common/check-outer-availability.sh \
 		-i x.paracamplus.com -p 80 -s 4 \
@@ -655,12 +655,14 @@ create.aestxyz_${COURSE} : ${COURSE}/Dockerfile
 	docker tag paracamplus/aestxyz_${COURSE} \
 		"paracamplus/aestxyz_${COURSE}:$$(date +%Y%m%d_%H%M%S)"
 # @bijou: < 80sec
+# On deploie sur ovhlicence:
 deploy.${COURSE}.paracamplus.com : 
 	docker push 'paracamplus/aestxyz_${COURSE}'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net \
 		Docker/${COURSE}.paracamplus.com/install.sh -R
+	host ${COURSE}.paracamplus.com
 	common/check-outer-availability.sh \
 		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
 		${COURSE}.paracamplus.com
@@ -668,6 +670,21 @@ deploy.${COURSE}.paracamplus.com :
 	wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static//${COURSE}.css| head -n10
 	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static/${COURSE}.css| head -n10
 	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static//${COURSE}.css| head -n10
+# On deploie sur kimsufi pour effectuer des tests:
+deploy.test.${COURSE}.paracamplus.com : 
+	docker push 'paracamplus/aestxyz_${COURSE}'
+	rsync ${RSYNC_FLAGS} -avuL \
+	    test.${COURSE}.paracamplus.com Scripts \
+		root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net \
+		Docker/test.${COURSE}.paracamplus.com/install.sh -R
+	common/check-outer-availability.sh \
+		-i test.${COURSE}.paracamplus.com -p 80 -s 4 \
+		test.${COURSE}.paracamplus.com
+	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static/${COURSE}.css | head -n10
+	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static//${COURSE}.css| head -n10
+	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static/${COURSE}.css| head -n10
+	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static//${COURSE}.css| head -n10
 
 do.li314 :
 	m do.course COURSE=li314
@@ -675,6 +692,8 @@ do.li314_2013oct :
 	m do.course COURSE=li314_2013oct
 do.mooc-li101-2014fev :
 	m do.course COURSE=mooc-li101-2014fev
+do.mooc-li101-2015mar :
+	m do.course COURSE=mooc-li101-2015mar
 do.li218 :
 	m do.course COURSE=li218
 

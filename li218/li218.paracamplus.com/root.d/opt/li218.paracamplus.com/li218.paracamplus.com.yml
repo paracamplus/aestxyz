@@ -10,7 +10,7 @@ using_frontend_proxy: 1
 private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li218.paracamplus.com
-version: 1246
+version: 1249
 controllers :
    - Authenticate
    - Doc
@@ -29,7 +29,7 @@ controllers :
 
 lang: fr
 decoration:
-    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2013/ue/LI218-2013oct/
+    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/LI218-2015fev/
     siteUrl: http://li218.paracamplus.com/
     ue_code: LI218
     lcAppName: li218
@@ -151,10 +151,10 @@ View::TT:
 
 Controller::Authenticate:
    private_key_file:  /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
 # FIXME prendre en compte ces dates si elles existent!!!!!!!!!!!!!!!!!!!
-   startTime: 2013-08-22T00:00
-   endTime:   2014-08-01T00:00
+   startTime: 2014-08-22T00:00
+   endTime:   2015-08-01T00:00
    sendLinkBaseUrl: http://li218.paracamplus.com/authenticate/checklink/
    smtpfrom: webmaster@paracamplus.com <WebMaster@paracamplus.com>
    sendLinkSubject: "Acces a li218.paracamplus.com"
@@ -192,7 +192,7 @@ Controller::Authenticate:
 
 Controller::Profile:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    message:
       fr:
         unknownLogin: "Nom de connexion inconnu!"
@@ -206,7 +206,7 @@ Controller::Profile:
 
 Controller::Doc:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    decoration:
       exoPath: /xh/path/li218
    defaultPage: toc
@@ -226,13 +226,13 @@ Controller::Doc:
 
 Controller::Root:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
-   startTime: 2013-09-01T00:00:00z
-   endTime:   2014-08-1T23:59:00Z
+   campaignName: li218-2015fev
+   startTime: 2014-09-01T00:00:00z
+   endTime:   2015-08-1T23:59:00Z
 
 Controller::History:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    eServerUrl: /sh/s/
    jobsPerPage: 20
    decoration:
@@ -241,14 +241,14 @@ Controller::History:
 
 Controller::TopScore:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    before: 4
    justBefore: 4
    after: 3
 
 Controller::Embody:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    allowedUsers:
        - 1000:
          lastname: Queinnec
@@ -256,23 +256,23 @@ Controller::Embody:
 
 Controller::Whoswho:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
 
 Controller::Skill:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
-   personGroupName: li218-2013oct
-   exerciseGroupName: li218-2013oct
-   startTime: 2013-09-01
-   endTime:   2014-02-01
+   campaignName: li218-2015fev
+   personGroupName: li218-2015fev
+   exerciseGroupName: li218-2015fev
+   startTime: 2014-09-01
+   endTime:   2015-02-01
    decoration: 
       waitingImage: /static/5-1.gif
 
 Controller::OneLiner:
-   version: 1246
+   version: 1249
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
    stylesheet: /static/li218.xsl
    decoration:
      previousPage: "page précédente"
@@ -281,16 +281,16 @@ Controller::OneLiner:
 Controller::FromUPMC:
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
 
 Controller::Stats:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2013oct
+   campaignName: li218-2015fev
 
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-  version: 1246
+  version: 1249
 #  verbose : 110
   x:
      prefix: /x/

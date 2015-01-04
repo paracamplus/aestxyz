@@ -21,12 +21,12 @@ Model::FW4EXDB:
        - pg_enable_utf8: 1
 
 Controller::Root:
-    version: 1246
+    version: 1251
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Direct:
-    version: 1246
+    version: 1251
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     # 8 jours
@@ -45,7 +45,7 @@ Controller::Direct:
           wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
 
 Controller::FromUPMC:
-    version: 1246
+    version: 1251
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     endTime: 20110201T00:00:00
@@ -57,20 +57,22 @@ Controller::FromUPMC:
           wrongCombination: "Wrong combination of login and password!"
 
 Controller::FromMOOC:
-    version: 1246
+    version: 1251
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
-    smtpfrom: FW4EX confirmation <noreply@paracamplus.com>
+    smtpfrom: CodeGradX confirmation <noreply@paracamplus.com>
     sendLinkSubject: "Confirmation de courriel"
-    sendLinkBaseUrl: http://mooc-li101-2014fev.paracamplus.com/authenticate/checklink/
+    domain: http://mooc-li101-2015mar.paracamplus.com/
+    sendLinkBaseUrl: http://mooc-li101-2015mar.paracamplus.com/authenticate/checklink/
     smtpservers:
       - 127.0.0.1
     message:
       fr:
           missingEmail: "Courriel manquant!"
           badEmail:     "Pas un courriel!"
-    defaultGroup: mooc-li101-2014fev
+    defaultGroup: mooc-li101-2015mar
     checkAPPID: programmation-recursive
+# NOTA: mooc-li101-2015mar ne devrait pas apparaitre dans ces parametres!!!
 
 Controller::OpenID:
     verbose: 10
@@ -87,7 +89,7 @@ Controller::OpenID:
 #    behavior: register
 
 Controller::Person:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -95,7 +97,7 @@ Controller::Person:
     xServerUrl: /
 
 Controller::History:
-    version: 1246
+    version: 1251
     count: 20
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -103,7 +105,7 @@ Controller::History:
     xServerUrl: /xh/
 
 Controller::Exercise:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -111,7 +113,7 @@ Controller::Exercise:
     xServerUrl: /
 
 Controller::Things:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -119,7 +121,7 @@ Controller::Things:
     maximum: 15
 
 Controller::Jobs:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -127,31 +129,31 @@ Controller::Jobs:
     maximum: 15
 
 Controller::Exercises:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Batches:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Persons:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Author:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::AuthorExercises:
-    version: 1246
+    version: 1251
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -162,25 +164,26 @@ Controller::Glimpse:
     defaultContentType: application/json
 
 Controller::PersonGroup:
-    version: 1246
+    version: 1251
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Enroll:
-    version: 1246
+    version: 1251
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     home_page: /authenticationAnswer
 
 Controller::Register:
-    version: 1246
+    version: 1251
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sendLinkBaseUrl: http://x.paracamplus.com/
-    smtpfrom: FW4EX master <keymaster@paracamplus.org>
+    smtpfrom: FW4EX master <keymaster@paracamplus.com>
     smtpservers:
       - 127.0.0.1
     confirmationLinkSubject: "Lien temporaire"
+# NOTA unifier sendlinkMail.tt avec confirmlinkMail.tt ?
 
 Plugin::Static::Simple:
     include_path:

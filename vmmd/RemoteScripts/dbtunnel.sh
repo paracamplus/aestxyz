@@ -1,7 +1,9 @@
 #! /bin/bash
-# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
+#
+# Open a tunnel towards the central database and try to keep it available.
 
 # Insert public key of the DB server in order to avoid a question.
+# ssh-keygen -t ecdsa -N '' -b 521 -C "dbuser@paracamplus.com" -f dbuser_ecdsa
 mkdir -p /root/.ssh
 touch /root/.ssh/known_hosts
 if ! grep -q 'db.paracamplus.com' < /root/.ssh/known_hosts
@@ -13,7 +15,15 @@ fi
 
 # Rectify if need be the rights of the private key of dbuser, the 
 # identity with which we connect 
-chmod 400 /opt/$HOSTNAME/private/dbuser_ecdsa
+if [ -r /root/.ssh/dbuser_ecdsa ]
+then 
+    mkdir -p /opt/$HOSTNAME/
+    cp /root/.ssh/dbuser_ecdsa /opt/$HOSTNAME/
+else
+    echo "Missing /root/.ssh/dbuser_ecdsa"
+    exit 46
+fi
+chmod 400 /opt/$HOSTNAME/dbuser_ecdsa
 
 DBHOST=db.paracamplus.com
 LOG=/var/log/apache2/$HOSTNAME/dbtunnel.log
@@ -23,7 +33,6 @@ SLEEPTIME=61
 REMOTEUSER=dbuser
 AVAILABLE=false
 VERBOSE=false
-COUNT=0
 
 log () {
     if $VERBOSE
@@ -39,8 +48,8 @@ is_alive () {
 
 # Checks whether the DB server may be reached via ssh
 is_sshable () {
-    ssh -i /opt/$HOSTNAME/private/dbuser_ecdsa \
-        $REMOTEUSER@$DBHOST true
+    ssh -i /opt/$HOSTNAME/dbuser_ecdsa \
+        $REMOTEUSER@$DBHOST psql -l
 }
 
 # Return a code telling if a network change occurred.
@@ -92,7 +101,7 @@ open_tunnel () {
     kill_previous_tunnels 2>/dev/null
     nohup ssh -nNC -o TCPKeepAlive=yes \
         -L 5432:127.0.0.1:5432 \
-        -i /opt/$HOSTNAME/private/dbuser_ecdsa \
+        -i /opt/$HOSTNAME/dbuser_ecdsa \
         $REMOTEUSER@$DBHOST &
     echo $! > $PIDFILE2
     sleep 2
@@ -103,14 +112,14 @@ state () {
     then 
         if ps -p $(cat $PIDFILE1) >/dev/null
         then 
-            echo "the tunnel should be running $(cat $PIDFILE1)"
+            echo "the tunnel monitoring should be running $(cat $PIDFILE1)"
         fi
     fi
     if [[ -f $PIDFILE2 ]]
     then
         if ps -p $(cat $PIDFILE2) >/dev/null
         then 
-            echo "transmit.pl should be running $(cat $PIDFILE1)"
+            echo "The tunnel should be running $(cat $PIDFILE2)"
         fi
     fi
     ps -opid,cmd | grep $DBHOST | grep -v grep
@@ -119,69 +128,40 @@ state () {
 mkdir -p ${LOG%/*}
 touch $LOG
 
-if [ $# -gt 0 ]
-then
-    while true
-    do
-        case "$1" in
-            # Options
-            -v)
-                VERBOSE=true
-                shift
-                ;;
-            -s)
-                state
-                shift
-                ;;
-            # Immediate actions
-            -1)
-                COUNT=1
-                SLEEPTIME=1
-                break
-                ;;
-            -2)
-                COUNT=2
-                SLEEPTIME=1
-                break
-                ;;
-            -t)
-                open_tunnel
-                ;;
-            -d) 
-                # Runs as a daemon:
-                exec 1>$LOG 2>&1
-                break
-                ;;
-            -x)
-                # Stops the daemon
-                cleanup
-                ;; 
-            -h)
-                usage
-                ;;
-            *)
-                echo "Ignore unknown argument '$1' ???"
-                shift
-                ;;
-        esac
-    done
-fi
-
-if [ -f $PIDFILE1 -o -f $PIDFILE2 ]
-then
-    if ps -p $(cat $PIDFILE1) >/dev/null
-    then 
-        if ps -p $(cat $PIDFILE2) >/dev/null
-        then
-            log "Already running"
-        else
-            log "Missing tunnel"
-        fi
-    else
-        log "Missing script"
-    fi
-
-fi
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        # Options
+        -v)
+            VERBOSE=true
+            ;;
+        -s)
+            state
+            exit
+            ;;
+        -t)
+            open_tunnel
+            ;;
+        -d) 
+            # Runs as a daemon:
+            exec 1>$LOG 2>&1
+            ;;
+        -x)
+            # Stops the daemon
+            cleanup
+            exit
+            ;; 
+        -h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Ignore unknown argument '$1' ???"
+            exit 47
+            ;;
+    esac
+    shift
+done
 
 echo $$ >$PIDFILE1
 while true
@@ -203,17 +183,7 @@ do
             kill_previous_tunnels 2>/dev/null
         fi
     fi
-    if [[ $COUNT -eq 0 ]]
-    then 
-        if ! $AVAILABLE
-        then
-            trap cleanup 0
-            exit 45
-        fi
-    else
-        COUNT=$(( $COUNT -1 ))
-    fi
     sleep $SLEEPTIME
 done
 
-# end of start-65-dbtunnel.sh
+# end of dbtunnel.sh

@@ -10,7 +10,7 @@ using_frontend_proxy: 1
 #private_key_file: /opt/y.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Root:
-  version: 1246
+  version: 1251
 
 redirections:
     a.paracamplus.com:
@@ -25,5 +25,9 @@ redirections:
        choices:
           - s1.paracamplus.com
           - s2.paracamplus.com
+# Pass through the Y server to record which videos are accessed:
+    www.youtube.com:
+       choices: 
+          - www.youtube.com
 
 # end.

@@ -6,6 +6,6 @@ use namespace::autoclean;
 use utf8;
 extends ( 'Paracamplus::FW4EX::LI218' );
 __PACKAGE__->_configureThenRun('/opt/li218.paracamplus.com/li218.paracamplus.com.yml', 
-                               '1246' );
+                               '1249' );
 __PACKAGE__->meta->make_immutable;
 1;

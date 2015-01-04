@@ -331,7 +331,7 @@ if ${PROVIDE_SMTP}
 then
     # Leave time for the container to start sshd:
     # @bijou: 3-7 seconds
-    for t in $(seq 1 20)
+    for t in $(seq 1 30)
     do
         sleep 1
         echo "Trying($t) to ssh the container"
@@ -344,6 +344,15 @@ then
             break
         fi
     done
+    # Check that the tunnel is open ?
+    sleep 2
+    CMDPATTERN="25:127.0.0.1:25 +-p ${HOSTSSHPORT}"
+    if ps -C ssh -o pid,cmd | grep -E "$CMDPATTERN"
+    then :
+    else
+        echo "Cannot open tunnel 25:127.0.0.1:25"
+        exit 59
+    fi
 fi
 
 # Allow the container to open a tunnel to the Docker host.
@@ -352,7 +361,7 @@ if [ -n "${PROVIDE_TUNNEL}" ]
 then
     # Leave time for the container to start sshd:
     # @bijou: 3-7 seconds
-    for t in $(seq 1 20)
+    for t in $(seq 1 30)
     do
         sleep 1
         echo "Trying($t) to SSH the container"
@@ -365,6 +374,15 @@ then
             break
         fi
     done
+    # Check that the tunnel is open ?
+    sleep 2
+    CMDPATTERN="${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL} +-p ${HOSTSSHPORT}"
+    if ps -C ssh -o pid,cmd | grep -E "$CMDPATTERN"
+    then :
+    else
+        echo "Cannot open tunnel ${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL}"
+        exit 59
+    fi
 fi
 
 # Install specific files on the Docker host:
@@ -413,8 +431,8 @@ fi
 
 docker ps -l
 
-# Give time for sshd to be up and running in the container:
-sleep 2
+# Give time for sshd and other daemons to be up and running in the container:
+sleep 10
 
 # Perform some check on the Docker container:
 for f in check-??-*.sh

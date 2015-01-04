@@ -33,7 +33,6 @@ SLEEPTIME=61
 REMOTEUSER=dbuser
 AVAILABLE=false
 VERBOSE=false
-COUNT=0
 
 log () {
     if $VERBOSE
@@ -50,7 +49,7 @@ is_alive () {
 # Checks whether the DB server may be reached via ssh
 is_sshable () {
     ssh -i /opt/$HOSTNAME/dbuser_ecdsa \
-        $REMOTEUSER@$DBHOST true
+        $REMOTEUSER@$DBHOST psql -l
 }
 
 # Return a code telling if a network change occurred.
@@ -140,17 +139,6 @@ do
             state
             exit
             ;;
-        # Immediate actions
-        -1)
-            COUNT=1
-            SLEEPTIME=1
-            break
-            ;;
-        -2)
-            COUNT=2
-            SLEEPTIME=1
-            break
-            ;;
         -t)
             open_tunnel
             ;;
@@ -175,22 +163,6 @@ do
     shift
 done
 
-if [ -f $PIDFILE1 -o -f $PIDFILE2 ]
-then
-    if ps -p $(cat $PIDFILE1) >/dev/null
-    then 
-        if ps -p $(cat $PIDFILE2) >/dev/null
-        then
-            log "Already running"
-        else
-            log "Missing tunnel"
-        fi
-    else
-        log "Missing script"
-    fi
-
-fi
-
 echo $$ >$PIDFILE1
 while true
 do
@@ -210,16 +182,6 @@ do
         then
             kill_previous_tunnels 2>/dev/null
         fi
-    fi
-    if [[ $COUNT -eq 0 ]]
-    then 
-        if ! $AVAILABLE
-        then
-            trap cleanup 0
-            exit 45
-        fi
-    else
-        COUNT=$(( $COUNT -1 ))
     fi
     sleep $SLEEPTIME
 done
