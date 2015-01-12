@@ -65,7 +65,11 @@ recreate.all :     create.aestxyz_vme
 recreate.all :     create.aestxyz_vmx
 recreate.all :     create.aestxyz_vmt
 recreate.all :     create.aestxyz_vmz
-recreate.all :     create.aestxyz_li314
+# For the next ones: see do.li314
+#recreate.all :     create.aestxyz_li314
+#recreate.all :     create.aestxyz_li218
+#recreate.all :     create.aestxyz_mooc-li101-2014fev
+#recreate.all :     create.aestxyz_mooc-li101-2015mar
 recreate.all :     create.aestxyz_vmms0
 recreate.all :       create.aestxyz_vmms1
 recreate.all :         create.aestxyz_vmms
@@ -78,11 +82,16 @@ recreate.all :       create.aestxyz_vmmd1
 
 deploy.all : deploy.y.paracamplus.com
 deploy.all : deploy.a.paracamplus.com
+deploy.all : deploy.a1.paracamplus.com
 deploy.all : deploy.e.paracamplus.com
 deploy.all : deploy.x.paracamplus.com
 deploy.all : deploy.t.paracamplus.com
 deploy.all : deploy.z.paracamplus.com
-deploy.all : deploy.li314.paracamplus.com
+# For the next ones: see do.deploy.li314
+#deploy.all : deploy.li314.paracamplus.com
+#deploy.all : deploy.li218.paracamplus.com
+#deploy.all : deploy.mooc-li101-2014fev.paracamplus.com
+#deploy.all : deploy.mooc-li101-2015mar.paracamplus.com
 #deploy.all : deploy.a6.paracamplus.com # with Debian6
 
 # {{{ Base images
@@ -95,7 +104,7 @@ create.aestxyz_apt : apt/Dockerfile
 		"paracamplus/aestxyz_apt:$$(date +%Y%m%d_%H%M%S)"
 # @bijou 19min
 archive.aestxyz_apt :
-	docker push 'paracamplus/aestxyz_apt:latest'
+	docker push 'paracamplus/aestxyz_apt'
 # @bijou 27min
 
 # and the other one with the required Perl modules:
@@ -109,10 +118,18 @@ create.aestxyz_cpan : cpan/Dockerfile
 	docker tag paracamplus/aestxyz_cpan paracamplus/aestxyz_base
 # @bijou 65min
 archive.aestxyz_cpan :
-	docker push 'paracamplus/aestxyz_base:latest'
+	docker push 'paracamplus/aestxyz_base'
 # @bijou 4min
 # paracamplus/aestxyz_base is the base image for all the next ones.
-# For historical reason, we also name it paracamplus/aestxyz_fw4ex
+
+# Adjoin some new modules over aestxyz_cpan. 
+# After testing, rebuild aestxyz_cpan.
+create.aestxyz_cpan2 : cpan2/Dockerfile
+	rsync -avu cpan/RemoteScripts/ cpan2/RemoteScripts/
+	cd cpan2/ && docker build -t paracamplus/aestxyz_cpan2 .
+	docker tag paracamplus/aestxyz_cpan2 \
+		"paracamplus/aestxyz_cpan2:$$(date +%Y%m%d_%H%M%S)"
+	docker tag paracamplus/aestxyz_cpan2 paracamplus/aestxyz_base
 
 # These are CPAN modules required to run prepare.sh on the Docker host:
 local.ensure.cpan :
@@ -279,9 +296,7 @@ deploy.y.paracamplus.com :
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmy:latest'
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
-	y/y.paracamplus.net/check-outer-availability.sh \
-		-i y.paracamplus.com -p 80 -s 4 \
-		y.paracamplus.com
+# FUTURE invent a good test for y!
 
 # NOTA: this was a bad idea to put two different servers (A and E for
 # instance) in the same container. Scripts are tailored for just one server!
@@ -490,7 +505,7 @@ create.aestxyz_vmms : vmms/Dockerfile
 #@bijou: 9 min
 	docker tag paracamplus/aestxyz_vmms \
 		"paracamplus/aestxyz_vmms:$$(date +%Y%m%d_%H%M%S)"
-##	docker push 'paracamplus/aestxyz_vmms:latest'
+##	docker push 'paracamplus/aestxyz_vmms'
 #@bijou: 300 min
 test.local.vmms :
 	-Scripts/remove-exited-containers.sh 
@@ -522,7 +537,7 @@ fix.ssh.and.keys :
 		*/nohup.out */docker.ip */docker.cid
 
 deploy.vmms.on.ovhlicence : 
-	docker push 'paracamplus/aestxyz_vmms:latest'
+	docker push 'paracamplus/aestxyz_vmms'
 	ssh -t root@ns353482.ovh.net \
 		rm -f /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/vmms.paracamplus.com/ssh_host_ecdsa_key.pub
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmms:latest'
@@ -535,7 +550,7 @@ deploy.vmms.on.ovhlicence :
 	   /home/queinnec/Paracamplus/ExerciseFrameWork/Docker/vmms.on.ovhlicence/run.md.with.docker.ms.sh
 
 deploy.vmms.on.youpou : 
-	docker push 'paracamplus/aestxyz_vmms:latest'
+	docker push 'paracamplus/aestxyz_vmms'
 	chmod a+x vmms.on.youpou/run.md.with.docker.ms.sh
 	rsync -avu ${RSYNC_FLAGS} ${HOME}/Paracamplus youpou.rsr.lip6.fr':'
 	ssh -t youpou.rsr.lip6.fr \
@@ -573,7 +588,7 @@ create.aestxyz_vmmd :
 	docker stop vmmd1
 	docker rm vmmd1
 # 22 min, 7.2G
-# docker push 'paracamplus/aestxyz_vmmd;latest'
+# docker push 'paracamplus/aestxyz_vmmd'
 
 create.aestxyz_vmmdr :
 # finish to prepare a complete MD in a Docker container without inner MS
@@ -583,7 +598,7 @@ create.aestxyz_vmmdr :
 	docker tag paracamplus/aestxyz_vmmdr \
 		"paracamplus/aestxyz_vmmdr:$$(date +%Y%m%d_%H%M%S)"
 # @bijou: 1 min
-#	docker push 'paracamplus/aestxyz_vmmdr:latest'
+#	docker push 'paracamplus/aestxyz_vmmdr'
 test.vmmdr :
 	docker run --rm -it paracamplus/aestxyz_vmmdr
 # run Docker MD with an external Docker MS:
@@ -661,15 +676,15 @@ deploy.${COURSE}.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    ${COURSE}.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net \
-		Docker/${COURSE}.paracamplus.com/install.sh -R
+		Docker/${COURSE}.paracamplus.com/install.sh -r
 	host ${COURSE}.paracamplus.com
 	common/check-outer-availability.sh \
 		-i ${COURSE}.paracamplus.com -p 80 -s 4 \
 		${COURSE}.paracamplus.com
-	wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static/${COURSE}.css | head -n10
-	wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static//${COURSE}.css| head -n10
-	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static/${COURSE}.css| head -n10
-	wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static//${COURSE}.css| head -n10
+	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static/fw4ex-281x282.png | wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static//fw4ex-281x282.png| wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static/fw4ex-281x282.png| wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static//fw4ex-281x282.png| wc -c` ]
 # On deploie sur kimsufi pour effectuer des tests:
 deploy.test.${COURSE}.paracamplus.com : 
 	docker push 'paracamplus/aestxyz_${COURSE}'
@@ -677,23 +692,29 @@ deploy.test.${COURSE}.paracamplus.com :
 	    test.${COURSE}.paracamplus.com Scripts \
 		root@ns327071.ovh.net':'Docker/
 	ssh -t root@ns327071.ovh.net \
-		Docker/test.${COURSE}.paracamplus.com/install.sh -R
+		Docker/test.${COURSE}.paracamplus.com/install.sh -r
 	common/check-outer-availability.sh \
 		-i test.${COURSE}.paracamplus.com -p 80 -s 4 \
 		test.${COURSE}.paracamplus.com
-	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static/${COURSE}.css | head -n10
-	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static//${COURSE}.css| head -n10
-	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static/${COURSE}.css| head -n10
-	wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static//${COURSE}.css| head -n10
+	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static/fw4ex-281x282.png | wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static//fw4ex-281x282.png| wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static/fw4ex-281x282.png| wc -c` ]
+	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static//fw4ex-281x282.png| wc -c` ]
 
 do.li314 :
 	m do.course COURSE=li314
+do.deploy.test.li314 :
+	m deploy.test.li314.paracamplus.com COURSE=li314
 do.li314_2013oct :
 	m do.course COURSE=li314_2013oct
 do.mooc-li101-2014fev :
 	m do.course COURSE=mooc-li101-2014fev
 do.mooc-li101-2015mar :
 	m do.course COURSE=mooc-li101-2015mar
+do.deploy.mooc-li101-2015mar :
+	m deploy.mooc-li101-2015mar.paracamplus.com COURSE=mooc-li101-2015mar
+do.deploy.test.mooc-li101-2015mar :
+	m deploy.test.mooc-li101-2015mar.paracamplus.com COURSE=mooc-li101-2015mar
 do.li218 :
 	m do.course COURSE=li218
 

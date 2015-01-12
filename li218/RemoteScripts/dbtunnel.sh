@@ -125,9 +125,35 @@ state () {
     ps -opid,cmd | grep $DBHOST | grep -v grep
 }
 
+watch () {
+    while true
+    do
+        if is_alive $DBHOST
+        then
+            if is_sshable $DBHOST
+            then
+                if availability_changed_to true
+                then
+                    open_tunnel
+                fi
+            else
+                log "Cannot ssh towards $DBHOST on $(date)"
+            fi
+        else
+            if availability_changed_to false
+            then
+                kill_previous_tunnels 2>/dev/null
+            fi
+        fi
+        sleep $SLEEPTIME
+    done
+}
+
 mkdir -p ${LOG%/*}
 touch $LOG
+echo $$ >$PIDFILE1
 
+DAEMON=false
 while [ $# -gt 0 ]
 do
     case "$1" in
@@ -145,6 +171,7 @@ do
         -d) 
             # Runs as a daemon:
             exec 1>$LOG 2>&1
+            DAEMON=true
             ;;
         -x)
             # Stops the daemon
@@ -156,34 +183,18 @@ do
             exit 0
             ;;
         *)
-            echo "Ignore unknown argument '$1' ???"
+            echo "Unknown argument '$1' ???"
             exit 47
             ;;
     esac
     shift
 done
 
-echo $$ >$PIDFILE1
-while true
-do
-    if is_alive $DBHOST
-    then
-        if is_sshable $DBHOST
-        then
-            if availability_changed_to true
-            then
-                open_tunnel
-            fi
-        else
-            log "Cannot ssh towards $DBHOST on $(date)"
-        fi
-    else
-        if availability_changed_to false
-        then
-            kill_previous_tunnels 2>/dev/null
-        fi
-    fi
-    sleep $SLEEPTIME
-done
+if $DAEMON
+then 
+    watch &
+else 
+    watch
+fi
 
 # end of dbtunnel.sh

@@ -10,7 +10,7 @@ using_frontend_proxy: 1
 private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li218.paracamplus.com
-version: 1249
+version: 1254
 controllers :
    - Authenticate
    - Doc
@@ -269,7 +269,7 @@ Controller::Skill:
       waitingImage: /static/5-1.gif
 
 Controller::OneLiner:
-   version: 1249
+   version: 1254
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
@@ -290,7 +290,7 @@ Controller::Stats:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-  version: 1249
+  version: 1254
 #  verbose : 110
   x:
      prefix: /x/

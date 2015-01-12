@@ -9,6 +9,7 @@ App::cpanminus
 #Bundle::CPAN
 Perl::OSType
 JSON::PP
+CPAN::DistnameInfo
 CPAN::Meta::YAML
 CPAN::Meta::Requirements
 CPAN::Meta
@@ -84,12 +85,16 @@ DBD::SQLite
 DBIx::Class
 DBIx::Class::Schema
 
-#Starman -f
+Starman 
+#Server::Starter
 Moose
 Catalyst
 Catalyst::Runtime
 # the previous seems to require Catalyst::Plugin::Params::Nested
 Catalyst::Devel
+#Catalyst::Engine::CGI
+#Catalyst::Engine::HTTP::Prefork
+#Catalyst::Engine::PSGI
 Cache::File
 Task::Catalyst
 Catalyst::Model::DBIC::Schema

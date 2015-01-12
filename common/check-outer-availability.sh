@@ -30,11 +30,13 @@ do
 done
 shift $(( $OPTIND - 1 ))
 
+VERSION=$(hg heads | awk -F: '/^changeset:/ {print $2;nextfile}' )
+VERSION=$(echo $VERSION)
+
 rm -f /tmp/wget_code.txt
 for HOSTNAME
 do (
         echo "Outer check of $HOSTNAME"
-        VERSION=$(cat */$HOSTNAME/root.d/opt/$HOSTNAME/VERSION.txt)
         wget -O - -o /dev/null \
             --header="HOST:$HOSTNAME" \
             http://$IP:$PORT/ > /tmp/wget_$HOSTNAME.txt
@@ -42,7 +44,8 @@ do (
         then 
             :
         else
-            echo '***************** Problem (missing or wrong version)!'
+            echo "***************** Problem (missing or wrong version)!
+Expecting $VERSION, got:"
             cat /tmp/wget_$HOSTNAME.txt
             echo 32 > /tmp/wget_code.txt
             exit 32

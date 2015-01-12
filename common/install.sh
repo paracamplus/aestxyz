@@ -46,7 +46,7 @@ Usage: ${0##*/} [option]
   -e CMD    run CMD instead of start.sh (and its options) in the container
   -D V=v    exports the variable V with value v in the container
   -o STR    adds STR to the options of start.sh
-  -R        refresh docker images
+  -r        refresh docker images
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -57,7 +57,7 @@ EOF
 
 START_FLAGS=
 REFRESH_DOCKER_IMAGES=false
-while getopts e:s:inD:o:R opt
+while getopts e:s:inD:o:rR opt
 do
     case "$opt" in
         e)
@@ -87,7 +87,7 @@ do
             # additional flags for start.sh in the container
             START_FLAGS="$START_FLAGS $OPTARG"
             ;;
-        R)
+        R|r)
             # Force a refresh of the Docker images
             REFRESH_DOCKER_IMAGES=true
             ;;
@@ -130,9 +130,9 @@ fi
 mkdir -p ${SSHDIR}
 cat root_rsa.pub > ${SSHDIR}/authorized_keys
 # These are the names expected by Paracamplus/FW4EX/VM.pm          HACK
-cp root_rsa.pub root.pub
-cp root_rsa     root
-cp root root.pub root_rsa* $SSHDIR/
+cp -f root_rsa.pub root.pub
+cp -f root_rsa     root
+cp -f root root.pub root_rsa* $SSHDIR/
 chmod a=r $SSHDIR/*.pub
 
 # Move the keys (mentioned in keys.txt) into SSHDIR:
@@ -231,17 +231,24 @@ fi
 
 # Remove all related containers:
 ( docker stop ${DOCKERNAME} 
-  docker rm   ${DOCKERNAME} ) &
+  docker rm   ${DOCKERNAME} ) 2>/dev/null &
 ( docker stop tmp${DOCKERNAME}
-  docker rm tmp${DOCKERNAME} ) &
+  docker rm tmp${DOCKERNAME} ) 2>/dev/null &
 ( docker stop tmpi${DOCKERNAME}
-  docker rm tmpi${DOCKERNAME} ) &
+  docker rm tmpi${DOCKERNAME} ) 2>/dev/null &
 wait
 
 if $DEBUG
 then
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /dev/log:/dev/log "
 fi
+
+# Cleanup
+( rm -f docker.cid  &
+  rm -f docker.ip   &
+  rm -f docker.tag  &
+  rm -f rootfs      &
+) 2>/dev/null
 
 if $INTERACTIVE
 then
@@ -311,7 +318,7 @@ then
     ln -sf /var/lib/docker/devicemapper/mnt/$CID/rootfs .
 elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
 then
-    ln -sf /var/lib/docker/aufs/mnt/$CID rootfs
+    ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
 fi
 
 if [ -n "${HOSTSSHPORT}" ]
