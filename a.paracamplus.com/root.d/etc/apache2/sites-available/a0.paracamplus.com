@@ -9,6 +9,7 @@
   AddType text/javascript .js
   AddType text/css        .css
   AddType application/xslt+xml .xsl
+  AddType image/vnd.microsoft.icon .ico
   ExpiresActive On
 
         <Directory />
@@ -36,21 +37,24 @@
         </Location>
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 a'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/a0.paracamplus.com/static/
         <Location /static/ >
-                SetHandler default_handler
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
+              Header append 'X-originator' 'Apache2 A'
+              SetHandler default_handler
+              FileETag none
+              ExpiresActive On
+              # expire images after 30 hours
+              ExpiresByType image/gif A108000
+              ExpiresByType image/png A108000
+              ExpiresByType image/vnd.microsoft.icon A108000
+              # expires css and js after 30 hours
+              ExpiresByType text/css        A108000
+              ExpiresByType text/javascript A108000
         </Location>
 
         Errorlog /var/log/apache2/a0.paracamplus.com-error.log

@@ -2,8 +2,10 @@
 # Start an HTTP server in Perl to minimize memory usage and avoid Apache2.
 
 export LANG=C
+source /root/RemoteScripts/$HOSTNAME.sh
 
-MODULE=Paracamplus::FW4EX::LI101::mooc_li101_2015mar_paracamplus_com
+UNIXNAME=${HOSTNAME//[.-]/_}
+PERLMODULE=Paracamplus::FW4EX::${MODULE}::$UNIXNAME
 
 mkdir -p /opt/tmp/$HOSTNAME
 PIDFILE=/opt/tmp/$HOSTNAME/server.pid
@@ -18,7 +20,7 @@ rm -f $PIDFILE 2>/dev/null
 # }
 
 # use Catalyst::ScriptRunner;
-# Catalyst::ScriptRunner->run("${MODULE}", 'Server');
+# Catalyst::ScriptRunner->run("${PERLMODULE}", 'Server');
 
 # 1;
 # EOF
@@ -35,10 +37,10 @@ cat > /opt/tmp/$HOSTNAME/server.psgi <<EOF
 
 use strict;
 use warnings;
-use ${MODULE};
+use ${PERLMODULE};
 
-my \$app = ${MODULE}->apply_default_middlewares(
-     ${MODULE}->psgi_app);
+my \$app = ${PERLMODULE}->apply_default_middlewares(
+     ${PERLMODULE}->psgi_app);
 \$app;
 EOF
 

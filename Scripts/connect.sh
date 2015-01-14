@@ -23,9 +23,9 @@ fi
 
 WHERE=${1}
 
-if [ -d $WHERE.paracamplus.com ]
+if [ -d $WHERE.$DOMAIN ]
 then
-    WHERE="$WHERE.paracamplus.com"
+    WHERE="$WHERE.$DOMAIN"
 fi
 
 if [ -d $WHERE ]

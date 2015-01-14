@@ -75,6 +75,7 @@ recreate.all :       create.aestxyz_vmms1
 recreate.all :         create.aestxyz_vmms
 recreate.all :     create.aestxyz_vmmd0
 recreate.all :       create.aestxyz_vmmd1
+recreate.all :       create.aestxyz_vmmdr
 #recreate.all : create.aestxyz_oldapt  # a6 with Debian6
 #recreate.all : create.aestxyz_oldcpan # a6 with Debian6
 #recreate.all : create.aestxyz_vmolda  # a6 with Debian6
@@ -86,6 +87,7 @@ deploy.all : deploy.a1.paracamplus.com
 deploy.all : deploy.e.paracamplus.com
 deploy.all : deploy.x.paracamplus.com
 deploy.all : deploy.t.paracamplus.com
+deploy.all : deploy.t9.paracamplus.com
 deploy.all : deploy.z.paracamplus.com
 # For the next ones: see do.deploy.li314
 #deploy.all : deploy.li314.paracamplus.com
@@ -125,6 +127,7 @@ archive.aestxyz_cpan :
 # Adjoin some new modules over aestxyz_cpan. 
 # After testing, rebuild aestxyz_cpan.
 create.aestxyz_cpan2 : cpan2/Dockerfile
+	touch cpan2/Dockerfile
 	rsync -avu cpan/RemoteScripts/ cpan2/RemoteScripts/
 	cd cpan2/ && docker build -t paracamplus/aestxyz_cpan2 .
 	docker tag paracamplus/aestxyz_cpan2 \
@@ -294,9 +297,16 @@ deploy.y.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vmy'
 	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmy:latest'
-	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh
-# FUTURE invent a good test for y!
+	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh -r
+ty:
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout \
+		http':'//127.0.0.1:50080/
+	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout \
+		http':'//127.0.0.1:50080/alive
+	common/check-outer-availability.sh \
+		-i y.paracamplus.com -p 80 -s 4 -u '/alive' \
+		y.paracamplus.com
+
 
 # NOTA: this was a bad idea to put two different servers (A and E for
 # instance) in the same container. Scripts are tailored for just one server!
@@ -306,12 +316,12 @@ create.aestxyz_vma : vma/Dockerfile
 	cd vma/ && docker build -t paracamplus/aestxyz_vma .
 	docker tag paracamplus/aestxyz_vma \
 		"paracamplus/aestxyz_vma:$$(date +%Y%m%d_%H%M%S)"
+# deploy a and a0 simultaneously:
 deploy.a.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vma'
 	rsync ${RSYNC_FLAGS} -avuL \
 		a.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
-	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net Docker/a.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
 	common/check-outer-availability.sh \
 		-i a.paracamplus.com -p 80 -s 4 \
@@ -327,8 +337,7 @@ deploy.a1.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vma'
 	rsync ${RSYNC_FLAGS} -avuL \
 		a1.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
-	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vma:latest'
-	ssh -t root@ns327071.ovh.net Docker/a1.paracamplus.com/install.sh
+	ssh -t root@ns327071.ovh.net Docker/a1.paracamplus.com/install.sh -r
 	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:51080/
 	common/check-outer-availability.sh \
 		-i a1.paracamplus.com -p 80 -s 4 \
@@ -336,7 +345,22 @@ deploy.a1.paracamplus.com :
 	ssh -t root@ns327071.ovh.net \
 	  ssh -v -p 51022 -i Docker/a1.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
-		ls -l /opt/a1.paracamplus.com/fw4excookie.insecure.key
+		ls -l /opt/a.paracamplus.com/fw4excookie.insecure.key
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://a1.paracamplus.com/jobload' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus Acquisition Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep load
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://a1.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 a' < /tmp/a
+	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ;fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://a1.paracamplus.com/static/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 A' < /tmp/a
+	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ;fi
 
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
@@ -348,7 +372,7 @@ deploy.e.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vme:latest'
-	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh
+	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
 	common/check-outer-availability.sh \
 		-i e.paracamplus.com -p 80 -s 4 \
@@ -370,7 +394,7 @@ deploy.x.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh -R
+	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
 	common/check-outer-availability.sh \
 		-i x.paracamplus.com -p 80 -s 4 \
@@ -396,7 +420,7 @@ deploy.t.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh -R
+	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
 	common/check-outer-availability.sh \
 		-i t.paracamplus.com -p 80 -s 4 \
@@ -417,7 +441,7 @@ deploy.t9.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t9.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
 	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh -R
+	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh -r
 	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54980/
 	common/check-outer-availability.sh \
 		-i t9.paracamplus.com -p 80 -s 4 \

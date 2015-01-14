@@ -9,7 +9,7 @@ using_frontend_proxy: 1
 
 private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
-version: 1249
+version: 1254
 controllers :
    - Authenticate
    - Doc

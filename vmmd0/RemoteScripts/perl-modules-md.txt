@@ -17,6 +17,7 @@ Module::Build
 Module::Metadata
 Module::Signature
 Net::FTP
+Algorithm::Numerical::Shuffle
 
 # to handle XML
 XML::LibXML::Common

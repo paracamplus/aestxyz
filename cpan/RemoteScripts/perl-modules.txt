@@ -18,6 +18,7 @@ ExtUtils::ParseXS
 Module::Build
 Module::Metadata
 Module::Signature
+Algorithm::Numerical::Shuffle
 
 # to handle XML
 XML::LibXML::Common

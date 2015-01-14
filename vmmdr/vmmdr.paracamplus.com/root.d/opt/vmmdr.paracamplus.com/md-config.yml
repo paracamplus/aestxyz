@@ -15,7 +15,7 @@
 
 # Descriptive:
 configname: VMmdr
-version: 1246
+version: 1254
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
@@ -139,7 +139,8 @@ test_aServerURLs:
 # Which E server to poll for incoming authors' exercices to autocheck:
 eServerURLs:
      - file:///tmp/incoming/exercises
-     - http://e.paracamplus.com
+     - http://e0.paracamplus.com
+     - http://e1.paracamplus.com
 test_eServerURLs:
      - file:///tmp/incoming/exercises
 incomingExerciseDir: /home/md/incoming
@@ -156,7 +157,7 @@ db:
 
 markEngine:
     class: Paracamplus::FW4EX::SimplisticMarkEngine
-    version: 1246
+    version: 1254
     jobDir:      /home/md/cache/jobs.d
     resultsDir:  /home/md/results
     exerciseDir: /home/md/autocheck
@@ -201,7 +202,9 @@ markEngine:
 # exercices a la VM via le protocole http normal).
         class: Paracamplus::FW4EX::ExerciseFetcherLWP
         exerciseDir: /home/md/cache/exercises.d
-        eServerUrl: http://e.paracamplus.com
+        eServerUrls: 
+          - http://e0.paracamplus.com
+          - http://e1.paracamplus.com
         seServerUrl: http://e.paracamplus.com
         private_key_file: /home/fw4ex/.ssh/fw4excookie.insecure.key
         eAdminName: 42

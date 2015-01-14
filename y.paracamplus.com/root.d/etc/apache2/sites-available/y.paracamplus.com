@@ -31,6 +31,7 @@
         <Location / >
               Order allow,deny
               allow from all
+              Header append 'X-via' 'Apache2 y'
 # FUTURE limit the number of requests/second
               # Relay to the Docker container
               ProxyPass        http://localhost:50080/
@@ -38,12 +39,14 @@
         </Location>
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 Y'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/y.paracamplus.com/static/
         <Location /static/ >
+                Header append 'X-originator' 'Apache2 Y'
                 SetHandler default_handler
                 FileETag none
                 ExpiresActive On

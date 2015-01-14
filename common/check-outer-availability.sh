@@ -9,8 +9,9 @@
 
 PORT=80
 IP=127.0.0.1
+URL=
 
-while getopts p:s:i: opt
+while getopts p:s:i:u: opt
 do
     case "$opt" in
         p|port)
@@ -21,6 +22,9 @@ do
             ;;
         i|ip)
             IP=$OPTARG
+            ;;
+        u|url)
+            URL=$OPTARG
             ;;
         \?)
             echo "Bad option $opt"
@@ -39,10 +43,15 @@ do (
         echo "Outer check of $HOSTNAME"
         wget -O - -o /dev/null \
             --header="HOST:$HOSTNAME" \
-            http://$IP:$PORT/ > /tmp/wget_$HOSTNAME.txt
+            http://$IP:$PORT/$URL > /tmp/wget_$HOSTNAME.txt
         if grep -i "version: $VERSION" < /tmp/wget_$HOSTNAME.txt
         then 
             :
+        elif grep -qEi "version[:=]" < /tmp/wget_$HOSTNAME.txt
+        then
+            echo "***************** Problem (wrong version)!
+Expecting $VERSION, got:"
+            grep -Ei "version[:=]" < /tmp/wget_$HOSTNAME.txt
         else
             echo "***************** Problem (missing or wrong version)!
 Expecting $VERSION, got:"
