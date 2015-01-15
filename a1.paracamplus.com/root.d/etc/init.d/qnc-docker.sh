@@ -2,7 +2,7 @@
 # Restart docker container
 
 ### BEGIN INIT INFO
-# Provides:          qncDockerA
+# Provides:          qncDockerA1
 # Required-Start:    $local_fs $remote_fs $network $named $time docker
 # Required-Stop:     $local_fs $remote_fs $network $named $time docker
 # Should-Start:      $syslog
@@ -17,7 +17,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-HOSTNAME=a.paracamplus.com
+HOSTNAME=a1.paracamplus.com
 DOCKERNAME=vma
 
 case "$1" in

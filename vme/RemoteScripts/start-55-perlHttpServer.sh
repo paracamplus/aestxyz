@@ -11,6 +11,19 @@ mkdir -p /opt/tmp/$HOSTNAME
 PIDFILE=/opt/tmp/$HOSTNAME/server.pid
 rm -f $PIDFILE 2>/dev/null
 
+if [ -d /var/log/apache2 ]
+then 
+    logrotate --force /etc/logrotate.d/apache2 
+else 
+    mkdir -p /var/log/apache2
+    chmod 750 /var/log/apache2
+    chown root:adm /var/log/apache2
+fi
+
+# Prepare cache for OpenId
+mkdir -p /opt/$HOSTNAME/tmp/cache
+chown www-data: /opt/$HOSTNAME/tmp/cache
+
 # # (1) Development option
 # cat > /opt/tmp/$HOSTNAME/server.pl <<EOF
 # #!/usr/bin/env perl

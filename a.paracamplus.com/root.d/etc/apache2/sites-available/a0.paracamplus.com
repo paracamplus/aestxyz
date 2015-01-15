@@ -13,7 +13,6 @@
   ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -21,20 +20,34 @@
         </Directory>
 
         <Directory /var/www/a0.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
-
-        <Location / >
+        <Directory /var/www/a0.paracamplus.com/static/ >
+              Options +FollowSymLinks
               Order allow,deny
               allow from all
-# FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:51080/
-              ProxyPassReverse http://localhost:51080/
-        </Location>
+              Header append 'X-originator' 'Apache2 A'
+              SetHandler default_handler
+              FileETag none
+              ExpiresActive On
+              # expire images after 30 hours
+              ExpiresByType image/gif A108000
+              ExpiresByType image/png A108000
+              ExpiresByType image/vnd.microsoft.icon A2592000
+              # expires css and js after 30 hours
+              ExpiresByType text/css        A108000
+              ExpiresByType text/javascript A108000
+        </Directory>
+
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /static/ !
+        ProxyPass /favicon.ico !
+        ProxyPass /   http://localhost:51080/
+
+# <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
               Header append 'X-originator' 'Apache2 a'
@@ -46,15 +59,6 @@
         <Location /static/ >
               Header append 'X-originator' 'Apache2 A'
               SetHandler default_handler
-              FileETag none
-              ExpiresActive On
-              # expire images after 30 hours
-              ExpiresByType image/gif A108000
-              ExpiresByType image/png A108000
-              ExpiresByType image/vnd.microsoft.icon A108000
-              # expires css and js after 30 hours
-              ExpiresByType text/css        A108000
-              ExpiresByType text/javascript A108000
         </Location>
 
         Errorlog /var/log/apache2/a0.paracamplus.com-error.log

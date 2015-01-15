@@ -333,6 +333,21 @@ deploy.a.paracamplus.com :
 	  ssh -v -p 51022 -i Docker/a.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/a.paracamplus.com/fw4excookie.insecure.key
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://a0.paracamplus.com/jobload' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus Acquisition Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep load
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://a0.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 a' < /tmp/a
+	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ;fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://a0.paracamplus.com/static/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 A' < /tmp/a
+	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ;fi
 deploy.a1.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vma'
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -355,12 +370,12 @@ deploy.a1.paracamplus.com :
 	curl -D /tmp/a 'http://a1.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 a' < /tmp/a
 	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
-		then exit 1 ; else exit 0 ;fi
+		then exit 1 ; else exit 0 ; fi
 # Should be served directly by Apache:
 	curl -D /tmp/a 'http://a1.paracamplus.com/static/favicon.ico' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 A' < /tmp/a
 	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
-		then exit 1 ; else exit 0 ;fi
+		then exit 1 ; else exit 0 ; fi
 
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
@@ -371,7 +386,6 @@ deploy.e.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vme'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    e.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vme:latest'
 	ssh -t root@ns353482.ovh.net Docker/e.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
 	common/check-outer-availability.sh \
@@ -381,6 +395,49 @@ deploy.e.paracamplus.com :
 	  ssh -v -p 52022 -i Docker/e.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://e0.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus Exercises Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://e0.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 e' < /tmp/a
+	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://e0.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 E' < /tmp/a
+	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+deploy.e1.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vme'
+	rsync ${RSYNC_FLAGS} -avuL \
+	    e1.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net Docker/e1.paracamplus.com/install.sh -r
+	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:52080/
+	common/check-outer-availability.sh \
+		-i e1.paracamplus.com -p 80 -s 4 \
+		e1.paracamplus.com
+	ssh -t root@ns327071.ovh.net \
+	  ssh -v -p 52022 -i Docker/e1.paracamplus.com/root_rsa \
+		root@127.0.0.1 \
+		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://e1.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus Exercises Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://e1.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 e' < /tmp/a
+	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://e1.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 E' < /tmp/a
+	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
 
 # Caution: take care of the size of the Apache logs!!!!!!!!!!
 

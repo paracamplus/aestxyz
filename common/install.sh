@@ -243,6 +243,13 @@ then
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /dev/log:/dev/log "
 fi
 
+# Determine the IP of the Docker host as will be seen by the container.
+hostip () {
+    # HACK HACK HACK HACK HACK HACK HACK HACK HACK
+    echo 172.17.42.1
+}
+ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:$(hostip)"
+
 # Cleanup
 ( rm -f docker.cid  &
   rm -f docker.ip   &

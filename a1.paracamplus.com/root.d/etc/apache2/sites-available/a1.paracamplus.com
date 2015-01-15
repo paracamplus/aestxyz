@@ -29,7 +29,6 @@
               Options +FollowSymLinks
               Order allow,deny
               allow from all
-              Header append 'X-originator' 'Apache2 A'
               SetHandler default_handler
               FileETag none
               ExpiresActive On
@@ -46,6 +45,7 @@
         ProxyPass /static/ !
         ProxyPass /favicon.ico !
         ProxyPass /   http://localhost:51080/
+# FUTURE limit the number of requests/second
 
 # <Location> directives should be sorted from less to most precise:
 

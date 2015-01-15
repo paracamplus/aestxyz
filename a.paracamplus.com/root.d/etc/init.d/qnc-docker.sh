@@ -2,7 +2,7 @@
 # Restart docker container
 
 ### BEGIN INIT INFO
-# Provides:          qncDockerA
+# Provides:          qncDockerA0
 # Required-Start:    $local_fs $remote_fs $network $named $time docker
 # Required-Stop:     $local_fs $remote_fs $network $named $time docker
 # Should-Start:      $syslog
