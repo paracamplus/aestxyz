@@ -39,11 +39,12 @@ ExpiresActive On
         </Directory>
 
 # Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::A::a_paracamplus_com
+SetEnv FW4EX_CONFIG_YML /opt/a.paracamplus.com/a.paracamplus.com.yml
+PerlModule Paracamplus::FW4EX::A
 
         <Location / >
               SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::A::a_paracamplus_com
+              PerlResponseHandler Paracamplus::FW4EX::A
               Order allow,deny
               allow from all
 # FUTURE limit number of request/second

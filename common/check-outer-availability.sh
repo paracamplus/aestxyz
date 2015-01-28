@@ -37,7 +37,8 @@ shift $(( $OPTIND - 1 ))
 VERSION=$(hg heads | awk -F: '/^changeset:/ {print $2;nextfile}' )
 VERSION=$(echo $VERSION)
 
-rm -f /tmp/wget_code.txt
+rm -f /tmp/wget_code.txt /tmp/wget_$HOSTNAME.txt 2>/dev/null
+trap "rm -f /tmp/wget_code.txt /tmp/wget_$HOSTNAME.txt 2>/dev/null" 0
 for HOSTNAME
 do (
         echo "Outer check of $HOSTNAME"

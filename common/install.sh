@@ -17,9 +17,11 @@ NEED_FW4EX_MASTER_KEY_DIR=true
 SSHDIR=`pwd`/ssh.d
 SHARE_FW4EX_LOG=false
 PROVIDE_APACHE=true
+NEED_POSTGRESQL=false
 PROVIDE_SMTP=false
 DOCKERIMAGETAG=latest
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
+DBHOST=db.paracamplus.com
 source config.sh
 
 # Does the container needs to know the FW4EX master key. This key is
@@ -211,6 +213,63 @@ then
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /var/log/apache2/$HOSTNAME:/var/log/apache2 "
 fi
 
+provide_postgresql () {
+    # Allow the container to access directly the Postgresql socket:
+    socket=/var/run/postgresql/.s.PGSQL.5432
+    if [ -x $socket ]
+    then
+        for f in /etc/postgresql/*/main/pg_ident.conf
+        do
+            if ! grep -q fw4exmap < $f
+            then {
+                    echo 'fw4exmap        www-data                web2user'
+                    echo 'fw4exmap        www-data                watcher'
+                } >> $f
+            fi
+        done
+
+        for f in /etc/postgresql/*/main/pg_hba.conf
+        do
+            # NOTA: Make sure that, in 
+            #     /etc/postgresql/9.1/main/pg_hba.conf
+            # these lines are present:
+            ## "local" is for Unix domain socket connections only
+            #local   fw4ex       web2user       ident map=fw4exmap
+            #local   all         all            ident
+            if ! grep -q 'map=fw4exmap' < $f
+            then
+                echo "Misconfiguration of $f"
+                exit 54
+            fi
+        done
+
+        ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${socket%/*}/:${socket%/*}/ "
+
+    else
+        echo "!!! Cannot find Postgresql socket: $socket"
+        #echo "!!! Reverting to ssh tunnel"
+        #PROVIDE_TUNNEL=5432
+        exit 54
+    fi
+}
+
+if ${NEED_POSTGRESQL}
+then
+    # Are we on the machine that runs the central database ?
+    MYIP=$( ifconfig eth0 | \
+        sed -rne '/inet addr/s#^.*inet addr:([^ ]+) *B.*$#\1#p' )
+    DBIP=$( host $DBHOST | \
+        sed -rne 's#^.*has address ([^ ]*) *$#\1#p' )
+    if [ "$MYIP" = "$DBIP" ]
+    then
+        echo "Docker is running on $DBHOST ($MYIP)($DBIP)"
+        provide_postgresql
+    fi
+    # NOTA: if we are not on the dbhost then the container will use
+    # a tcp connection towards the database. See start-45-db.sh and
+    # start-65-dbtunnel.sh
+fi
+
 if ! docker version 
 then
     echo "Docker is not available"
@@ -240,15 +299,16 @@ wait
 
 if $DEBUG
 then
+    # FUTURE investigate --net=host ? use of netcat ?
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /dev/log:/dev/log "
 fi
 
 # Determine the IP of the Docker host as will be seen by the container.
-hostip () {
-    # HACK HACK HACK HACK HACK HACK HACK HACK HACK
-    echo 172.17.42.1
-}
-ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:$(hostip)"
+# This supposes that the bridge is named docker0!
+HOSTIP=$( ifconfig docker0 | \
+    sed -rne '/inet addr/s#^.*inet addr:(.*) *B.*$#\1#p' )
+echo "Docker host IP is ${HOSTIP}" 
+ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:${HOSTIP}"
 
 # Cleanup
 ( rm -f docker.cid  &
@@ -431,15 +491,17 @@ then
         fi
 
         # Make sure that this container is run after reboot of the Docker host:
-        ( 
-            cd ./root.d/
-            chmod a+x etc/init.d/qnc-docker.sh
-            # the content of qnc-docker.sh must be fixed before         FIXME
-            rsync -avu etc/init.d/qnc-docker.sh \
-                /etc/init.d/qnc-docker-$HOSTNAME.sh
-            rm -f /etc/init.d/qnc-docker.sh
-            update-rc.d qnc-docker-$HOSTNAME.sh defaults
-        )
+        if [ -f root.d/etc/init.d/qnc-docker.sh ]
+        then ( 
+                cd ./root.d/
+                chmod a+x etc/init.d/qnc-docker.sh
+                # the content of qnc-docker.sh must be fixed before   FIXME
+                rsync -avu etc/init.d/qnc-docker.sh \
+                    /etc/init.d/qnc-docker-$HOSTNAME.sh
+                rm -f /etc/init.d/qnc-docker.sh
+                update-rc.d qnc-docker-$HOSTNAME.sh defaults
+            )
+        fi
     fi
 fi
 

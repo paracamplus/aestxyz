@@ -6,10 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
+VERSION: 1262
 
 private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
-version: 1254
+problemdir: /var/log/apache2/problems
+version: 1262
 controllers :
    - Authenticate
    - Doc
@@ -28,6 +30,8 @@ controllers :
    - Embody
    - OpenID
    - Badge
+   - Admin
+   - Admin::Problem
 #   - SaveRestaure
 # Stats, TopScore et Whoswho ajoutes
 
@@ -43,10 +47,23 @@ decoration:
     pagetitle: Programmation récursive
 #testing: 10
 
-Model::FW4EXDB:
+# Two different configurations for database access. It will be choosen
+# by start-45-db.sh
+# This one via a socket 
+viasocket-Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
-       - dbi:Pg:dbname=fw4ex host=localhost
+      dsn: dbi:Pg:dbname=fw4ex host=/var/run/postgresql
+      username: web2user
+      password: wffomXW7
+      options: 
+        - pg_enable_utf8: 1
+
+# This one via a TCP connection:
+viatcp-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7
        - pg_enable_utf8: 1
@@ -318,11 +335,6 @@ Controller::Root:
    startTime: 2013-08-25T00:00:00z
    endTime:   2014-06-31T23:59:00Z
 
-Controller::FromUPMC:
-   campaignName: mooc-li101-2014fev
-   startTime: 2013-08-01T00:00:01Z
-   endTime:   2014-06-31T23:59:00Z
-
 Controller::History:
    campaignName: mooc-li101-2014fev
    eServerUrl: /sh/s/
@@ -332,13 +344,14 @@ Controller::History:
      previousPage: "page précédente"
      nextPage: "page suivante"
 
-Controller::Progress:
+Controller::TopScore:
    campaignName: mooc-li101-2014fev
-   certificateServer: http://paracamplus.com
+   before: 3
+   justBefore: 3
+   after: 3
 
-Controller::Badge:
-   campaignName: mooc-li101-2014fev
-   certificateServer: http://paracamplus.com
+Controller::Whoswho:
+    campaignName: mooc-li101-2014fev
 
 Controller::Skill:
    campaignName: mooc-li101-2014fev
@@ -354,17 +367,30 @@ Controller::Skill:
      en:
         noSkill: "Cannot compute skills!"
 
-Controller::OneLiner:
-# Use the same insecure key as the A server:
+Controller::Embody:
    campaignName: mooc-li101-2014fev
-   template: mrscheme.tt
-   stylesheet: /static/li101.xsl
-   decoration:
-     previousPage: "page précédente"
-     nextPage: "page suivante"
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
 
-Controller::Whoswho:
-    campaignName: mooc-li101-2014fev
+Controller::Admin:
+   campaignName: mooc-li101-2014fev-2014oct
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Admin::Problem:
+   problemdir: /var/log/apache2/problems
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Badge:
+   campaignName: mooc-li101-2014fev
+   certificateServer: http://paracamplus.com
 
 Controller::Peeper:
     campaignName: mooc-li101-2014fev
@@ -378,21 +404,26 @@ Controller::Peeper:
        - comment
        - helping
 
+Controller::Progress:
+   campaignName: mooc-li101-2014fev
+   certificateServer: http://paracamplus.com
+
+Controller::OneLiner:
+# Use the same insecure key as the A server:
+   campaignName: mooc-li101-2014fev
+   template: mrscheme.tt
+   stylesheet: /static/li101.xsl
+   decoration:
+     previousPage: "page précédente"
+     nextPage: "page suivante"
+
+Controller::FromUPMC:
+   campaignName: mooc-li101-2014fev
+   startTime: 2013-08-01T00:00:01Z
+   endTime:   2014-06-31T23:59:00Z
+
 Controller::Stats:
    campaignName: mooc-li101-2014fev
-
-Controller::TopScore:
-   campaignName: mooc-li101-2014fev
-   before: 3
-   justBefore: 3
-   after: 3
-
-Controller::Embody:
-   campaignName: mooc-li101-2014fev
-   allowedUsers:
-       - 1000:
-         lastname: Queinnec
-         firstname: Christian
 
 Controller::OpenID:
     #verbose: 10

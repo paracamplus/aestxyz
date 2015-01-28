@@ -12,10 +12,10 @@
   AddType text/javascript .js
   AddType text/css        .css
   AddType application/xslt+xml .xsl
+  AddType image/vnd.microsoft.icon .ico
   ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -23,43 +23,50 @@
         </Directory>
 
         <Directory /var/www/mooc-li101-2014fev.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
-
-        <Location / >
+        <Directory /var/www/mooc-li101-2014fev.paracamplus.com/static/ >
+              Options +FollowSymLinks
               Order allow,deny
               allow from all
-              # FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:60080/
-              ProxyPassReverse http://localhost:60080/
-        </Location>
+              SetHandler default_handler
+              FileETag none
+              ExpiresActive On
+              # expire images after 30 hours
+              ExpiresByType image/gif A108000
+              ExpiresByType image/png A108000
+              ExpiresByType image/vnd.microsoft.icon A2592000
+              # expires css and js after 30 hours
+              ExpiresByType text/css        A108000
+              ExpiresByType text/javascript A108000
+        </Directory>
+
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /s/ http://s.paracamplus.com/s/
+        ProxyPass /a/ http://a.paracamplus.com/
+        ProxyPass /x/ http://x.paracamplus.com/
+        ProxyPass /e/ http://e.paracamplus.com/
+        ProxyPass /static/ !
+        ProxyPass /favicon.ico !
+        ProxyPass /        http://localhost:60080/
+# FUTURE limit the number of requests/second
+
+# <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 mooc-li101-2014fev'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/mooc-li101-2014fev.paracamplus.com/static/
         <Location /static/ >
-                SetHandler default_handler
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
+              Header append 'X-originator' 'Apache2 MOOC-LI101-2014FEV'
+              SetHandler default_handler
         </Location>
-
-        ProxyPass     /a/      http://a.paracamplus.com/
-        ProxyPass     /s/      http://s.paracamplus.com/
-        ProxyPass     /x/      http://x.paracamplus.com/
-        ProxyPass     /e/      http://e.paracamplus.com/
 
         Errorlog /var/log/apache2/mooc-li101-2014fev.paracamplus.com-error.log
 

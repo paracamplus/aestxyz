@@ -12,10 +12,10 @@
   AddType text/javascript .js
   AddType text/css        .css
   AddType application/xslt+xml .xsl
+  AddType image/vnd.microsoft.icon .ico
   ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -23,21 +23,24 @@
         </Directory>
 
         <Directory /var/www/li314.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
         </Directory>
 
         <Directory /var/www/li314.paracamplus.com/static/ >
-                Order allow,deny
-                allow from all
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
+              Options +FollowSymLinks
+              Order allow,deny
+              allow from all
+              FileETag none
+              ExpiresActive On
+              # expire images after 30 hours
+              ExpiresByType image/gif A108000
+              ExpiresByType image/png A108000
+              ExpiresByType image/vnd.microsoft.icon A2592000
+              # expires css and js after 30 hours
+              ExpiresByType text/css        A108000
+              ExpiresByType text/javascript A108000
         </Directory>
 
 # ProxyPass must be sorted from most precise to less precise:
@@ -46,18 +49,22 @@
         ProxyPass /x/ http://x.paracamplus.com/
         ProxyPass /e/ http://e.paracamplus.com/
         ProxyPass /static/ !
+        ProxyPass /favicon.ico !
         ProxyPass /   http://localhost:55080/
+# FUTURE limit the number of requests/second
 
 # <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 li314'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/li314.paracamplus.com/static/
         <Location /static/ >
-                SetHandler default_handler
+              Header append 'X-originator' 'Apache2 LI314'
+              SetHandler default_handler
         </Location>
 
         Errorlog /var/log/apache2/li314.paracamplus.com-error.log

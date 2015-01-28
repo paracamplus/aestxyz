@@ -6,13 +6,27 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
+VERSION: 1262
 
 private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Catalyst::Engine:
     uploadtmp: /tmp/x/upload
 
-Model::FW4EXDB:
+# Two different configurations for database access. It will be choosen
+# by start-45-db.sh
+# This one via a socket 
+viasocket-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+      dsn: dbi:Pg:dbname=fw4ex host=/var/run/postgresql
+      username: web2user
+      password: wffomXW7
+      options: 
+        - pg_enable_utf8: 1
+
+# This one via a TCP connection:
+viatcp-Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
        - dbi:Pg:dbname=fw4ex host=127.0.0.1
@@ -21,12 +35,12 @@ Model::FW4EXDB:
        - pg_enable_utf8: 1
 
 Controller::Root:
-    version: 1254
+    version: 1262
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Direct:
-    version: 1254
+    version: 1262
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     # 8 jours
@@ -45,7 +59,7 @@ Controller::Direct:
           wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
 
 Controller::FromUPMC:
-    version: 1254
+    version: 1262
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     endTime: 20110201T00:00:00
@@ -57,7 +71,7 @@ Controller::FromUPMC:
           wrongCombination: "Wrong combination of login and password!"
 
 Controller::FromMOOC:
-    version: 1254
+    version: 1262
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     smtpfrom: CodeGradX confirmation <noreply@paracamplus.com>
@@ -99,7 +113,7 @@ Controller::OpenID:
 #    behavior: register
 
 Controller::Person:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -107,7 +121,7 @@ Controller::Person:
     xServerUrl: /
 
 Controller::History:
-    version: 1254
+    version: 1262
     count: 20
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -115,7 +129,7 @@ Controller::History:
     xServerUrl: /xh/
 
 Controller::Exercise:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -123,7 +137,7 @@ Controller::Exercise:
     xServerUrl: /
 
 Controller::Things:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -131,7 +145,7 @@ Controller::Things:
     maximum: 15
 
 Controller::Jobs:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -139,31 +153,31 @@ Controller::Jobs:
     maximum: 15
 
 Controller::Exercises:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Batches:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Persons:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Author:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::AuthorExercises:
-    version: 1254
+    version: 1262
     user_cookie_key: u
 # Use the same insecure key as the A server:
     private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
@@ -174,18 +188,18 @@ Controller::Glimpse:
     defaultContentType: application/json
 
 Controller::PersonGroup:
-    version: 1254
+    version: 1262
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Enroll:
-    version: 1254
+    version: 1262
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     home_page: /authenticationAnswer
 
 Controller::Register:
-    version: 1254
+    version: 1262
     user_cookie_key: u
     private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sendLinkBaseUrl: http://x.paracamplus.com/

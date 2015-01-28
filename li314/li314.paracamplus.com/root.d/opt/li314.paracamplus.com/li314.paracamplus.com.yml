@@ -6,11 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
+VERSION: 1262
 
 private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li314.paracamplus.com
-version: 1254
+version: 1262
 controllers :
    - Authenticate
    - Doc
@@ -19,7 +20,7 @@ controllers :
    - Proxy
    - Profile
    - Root
-   - Skill
+#   - Skill
    - Stats
    - TopScore
    - Whoswho
@@ -27,7 +28,6 @@ controllers :
    - Embody
    - Admin
 #   - SaveRestaure
-# Stats, TopScore et Whoswho ajoutes
 
 lang: fr
 decoration:
@@ -37,10 +37,23 @@ decoration:
     ue_title: Programmation objet
     siteUrl: http://li314.paracamplus.com/
 
-Model::FW4EXDB:
+# Two different configurations for database access. It will be choosen
+# by start-45-db.sh
+# This one via a socket 
+viasocket-Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
-       - dbi:Pg:dbname=fw4ex host=localhost
+      dsn: dbi:Pg:dbname=fw4ex host=/var/run/postgresql
+      username: web2user
+      password: wffomXW7
+      options: 
+        - pg_enable_utf8: 1
+
+# This one via a TCP connection:
+viatcp-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7
        - pg_enable_utf8: 1
@@ -149,14 +162,20 @@ Controller::Doc:
    defaultPage: toc
    pages:
       toc:
+        title: Table des matières
       begin:
         decoration:
             exoPath: /xh/path/li314
       howto:
+        title: "Mode d'emploi"
       legal:
+        title: Côté légal
       exercises:
+        title: Exercices proposés
       skill:
+        title: Performance
       authentication:
+        title: Authentification
 
 Controller::Root:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
@@ -210,8 +229,22 @@ Controller::Admin:
          lastname: Queinnec
          firstname: Christian
 
+Controller::Badge:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   certificateServer: http://paracamplus.com
+
+Controller::Peeper:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+
+Controller::Progress:
+   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li314-2014oct
+   certificateServer: http://paracamplus.com
+
 Controller::OneLiner:
-   version: 1254
+   version: 1262
 # Use the same insecure key as the A server:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
@@ -229,14 +262,14 @@ Controller::Stats:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
 
-Controller::SaveRestaure:
-   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
+#Controller::SaveRestaure:
+#   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   verbose: 0
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
-  version: 1254
+  version: 1262
   x:
      prefix: /x/
      remote: x.paracamplus.com

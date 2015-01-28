@@ -3,9 +3,10 @@
 package Paracamplus::FW4EX::LI314::li314_paracamplus_com;
 use Moose;
 use namespace::autoclean;
+use strict;
 use utf8;
 extends ( 'Paracamplus::FW4EX::LI314' );
 __PACKAGE__->_configureThenRun('/opt/li314.paracamplus.com/li314.paracamplus.com.yml', 
-                               '1254' );
+                               '1262' );
 __PACKAGE__->meta->make_immutable;
 1;

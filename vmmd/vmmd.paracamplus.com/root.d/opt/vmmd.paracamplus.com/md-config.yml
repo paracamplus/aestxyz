@@ -13,7 +13,7 @@
 
 # Descriptive:
 configname: VMmd
-version: 1094
+version: 1262
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmd.paracamplus.com/fw4ex.rng

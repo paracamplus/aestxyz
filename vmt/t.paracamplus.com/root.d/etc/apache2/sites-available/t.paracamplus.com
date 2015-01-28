@@ -58,11 +58,11 @@ ExpiresActive On
         ProxyPass /e/ http://e.paracamplus.com/
 
 # Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::T::t_paracamplus_com
+PerlModule Paracamplus::FW4EX::T
 
         <Location / >
               SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::T::t_paracamplus_com
+              PerlResponseHandler Paracamplus::FW4EX::T
               Order allow,deny
               allow from all
 # FUTURE limit number of request/second

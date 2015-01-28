@@ -4,12 +4,20 @@
 export LANG=C
 source /root/RemoteScripts/$HOSTNAME.sh
 
-UNIXNAME=${HOSTNAME//[.-]/_}
-PERLMODULE=Paracamplus::FW4EX::${MODULE}::$UNIXNAME
+#UNIXNAME=${HOSTNAME//[.-]/_}
+PERLMODULE=Paracamplus::FW4EX::${MODULE}
 
 mkdir -p /opt/tmp/$HOSTNAME
 PIDFILE=/opt/tmp/$HOSTNAME/server.pid
 rm -f $PIDFILE 2>/dev/null
+
+if [ -r /opt/$HOSTNAME/$HOSTNAME.yml ]
+then
+    export FW4EX_CONFIG_YML=/opt/$HOSTNAME/$HOSTNAME.yml
+else
+    echo "Missing configuration file /opt/$HOSTNAME/$HOSTNAME.yml"
+    exit 51
+fi
 
 if [ -d /var/log/apache2 ]
 then 
@@ -17,8 +25,8 @@ then
 else 
     mkdir -p /var/log/apache2
     chmod 750 /var/log/apache2
-    chown root:adm /var/log/apache2
 fi
+chown -R www-data: /var/log/apache2
 
 # Prepare cache for OpenId
 mkdir -p /opt/$HOSTNAME/tmp/cache
@@ -57,10 +65,11 @@ my \$app = ${PERLMODULE}->apply_default_middlewares(
 \$app;
 EOF
 
+cd /opt/tmp/$HOSTNAME
 starman --daemonize --listen 0:80 \
     --user www-data --group www-data \
     --pid $PIDFILE --error-log /var/log/apache2/error.log \
-    -MCatalyst -MDBIx::Class \
+    -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
 
 # end of start-55-perlHttpServer.sh

@@ -6,11 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
+VERSION: 1262
 
 private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li218.paracamplus.com
-version: 1254
+version: 1262
 controllers :
    - Authenticate
    - Doc
@@ -19,26 +20,42 @@ controllers :
    - Proxy
    - Profile
    - Root
-   - Skill
+#   - Skill
    - Stats
    - TopScore
    - Whoswho
    - FromUPMC
    - Embody
-# Stats, TopScore et Whoswho ajoutes
+   - Admin
+#   - SaveRestaure
 
 lang: fr
 decoration:
-    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/LI218-2015fev/
+    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/2I012-2015fev/
     siteUrl: http://li218.paracamplus.com/
-    ue_code: LI218
+    ue_code: 2I012
     lcAppName: li218
-    ue_title: Automatisation des taches
+    pagetitle: "Environnement de développement sous Linux"
+    title: 2I012
+    ue_title: "Environnement de développement sous Linux"
 
-Model::FW4EXDB:
+# Two different configurations for database access. It will be choosen
+# by start-45-db.sh
+# This one via a socket 
+viasocket-Model::FW4EXDB:
     schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
     connect_info:
-       - dbi:Pg:dbname=fw4ex host=localhost
+      dsn: dbi:Pg:dbname=fw4ex host=/var/run/postgresql
+      username: web2user
+      password: wffomXW7
+      options: 
+        - pg_enable_utf8: 1
+
+# This one via a TCP connection:
+viatcp-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=127.0.0.1
        - web2user
        - wffomXW7
        - pg_enable_utf8: 1
@@ -214,7 +231,7 @@ Controller::Doc:
       toc:
         title: Table des matières
       howto:
-        title: Mode d'emploi
+        title: "Mode d'emploi"
       legal:
         title: Côté légal
       exercises:
@@ -246,14 +263,6 @@ Controller::TopScore:
    justBefore: 4
    after: 3
 
-Controller::Embody:
-   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-   campaignName: li218-2015fev
-   allowedUsers:
-       - 1000:
-         lastname: Queinnec
-         firstname: Christian
-
 Controller::Whoswho:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
@@ -268,8 +277,38 @@ Controller::Skill:
    decoration: 
       waitingImage: /static/5-1.gif
 
+Controller::Embody:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2015fev
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Admin:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2015fev
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+# Controller::Badge:
+#    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+#    campaignName: li218-2015fev
+#    certificateServer: http://paracamplus.com
+
+# Controller::Peeper:
+#    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+#    campaignName: li218-2015fev
+
+Controller::Progress:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2015fev
+   certificateServer: http://paracamplus.com
+
 Controller::OneLiner:
-   version: 1254
+   version: 1262
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
@@ -287,10 +326,13 @@ Controller::Stats:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
 
+Controller::SaveRestaure:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-  version: 1254
+  version: 1262
 #  verbose : 110
   x:
      prefix: /x/

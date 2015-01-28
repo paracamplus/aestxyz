@@ -31,11 +31,11 @@ ExpiresActive On
 # Beware: Location directives are sorted from less precise to most precise
 
 #PerlModule fills /opt/tmp with root:root thus preventing
-#PerlModule Paracamplus::FW4EX::LI101::mooc_li101_2014fev_paracamplus_com
+#PerlModule Paracamplus::FW4EX::LI101
 
         <Location / >
               SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::LI101::mooc_li101_2014fev_paracamplus_com
+              PerlResponseHandler Paracamplus::FW4EX::LI101
               Order allow,deny
               allow from all
 # FUTURE limit number of request/second

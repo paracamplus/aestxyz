@@ -32,7 +32,7 @@ PIDFILE2=/var/run/ssh-dbtunnel.pid
 SLEEPTIME=61
 REMOTEUSER=dbuser
 AVAILABLE=false
-VERBOSE=false
+VERBOSE=true
 
 log () {
     if $VERBOSE

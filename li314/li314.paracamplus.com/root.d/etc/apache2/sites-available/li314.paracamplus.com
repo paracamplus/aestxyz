@@ -12,10 +12,10 @@
 AddType text/javascript .js
 AddType text/css        .css
 AddType application/xslt+xml .xsl
+AddType image/vnd.microsoft.icon .ico
 ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -23,19 +23,23 @@ ExpiresActive On
         </Directory>
 
         <Directory /var/www/li314.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all 
                 Header append 'X-originator' 'docker li314'
         </Directory>
 
         <Directory /var/www/li314.paracamplus.com/static/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
+                SetHandler default_handler
                 FileETag none
                 ExpiresActive On
                 # expire images after 30 hours
                 ExpiresByType image/gif A108000
                 ExpiresByType image/png A108000
+                ExpiresByType image/vnd.microsoft.icon A2592000
                 # expires css and js after 30 hours
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
@@ -48,11 +52,11 @@ ExpiresActive On
         ProxyPass /e/ http://e.paracamplus.com/
 
 # Beware: Location directives are sorted from less precise to most precise
-PerlModule Paracamplus::FW4EX::LI314::li314_paracamplus_com
+PerlModule Paracamplus::FW4EX::LI314
 
         <Location / >
               SetHandler modperl
-              PerlResponseHandler Paracamplus::FW4EX::LI314::li314_paracamplus_com
+              PerlResponseHandler Paracamplus::FW4EX::LI314
               Order allow,deny
               allow from all
 # FUTURE limit number of request/second

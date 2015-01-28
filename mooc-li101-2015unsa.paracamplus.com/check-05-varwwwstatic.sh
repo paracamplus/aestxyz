@@ -1,0 +1,1 @@
+../common/check-05-varwwwstatic.sh

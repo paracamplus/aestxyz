@@ -298,7 +298,6 @@ deploy.y.paracamplus.com :
 	rsync ${RSYNC_FLAGS} -avuL \
 		y.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
 	ssh -t root@ns353482.ovh.net Docker/y.paracamplus.com/install.sh -r
-ty:
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout \
 		http':'//127.0.0.1:50080/
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout \
@@ -306,6 +305,7 @@ ty:
 	common/check-outer-availability.sh \
 		-i y.paracamplus.com -p 80 -s 4 -u '/alive' \
 		y.paracamplus.com
+	@echo "           Y.PARACAMPLUS.COM DEPLOYED"
 
 
 # NOTA: this was a bad idea to put two different servers (A and E for
@@ -348,6 +348,7 @@ deploy.a.paracamplus.com :
 	grep 'X-originator: Apache2 A' < /tmp/a
 	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ;fi
+	@echo "           A. AND A0.PARACAMPLUS.COM DEPLOYED"
 deploy.a1.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vma'
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -376,6 +377,7 @@ deploy.a1.paracamplus.com :
 	grep 'X-originator: Apache2 A' < /tmp/a
 	if grep 'Server: Paracamplus Acquisition Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ; fi
+	@echo "           A1.PARACAMPLUS.COM DEPLOYED"
 
 create.aestxyz_vme : vme/Dockerfile
 	vme/e.paracamplus.com/prepare.sh
@@ -397,19 +399,20 @@ deploy.e.paracamplus.com :
 		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
 # Should be served by Catalyst+Starman proxied by Apache:
 	curl -D /tmp/a 'http://e0.paracamplus.com/alive' >/tmp/b 2>/dev/null
-	grep 'Server: Paracamplus Exercises Server' < /tmp/a
+	grep 'Server: Paracamplus . Server' < /tmp/a
 	grep 'Content-Type: application/json' < /tmp/a
 	grep '{' < /tmp/b | grep epoch
 # Should be served directly by Apache:
 	curl -D /tmp/a 'http://e0.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 e' < /tmp/a
-	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ; fi
 # Should be served directly by Apache:
 	curl -D /tmp/a 'http://e0.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 E' < /tmp/a
-	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ; fi
+	@echo "           E. and E0.PARACAMPLUS.COM DEPLOYED"
 deploy.e1.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vme'
 	rsync ${RSYNC_FLAGS} -avuL \
@@ -425,19 +428,20 @@ deploy.e1.paracamplus.com :
 		ls -l /opt/e.paracamplus.com/fw4excookie.insecure.key
 # Should be served by Catalyst+Starman proxied by Apache:
 	curl -D /tmp/a 'http://e1.paracamplus.com/alive' >/tmp/b 2>/dev/null
-	grep 'Server: Paracamplus Exercises Server' < /tmp/a
+	grep 'Server: Paracamplus . Server' < /tmp/a
 	grep 'Content-Type: application/json' < /tmp/a
 	grep '{' < /tmp/b | grep epoch
 # Should be served directly by Apache:
 	curl -D /tmp/a 'http://e1.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 e' < /tmp/a
-	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ; fi
 # Should be served directly by Apache:
 	curl -D /tmp/a 'http://e1.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
 	grep 'X-originator: Apache2 E' < /tmp/a
-	if grep 'Server: Paracamplus Exercises Server' < /tmp/a ;\
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
 		then exit 1 ; else exit 0 ; fi
+	@echo "           E1.PARACAMPLUS.COM DEPLOYED"
 
 # Caution: take care of the size of the Apache logs!!!!!!!!!!
 
@@ -450,7 +454,6 @@ deploy.x.paracamplus.com :
 	docker push 'paracamplus/aestxyz_vmx'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    x.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
 	ssh -t root@ns353482.ovh.net Docker/x.paracamplus.com/install.sh -r
 	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:53080/
 	common/check-outer-availability.sh \
@@ -460,57 +463,100 @@ deploy.x.paracamplus.com :
 	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
 		ls -l /opt/x.paracamplus.com/fw4excookie.insecure.key
-	ssh -t root@ns353482.ovh.net \
-	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
+#	ssh -t root@ns353482.ovh.net \
+#	  ssh -v -p 53022 -i Docker/x.paracamplus.com/root_rsa \
+#		root@127.0.0.1 \
+#		ls -l /opt/x.paracamplus.com/dbuser_ecdsa
+	curl -D /tmp/a 'http://x.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus . Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+	curl -D /tmp/a 'http://x.paracamplus.com/dbalive' >/tmp/b 2>/dev/null
+	grep 'HTTP/1.1 200' < /tmp/a
+	grep 'Server: Paracamplus . Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+	@echo "           X.PARACAMPLUS.COM DEPLOYED"
+deploy.test.x.paracamplus.com :
+	docker push 'paracamplus/aestxyz_vmx'
+	rsync ${RSYNC_FLAGS} -avuL \
+	    test.x.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net Docker/test.x.paracamplus.com/install.sh -r
+	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout \
+		http':'//127.0.0.1:53980/
+	common/check-outer-availability.sh \
+		-i test.x.paracamplus.com -p 80 -s 4 \
+		test.x.paracamplus.com
+	ssh -t root@ns327071.ovh.net \
+	  ssh -v -p 53022 -i Docker/test.x.paracamplus.com/root_rsa \
 		root@127.0.0.1 \
-		ls -l /opt/x.paracamplus.com/dbuser_ecdsa
+		ls -l /opt/test.x.paracamplus.com/fw4excookie.insecure.key
+#	ssh -t root@ns327071.ovh.net \
+#	  ssh -v -p 53022 -i Docker/test.x.paracamplus.com/root_rsa \
+#		root@127.0.0.1 \
+#		ls -l /opt/test.x.paracamplus.com/dbuser_ecdsa
+	@echo "           TEST.X.PARACAMPLUS.COM DEPLOYED"
 
 create.aestxyz_vmt : vmt/Dockerfile
 	vmt/t.paracamplus.com/prepare.sh
 	cd vmt/ && docker build -t paracamplus/aestxyz_vmt .
 	docker tag paracamplus/aestxyz_vmt \
 		"paracamplus/aestxyz_vmt:$$(date +%Y%m%d_%H%M%S)"
-# T depends on X
+# T depends on X but does not need access to the database.
 deploy.t.paracamplus.com : 
 	echo "Deploy t.paracamplus.com on OVHlicence"
 	docker push 'paracamplus/aestxyz_vmt'
 	rsync ${RSYNC_FLAGS} -avuL \
 	    t.paracamplus.com Scripts root@ns353482.ovh.net':'Docker/
-	ssh -t root@ns353482.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
 	ssh -t root@ns353482.ovh.net Docker/t.paracamplus.com/install.sh -r
-	ssh -t root@ns353482.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54080/
-	common/check-outer-availability.sh \
-		-i t.paracamplus.com -p 80 -s 4 \
-		t.paracamplus.com
-	ssh -t root@ns353482.ovh.net \
-	  ssh -v -p 54022 -i Docker/t.paracamplus.com/root_rsa \
-		root@127.0.0.1 \
-		ls -l /opt/t.paracamplus.com/fw4excookie.insecure.key
 	wget -qO /dev/stdout http://t.paracamplus.com/static/t.css | head 
 	wget -qO /dev/stdout http://t.paracamplus.com/static//t.css | head 
 	wget -qO /dev/stdout http://t.paracamplus.com//static/t.css | head 
 	wget -qO /dev/stdout http://t.paracamplus.com//static//t.css | head
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://t.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus . Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://t.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 t' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://t.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 T' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+	@echo "           T.PARACAMPLUS.COM DEPLOYED"
 
 # Apache2 requires modules expire.load and proxy*
-deploy.t9.paracamplus.com : 	
-	echo "Deploy t9.paracamplus.com on Kimsufi"
+deploy.t1.paracamplus.com : 	
+	echo "Deploy t1.paracamplus.com on Kimsufi"
 	docker push 'paracamplus/aestxyz_vmt'
 	rsync ${RSYNC_FLAGS} -avuL \
-	    t9.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
-	ssh -t root@ns327071.ovh.net docker pull 'paracamplus/aestxyz_vmx:latest'
-	ssh -t root@ns327071.ovh.net Docker/t9.paracamplus.com/install.sh -r
-	ssh -t root@ns327071.ovh.net wget -qO /dev/stdout http':'//127.0.0.1:54980/
-	common/check-outer-availability.sh \
-		-i t9.paracamplus.com -p 80 -s 4 \
-		t9.paracamplus.com
-	ssh -t root@ns327071.ovh.net \
-	  ssh -v -p 54922 -i Docker/t9.paracamplus.com/root_rsa \
-		root@127.0.0.1 \
-		ls -l /opt/t9.paracamplus.com/fw4excookie.insecure.key
-	wget -qO /dev/stdout http://t9.paracamplus.com/static/t.css | head 
-	wget -qO /dev/stdout http://t9.paracamplus.com/static//t.css | head 
-	wget -qO /dev/stdout http://t9.paracamplus.com//static/t.css | head 
-	wget -qO /dev/stdout http://t9.paracamplus.com//static//t.css | head 
+	    t1.paracamplus.com Scripts root@ns327071.ovh.net':'Docker/
+	ssh -t root@ns327071.ovh.net Docker/t1.paracamplus.com/install.sh -r
+	wget -qO /dev/stdout http://t1.paracamplus.com/static/t.css | head 
+	wget -qO /dev/stdout http://t1.paracamplus.com/static//t.css | head 
+	wget -qO /dev/stdout http://t1.paracamplus.com//static/t.css | head 
+	wget -qO /dev/stdout http://t1.paracamplus.com//static//t.css | head
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://t1.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus . Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://t1.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 t' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://t1.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 T' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+	@echo "           T1.PARACAMPLUS.COM DEPLOYED"
 
 create.aestxyz_vmz : vmz/Dockerfile
 	vmz/z.paracamplus.com/prepare.sh
@@ -536,6 +582,24 @@ deploy.z.paracamplus.com :
 	wget -qO /dev/stdout http://z.paracamplus.com/static//z.css
 	wget -qO /dev/stdout http://z.paracamplus.com//static/z.css
 	wget -qO /dev/stdout http://z.paracamplus.com//static//z.css
+# Should be served by Catalyst+Starman proxied by Apache:
+	curl -D /tmp/a 'http://z.paracamplus.com/alive' >/tmp/b 2>/dev/null
+	grep 'Server: Paracamplus . Server' < /tmp/a
+	grep 'Content-Type: application/json' < /tmp/a
+	grep '{' < /tmp/b | grep epoch
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://z.paracamplus.com/favicon.ico' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 z' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+# Should be served directly by Apache:
+	curl -D /tmp/a 'http://z.paracamplus.com/static/cookiechoices.min.js' >/tmp/b 2>/dev/null
+	grep 'X-originator: Apache2 Z' < /tmp/a
+	if grep 'Server: Paracamplus . Server' < /tmp/a ;\
+		then exit 1 ; else exit 0 ; fi
+	@echo "           Z0 and Z.PARACAMPLUS.COM DEPLOYED"
+deploy.z1.paracamplus.com :
+	@echo "           Z1.PARACAMPLUS.COM DEPLOYED"
 
 create.aestxyz_oldapt : oldapt/Dockerfile
 	cd oldapt/ && docker build -t paracamplus/aestxyz_oldapt .
@@ -642,7 +706,9 @@ create.aestxyz_vmmd0 : vmmd0/Dockerfile
 	chmod a+x vmmd0/RemoteScripts/?*.sh
 	vmmd0/vmmd0.paracamplus.com/prepare.sh
 	cd vmmd0/ && docker build -t paracamplus/aestxyz_vmmd0 .
-# @bijou: 15min
+	docker tag paracamplus/aestxyz_vmmd0 \
+		"paracamplus/aestxyz_vmmd0:$$(date +%Y%m%d_%H%M%S)"
+# @bijou: 102 min!
 create.aestxyz_vmmd1 : vmmd/Dockerfile
 # Restart from here when changing start*sh scripts!
 	-cd ../CPANmodules/FW4EXagent/ && m distribution
@@ -680,11 +746,13 @@ create.aestxyz_vmmdr :
 		"paracamplus/aestxyz_vmmdr:$$(date +%Y%m%d_%H%M%S)"
 # @bijou: 1 min
 #	docker push 'paracamplus/aestxyz_vmmdr'
+# NOTA: added setup-90-hackShuffle.sh to avoid rebuilding vmmd0 HACK HACK HACK
 test.vmmdr :
 	docker run --rm -it paracamplus/aestxyz_vmmdr
 # run Docker MD with an external Docker MS:
 tlmd :
 	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
+
 
 deploy.vmmdr+vmms.on.remote : 
 	cd vmmdr+vmms.on.remote/ && m deploy
@@ -766,6 +834,8 @@ deploy.${COURSE}.paracamplus.com :
 	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com/static//fw4ex-281x282.png| wc -c` ]
 	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static/fw4ex-281x282.png| wc -c` ]
 	[ 4000 -eq `wget -qO /dev/stdout http://${COURSE}.paracamplus.com//static//fw4ex-281x282.png| wc -c` ]
+	curl http':'//${COURSE}.paracamplus.com/dbalive 2>/dev/null | grep '"dbalive":1'
+	@echo "     ${COURSE}.PARACAMPLUS.COM DEPLOYED"
 # On deploie sur kimsufi pour effectuer des tests:
 deploy.test.${COURSE}.paracamplus.com : 
 	docker push 'paracamplus/aestxyz_${COURSE}'
@@ -781,6 +851,8 @@ deploy.test.${COURSE}.paracamplus.com :
 	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com/static//fw4ex-281x282.png| wc -c` ]
 	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static/fw4ex-281x282.png| wc -c` ]
 	[ 4000 -eq `wget -qO /dev/stdout http://test.${COURSE}.paracamplus.com//static//fw4ex-281x282.png| wc -c` ]
+	curl http':'//${COURSE}.paracamplus.com/dbalive 2>/dev/null | grep '"dbalive":1'
+	@echo "     test.${COURSE}.PARACAMPLUS.COM DEPLOYED"
 
 do.li314 :
 	m do.course COURSE=li314
@@ -792,10 +864,15 @@ do.mooc-li101-2014fev :
 	m do.course COURSE=mooc-li101-2014fev
 do.mooc-li101-2015mar :
 	m do.course COURSE=mooc-li101-2015mar
+do.mooc-li101-2015unsa :
+	m do.course COURSE=mooc-li101-2015unsa
 do.deploy.mooc-li101-2015mar :
 	m deploy.mooc-li101-2015mar.paracamplus.com COURSE=mooc-li101-2015mar
+do.deploy.mooc-li101-2015unsa :
+	m deploy.mooc-li101-2015unsa.paracamplus.com COURSE=mooc-li101-2015unsa
 do.deploy.test.mooc-li101-2015mar :
-	m deploy.test.mooc-li101-2015mar.paracamplus.com COURSE=mooc-li101-2015mar
+	m deploy.test.mooc-li101-2015mar.paracamplus.com \
+		COURSE=mooc-li101-2015mar
 do.li218 :
 	m do.course COURSE=li218
 

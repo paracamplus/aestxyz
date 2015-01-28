@@ -52,19 +52,20 @@ then
         -o $TODIR/$HOSTNAME
 fi
 
-# Generating Catalyst Controllers
+# Generating Catalyst Controllers: OBSOLETE!
 if [ -n "$SRCDIR" ]
 then
     SanitizedHOSTNAME=${HOSTNAME//./_}
     SanitizedHOSTNAME=${SanitizedHOSTNAME//-/_}
     TODIR=$ROOTDIR/usr/local/lib/site_perl/Paracamplus/FW4EX/${MODULE}
-    mkdir -p $TODIR
-    echo "Generating Catalyst controller $SanitizedHOSTNAME.pm"
-    $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
-        --servername $HOSTNAME \
-        --perlmodule Paracamplus-FW4EX-$MODULE \
-        --version "$VERSION" \
-        -o $TODIR/${SanitizedHOSTNAME}.pm
+    # mkdir -p $TODIR/$SanitizedHOSTNAME/View
+    # echo "Generating Catalyst controller and views for $SanitizedHOSTNAME.pm"
+    # $PARACAMPLUSDIR/Scripts/compilePath.pl --perl \
+    #     --servername $HOSTNAME \
+    #     --perlmodule Paracamplus-FW4EX-$MODULE \
+    #     --viewsdir $TODIR/$SanitizedHOSTNAME/View \
+    #     --version "$VERSION" \
+    #     -o $TODIR/${SanitizedHOSTNAME}.pm
     if ! [ -f $PARACAMPLUSDIR/perllib/Paracamplus/FW4EX/${MODULE}.pm ]
     then
         echo "Generating Catalyst controller $MODULE.pm"

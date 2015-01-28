@@ -11,10 +11,10 @@
   AddType text/javascript .js
   AddType text/css        .css
   AddType application/xslt+xml .xsl
+  AddType image/vnd.microsoft.icon .ico
   ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -22,37 +22,45 @@
         </Directory>
 
         <Directory /var/www/x.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
         </Directory>
 
-# <Location> directives should be sorted from less to most precise:
-
-        <Location / >
+        <Directory /var/www/x.paracamplus.com/static/ >
+              Options +FollowSymLinks
               Order allow,deny
               allow from all
+              SetHandler default_handler
+              FileETag none
+              ExpiresActive On
+              # expire images after 30 hours
+              ExpiresByType image/gif A108000
+              ExpiresByType image/png A108000
+              ExpiresByType image/vnd.microsoft.icon A2592000
+              # expires css and js after 30 hours
+              ExpiresByType text/css        A108000
+              ExpiresByType text/javascript A108000
+        </Directory>
+
+# ProxyPass must be sorted from most precise to less precise:
+        ProxyPass /static/ !
+        ProxyPass /favicon.ico !
+        ProxyPass /        http://localhost:53080/
 # FUTURE limit the number of requests/second
-              # Relay to the Docker container
-              ProxyPass        http://localhost:53080/
-              ProxyPassReverse http://localhost:53080/
-        </Location>
+
+# <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 x'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/x.paracamplus.com/static/
         <Location /static/ >
-                SetHandler default_handler
-                FileETag none
-                ExpiresActive On
-                # expire images after 30 hours
-                ExpiresByType image/gif A108000
-                ExpiresByType image/png A108000
-                # expires css and js after 30 hours
-                ExpiresByType text/css        A108000
-                ExpiresByType text/javascript A108000
+              Header append 'X-originator' 'Apache2 X'
+              SetHandler default_handler
         </Location>
 
         Errorlog /var/log/apache2/x.paracamplus.com-error.log

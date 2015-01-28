@@ -9,7 +9,12 @@
     do
         ( 
             cd /var/www/$HOSTNAME/
-            rm -f $f
+            if [ -d $f ]
+            then
+                rm -rf $f
+            else
+                rm -f $f
+            fi
             echo ln -sf $DIR/$f ./
             ln -sf $DIR/$f ./
         )
