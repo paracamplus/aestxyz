@@ -6,6 +6,17 @@ source /root/RemoteScripts/$HOSTNAME.sh
 
 #UNIXNAME=${HOSTNAME//[.-]/_}
 PERLMODULE=Paracamplus::FW4EX::${MODULE}
+WWWUSER=web2user
+
+if ! id $WWWUSER
+then
+    # FUTURE: 1300 should come from the Docker host
+    adduser $WWWUSER --disabled-login --uid 1300 \
+        --gecos 'Starman-Postgresql user' </dev/null
+fi
+
+# Why not done before ?
+chown -R ${WWWUSER}: /opt/$HOSTNAME/*dir
 
 mkdir -p /opt/tmp/$HOSTNAME
 PIDFILE=/opt/tmp/$HOSTNAME/server.pid
@@ -26,11 +37,11 @@ else
     mkdir -p /var/log/apache2
     chmod 750 /var/log/apache2
 fi
-chown -R www-data: /var/log/apache2
+chown -R ${WWWUSER}: /var/log/apache2
 
 # Prepare cache for OpenId
 mkdir -p /opt/$HOSTNAME/tmp/cache
-chown www-data: /opt/$HOSTNAME/tmp/cache
+chown ${WWWUSER}: /opt/$HOSTNAME/tmp/cache
 
 # # (1) Development option
 # cat > /opt/tmp/$HOSTNAME/server.pl <<EOF
@@ -65,10 +76,18 @@ my \$app = ${PERLMODULE}->apply_default_middlewares(
 \$app;
 EOF
 
+for file in /usr/local/share/perl/*/Starman/Server.pm 
+do 
+    sed -i -e '/log_level/s#4#DEBUG#' $file
+done
+
 cd /opt/tmp/$HOSTNAME
+export STARMAN_DEBUG=1
 starman --daemonize --listen 0:80 \
-    --user www-data --group www-data \
-    --pid $PIDFILE --error-log /var/log/apache2/error.log \
+    --user ${WWWUSER} --group ${WWWUSER} \
+    --pid $PIDFILE \
+    --error-log /var/log/apache2/error.log \
+    --access-log /var/log/apache2/access.log \
     -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
 

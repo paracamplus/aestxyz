@@ -2,7 +2,7 @@
 # Monitor the tcp connection towards the database (only if not using
 # the Postgresql socket). 
 
-if [ -z "$PGSERVICE" ]
+if [ -z "$PGWAY" -o "$PGWAY" = viatcp ]
 then
     if [ -x ${0%/*}/dbtunnel.sh ]
     then

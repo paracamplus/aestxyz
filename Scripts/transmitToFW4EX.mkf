@@ -1,0 +1,25 @@
+work : nothing 
+
+# Restart all containers
+
+CONTAINERS	=       \
+        a e \
+        li218 li314 mooc-li101-2014fev mooc-li101-2015mar \
+        t x y z 
+restart.all : restart.hosts restart.md
+restart.hosts :
+        for m in ${CONTAINERS} ;\
+        do $$m.paracamplus.com/install.sh ;\
+        done
+# Don't restart a6.
+restart.md :
+        echo "Docker/monitor.sh start" | su - fw4ex
+
+refresh.all :
+	docker images | grep paracamplus/ | cut -d' ' -f1 | sort -u |\
+	while read img ; do docker pull $$img ; done
+
+restart.vmmdr+vmms.with.log :
+        echo "Docker/monitor.sh start -l" | su - fw4ex
+
+# end of transmitToFW4EX.mkf

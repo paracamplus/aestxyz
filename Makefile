@@ -751,11 +751,18 @@ test.vmmdr :
 	docker run --rm -it paracamplus/aestxyz_vmmdr
 # run Docker MD with an external Docker MS:
 tlmd :
-	./vmmd.on.bijou/run.docker.md.with.docker.ms.sh
+	./vmmdr.on.bijou/run.docker.md.with.docker.ms.sh
 
-
-deploy.vmmdr+vmms.on.remote : 
-	cd vmmdr+vmms.on.remote/ && m deploy
+REMOTE	=	ns353482.ovh.net
+deploy.vmmdr+vmms.on.all.remote :
+	for REMOTE in ns353482.ovh.net ns327071.ovh.net youpou.rsr.lip6.fr ; do\
+	   make deploy.vmmdr+vmms.on.remote REMOTE=$$REMOTE ; done
+deploy.vmmdr+vmms.on.remote :
+#	cd vmmdr+vmms.on.remote/ && m deploy
+	ssh root@${REMOTE} "mkdir -p Docker"
+	chmod a+x Scripts/?*.sh
+	rsync -avu Scripts vmmdr+vmms.on.remote/?*.sh root@${REMOTE}':'Docker/
+	ssh root@${REMOTE} Docker/Scripts/transmitToFW4EX.sh
 
 # Generate keys for the install procedure:
 generate.install.keys :
@@ -860,6 +867,8 @@ do.deploy.test.li314 :
 	m deploy.test.li314.paracamplus.com COURSE=li314
 do.li314_2013oct :
 	m do.course COURSE=li314_2013oct
+do.li218 :
+	m do.course COURSE=li218
 do.mooc-li101-2014fev :
 	m do.course COURSE=mooc-li101-2014fev
 do.mooc-li101-2015mar :
@@ -873,10 +882,22 @@ do.deploy.mooc-li101-2015unsa :
 do.deploy.test.mooc-li101-2015mar :
 	m deploy.test.mooc-li101-2015mar.paracamplus.com \
 		COURSE=mooc-li101-2015mar
-do.li218 :
-	m do.course COURSE=li218
 
 # }}}
+
+# Change in safecookie implies regenerating all running servers
+recreate.all.running.servers :
+	for kind in a e x z t mdr ms ; do \
+		m create.aestxyz_vm$$kind ; done
+redeploy.all.running.servers :
+	for kind in a1 a e1 e test.x x t1 t z ; do \
+		m deploy.$${kind}.paracamplus.com ; done
+	docker push 'paracamplus/aestxyz_vmms'
+	docker push 'paracamplus/aestxyz_vmmdr'
+	m deploy.vmmdr+vmms.on.all.remote
+	for kind in li314 li314_2013oct li218 mooc-li101-2014fev \
+		test.mooc-li101-2015mar mooc-li101-2015mar mooc-li101-2015unsa ; do \
+	  m do.$$kind ; done
 
 create.aestxyz_vmauthor : vmauthor/Dockerfile
 	vmauthor/vmauthor.paracamplus.net/prepare.sh

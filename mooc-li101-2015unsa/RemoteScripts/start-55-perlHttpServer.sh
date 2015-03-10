@@ -76,7 +76,9 @@ EOF
 cd /opt/tmp/$HOSTNAME
 starman --daemonize --listen 0:80 \
     --user ${WWWUSER} --group ${WWWUSER} \
-    --pid $PIDFILE --error-log /var/log/apache2/error.log \
+    --pid $PIDFILE \
+    --error-log /var/log/apache2/error.log \
+    --access-log /var/log/apache2/access.log \
     -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
 

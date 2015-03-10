@@ -5,21 +5,18 @@
 name: Paracamplus::FW4EX::A
 encoding: UTF-8
 default_view: TT
+parse_on_demand: 1
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1259
-
-private_key_file: /opt/a.paracamplus.com/fw4excookie.insecure.key
 
 Catalyst::Engine:
     uploadtmp: /tmp/a/upload
 
 Controller::Root:
-    version: 1261
-    private_key_file: /opt/a.paracamplus.com/fw4excookie.insecure.key
+    version: 1272
 
 Controller::Exercise:
-    version: 1261
+    version: 1272
     job_dir:          /opt/a.paracamplus.com/jobdir
     batch_dir:        /opt/a.paracamplus.com/batchdir
     tmp_dir:          /opt/a.paracamplus.com/tmpdir
@@ -29,7 +26,7 @@ Controller::Exercise:
     max_ensure_counter: 20
 
 Controller::Job:
-    version: 1261
+    version: 1272
     job_dir:          /opt/a.paracamplus.com/jobdir
     batch_dir:        /opt/a.paracamplus.com/batchdir
     tmp_dir:          /opt/a.paracamplus.com/tmpdir
@@ -39,7 +36,7 @@ Controller::Job:
     max_ensure_counter: 20
 
 Controller::Batch:
-    version: 1261
+    version: 1272
     job_dir:          /opt/a.paracamplus.com/jobdir
     batch_dir:        /opt/a.paracamplus.com/batchdir
     tmp_dir:          /opt/a.paracamplus.com/tmpdir

@@ -6,7 +6,7 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1262
+VERSION: 1272
 
 private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
 
@@ -14,7 +14,7 @@ Catalyst::Engine:
     uploadtmp: /tmp/t/upload
 
 Controller::Root:
-  version: 1262
+  version: 1272
 # Use the same insecure key as the A server:
   private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
 

@@ -6,12 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1262
+VERSION: 1272
 
 private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li218.paracamplus.com
-version: 1262
+version: 1272
 controllers :
    - Authenticate
    - Doc
@@ -20,7 +20,7 @@ controllers :
    - Proxy
    - Profile
    - Root
-#   - Skill
+   - Skill
    - Stats
    - TopScore
    - Whoswho
@@ -293,22 +293,22 @@ Controller::Admin:
          lastname: Queinnec
          firstname: Christian
 
-# Controller::Badge:
-#    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-#    campaignName: li218-2015fev
-#    certificateServer: http://paracamplus.com
+XXController::Badge:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2015fev
+   certificateServer: http://paracamplus.com
 
-# Controller::Peeper:
-#    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-#    campaignName: li218-2015fev
+XXController::Peeper:
+   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
+   campaignName: li218-2015fev
 
-Controller::Progress:
+XXController::Progress:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
    certificateServer: http://paracamplus.com
 
 Controller::OneLiner:
-   version: 1262
+   version: 1272
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
@@ -332,7 +332,7 @@ Controller::SaveRestaure:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-  version: 1262
+  version: 1272
 #  verbose : 110
   x:
      prefix: /x/
