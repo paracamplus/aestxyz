@@ -33,8 +33,8 @@ then
     multitail --mark-interval 100 --follow-all \
         -i /var/log/apache2/$WHERE-access.log \
         -i /var/log/apache2/$WHERE-error.log \
+        -i /var/log/apache2/$WHERE/access.log \
         -i /var/log/apache2/$WHERE/error.log \
-#        -i /var/log/apache2/$WHERE/*-access.log
 else
     echo "No such host ($WHERE)"
     usage
