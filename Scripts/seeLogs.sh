@@ -34,7 +34,7 @@ then
         -i /var/log/apache2/$WHERE-access.log \
         -i /var/log/apache2/$WHERE-error.log \
         -i /var/log/apache2/$WHERE/access.log \
-        -i /var/log/apache2/$WHERE/error.log \
+        -i /var/log/apache2/$WHERE/error.log 
 else
     echo "No such host ($WHERE)"
     usage
