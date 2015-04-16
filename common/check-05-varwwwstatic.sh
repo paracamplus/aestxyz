@@ -5,6 +5,7 @@
 (
     cd /root/Docker/$HOSTNAME/rootfs/var/www/*.paracamplus.com/
     DIR=$(pwd -P)
+    mkdir -p /var/www/$HOSTNAME
     for f in *
     do
         ( 

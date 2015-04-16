@@ -16,6 +16,7 @@ DEBUG=false
 NEED_FW4EX_MASTER_KEY_DIR=true
 SSHDIR=`pwd`/ssh.d
 SHARE_FW4EX_LOG=false
+SHARE_FW4EX_PERLLIB=
 PROVIDE_APACHE=true
 NEED_POSTGRESQL=false
 PROVIDE_SMTP=false
@@ -204,6 +205,19 @@ then
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${LOGDIR}:/var/log/fw4ex"
 fi
 
+if [ -n "${SHARE_FW4EX_PERLLIB}" ]
+then
+    # Share perllib
+    if [ -d "${SHARE_FW4EX_PERLLIB}" \
+      -a -d "${SHARE_FW4EX_PERLLIB}/Paracamplus/FW4EX" ]
+    then
+        ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${SHARE_FW4EX_PERLLIB}/Paracamplus:/usr/local/lib/site_perl/Paracamplus"
+    else
+        echo "Not a suitable directory ${SHARE_FW4EX_PERLLIB}" 1>&2
+        exit 53
+    fi
+fi
+
 if ${PROVIDE_APACHE}
 then
     # Container's apache logs are kept on the Docker host
@@ -256,7 +270,7 @@ provide_postgresql () {
 if ${NEED_POSTGRESQL}
 then
     # Are we on the machine that runs the central database ?
-    MYIP=$( ifconfig eth0 | \
+    MYIP=$( /sbin/ifconfig eth0 | \
         sed -rne '/inet addr/s#^.*inet addr:([^ ]+) *B.*$#\1#p' )
     DBIP=$( host $DBHOST | \
         sed -rne 's#^.*has address ([^ ]*) *$#\1#p' )
@@ -305,7 +319,7 @@ fi
 
 # Determine the IP of the Docker host as will be seen by the container.
 # This supposes that the bridge is named docker0!
-HOSTIP=$( ifconfig docker0 | \
+HOSTIP=$( /sbin/ifconfig docker0 | \
     sed -rne '/inet addr/s#^.*inet addr:(.*) *B.*$#\1#p' )
 echo "Docker host IP is ${HOSTIP}" 
 ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:${HOSTIP}"
@@ -459,13 +473,33 @@ then
     fi
 fi
 
+rsyncavu () {
+    local ROOT=$1
+    local TO=$2
+    (cd $ROOT && find .) | while read thing
+    do 
+        thing=${thing#.}
+        if [[ -f $thing ]]
+        then rsync -avu $thing $TO/
+        elif [[ -d $thing ]]
+        then
+            # Don't rsync existing directories they will be chown-ed
+            # to the owner of files in $ROOT
+            if [[ ! -d $TO/$thing ]]
+            then 
+                mkdir -p $TO/$thing
+            fi
+        fi
+    done
+}
+
 # Install specific files on the Docker host:
 if [ "$USER" = root ]
 then
     if [ -d root.d ]
     then
         # Install specific files on the Docker host 
-        rsync -avu ./root.d/ /
+        rsyncavu ./root.d/ /
 
         # and mainly the Apache configuration proxying towards the container:
         if ${PROVIDE_APACHE}

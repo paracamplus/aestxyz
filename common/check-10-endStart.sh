@@ -7,6 +7,7 @@ then
     true
 else
     echo "Docker image ${DOCKERNAME} not ready !?"
+    docker logs ${DOCKERNAME} 2>&1 | tail -100
     exit 58
 fi
 
