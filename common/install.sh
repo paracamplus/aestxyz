@@ -17,10 +17,11 @@ NEED_FW4EX_MASTER_KEY_DIR=true
 SSHDIR=`pwd`/ssh.d
 SHARE_FW4EX_LOG=false
 SHARE_FW4EX_PERLLIB=
+SHARE_VAR_WWW=
 PROVIDE_APACHE=true
 NEED_POSTGRESQL=false
 PROVIDE_SMTP=false
-DOCKERIMAGETAG=latest
+DOCKERIMAGETAG=${DOCKERIMAGETAG:-latest}
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 DBHOST=db.paracamplus.com
 source config.sh
@@ -53,7 +54,7 @@ Usage: ${0##*/} [option]
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
-new container. Most of these options (s, i, n)are mainly passed to the
+new container. Most of these options (s, i, n) are mainly passed to the
 starting script of the container. Option -e imposes the starting script.
 EOF
 }
@@ -121,6 +122,7 @@ fi
 # /root/.ssh in order to comply with sshd policy. Changing ownership
 # in the container to root would make SSHDIR belong to root in the
 # Docker host and hence would need sudo to be removed.
+# NOTA: Now, docker exec -it ${DOCKERNAME} bash is easier!
 if ! [ -r ${SSHDIR}/authorized_keys ]
 then
     if ! [ -f root_rsa ]
@@ -152,7 +154,7 @@ then
                     cp "$keyfile" ${SSHDIR}/ 
                     ( 
                         cd $SSHDIR
-                        tar xzf $keyfile --overwrite
+                        tar xzf $keyfile -U #--overwrite
                     )
                 else
                     echo "Missing file $keyfile"
@@ -218,13 +220,27 @@ then
     fi
 fi
 
+if [ -n "${SHARE_VAR_WWW}" ]
+then
+    if [ -d "${SHARE_VAR_WWW}" ]
+    then
+        ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${SHARE_VAR_WWW}:/var/www/${INNERHOSTNAME}"
+    else
+        echo "Cannot share ${SHARE_VAR_WWW}" 1>&2
+        exit 53
+    fi
+fi
+
 if ${PROVIDE_APACHE}
 then
     # Container's apache logs are kept on the Docker host
     # but they should be rotated by the container.
     mkdir -p /var/log/apache2/$HOSTNAME
     ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -p 127.0.0.1:${HOSTPORT}:80 "
-    ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /var/log/apache2/$HOSTNAME:/var/log/apache2 "
+    if [ -d /var/log/apache2/$HOSTNAME ]
+    then
+        ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v /var/log/apache2/$HOSTNAME:/var/log/apache2 "
+    fi
 fi
 
 provide_postgresql () {
@@ -270,10 +286,20 @@ provide_postgresql () {
 if ${NEED_POSTGRESQL}
 then
     # Are we on the machine that runs the central database ?
-    MYIP=$( /sbin/ifconfig eth0 | \
-        sed -rne '/inet addr/s#^.*inet addr:([^ ]+) *B.*$#\1#p' )
+    # (1) test for Un*x:
+    if /sbin/ifconfig eth0 > config.ethernet
+    then
+        MYIP=$( sed -rne '/inet addr/s#^.*inet addr:([^ ]+) *B.*$#\1#p' < config.ethernet )
+    # (2) Test for MacOSX:
+    elif /sbin/ifconfig en0 > config.ethernet
+    then
+        MYIP=$( sed -rne '/inet /s#^.*inet ([^ ]+) *netm.*$#\1#p' < config.ethernet )
+    else
+        echo "!!! Cannot determine ethernet configuration"
+        exit 55
+    fi
     DBIP=$( host $DBHOST | \
-        sed -rne 's#^.*has address ([^ ]*) *$#\1#p' )
+            sed -rne 's#^.*has address ([^ ]*) *$#\1#p' )
     if [ "$MYIP" = "$DBIP" ]
     then
         echo "Docker is running on $DBHOST ($MYIP)($DBIP)"
@@ -292,11 +318,11 @@ fi
 
 if ${REFRESH_DOCKER_IMAGES}
 then
-    echo "*** Download fresh copy of ${DOCKERIMAGE}"
+    echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
     docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
 elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
 then 
-    echo "*** Using current local copy of ${DOCKERIMAGE}"
+    echo "*** Using current local copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
 else
     echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
     docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
@@ -318,17 +344,22 @@ then
 fi
 
 # Determine the IP of the Docker host as will be seen by the container.
-# This supposes that the bridge is named docker0!
+# This supposes that the bridge is named docker0! If found then the host
+# will be available from the guest under the name 'docker'.
 HOSTIP=$( /sbin/ifconfig docker0 | \
-    sed -rne '/inet addr/s#^.*inet addr:(.*) *B.*$#\1#p' )
-echo "Docker host IP is ${HOSTIP}" 
-ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:${HOSTIP}"
+                sed -rne '/inet addr/s#^.*inet addr:(.*) *B.*$#\1#p' )
+if [ -n "$HOSTIP" ]
+then
+    echo "Docker host IP is ${HOSTIP}" 
+    ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS --add-host=docker:${HOSTIP}"
+fi
 
 # Cleanup
 ( rm -f docker.cid  &
   rm -f docker.ip   &
   rm -f docker.tag  &
   rm -f rootfs      &
+  rm -f docker.logs &
 ) 2>/dev/null
 
 if $INTERACTIVE
@@ -341,7 +372,7 @@ then
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
             --name=tmp${DOCKERNAME} -h $HOSTNAME \
             -v ${SSHDIR}:/root/ssh.d \
-            ${DOCKERIMAGE} \
+            ${DOCKERIMAGE}:${DOCKERIMAGETAG} \
             $COMMAND
     else
         echo "Run a single bash (without daemon) in the container then exit"
@@ -350,7 +381,7 @@ then
             -p "127.0.0.1:${HOSTSSHPORT}:22" \
             --name=tmpi${DOCKERNAME} -h $HOSTNAME \
             -v ${SSHDIR}:/root/ssh.d \
-            ${DOCKERIMAGE} 
+            ${DOCKERIMAGE}:${DOCKERIMAGETAG}
     fi
     exit $?
 else
@@ -360,7 +391,7 @@ else
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
         -v ${SSHDIR}:/root/ssh.d \
-        ${DOCKERIMAGE} \
+        ${DOCKERIMAGE}:${DOCKERIMAGETAG} \
         bash -x /root/RemoteScripts/start.sh $START_FLAGS )
     CODE=$?
     [ "$CODE" -ne 0 ] && exit $CODE
@@ -369,6 +400,7 @@ fi
 if [ -z "$CID" ]
 then 
     echo "Starting Docker container $DOCKERNAME failure!"
+    docker logs ${DOCKERNAME} | tee docker.logs
     exit 55
 fi
 
@@ -384,6 +416,7 @@ IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
 if [ -z "$IP" ]
 then
     echo "No IP allocated!"
+    docker logs ${DOCKERNAME} | tee docker.logs
     exit 56
 fi
 echo $IP > docker.ip
@@ -439,6 +472,7 @@ then
     then :
     else
         echo "Cannot open tunnel 25:127.0.0.1:25"
+        docker logs ${DOCKERNAME} | tee docker.logs
         exit 59
     fi
 fi
@@ -469,6 +503,7 @@ then
     then :
     else
         echo "Cannot open tunnel ${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL}"
+        docker logs ${DOCKERNAME} | tee docker.logs
         exit 59
     fi
 fi
@@ -556,6 +591,7 @@ do
         then 
             echo "Failed check $f ($status), stopping Docker container"
             docker stop ${DOCKERNAME}
+            docker logs ${DOCKERNAME} | tee docker.logs
             exit $status
         fi
     fi
