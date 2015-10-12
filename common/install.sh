@@ -246,7 +246,7 @@ fi
 provide_postgresql () {
     # Allow the container to access directly the Postgresql socket:
     socket=/var/run/postgresql/.s.PGSQL.5432
-    if [ -x $socket ]
+    if [ -r $socket ]
     then
         for f in /etc/postgresql/*/main/pg_ident.conf
         do
@@ -328,6 +328,17 @@ else
     docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
 fi
 
+# Find specific tag corresponding to the 'latest' image:
+if [ "${DOCKERIMAGETAG}" = 'latest' ]
+then
+    TMPF=$( mktemp )
+    docker images | grep -E "^${DOCKERIMAGE} " > $TMPF
+    LATEST=$( sed -rne '/latest/s#[^ ]*  *latest *([^ ]*) .*$#\1#p' < $TMPF )
+    REALTAG=$( sed -rne '/latest/d' -e /$LATEST/'s#^[^ ]*  *([^ \n]*) .*$#\1#p' < $TMPF )
+    echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG"
+    DOCKERIMAGETAG=$REALTAG
+fi
+
 # Remove all related containers:
 ( docker stop ${DOCKERNAME} 
   docker rm   ${DOCKERNAME} ) 2>/dev/null &
@@ -362,6 +373,8 @@ fi
   rm -f docker.logs &
 ) 2>/dev/null
 
+echo "${ADDITIONAL_FLAGS}" > docker.flags
+
 if $INTERACTIVE
 then
     if [ -n "$COMMAND" ]
@@ -388,6 +401,7 @@ else
     echo "Start the container with all its daemons"
     CID=$(docker run -d \
         ${ADDITIONAL_FLAGS} \
+        --cidfile=docker.cid \
         -p "127.0.0.1:${HOSTSSHPORT}:22" \
         --name=${DOCKERNAME} -h $HOSTNAME \
         -v ${SSHDIR}:/root/ssh.d \
@@ -407,7 +421,8 @@ fi
 # Make smoothless the connection between the Docker host and the container:
 echo $CID > docker.cid
 # Record the version of the Docker image:
-docker ps -l | awk '/paracamplus/ {print $2}' > docker.tag
+#docker ps -l | awk '/paracamplus/ {print $2}' > docker.tag
+echo "${DOCKERIMAGE}:${DOCKERIMAGETAG}" > docker.tag
 # BUG in Docker 1.3.2: don't use . as target of 'docker cp':
 docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub `pwd`/
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"
