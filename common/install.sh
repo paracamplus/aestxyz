@@ -335,8 +335,12 @@ then
     docker images | grep -E "^${DOCKERIMAGE} " > $TMPF
     LATEST=$( sed -rne '/latest/s#[^ ]*  *latest *([^ ]*) .*$#\1#p' < $TMPF )
     REALTAG=$( sed -rne '/latest/d' -e /$LATEST/'s#^[^ ]*  *([^ \n]*) .*$#\1#p' < $TMPF )
-    echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG"
-    DOCKERIMAGETAG=$REALTAG
+    # Sometimes, the 'latest' image is present but its specific tag isn't.
+    if [ -n "${REALTAG}" ]
+    then
+        echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG"
+        DOCKERIMAGETAG=$REALTAG
+    fi
 fi
 
 # Remove all related containers:
@@ -399,6 +403,7 @@ then
     exit $?
 else
     echo "Start the container with all its daemons"
+    rm -f docker.cid
     CID=$(docker run -d \
         ${ADDITIONAL_FLAGS} \
         --cidfile=docker.cid \
