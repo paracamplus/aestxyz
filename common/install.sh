@@ -328,7 +328,8 @@ else
     docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
 fi
 
-# Find specific tag corresponding to the 'latest' image:
+# Find specific id and tag corresponding to the 'latest' image:
+LATEST=
 if [ "${DOCKERIMAGETAG}" = 'latest' ]
 then
     TMPF=$( mktemp )
@@ -338,7 +339,7 @@ then
     # Sometimes, the 'latest' image is present but its specific tag isn't.
     if [ -n "${REALTAG}" ]
     then
-        echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG"
+        echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG ($LATEST)"
         DOCKERIMAGETAG=$REALTAG
     fi
 fi
@@ -378,6 +379,9 @@ fi
 ) 2>/dev/null
 
 echo "${ADDITIONAL_FLAGS}" > docker.flags
+
+# Keep history in order to detect tags of stable images:
+echo "$( date -u --iso-8601=seconds) ${DOCKERIMAGE}:${DOCKERIMAGETAG} ($LATEST) ${ADDITIONAL_FLAGS}" >> history.docker
 
 if $INTERACTIVE
 then
@@ -453,6 +457,14 @@ then
 elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
 then
     ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
+fi
+
+if [ -d ./rootfs/root ]
+then { 
+        #echo 'alias emacs emacs23'
+        echo 'export EDITOR=emacs23'
+        echo 'export TERM=vt100' 
+    } >> rootfs/root/.bashrc
 fi
 
 if [ -n "${HOSTSSHPORT}" ]
