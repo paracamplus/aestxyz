@@ -1,6 +1,7 @@
 #! /bin/bash
 
 COURSE=$1
+PORTPREFIX=${2:?missing PORTPREFIX}
 SHORTNAME="${COURSE:-nothing}"
 HOSTNAME="$SHORTNAME.paracamplus.com"
 UPPERSHORTNAME="$( echo $SHORTNAME | tr a-z A-Z )"
@@ -70,38 +71,51 @@ fi
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-09-perllib.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-20-tar-Templates.sh .)
 (cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-40-path.sh .)
+(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-50-keys.sh .)
 #(cd $SHORTNAME/$HOSTNAME ; ln -sf ../../common/prepare-80-cleanup.sh .)
 
 mkdir -p $SHORTNAME/$HOSTNAME/root.d/usr/local/lib/site_perl/Paracamplus/FW4EX/$UPPERSHORTNAME
 
 mkdir -p $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME
 if ! [ -f $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml ]
-then cat > $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml <<EOF
+then
+    SRCDIR=Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME
+    if [ -f ../$SRCDIR/$HOSTNAME.yml ]
+    then
+        cp -p ../$SRCDIR/$HOSTNAME.yml \
+            $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml
+    else
+        cat > $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml <<EOF
 ---
 # Deployment of $HOSTNAME 
 name: $MODULENAME
 encoding: UTF-8
 default_view: TT
-parse_on_demand: 1
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
 
 private_key_file: /opt/$HOSTNAME/fw4excookie.insecure.key
+VERSION: 123
 
 # to be continued.................................
 EOF
+    fi
 fi
 
 mkdir -p $SHORTNAME/RemoteScripts/
 cp -fp remote-common/setup.sh $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start.sh $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-40-movePrivateKey.sh  $SHORTNAME/RemoteScripts/
-cp -fp remote-common/start-50-apache.sh          $SHORTNAME/RemoteScripts/
+cp -fp remote-common/start-45-db.sh              $SHORTNAME/RemoteScripts/
+#cp -fp remote-common/start-50-apache.sh          $SHORTNAME/RemoteScripts/
+cp -fp remote-common/start-55-perlHttpServer.sh  $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-60-sshd.sh            $SHORTNAME/RemoteScripts/
 cp -fp remote-common/start-65-dbtunnel.sh        $SHORTNAME/RemoteScripts/
 cp -fp remote-common/dbtunnel.sh                 $SHORTNAME/RemoteScripts/
 cp -fp remote-common/check-inner-availability.sh $SHORTNAME/RemoteScripts/
+cp -fp remote-common/starman.sh                  $SHORTNAME/RemoteScripts/
 
+# #############################################################
 echo "Configuring the deployment of $HOSTNAME:"
 
 mkdir -p $HOSTNAME
@@ -110,14 +124,15 @@ if ! [ -f $HOSTNAME/config.sh ]
 then cat > $HOSTNAME/config.sh <<EOF
 #! /bin/bash
 HOSTNAME=$HOSTNAME
-HOSTPORT=X54080                # To be set!!!!!!
-HOSTSSHPORT=X54022             # To be set!!!!!!
+HOSTPORT=${PORTPREFIX}80
+HOSTSSHPORT=${PORTPREFIX}22
 DOCKERNAME=${SHORTNAME}
 DOCKERIMAGE=paracamplus/aestxyz_\${DOCKERNAME}
 PROVIDE_SMTP=true
 # end of $HOSTNAME/config.sh
 EOF
 fi
+. $HOSTNAME/config.sh
 
 mkdir -p $HOSTNAME/root.d/var/www/$HOSTNAME
 if ! [ -f $HOSTNAME/root.d/var/www/$HOSTNAME/index.html ]
@@ -134,8 +149,6 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  ${SHORTNAME}.paracamplus.com
-              # temporary:
-              ServerAlias ${SHORTNAME}.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com
   DocumentRoot /var/www/${SHORTNAME}.paracamplus.com/
   AddDefaultCharset UTF-8
@@ -143,10 +156,10 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
   AddType text/javascript .js
   AddType text/css        .css
   AddType application/xslt+xml .xsl
+  AddType image/vnd.microsoft.icon .ico
   ExpiresActive On
 
         <Directory />
-                Options FollowSymLinks
                 AllowOverride None
                 Options -Indexes 
                 Order deny,allow
@@ -154,18 +167,22 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
         </Directory>
 
         <Directory /var/www/${SHORTNAME}.paracamplus.com/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
         </Directory>
 
         <Directory /var/www/${SHORTNAME}.paracamplus.com/static/ >
+                Options +FollowSymLinks
                 Order allow,deny
                 allow from all
+                SetHandler default_handler
                 FileETag none
                 ExpiresActive On
                 # expire images after 30 hours
                 ExpiresByType image/gif A108000
                 ExpiresByType image/png A108000
+                ExpiresByType image/vnd.microsoft.icon A2592000
                 # expires css and js after 30 hours
                 ExpiresByType text/css        A108000
                 ExpiresByType text/javascript A108000
@@ -177,18 +194,22 @@ then cat > $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME <<EOF
         ProxyPass /x/ http://x.paracamplus.com/
         ProxyPass /e/ http://e.paracamplus.com/
         ProxyPass /static/ !
-        ProxyPass /   http://localhost:X54080/
+        ProxyPass /favicon.ico !
+        ProxyPass /   http://localhost:${HOSTPORT}/
+# FUTURE limit the number of requests/second
 
 # <Location> directives should be sorted from less to most precise:
 
         <Location /favicon.ico>
+              Header append 'X-originator' 'Apache2 ${SHORTNAME}'
               SetHandler default_handler
               ExpiresDefault A2592000
         </Location>
 
         Alias /static/ /var/www/${SHORTNAME}.paracamplus.com/static/
         <Location /static/ >
-                SetHandler default_handler
+              Header append 'X-originator' 'Apache2 ${UPPERSHORTNAME}'
+              SetHandler default_handler
         </Location>
 
         Errorlog /var/log/apache2/${SHORTNAME}.paracamplus.com-error.log
@@ -255,6 +276,118 @@ esac
 EOF
 fi
 
+# #############################################################
+TESTHOSTNAME="$SHORTNAME.vld7net.fr"
+echo "Configuring the test deployment on $TESTHOSTNAME"
+
+mkdir -p $TESTHOSTNAME
+(
+    cd $TESTHOSTNAME 
+    ln -sf ../common/install.sh .
+    ln -sf ../common/check-outer-availability.sh .
+    ln -sf ../common/check-10-endStart.sh .
+    ln -sf ../../Servers/.ssh/dbuser_ecdsa .
+    ln -sf ../../Servers/.ssh/fw4excookie.insecure.key .
+    echo 'FILE dbuser_ecdsa' > keys.txt
+)
+if ! [ -f $TESTHOSTNAME/config.sh ]
+then cat > $TESTHOSTNAME/config.sh <<EOF
+#! /bin/bash
+HOSTNAME=$TESTHOSTNAME
+INNERHOSTNAME=$HOSTNAME
+HOSTPORT=${PORTPREFIX}80
+HOSTSSHPORT=${PORTPREFIX}22
+DOCKERNAME=${SHORTNAME}
+DOCKERIMAGE=paracamplus/aestxyz_\${DOCKERNAME}
+# connect to local test database:
+NEED_POSTGRESQL=true
+PROVIDE_APACHE=false
+PROVIDE_SMTP=false
+# special for bijou:
+REFRESH_DOCKER_IMAGES=false
+SSHDIR=/tmp/Docker/${HOSTNAME}/ssh.d
+FW4EX_MASTER_KEY=/opt/common-paracamplus.com/fw4excookie.insecure.key
+LOGDIR=/tmp/Docker/${HOSTNAME}/log.d
+SHARE_FW4EX_LOG=true
+# end of $HOSTNAME/config.sh
+EOF
+fi
+. $TESTHOSTNAME/config.sh
+
+mkdir -p $TESTHOSTNAME/root.d/opt/common-paracamplus.com
+(
+    cd $TESTHOSTNAME/root.d/opt/common-paracamplus.com/ 
+    ln -sf ../../../../../Servers/.ssh/dbuser_ecdsa . 
+    ln -sf ../../../../../Servers/.ssh/dbuser_ecdsa.pub . 
+    ln -sf ../../../../../Servers/.ssh/fw4excookie.insecure.key .
+)
+
+if [ ! -f $TESTHOSTNAME/Imakefile ]
+then
+    cat > $TESTHOSTNAME/Imakefile <<EOF
+# Start a local Docker with some host
+# 
+#  (cd $TESTHOSTNAME/ ; m run.local)
+#
+#if defined(SITE_is_bibou)
+WAYDIR	=	/Users/Docker/${TESTHOSTNAME}
+#else
+WAYDIR	=	/tmp/Docker/${TESTHOSTNAME}
+#endif
+
+work : nothing 
+clean ::
+	rm -rf docker.* nohup.out root root.pub root_rsa root_rsa.pub \
+		rootfs ssh.d ssh_host_ecdsa_key.pub
+
+DOCKERNAME	=	${DOCKERNAME}
+COURSE		=	${COURSE}
+regenerate :
+	make stop &
+	cd .. ; m create.aestxyz_${DOCKERNAME} COURSE=${COURSE}
+
+HOSTNAME	=	${TESTHOSTNAME}
+run.local :
+	[ -d \${WAYDIR} ] || rm -rf \${WAYDIR}
+	-rm -rf \${WAYDIR}
+	m update.Scripts
+	cd \${WAYDIR} && ./install.sh
+	echo "Connect with http://\$\$(cat \${WAYDIR}/docker.ip)/"
+
+connect : update.Scripts
+#	\${WAYDIR}/../Scripts/connect.sh ${TESTHOSTNAME}
+	docker exec -it ${DOCKERNAME} bash
+
+update.Scripts :
+	mkdir -p \${WAYDIR}
+	rsync -avuL ../Scripts        \${WAYDIR}/../
+	rsync -avuL ../${HOSTNAME}/   \${WAYDIR}/
+
+stop :
+	docker stop ${COURSE}
+
+INNERHOSTNAME	=	${INNERHOSTNAME}
+RSYNC_FLAGS	=	--exclude='*~'
+refresh.local :
+#	echo 'chown -R 1299:1000 /usr/local/lib/site_perl/Paracamplus' | \
+#		/tmp/Docker/Scripts/connect.sh ${TESTHOSTNAME}
+	rsync -avu \${RSYNC_FLAGS} ../../perllib/Paracamplus \
+	   \${WAYDIR}/rootfs/usr/local/lib/site_perl/
+	rsync -avu \${RSYNC_FLAGS} ../../Servers/GenericApp/Templates/ \
+	  \${WAYDIR}/rootfs/opt/${INNERHOSTNAME}/Templates/Default/
+	rsync -avuL \${RSYNC_FLAGS} ../../$SRCDIR/root/ \
+	  \${WAYDIR}/rootfs/var/www/${HOSTNAME}/
+	{ echo "chown -R 1299: /usr/local/lib/site_perl/Paracamplus/" ;\
+	  echo "/root/RemoteScripts/starman-stop.sh" ;\
+	  echo "/root/RemoteScripts/start-55-perlHttpServer.sh" ;\
+	  echo "tail -f /var/log/apache2/error.log" ;\
+} | /tmp/Docker/Scripts/connect.sh ${TESTHOSTNAME}
+
+# end of Makefile
+EOF
+fi
+
+# #############################################################
 # Finale
 cat <<EOF
 
@@ -263,10 +396,12 @@ Files to be edited for Docker:
    $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml
 then      m create.aestxyz_$SHORTNAME COURSE=$SHORTNAME
 
-Files to be edited to deply $HOSTNAME:
-   $HOSTNAME/config.sh
+Files to be edited to deploy $HOSTNAME:
    $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME
 then    m deploy.$HOSTNAME COURSE=$SHORTNAME
+
+Test deployment on $TESTHOSTNAME:
+    ( cd $TESTHOSTNAME ; m run.local )
 
 EOF
 
