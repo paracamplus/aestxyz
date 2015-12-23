@@ -461,6 +461,7 @@ fi
 
 if [ -d ./rootfs/root ]
 then { 
+        chmod a+x ./rootfs/root
         #echo 'alias emacs emacs23'
         echo 'export EDITOR=emacs23'
         echo 'export TERM=vt100' 
