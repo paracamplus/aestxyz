@@ -1,0 +1,281 @@
+---
+# This is the deployment configuration of a P(ortal) instance
+
+name: Paracamplus::FW4EX::P
+encoding: UTF-8
+default_view: TT
+abort_chain_on_error_fix: 1
+using_frontend_proxy: 1
+VERSION: 1415
+#testing: 1
+
+private_key_file: /opt/p.paracamplus.com/fw4excookie.insecure.key
+tmpDir: /opt/tmp/p.paracamplus.com
+problemdir: /var/log/apache2/problems
+version: 1415
+campaignName: p
+controllers :
+   - Doc
+   - Proxy
+   - Profile
+#   - Root
+   - FromUPMC
+   - Embody
+   - GoogleOpenID
+#   - LinkedInOpenID
+   - Admin
+   - Admin::Problem
+   - Restricted
+#   - SaveRestaure
+
+lang: fr
+decoration:
+    ue_url: http://codegradx.org/
+    lcAppName: CodeGradX
+    siteUrl: http://codegradx.org/
+#testing: 10
+
+# Two different configurations for database access. It will be choosen
+# by start-45-db.sh
+# This one via a socket 
+viasocket-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+      dsn: dbi:Pg:dbname=fw4ex host=/var/run/postgresql
+      username: web2user
+      password: wffomXW7
+      options: 
+        - pg_enable_utf8: 1
+
+# This one via a TCP connection:
+viatcp-Model::FW4EXDB:
+    schema_class: Paracamplus::FW4EX::Schema::FW4EXDB
+    connect_info:
+       - dbi:Pg:dbname=fw4ex host=127.0.0.1
+       - web2user
+       - wffomXW7
+       - pg_enable_utf8: 1
+
+Plugin::Static::Simple:
+#    logging: 1
+#    debug: 1
+    include_path:
+        - /var/www/p.paracamplus.com/
+    mime_types:
+        xsl: application/xslt+xml
+        svg: image/svg+xml
+
+Plugin::CustomErrorMessage:
+  uri-for-not-found: /
+  error-template:    error.tt
+  content-type:      'text/html; charset=utf-8'
+  view-name:         TT
+  response-status:   500
+
+############### Deployment
+deployment:
+   shortName: p
+   serverName: p.paracamplus.com
+   topSrcDir: Servers/p
+   apacheRank: 451
+
+############### Views
+
+View::Identity:
+
+View::XSLT:
+   INCLUDE_PATH:
+      - /var/www/p.paracamplus.com/static/
+
+View::TT:
+    INCLUDE_PATH: 
+        - /opt/p.paracamplus.com/Templates
+        - /opt/p.paracamplus.com/Templates/HandMade
+        - /opt/p.paracamplus.com/Templates/Default
+    ENCODING: utf-8
+    render_die: 1
+#    DEBUG: all
+
+################## Controllers
+
+Controller::Root:
+  sendLinkBaseUrl: http://p.paracamplus.com/
+  smtpfrom: CodeGradX confirmation <noreply@codegradx.org>
+  sendLinkSubject: "Confirmation de courriel"
+  smtpservers:
+    - 127.0.0.1
+  lang: fr
+  message:
+    fr:
+        missingEmail: "Veuillez indiquer votre courriel!"
+        badEmail:     "Votre courriel ne ressemble pas à un courriel!"
+        alreadyUsedEmail: "Ce courriel est déjà utilisé par quelqu'un!"
+        mailConfirmed: "Merci d'avoir confirmé votre courriel"
+        updateProfile: "Pensez à mettre à jour votre profil!"
+        givePassword: "Vous avez oublié de m'indiquer votre mot de passe!"
+        unreachableDB: "Erreur interne, la base de données est injoignable!"
+        DBproblem:     "Erreur interne en base de données!"
+        wrongCombination: "Courriel ou mot de passe incorrect!"
+        invalidLink: "Ce lien temporaire est invalide!"
+        obsoleteLink: "Ce lien temporaire est obsolète!"
+        invalidPerson: "Vous avez été désinscrit!"
+        undefinedPerson: "Courriel inconnu! Vous êtes vous déjà inscrit ?"
+        unfoundPerson: "Je n'ai pas réussi à vous retrouver en base!"
+        unknownPersonId: "Identifiant non reconnu!"
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Vos deux mots de passe diffèrent!"
+        incorrectPassword: "Votre mot de passe ne doit utiliser que des caractères ASCII et faire au moins cinq symboles"
+        missingOnePassword: "Veuillez donner une seconde copie de votre mot de passe!"
+        disconnect: "Vous avez bien été déconnecté!"
+  defaultGroup: free
+  UAversion: 1
+  confirmMail: confirmMail.tt
+
+Controller::Profile:
+   campaignName: p
+   mayChange: 1
+   message:
+      fr:
+        unknownLogin: "Nom de connexion inconnu!"
+        differingPasswords: "Les mots de passe diffèrent ?"
+        badPassword: "Mauvais caractère(s) dans mot de passe!"
+        missingOnePassword: "Un des mots de passe manque!"
+        badPseudo: "Mauvais caractère(s) dans pseudo!"
+        badEmail: "Courriel bizarre!"
+        emailAlreadyUsed: "Courriel déjà utilisé!"
+        OK: "Modifications enregistrées!"
+
+Controller::Doc:
+   campaignName: p
+   decoration:
+      exoPath: /xh/path/li101
+   defaultPage: toc
+   pages:
+      - key: authentication
+        title: Authentification
+      - key: legal
+        title: Côté légal
+      - key: exercises
+        title: Exercices proposés
+      - key: mrscheme
+        title: "MrScheme mode d'emploi"
+      - key: howto
+        title: "Correction automatisée mode d'emploi"
+      - key: li101
+        title: Dialecte MrScheme-LI101
+      - key: skill
+        title: Performance
+      - key: badges
+        title: Badges
+      - key: notation
+        title: Correction et notation
+      - key: drawing
+        title: Dessins (exercices graphiques)
+      - key: challenge
+        title: Défis
+
+Controller::Whoswho:
+    campaignName: p
+
+Controller::Embody:
+   campaignName: p
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Admin:
+   campaignName: p
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Admin::Problem:
+   problemdir: /var/log/apache2/problems
+   allowedUsers:
+       - 1000:
+         lastname: Queinnec
+         firstname: Christian
+
+Controller::Restricted:
+  allowedUsers:
+    - 1000:
+        lastname: Queinnec
+        firstname: Christian
+  p:
+    template: restricted/list.tt
+    1: org.fw4ex.li101.numlist.0
+    2: org.fw4ex.li101.agnom.0
+
+Controller::FromUPMC:
+   campaignName: p
+   startTime: 2014-08-01T00:00:01Z
+   endTime:   2020-12-31T23:59:00Z
+
+Controller::GoogleOpenID:
+    provider:  'https://accounts.google.com/o/oauth2/auth?'
+# Must be the same as in x.paracamplus.com.yml:
+    client_id: '812017552156-9m368hppmgsk4o7l35jumvl9uk38dr2k.apps.googleusercontent.com'
+    redirect_uri:  'http://x.paracamplus.com/googleopenid/check'
+    realm:         'http://*.paracamplus.com/'
+
+# The stylesheet (.xsl) must be rachable as a template (.tt)
+Controller::Proxy:
+# verbose: 10
+  x:
+     prefix: /x/
+     remote: x.paracamplus.com
+  xh:
+     prefix: /xh/
+     remote: x.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://p.paracamplus.com/static/li101.css
+  s:
+     prefix: /
+     remote: s.paracamplus.com
+  sh:
+     prefix: /sh/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+            htmlPage: 0
+            CSS: http://p.paracamplus.com/static/li101.css
+  shp:
+     prefix: /shp/
+     remote: s.paracamplus.com
+     remotePrefix: /
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+            htmlPage: 1
+            CSS: http://p.paracamplus.com/static/li101.css
+  e:
+     prefix: /e/
+     remote: e.paracamplus.com
+  eh:
+     prefix: /eh/
+     remote: e.paracamplus.com
+     xslt:
+        oldtype: (text|application)/xml
+        newtype: text/xml; charset=UTF-8
+        stylesheet: li101.xsl
+        parameters:
+           htmlPage: 0
+           CSS: http://p.paracamplus.com/static/li101.css
+  a:
+     prefix: /a/
+     remote: a.paracamplus.com
+
+#end.
