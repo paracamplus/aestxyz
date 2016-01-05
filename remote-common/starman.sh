@@ -67,10 +67,10 @@ watch () {
 
 # Run watch every minute with root's crontab
 install-watch () {
-    if crontab -l | grep -q 'starman watch'
+    crontab -l > /root/root.crontab
+    if grep -q 'starman watch' < /root/root.crontab
     then :
     else
-        crontab -l > /root/root.crontab
         echo '* * * * * /root/RemoteScripts/starman.sh watch >/dev/null 2>&1' >> /root/root.crontab
         crontab /root/root.crontab
         cat >/root/RemoteScripts/filterStarman.pl <<'EOF'
