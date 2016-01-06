@@ -24,6 +24,7 @@ PROVIDE_SMTP=false
 DOCKERIMAGETAG=${DOCKERIMAGETAG:-latest}
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 DBHOST=db.paracamplus.com
+REPOSITORY=www.paracamplus.com:5000
 source config.sh
 
 # Does the container needs to know the FW4EX master key. This key is
@@ -319,13 +320,13 @@ fi
 if ${REFRESH_DOCKER_IMAGES}
 then
     echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
-    docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    docker pull ${REPOSITORY}/${DOCKERIMAGE}:${DOCKERIMAGETAG}
 elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
 then 
     echo "*** Using current local copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
 else
     echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
-    docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    docker pull ${REPOSITORY}/${DOCKERIMAGE}:${DOCKERIMAGETAG}
 fi
 
 # Find specific id and tag corresponding to the 'latest' image:
@@ -459,15 +460,6 @@ then
     ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
 fi
 
-if [ -d ./rootfs/root ]
-then { 
-        chmod a+x ./rootfs/root
-        #echo 'alias emacs emacs23'
-        echo 'export EDITOR=emacs23'
-        echo 'export TERM=vt100' 
-    } >> rootfs/root/.bashrc
-fi
-
 if [ -n "${HOSTSSHPORT}" ]
 then
     sed -i -e "/^\[$IP\]:${HOSTSSHPORT}/d" $HOME/.ssh/known_hosts
@@ -544,20 +536,13 @@ fi
 rsyncavu () {
     local ROOT=$1
     local TO=$2
-    (cd $ROOT && find .) | while read thing
+    (cd $ROOT && find . -type f) | while read thing
     do 
         thing=${thing#.}
-        if [[ -f $thing ]]
-        then rsync -avu $thing $TO/
-        elif [[ -d $thing ]]
-        then
-            # Don't rsync existing directories they will be chown-ed
-            # to the owner of files in $ROOT
-            if [[ ! -d $TO/$thing ]]
-            then 
-                mkdir -p $TO/$thing
-            fi
-        fi
+        mkdir -p $TO/${thing%/*}/
+        rsync -avu $ROOT/$thing $TO/$thing
+        # Don't rsync existing directories they will be chown-ed
+        # to the owner of files in $ROOT
     done
 }
 
