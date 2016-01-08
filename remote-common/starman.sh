@@ -68,7 +68,7 @@ watch () {
 # Run watch every minute with root's crontab
 install-watch () {
     crontab -l > /root/root.crontab
-    if grep -q 'starman watch' < /root/root.crontab
+    if grep -q 'starman.sh watch' < /root/root.crontab
     then :
     else
         echo '* * * * * /root/RemoteScripts/starman.sh watch >/dev/null 2>&1' >> /root/root.crontab
@@ -98,7 +98,7 @@ EOF
 
 status () {
     ps -eo pgrp,pid,pcpu,time,priority,cmd | \
-        grep 'starman worker --daemonize' | \
+        grep -E 'starman worker [-]-daemonize' | \
         tee /tmp/starman.status
     grep -q starman < /tmp/starman.status
 }
