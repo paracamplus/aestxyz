@@ -31,13 +31,16 @@ fi
 if [ -d $WHERE ]
 then
     source $WHERE/config.sh
-    if ! [ -r $WHERE/root_rsa ]
-    then
-        echo "Cannot read $WHERE/root_rsa"
-        ls -l $WHERE/root_rsa
-        exit 1
-    fi
-    ssh -p ${HOSTSSHPORT:-22} -i $WHERE/root_rsa root@127.0.0.1
+    # NOTA: this docker command returns with the error code of bash:
+    docker exec -it ${DOCKERNAME} bash
+    # if ! [ -r $WHERE/root_rsa ]
+    # then
+    #     echo "Cannot read $WHERE/root_rsa"
+    #     ls -l $WHERE/root_rsa
+    #     exit 1
+    # else
+    #     ssh -t -p ${HOSTSSHPORT:-22} -i $WHERE/root_rsa root@127.0.0.1
+    # fi
 else
     echo "No such host ($WHERE)"
     usage
