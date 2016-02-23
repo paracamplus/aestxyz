@@ -6,7 +6,11 @@ BIGLOOTGZ=$(ls -t1 /opt/TGZ/bigloo* | head -n1)
 if which bigloo
 then 
     echo "Bigloo already installed"
-    exit
+    if [ -f /usr/local/bin/${BIGLOOTGZ##*/} ]
+    then 
+        echo "Same version of Bigloo ${BIGLOOTGZ##*/} installed"
+        exit
+    fi
 fi
 
 case "$BIGLOOTGZ" in
@@ -16,6 +20,7 @@ case "$BIGLOOTGZ" in
         cd bigloo*/
         ./configure && make && make test
         make install
+        touch /usr/local/bin/${BIGLOOTGZ##*/}
         ;;
     *)
         echo "Unknown type of archive ($BIGLOOTGZ)"
