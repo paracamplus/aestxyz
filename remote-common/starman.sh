@@ -9,7 +9,8 @@ EOF
 }
 
 start () {
-    ./start-55-perlHttpServer.sh restart
+    echo "############ START starman #####"  >> /var/log/apache2/error.log
+    /root/RemoteScripts/start-55-perlHttpServer.sh
 }
 
 # Stop all starman processes
@@ -46,14 +47,14 @@ stop () {
 # watch should be run regularly from crontab for instance.
 # It will renice the group of starman workers if taking too much CPU.
 watch () {
-    local GROUP=$( ps -eo pgrp,pid,pcpu,time,priority,cmd | \
-        /root/RemoteScripts/filterStarman.pl )
+    local GROUP=$( top -b -n 1 | /root/RemoteScripts/filterStarman.pl )
     if [ "$GROUP" = '' ]
-    then :
+    then 
+        echo "############ CHECK starman #####"  >> /var/log/apache2/error.log
     else {
             echo "############ AMOK starman.sh #####"  
             ps -eo pgrp,pid,pcpu,time,priority,cmd
-            echo "############ RESTARTING starman at `date` #####"  
+            echo "############ RESTARTING1 starman at `date` #####"  
         } >> /var/log/apache2/error.log
         /root/RemoteScripts/starman.sh restart
     fi
@@ -61,6 +62,8 @@ watch () {
     if /root/RemoteScripts/starman.sh status
     then :
     else
+        echo "############ RESTARTING2 starman at `date` #####" \
+             >> /var/log/apache2/error.log
         /root/RemoteScripts/starman.sh restart
     fi
 }
@@ -73,6 +76,8 @@ install-watch () {
     else
         echo '* * * * * /root/RemoteScripts/starman.sh watch >/dev/null 2>&1' >> /root/root.crontab
         crontab /root/root.crontab
+
+        # top and ps do not display the same %CPU!
         cat >/root/RemoteScripts/filterStarman.pl <<'EOF'
 #! /usr/bin/perl
 # Input is:
@@ -82,10 +87,21 @@ install-watch () {
 #   58    58  0.0 00:00:13  20 starman master --daemonize --listen 0:80 --use
 #   58    59  7.2 03:12:17  20 starman worker --daemonize --listen 0:80 --use
 #
+# top -b -n 1
+#   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+#10191 queinnec  20   0 1107784  47248  13584 S   6.2  0.4 244:10.86 python
+#    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+
+#  PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+  COMMAND
+#24138 web2user  20   0  202m  75m 3092 S   0.0  3.8   0:00.05 starman master
+#24139 web2user  20   0  202m  78m 5852 S   0.0  3.9   0:00.21 starman worker
+
 while ( <> ) {
-  next unless / starman.*--dae[m]/;
-  if ( /^\s*(\d+)\s+(\d+)\s+(\d*[.]\d*)\s+((\d*):(\d+):(\d+))\s*/ ) {
-    my ($pgrp, $pid, $cpu, $time, $h, $m, $s) = ($1, $2, $3, $4, $5, $6);
+  next unless / starman/;
+# if ( /^\s*(\d+)\s+(\d+)\s+(\d*[.]\d*)\s+((\d*):(\d+):(\d+))\s*/ ) {
+#   my ($pgrp, $pid, $cpu, $time, $h, $m, $s) = ($1, $2, $3, $4, $5, $6);
+  if ( /^\s*(\d+)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\d*[.]\d*)\s+(\d*[.]\d*)\s+(((\d*):)?(\d+):(\d+)([.]\d*)?)\s+(.*)$/ ) {
+    my ($pid,$user,$pr,$ni,$virt,$res,$shr,$S,$cpu,$mem,$time,$h,$m,$s,$command) = 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $13, $14, $15, $17);
     print $pid if ( $h > 0 or $m > 15 or $cpu > 30 ) 
   } else {
     die "Cannot parse $_";
