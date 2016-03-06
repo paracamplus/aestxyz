@@ -47,6 +47,7 @@ stop () {
 # watch should be run regularly from crontab for instance.
 # It will renice the group of starman workers if taking too much CPU.
 watch () {
+    sleep $(( $$ % 59 ))
     local GROUP=$( top -b -n 1 | /root/RemoteScripts/filterStarman.pl )
     if [ "$GROUP" = '' ]
     then 
