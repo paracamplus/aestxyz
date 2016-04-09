@@ -320,13 +320,23 @@ fi
 if ${REFRESH_DOCKER_IMAGES}
 then
     echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
-    docker pull ${REPOSITORY}/${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    if ! docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    then 
+        echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
+        # Pay attention to ~/.docker/config.json
+        exit 54
+    fi
 elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
 then 
     echo "*** Using current local copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
 else
     echo "*** Download fresh copy of ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
-    docker pull ${REPOSITORY}/${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    if ! docker pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}
+    then 
+        echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
+        # Pay attention to ~/.docker/config.json
+        exit 54
+    fi
 fi
 
 # Find specific id and tag corresponding to the 'latest' image:
@@ -452,12 +462,22 @@ if [ "$USER" = root ]
 then
     echo "$IP $KEY"  >> /etc/ssh/ssh_known_hosts
 fi
-if [ -d /var/lib/docker/devicemapper/mnt/$CID/rootfs/ ]
+
+# Find rootfs with Docker ^1.10
+for h in /var/lib/docker/aufs/mnt/*/root/RemoteScripts/$HOSTNAME.sh
+do
+    ln -sf ${h%root/RemoteScripts/$HOSTNAME.sh} rootfs
+done
+# This does not work starting with Docker 1.10
+if [ ! -d rootfs ] 
 then
-    ln -sf /var/lib/docker/devicemapper/mnt/$CID/rootfs .
-elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
-then
-    ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
+    if [ -d /var/lib/docker/devicemapper/mnt/$CID/rootfs/ ]
+    then
+        ln -sf /var/lib/docker/devicemapper/mnt/$CID/rootfs .
+    elif [ -d /var/lib/docker/aufs/mnt/$CID/ ]
+    then
+        ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
+    fi
 fi
 
 if [ -n "${HOSTSSHPORT}" ]
@@ -578,17 +598,17 @@ then
         fi
 
         # Make sure that this container is run after reboot of the Docker host:
-        if [ -f root.d/etc/init.d/qnc-docker.sh ]
-        then ( 
-                cd ./root.d/
-                chmod a+x etc/init.d/qnc-docker.sh
-                # the content of qnc-docker.sh must be fixed before   FIXME
-                rsync -avu etc/init.d/qnc-docker.sh \
-                    /etc/init.d/qnc-docker-$HOSTNAME.sh
-                rm -f /etc/init.d/qnc-docker.sh
-                update-rc.d qnc-docker-$HOSTNAME.sh defaults
-            )
-        fi
+        #if [ -f root.d/etc/init.d/qnc-docker.sh ]
+        #then ( 
+        #        cd ./root.d/
+        #        chmod a+x etc/init.d/qnc-docker.sh
+        #        # the content of qnc-docker.sh must be fixed before   FIXME
+        #        rsync -avu etc/init.d/qnc-docker.sh \
+        #            /etc/init.d/qnc-docker-$HOSTNAME.sh
+        #        rm -f /etc/init.d/qnc-docker.sh
+        #        update-rc.d qnc-docker-$HOSTNAME.sh defaults
+        #    )
+        #fi
     fi
 fi
 
