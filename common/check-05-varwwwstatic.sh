@@ -22,9 +22,15 @@
     done
 )
 
-if [ $( ls -1 /var/www/$HOSTNAME/static/ | wc -l ) -eq 0 ]
+if [ -f /var/www/$HOSTNAME/favicon.ico ]
 then
-    echo "No reachable static files"
+    if [ $( wc -c < /var/www/$HOSTNAME/favicon.ico ) -eq 0 ]
+    then
+        echo "No reachable static files"
+        exit 53
+    fi
+else
+    echo "Missing file /var/www/$HOSTNAME/favicon.ico"
     exit 53
 fi
 
