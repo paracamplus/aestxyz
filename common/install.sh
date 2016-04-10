@@ -464,12 +464,12 @@ then
 fi
 
 # Find rootfs with Docker ^1.10
-for h in /var/lib/docker/aufs/mnt/*/root/RemoteScripts/$HOSTNAME.sh
+for h in /var/lib/docker/aufs/mnt/*/root/RemoteScripts/$INNERHOSTNAME.sh
 do
-    ln -sf ${h%root/RemoteScripts/$HOSTNAME.sh} rootfs
+    ln -sf ${h%/root/RemoteScripts/*}/ rootfs
 done
 # This does not work starting with Docker 1.10
-if [ ! -d rootfs ] 
+if [ ! -L rootfs ] 
 then
     if [ -d /var/lib/docker/devicemapper/mnt/$CID/rootfs/ ]
     then
@@ -478,6 +478,11 @@ then
     then
         ln -sf /var/lib/docker/aufs/mnt/$CID/ rootfs
     fi
+fi
+if [ ! -L rootfs ] 
+then
+    echo "Could not find rootfs for the fresh container!"
+    exit 54
 fi
 
 if [ -n "${HOSTSSHPORT}" ]
