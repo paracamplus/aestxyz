@@ -27,6 +27,8 @@ DBHOST=db.paracamplus.com
 REPOSITORY=www.paracamplus.com:5000
 source config.sh
 
+INNERHOSTNAME=${INNERHOSTNAME:-$HOSTNAME}
+
 # Does the container needs to know the FW4EX master key. This key is
 # required for all authenticated requests to the FW4EX machinery. This
 # key is named fw4excookie.insecure.key
@@ -464,9 +466,13 @@ then
 fi
 
 # Find rootfs with Docker ^1.10
-for h in /var/lib/docker/aufs/mnt/*/root/RemoteScripts/$INNERHOSTNAME.sh
+for h in $( ls -t1 /var/lib/docker/aufs/mnt/ | head -n 5 )
 do
-    ln -sf ${h%/root/RemoteScripts/*}/ rootfs
+    if [ -d /var/lib/docker/aufs/mnt/$h/opt/$INNERHOSTNAME ]
+    then
+        ln -sf /var/lib/docker/aufs/mnt/$h rootfs
+        break
+    fi
 done
 # This does not work starting with Docker 1.10
 if [ ! -L rootfs ] 
