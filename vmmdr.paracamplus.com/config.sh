@@ -1,12 +1,39 @@
 #! /bin/bash
-HOSTNAME=vmmdr.paracamplus.com
+# Specific configuration of vmmdr+vmms to be run on a remote machine.
+
+# BASEDIR is the directory holding monitor.sh
+# BASEDIR has two subdirectories, vmm{dr,s}.paracamplus.com/
+BASEDIR=$(pwd)/
+
 HOSTSSHPORT=61022
 DOCKERNAME=vmmdr
-DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
-LOGDIR=/var/log/fw4ex/mdr
+HOSTNAME=${DOCKERNAME}.paracamplus.com
+DOCKERIMAGE=www.paracamplus.com:5000/paracamplus/aestxyz_${DOCKERNAME}
+
 PROVIDE_APACHE=false
-NEED_FW4EX_MASTER_KEY_DIR=true
 SHARE_FW4EX_LOG=true
-SSHDIR=$(mktemp -d /tmp/ssh--XXXXXXXX)
 PROVIDE_TUNNEL=58022
+
+# LOGDIR must be writable by the user running the containers.
+# This directory will hold root-owned log files.
+LOGDIR=$BASEDIR/log.d
+mkdir -p $LOGDIR/md/
+
+# In this directory will be stored the needed required keys.
+# It will be mapped onto /root/.ssh/
+SSHDIR=$BASEDIR/ssh.d
+mkdir -p $SSHDIR/
+
+# Where will be fw4excookie.insecure.key 
+# It will be mapped onto /opt/$HOSTNAME/private/
+# NOTA: the fw4excookie.insecure.key is now stored in SSHDIR/
+NEED_FW4EX_MASTER_KEY_DIR=false
+NEED_FW4EX_MASTER_KEY=true
+FW4EX_MASTER_KEY=$BASEDIR/fw4excookie.insecure.key
+
+# link to vmms
+ADDITIONAL_FLAGS=" --link=vmms:vmms.paracamplus.com"
+
+# to update deployment scripts on the Docker host:
+SCRIPTSDIR=/home/queinnec/Paracamplus/ExerciseFrameWork-V2/Docker/common
 # end of config.sh

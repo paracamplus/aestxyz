@@ -14,14 +14,14 @@ fw4ex_analyse_exit_code() {
     local code=$( cat $FW4EX_EXIT_FILE )
     if [ $( wc -l < $FW4EX_EXIT_FILE ) -ge 1 ]
     then # confiner error
-        if [ $code -eq 222 ]  # too much cpu, report to author
+        if [[ "$code" -eq 222 ]]  # too much cpu, report to author
         then {
                 echo
                 echo "<PROBLEM message='Your script consumes too much CPU!' />"
                 echo
             } 1>&4
 
-        elif [ $code -eq 228 ]  # too much output, report to author
+        elif [[ "$code" -eq 228 ]]  # too much output, report to author
         then {
                 echo
                 echo "<PROBLEM message='Your script produces too much output!' />"
@@ -38,7 +38,7 @@ fw4ex_analyse_exit_code() {
 
         fi
 
-    elif [ $code -eq 0 ]
+    elif [[ "$code" -eq 0 ]]
     then # author's script ends normally
         return 0 
         
@@ -59,7 +59,7 @@ fw4ex_react_to_exit_code () {
     local FW4EX_MODE="$3"
     fw4ex_analyse_exit_code $FW4EX_EXIT_FILE $FW4EX_LOG_FILE
     local CODE=$?
-    if [[ $CODE -ne 0 ]]
+    if [[ "$CODE" -ne 0 ]]
     then case "$FW4EX_MODE" in
             'abort exercise')
                 exit $CODE

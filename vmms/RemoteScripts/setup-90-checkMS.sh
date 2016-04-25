@@ -4,7 +4,7 @@
 
 for program in gcc make python2 python3 ocaml \
     bash ruby octave mono gnat lua \
-    bigloo mzscheme java
+    bigloo mzscheme java node
 do
     echo "Is $program available?"
     if ! which $program

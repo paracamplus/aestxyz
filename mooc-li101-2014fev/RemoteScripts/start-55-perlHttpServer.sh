@@ -73,10 +73,18 @@ my \$app = ${PERLMODULE}->apply_default_middlewares(
 \$app;
 EOF
 
+for file in /usr/local/share/perl/*/Starman/Server.pm 
+do 
+    sed -i -e '/log_level/s#4#DEBUG#' $file
+done
+
 cd /opt/tmp/$HOSTNAME
+export STARMAN_DEBUG=1
 starman --daemonize --listen 0:80 \
     --user ${WWWUSER} --group ${WWWUSER} \
-    --pid $PIDFILE --error-log /var/log/apache2/error.log \
+    --pid $PIDFILE \
+    --error-log /var/log/apache2/error.log \
+    --access-log /var/log/apache2/access.log \
     -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
 

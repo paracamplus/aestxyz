@@ -1,7 +1,5 @@
 UNTAR keys.tgz
 FILE fw4ex
 FILE fw4ex.pub
-FILE saver_dsa
-FILE saver_dsa.pub
-FILE fw4ex
-FILE fw4ex.pub
+FILE saver2_rsa
+FILE saver2_rsa.pub

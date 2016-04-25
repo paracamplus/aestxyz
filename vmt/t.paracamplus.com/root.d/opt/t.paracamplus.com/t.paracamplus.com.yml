@@ -6,7 +6,7 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1272
+VERSION: 1454
 
 private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
 
@@ -14,7 +14,7 @@ Catalyst::Engine:
     uploadtmp: /tmp/t/upload
 
 Controller::Root:
-  version: 1272
+  version: 1454
 # Use the same insecure key as the A server:
   private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key
 
@@ -31,6 +31,23 @@ Controller::Embody:
        - 1000:
          lastname: Queinnec
          firstname: Christian
+
+Controller::GoogleOpenID:
+    provider:  'https://accounts.google.com/o/oauth2/auth?'
+# Must be the same as in x.paracamplus.com.yml:
+    client_id: '812017552156-9m368hppmgsk4o7l35jumvl9uk38dr2k.apps.googleusercontent.com'
+    redirect_uri:  'http://x.paracamplus.com/googleopenid/check'
+    realm:         'http://*.paracamplus.com/'
+    scope: "scope=openid%20email"
+
+Controller::LinkedInOpenID:
+    provider:  'https://www.linkedin.com/uas/oauth2/authorization?'
+    client_id: '771cvyfg4j0v0z'
+    redirect_uri:  'https://paracamplus.com/x/linkedinopenid/check'
+    scope: "scope=r_basicprofile%20r_emailaddress"
+#   scope: "scope=r_emailaddress"
+# NOTA: r_basicprofile is too much since I only need an email. However
+# r_emailaddress seems to imply r_basicprofile.
 
 Controller::Proxy:
   private_key_file: /opt/t.paracamplus.com/fw4excookie.insecure.key

@@ -4,7 +4,7 @@
 HOSTNAME=vmmd.paracamplus.com
 HOSTSSHPORT=59022
 DOCKERNAME=vmmda
-DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
+DOCKERIMAGE=www.paracamplus.com:5000/paracamplus/aestxyz_${DOCKERNAME}
 ADDITIONAL_FLAGS=" --privileged "
 LOGDIR=/var/log/fw4ex/md
 PROVIDE_APACHE=false

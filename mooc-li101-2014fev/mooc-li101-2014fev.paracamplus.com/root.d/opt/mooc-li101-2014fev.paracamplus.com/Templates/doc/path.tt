@@ -2,7 +2,7 @@
  Automatically generated, don't touch!
  Generated from mooc-li101-2014fev/mooc-li101-2014fev.paracamplus.com/root.d/opt/mooc-li101-2014fev.paracamplus.com/mooc-li101-2014fev.paracamplus.com.yml
  with private key /home/queinnec/Paracamplus/ExerciseFrameWork-V2/Scripts/../Servers/.ssh/fw4excookie.insecure.key
- on 2015-01-27T16:14:14
+ on 2015-04-11T10:51:36
 -%]
 
 <p>Les exercices seront affichés semaine après semaine.
@@ -10,151 +10,151 @@
 <fieldset><legend>Bases du langage</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.perimeter.0 -->
-<span class='title'><a href='[% base %]/oneliner/UsI4irR6KgP94FQy1Kpi1fUjcyn9xfvWx0K_brQ_dsC5ZOZBIZKkdTXe1rzSGXo8Fa5Z7sPNTn6AFzj7XT6ymbFCZBFpcJE6O-kHTlVyf2yNbVgsf8UaubuezLyV73qZ5NZJPw8A4erOgw5losoR2940vHW-t11kNvyIVBVJoCvuFWL1On0_gkjr8SCCtNojAUwkRvE184yyHY5K_EH-tl7y-oyVyecdA5ZL2CCuGDWJGyKF2OdlDjsO00bJrRckFhYqC18vvF7K4zVdoj58KhjGG5nVF2xLheHByY6xlSLIG7sbzNL2lls_8AJeSPaGium-7n7pJ_PEBBL7Ht2_DHQ@@'>perimetre</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UupmrQVhh8M5usEg2AN76zG_Gb0bPNcUTN_fqeVS5RzkkcdtbBkKbYkcUGe8g_Yrxrp28RevmRbo9k78S1asgLUkRtKKBCZyoyFHi56kK9h9aWT6PGB3NFnN0o8qP2PEuV5f4Wmhbz5-rsLXLHys1TE1IKaNlOrF2KZNpvY8CGSVcgUfQD419z50JaEWKSPN2E2itUHjtyTL0Ga2dMmy1nXP8MUEVGx7JmDxBy0FIX3eTCkGw7uHf5rjTC-eTVxr3HS5wnE5hZUZiLu09bCCiQ1JGcXOHYKPDCpqe1iYtK1plI5rPUU5dBnLvfNGY64DG2gBwN04arHEfucY14-_5xA@@'>perimetre</a></span><span class='detail hidable'>
 Calcul du périmètre d'un rectangle
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.cube.0 -->
-<span class='title'><a href='[% base %]/oneliner/UFZdyFKPBIc7ChJ-tUxAZAmYFSrbW2VfKd6mY633J947My1sGHPq82j17Mu9l7Prz-VvJ5a06cPMW7gzLaxaJcDe98KvH6LIazurxJZ1tsPsmNQanC4LyZK3-vI7Zrgk-Q9dwkMkABAoIfhAjJ3FGN2WTjvbDS9DStCkS_c88Oj5WGOojjy5PooPSVT1utGRdjs6rpgd8Ch6Rg1HuqKXCEpFZEJyZ0jWXYF8OnWjE7-M4YsXjH-G72Lt28BPvhaxo6c2xLZWLiDYe1Kb4RtAsU7bNEDSSDRB_6OrmxWAKB_gn56GfcMKIa49SMhFOQtrxG3oPiVabk2SWu6YCsZfyEw@@'>cube</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UYO_AHSgiVYclW2Gw5Na-n_nq6TlIkMWI6CVgJln4k_bUZi5Izb1y5zQIatzQfVVRKOkI_xCj_U749k75CY--nbj9-3LuTgU-gKRXXceNL3D-CP8axxNViuGWlLge71opdpY0KzNLU4tMiBD0rM0qelFqgMYhvBjrjbeZbKI0aJ84xPcW14fEAivoprREr85lg2rKUcbPpkMO6uEDCIyqpfTSTewv_JhLNKbFn83Y9SZ2e9fDhSIp0AFVQC1ZXj_4V4-_FoAfwLWryqJPFPICjKAB307n6cPrTcBijKm9A7bCx8Oj_kODedQ9QKWDlfVdznO8qUVP1xL4wUJenhWVvA@@'>cube</a></span><span class='detail hidable'>
 Calcul du cube d'un nombre
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.max3.0 -->
-<span class='title'><a href='[% base %]/oneliner/UryX-sks5QxHUSeOy0vF1emL-Box9zlq_NB9aEWGUx-dk-cEpNFxahI3EPNf_Gvx9GBzzltAsES0DK_-rDo8DJOsy3J_XTAFf_Nn3s3htrBNeOwdtEoRo6_A1yKxJripkiMo2Z4HQWLvCTbWbZQWkqKwjkjpAQiqCO-7ml_NmknKpCjK9s98MIWWqcsLpZTjajVyVuD5nNgGqWi2GWkqoWfuK_QlfB24JZHVYHAhhETNy3wzT--tBTw_gYNXrv6uDLw_b36QoQkg2a_O3laCtn-O8ymxTfJ7NLfG6tZHyRplXudECQC2W-oKRIqem-gHb83Dke-UrarxNb_wcxf9pzw@@'>max3</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UnM3aCk-hMQqvZPVQAHOusIv67Da8kmwj24p6cs8dPJw9MUwuSDsmQcEGznBa5zSSvguQZIGa6rD8vNwjDaxNMzp9EXBFqJnTwjLOOCG34dh4cGNQCPJqNUwN1LljY75cijUx3M3n8fqMdjILzwtBGBvqWqxNmSGrmOX3zyeGr70ywN7N0E4wgMy9KCtz6-LOaZcaaSC1ZGPCLYAyEigLA7qetFIcWobcCb5P865yWQ6KoPYpBePPypfPfEqfEDoGpi4TsrfjO9f8RQo_N84wvS4V5HdUhdmOP9MqRQMsWjSu1gYz6yisZEGysmC196PWpczOJLdFM8pEm2DigbnbVg@@'>max3</a></span><span class='detail hidable'>
 Trouver le plus grand nombre parmi trois.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.max4.0 -->
-<span class='title'><a href='[% base %]/oneliner/URzBAGPUX4gLJQmkG4WNIn-MecvVpjHw4hGSE3MrIiF4URhxkWERU87bLu-EXxj_Z957AQNTYC7BA4Xit4_SoIVmk2WYFPpeKprLn5cqt69osiVEZStXuI3gKd1IrNbfCLBOR3f0nf0tL-VKZDzV5GgZBxObi1J31vFBWnGRuuaBIzuLNcBkYig4OYl31SI8StCsRe-qfXvDAi1BdLEOAgXZnOa2YxdO98q3xRYr2uPCVjW9-8rWfoyMDwA9C9zC0b9T3gNLvVMfhvTfgFWK5D9IPc7YaUWQHAjgeFwd_FMhdclml7Sknx0OxtIFFJrCspF6EYYz2Y8j5bYrkBf91IQ@@'>max4</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Up2C3zkcGw-2hh-66AarNMxhYu618aA4viFpEQxqNEcD3ROWrIFHeFcYYWuUm_mK4YhL4Uxo0_fNWblG3UMFKBwqT6rRe8jXyH8FepipEHSymtf2Db42c1yxQlWfoNvmbP4wr7c1qlIFoNbsNpjJHxSmJ1dDqfCSlqXOYN8HXI086oNGrOdDdw5SHHN962U5bN30B3Xypkg-CNnr5lnhYSD42IC4BnDsysUOmF7a2YO8EdmsvMc8HfL4atzq7rej3kSb7t7FtGoc8o2R8iIv9LiL32NPj4TUCpSarkr3knh-N5Eg8Q3MtWsZoid75mzMD7ASYZZhkQkmrSHzud0K2Eg@@'>max4</a></span><span class='detail hidable'>
 Trouver le plus grand de 4 nombres.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.airecouronne.0 -->
-<span class='title'><a href='[% base %]/oneliner/UriBteii5jDZc_ObEoYorKdJfgSFJsFrPII-Xf9ZQUjeJ9_1dN5JvcG3ltXDYBImBaqzpMf_KeeOH3cWrLcuP8MtV5c9iVgyA8W8IvYSq5aZEJOyrqzq2wrANyZcCHioip5jczU82hYKRU7Nc6G71T1kqlwcNTLOUIn2AExQkz7FqKofOM5fhQG14ND2LPgLEaadXHCRhYAVucRF_XgvletN7P48iFkXlUTKGglNY0b-WsK7huHxi3c1acodk3vXbFQ5hf9m2qeRBnZxTc7VfGw-X9yHVGn-2b13j8VyTv-BCckjmTF7XEo-8I9TrXrWejbhfXb8wL1HQ8jEUQlqrDw@@'>aire-couronne</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UBSksJkUaWNwEAEx-kwTHqbd5oo3ErHj9NEg37VzCOxlcO6WbEc_F9u2BLHLzx9CQIQLKFYX1ZofCywrpHnIOYHgqHPZ4vjflW0AY5ugs66BgJ1uKb5AF6vbj31tJMj2kiJPZLN6Sm13K2Y-xUE082rLnUodvPf6GuBSWKgvUIdKmIYV0GPBoysFf-AUBGxPx7MkrRb6wr_0jYqbOlOlTwOnXqMWjR0f-jw1fDWMIgwlWGznUvLg4esPdHXgvs0oXfx5Cg-fBTK6Asg3KwaBwSv41DKlNR3ASE_AnFJ_U8_SwyJaUflTVJPumd3KefgK8cJMpczWUq9mEpnC7g-UyCw@@'>aire-couronne</a></span><span class='detail hidable'>
 Calcul de l'aire d'une couronne.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.mention -->
-<span class='title'><a href='[% base %]/oneliner/Uhe7R1VVwmX_ejbAxsITlIePy5VE5B8P7QLhTMv1VtpUmn9Hq_98CF0N2J2n0dA1j9DyCFjjlb_6N6gI0VJkzeVMXRxqKSVoFYrKPKRPFDHF7xqGBznwHE8kXNi0fcJcMITpvhxctyUvKxpb56kHvi3Q5kCqpE5kLoCveQJeiEb85u8YcAAiP8u0IaNxlSbA-GNZfAUWumCpy_TjANAAzi9hQ8gXewk_umsB_qkZYKP3Hqo15xiLquKiWx25mhtn6UVV5wg4a4PcI6_NSG8KW32m5XXFzfZnqHAnj2xvQvp9AeV-VRC9d4v_bGaD_n42MxJ3q0thewY5-GY2gwLnObQ@@'>mentionif</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UZmPh9QLtGoZz0AUYn4VqcR_55wTL0K84iwTYY4n6ksPxUo3Xa3vkBLFYGeBN4Fn7hktZGZXVo_b439LDYY6lNJv9xvQp30OEspEU_4MnyHJ8gE_Dd5pB7FFI652vrgOp-RuXDHymBVQN3pXKK0Nw-Uz_VaokHtraO854C8qlROJ4E41MQziATFO_CAese_SjCoGdq0G4ALf6Q-1YIoLWiuEpWLfjwhtwnOA6fDQO9OhFE9RB0q7AIGTsXBnZ7y9fVkhQmULVs9jNrtdlcX1Y3vlXXLZALuKfpzKzHkbZsW4dp0NKz8ppyqhO4r4w7xVkgQlxSt_SYPs4IaOdR8veNA@@'>mentionif</a></span><span class='detail hidable'>
 Déterminer la mention associée à une note.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.equation.0 -->
-<span class='title'><a href='[% base %]/oneliner/UMSl_tWjsp7vcpR6Qpp4ZAaYHH_tX8raRYRua_PjwnBmLnprlWSbVaFnDboGSQLNvIcqRDEKdm0KSoFh8tzU2hqqA8kXHBk31GuKyJPVI7tpW_D-O1eD9pk4uSAW2Ji5mToYDwf2PuqVb74MRt2Z2DLKofSP4dv1_lVmdNhbVhX1SS-G1rvskmq9MsXgtoWqD-d5ZIHih9JC6fqOThASJJOUh-WfCp0_0DZ4Nj8HiT7ZS6PzhA-SKzqF4RTzdmPNXblBdlP1jTtfyJ6mYFOasS-qh0V1rf0vghWoV763FfbtKOVWXTRsxE_riMdrBDytP8Ti0DB7O0usx1uAT3CcppA@@'>equation</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/ULgTX3EzV6Tn0aO53Tq1IR_nHRcZ-GUPCWgyxFpV7h8u5W0fum_IapHsq60tQ9V4Tg7xR4b93EVamL0UH35heUeLXEVo4fuPUjiIni0sqJUmVHgMOBYba7NyJONI4r69Iau_UJ3KIJhJrXKulj9kejE0r_MhsYO1esEUZ2HN7bldw4X0ks4DkH-OiE9LC5mgkbrTDxcq1fTaSlML3N_lacGboJaBQKQeBjWw8yYbO0QHAeYyF2KkSEjVdiN3Fiq830h361WN7-lGxJeJInygcyO7TnTWVMm7POsN_8ESblPSHKa4R2n47jy7MG76X7UIernuP2NNDdAgaOrgQaYQTeQ@@'>equation</a></span><span class='detail hidable'>
 Déterminer le nombre de racines réelles d'une équation définie par trois
 coefficients.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.divise -->
-<span class='title'><a href='[% base %]/oneliner/UiZw5N8O7iSgeMJpaJfdXl5lQ7cFrIMjshotJgKHCq2dQlsYjr6EL5hQuVdj9tb78s_mqKc56mB-7OQg9jpqvvpZj_kqb5mOSdizZy0dlo8FYTldWCQsCkbLE0rvx7dq6y05n4rsBYq5k9hSLskNgGfL0YaIKYj5zT1XWHwwubkFtJnwdqR_ZdPzwPX0GuB-WL0eZnrm9h2A_CB5MidcGaeuiuYDIzVNGSyIqiR3x8RhnH7N1CmJNBRIMHOl9prbXt1Q2m9cn6W0dAE4Wu0g9crAu7xwpkXtcpzjnzY9mO_OVjYYPTKvQ0kAHV-7-a1HtoHc8aDwM-c3LBMYxZUmJgg@@'>divise</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Udzx80lYzNfA-abhO4Jt5_3VeGHICuJ8idKfLdZiToZEl9Y9_pFuIOKz0uZ_Hvckp4Tu7jMA5jQELnUaKb_e-lQqPa17DrDOrSl1RGu8zaGp5IOz-tq8zg5JgdCkJigqNmgeYK8_lH06seVteBkI0g_c7EtWrSprHZJrWNIkCNCc90_RFp-UirexxuBq4FyR9zEZFJiiUb44MXJVJXyvP0xQHoFuCySYdqiQjC8_5dgLkS-EGjyyIljBDkOF2KUs5zEOn6yh4KdFSOSrHeewY8Hcx5ri2SbPycX1uma3aqzZTfT_BoNjfBeXzUGBfvk9gz1NRF-hsyQ866VW2BugbLw@@'>divise</a></span><span class='detail hidable'>
 Prédicats et semi-prédicats autour de la divisibilité d'un entier. 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.booleens -->
-<span class='title'><a href='[% base %]/oneliner/UIaChmOYpJm3dX8SwAlsbQji_RNXLPQyfi5UbTRks2WVWsZLS38Hn8VocedwJj2E9eH_UUv2NmOB2ZBvs9ZGm4tSJaH4N0Xm26HZy-hEj8ZR3DSiaofk33adBwlmuaw6J_Ii9yKoQoCRDzGVBieLEW97GTPd1lgeQsmIyurE_BG80_56nske30IMBLKFwu2EkRNp7Er7uddlDJVTQrXUi2eKT0MghUXCiJ8DVKPb_x_LfYA5RFl050vAbcJex3stylqFfY46HiehhfV-ouuDJiCphI6injWe1CqpsjbvAeiml8AGpxU-x7J3lm73qRoOe64hd3oqt4L_sGqFeCssMEQ@@'>booleens</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UE_CO6Rb83zB4niMTFqqPZ8_w52PbXLQ1bMx1XdTR7-GOxflJdYPpV-qJ8OLSYBs2oTd0rbVc6lxJLhwstd0PVmiCJP3EdIqPR0cCjIi_DhRLXuBQL_mkGpOedHHcBflG8uMCAVTCbacfxMefc3gEUzFimX3OPtnqAiH49rFRezIXFV1scUXewnTD866j9WncK6RmcCGOcBKXKcSvZ1XDn0_oxhii_Mhf7tgXyHLbA-1WMpnNhWCd4jvNP9ndzFDGUiFUqPeeoMiOjOTu5DDlwYqJ9t5V6QoBMK6YZLOQ6hPzmKI-dy7z_gugVzql_gf-HD6he5KwjG-ucT7JfdOBNw@@'>booleens</a></span><span class='detail hidable'>
 Définition de fonctions booléennes
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.mentioncond -->
-<span class='title'><a href='[% base %]/oneliner/UBtIMvvlfnLOfWW2MyDNAyqjhk4XDpAp6D94JA_RCr2n2KR4o1n0CREPHoxfJAJ7d-5wrXPnYsVDdp6UgroxnI2kCXPwv23pLSgGeoBQ21ZBq18OI5kiATtCj6WrN28QOE2clvvXzVbA-DQ6f8WB8sh-AZYO0ezo7YCcQwIjU3-VWqbiAbgO2D0UE1eRNHN5c53aMeGBGyUckUX_HPaYZspNHIX1CyJEqVZdjM142M5meA4vTfHfRJ6t4_32EPdoSuCRBzoxJ2cul62Ifjh5iktanDI1Z_WrhceyOqmAOQqMqBDEuoDzr0EcQYVGkeYthnerIQHGK3-ThduTF7TGk0Q@@'>mentioncond</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UuQsNhhfR5xav8QjiJg5pvi9PtywHsVhVZp0rjZFhl0aHKkLYO6KvtQFMkuDEIRxqoekXLCUyo8KwigBkE8yimqChB6SBWycW5tpnno_8iI9jcmCKjeFJ6SkFhomNYvnZf9H02l43LbEIsvLrbqyH6DO0NGRuLSAWpkjlne-PZYsdiP3UhaI1TQwfGBtfvVx2_Rp7GHoLKnAb9Nqrbs7EV8ZsXIkXooQEv5S3BMrL0mcEJS_M-bVs7l9LSH3XGFJxo2DlKInrrKKt5BGGaARfJTAok_rZtfb9ovIuzP7nT5cywT2sqOTTA4BQez7M64EC6SNxvzOdoA10ZUG0BC1NJA@@'>mentioncond</a></span><span class='detail hidable'>
 Déterminer la mention associée à une note (avec une conditionnelle)
       </span></div>
 </fieldset>
 <fieldset><legend>Récursion sur entiers naturels</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.sommeimpair.0 -->
-<span class='title'><a href='[% base %]/oneliner/UGMW4md7zOZrKFA0iunNEuojcP3oMqh_cCDGB7lVzPNn_w4fEAYy9YbNaZXxy-8YNLDOHVf22xbTei-JMtbjP93UD8Y8gF1RgmKF33p9II8ctp71eisVYwdmaqeP_Ahyz5onkhMBGKCAewLUVuz_L_yKEc2bPdrDkVzUckn-vjj46OWSiIvwOqkH0UYQT4h7fD1tj4z5M-p14AVK8FJ31lKJzUkITHwhdJrwNgtpU5p91ZUqyAOrmN05lH_-o-jup0ejCZja7eaXIuAgpBqaUrII1YpUfbi4zqbo1yvRD_PBNQp2JOgDvJbqP4boG4210JRFakm0pgu3ycuOzOFOTTw@@'>somme-impairs</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UXVSFQKQ4-UcEbf1621wm8l3a04x7FT4BiD4UwPlEDvGhSiu-s0iF5QFjWhb8YKtxAIFp9i6HUMm2rMOCVe7AjPfeGBtc9kdwircb3Etik3G8KzKazg_5S7xJReZ7VwDsBevuARVJED85yu20L5BDV9dJvyQAUGHil7B79rjWBpd0qPYB07-iV01VVRp-Qbigq9l6TpOdR1PEuauCOe35Xk_K-5gyvL_6RD-Rrw6JhRQm9pwNPBloCVTAjM8dxefmCl7-OZlPdTiLWhE-sANkYMKTjJptZzaXADy_U2qptMLWgA5q_0VXZvWQrafMKNIfVazUdR3FplRYvo0R3mpxkA@@'>somme-impairs</a></span><span class='detail hidable'>
 Somme des N premiers impairs.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.somme-carres -->
-<span class='title'><a href='[% base %]/oneliner/Ulx-nFfkhMYBfcIXTbyhD0x49vDGmZE91rN2iTgfuOGGoerHbCTrApLqO2KJ6rEqjZimHOoxfqr5RfgFhXJh_gC8CjT6OmdTY7rtID231f3KaacpKIwa1tvFG8F0zC_uRaPtdIGdlPWz-bw7iCIA1DrADb76i3MynKfzl6Gdd1ONobR8R-GLPKcffSfYR7SnSL5fo5LZiGkPv-vAiPlFJfsxFtwEdCCQNbNAHmbP7bOTV5pupg4Q-TVAhqCokq0sEUBAwnV1xdUySkckHtlL-VMy29GjKFsT5CbK1AZjhw3-3seRP7ad5kdu8c8vdvG1MIbv_6CpjGHY_U5XvA0RBsQ@@'>somme-carres</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UeFt57bd5ueNikFW3UfPTaay4LctqGkkEp06XqNWWrpiN-72Oad9yaCtATbCCspFaizbo5Z0bdaeILCpqjInOQQ-wVpCnWpCLSaB_VNau1PvdP7XN_obMlZR6J3C4ioFo-3oyrjc7oVGksk5TGbeT2JwVPUNpDVn7LVcA_PMVAVMJ7Bc4IEjfKSbbqMMZ2zibXMMuNg05R4fNg9slYp_YOg8_Vwa7C587SZYkietMbxLV_bHFR7UgfSaL8CnT0lRwJ_rM2D2Fysh2eIM-txOT-SL9qjJIoyxG5DNeX_A2UjwcdM_0XU8vEMrH_SqeGg4QE52dWTIWZY4-QkEbzxiekQ@@'>somme-carres</a></span><span class='detail hidable'>
 Somme des carrés de 1 à n
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.multegypt.0 -->
-<span class='title'><a href='[% base %]/oneliner/UiDy4SwqnWDv1888xF2WubebQ7_MwUaTUUPuxc95JJ8ZBKpwTxzvgsciFmJ4jQ45tg6r3n9eCeLa2jVgThZpRZXIASmxgFy1Vf8yKV2si_3jH6pYZjSYdZs3kiOgMz3Nq29jP-uXoPAwfjgbFo0ouykE_zSOsEwG6Cdcef95yZDzCIDZayqZ64A4xUDAvTF2Xp7acbrR8ZJbdYJFKS4eXyAoYUrOvFwxKFFKZ24nzi4xiXmRE9snvzB_x3mxTnpFoI2oQ4ywFMTDPWQfx9ahANvl-DTQpvQd_4EMFmiW2NU_Ix3hjdEEYuTC1XwGOe4-SND3p11s-I0nRPg3WgFK3sA@@'>multegypt</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UHNLGAtMKeLI0dzHBasboAjxYbe7TJjXde1Bw-5s_sG7wc98SAIRp_jOo2M_nYcDfL8zIgBZIVzdgwSpfdXsKDcPgcpYj_BpyPm2u9PfiWF6FQGBKPRwbOxQkL-N5eG8DwUdHW1gbtLWDYke0ZK0jCH2h8nc7yFwZLzM_EgjUZfw1VKNLkwi5scBZqW8GFDDXWWgz4t6ctWV9-hak8K44M-UADojLsBf9aTTj_ABmGQXQXvTDnBRBRwZgQcCHyc7CdYq3JWdEw7a29SJ_Sswkp4Y-NDkKyHfHPOHHI2bVKoIRArhb1Q2JX7mhCLUKXR0vZnRDJHc8oyq7tErFjZEOwA@@'>multegypt</a></span><span class='detail hidable'>
 Multiplication égyptienne
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.somme-chiffres.0 -->
-<span class='title'><a href='[% base %]/oneliner/UE2_k3bwBIV3_a1RKtpvKMY7AtwO6isbTbrid5-zy-NghoO4G0E60ZCrxGV3RQD25vZez3CSVeu2d3E4JP5wdsl3Qs4rqSGrj-ytjARpgWePAsT2yAYi40SbGoJTvWVbM9pe1hXu0Go49BiX3yv4G9U4b3Tn8Pxj4tMcD9DNN3RZHs_HupWfnL0YBE3VxQ-cOs6E1RMgmyvlDRuqVUCN2hgW3VkT0IzLe2r0VWgpYg_O_P6-YjQYKMIgYy1Qv_eI36izw4YxM2sT5DHnrj0aGAZ9oGyjTyZxRgAaMQex2ik8Wj0g4rpcE22aLpVaE3vdzo1amBhkNuywLr6NkYFcKxQ@@'>somme-chiffres</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UaHWisD9p-yfXu5-WAt-HQNV1RtRcJjBE9x9XRr_ntbasKr3qJA7RY-tJeApZLWPFRWPF65He-WhgSJ_3IQ4M9X5Ws4GzLxa6MBfio6TgeKjEU_prDfhc6Q4hX0oYkTdWeNqJturC8NqbPTZqK9KK-RpeCkQROj8fQNTwS4mVPsUYYBEhOTcci-EmVZ2mvMFGunhAjAQ1BzJ7s8S59zmJR5H7xUVeeBDd9FRwiEatfEEpgvaLFlElRKGJ53mKg9PxALiyO0FTToa_dW-cITe-X45snjSNQtAfoTXbaHMkMABB0n3ACfbyB4pq4tPVb2m_PzGh9_rqHJ6asalJYg9ZAw@@'>somme-chiffres</a></span><span class='detail hidable'>
 Somme des chiffres d'un nombre, nombre des chiffres d'un nombre, 
 existence d'un chiffre dans un nombre
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.pgcd.0 -->
-<span class='title'><a href='[% base %]/oneliner/Un_YOw6_odJK0fWLP9HsD1UR4or7997eM-xg3q7INRqLjDpWlt58Q-HG8Z5cPPI5iU5S6ZnATblGo6kSCTYwQDvdhof2wtQUAkFX-WVLcXFyJTQoG8GEuBBKeP5j384YZp-SYXiq3bIrITdlzF7_4GS6ZsGmwHXxFsAErheUVNRiztpm5xIhOHyDuMM8JeIH27m2OB-OOpc557XH0-xSTVUp9Nuy-OVfVI7iLjoU_pkTXL7jkjq70DWRp6TvKr7_CfkA96Hy4-RmIF0VcnNZfRkdUyaFIbzUWA8pmPTMFQyKaZMiadr6IHk-LNHezn5vBhX_lUHJSiDaR61PL_lq-2A@@'>pgcd</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UeuaTd3Jy02gAvi18Ve7ou1-h6TVGDPrIMOO-oRu1N6uruCZeEaKU0rnSu1S1Gpu6GZqcrqRoOFIm7qZuf2_uUUpuylTIRrazLx0Dd8_IO8MPwiDDVC4M7Qc-N7PI0MPT9OvyxWeOaNPZRYakYwF804gHOv8TFxo5ZwoKeiqUrO1vLnQKE4Je7HqtNMfXjXJzjiNSIcvgTlf1JXwed2gU2iwNjqBPq792aHApWUpLYLPGGWCZu2UO-6iWy0MIufCbheyclomn6KQsQO6u94ikbblT1wBXlkStp0nARWiPfJI5xo_fAaXoCRlmVdDEyvbmn3NCqjnbi0XVLKjedZaUYg@@'>pgcd</a></span><span class='detail hidable'>
 Calcul du PGCD
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.interet.0 -->
-<span class='title'><a href='[% base %]/oneliner/UgzKPcPQE4WjvZbaI2jU41oshovU7ek1JOBvsmZr0aOTqS0UZVlA5n7_DAKm2imwCfe1jSVRGD5uGKRbqc5jQ1XDDbuFpPZw73e8Cj9JPt6XKgc_gUIvy9zQjPq-lxCThWZ9Bo8WSJkP1HoHZgE_yT7UrjK9e57jrAIjhGThq1FkbzHB4Ys0rNUVfXV8_iY4EI_kSqpsXKvvTdh_MwuAZ-S1NlpiNw-1w-k5GqKqJDNLfFqo51ub1Emjr_pxGcvD_wUVyrJhZO_oT1r2wwXIzf-WMgtgQFKar_otQKZ-16Pj2UpX2lsPl5JhMPV0YbPFLM3MKYC1C3siZbV--AeA4Ew@@'>interet</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UXB9yLu3PloLH5wj2wREiG2yqvVTEZ87gyZu6DTESbAiXEHZUqF-JC1mb457LFtSffAYnQTvFLRA-1R0hKzewTd667x0GQOmbuTgy-eb766bJfHakY5ztBYX3JH_M6k9_ddoXZsSiGrEdBHOFuVrSCTyjk-hJb0YPYZx11BDoNyBr0AScZIOvG0_lf8Vsg5o3Rb1e1DPSZbboNeeQQypac1MkaaqrgFT3GeZB4k6YPRyQdUeY4CuIjkAz4cmtv2Hb8tTuaOkExi6Kue_ny3hmtSQp6RePWWJh89xy50Mbf4mMYlbRNZECEikbasURhvX3VD5-Y690K9Hsd6fTwWbleQ@@'>interet</a></span><span class='detail hidable'>
 Calcul d'intérêts et de capital
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.puissancecomp.0 -->
-<span class='title'><a href='[% base %]/oneliner/UKWc5LtCTndrsIsmqW-1lQfFaO9U9Hg8YHtIMEz05FMMa1rvlJGXO-ZxNR_zjx6Oi67dU8EFJnk_ncbTuZJKr4dGUbRaHJqO3Lv_VXN-ue_6ILXsPkAbEdUjuZr7AujN8utqywL1XONMNkf6_FZVCBGlmqS3kfwg5uLuJVFLo1VaKuvBJU0kA7EsW0ftd7Qrev5WlPCzFqOHyXeew9SyFZkalnUqTuWFbnJPJI2TRujgys1uvd-8rtrGFYGaUMoSfsfF6f5TkMjO3U2JWda4jX_R2ENqvm6Jm6c0MyUssukHMSWHpqi8ma5ztYR1MOPIK31TQT8ksDu4K0oX6uUTnMg@@'>puissancecomp</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uet5cKYh0APqy5QjlN0x3VsWqs-v0Lq6mEFyFMO__ca0Dzzh2L5o3MobFBDj2MD5bp6Bz9IemAp4CKz8JrUGWcDF99pxM9yKtG2a9bEyVCSXs2NknEikQpxSR_i3CvkmwR6wv7_oUYKUB16qeXm6bqDz7yhFybURmhL9y0n4YNodrj4vgHXW-xLbTRHbdQXJGBXqXIOcISD61az0q-QIhnaB_CCsDp7OhXrrZB7ZyzH8qHployh7_9pJpC48HX9OK6VP8yt7HdgNo8hYaBlT37VmI6aFmhj3pRKDya6q0LWG0UigmEeaTY9DVxXn0UgqWnR-HrIhR5yBCZU5dvsYQDQ@@'>puissancecomp</a></span><span class='detail hidable'>
 Calculer la complexité de la fonction puissance
       </span></div>
 </fieldset>
 <fieldset><legend>Récursion sur listes</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.troisieme.0 -->
-<span class='title'><a href='[% base %]/oneliner/UIxiNyJGiQs9CI-qcBHOA966Gs4BMp-QnhbZbyCcJB7HsZfSKwB11wPea-FgUygzovg0YVMQAxX8V1_ubXOGCrKqI7qYm8JD3hlexOsBzniBUsG4srE6xDO2HdzXKxrjPrAvs0Kr4L9Mi7mxSzp_UZknMnpx7W2H6gUm7ToNQR85zwXzOku1Hivo24eXmYpXWeOXEMa28NTBYCDDBYv4woD1smLhHCRobgvCWCndHX1deEWkig9grRm_rNVLJoRiPFwbcBeNcC6m8CgVdKCaPxhWLCaZoZvQgeMpVvXlW7WbDH--5P5i9i1z7wh0oCvAkhpe6y_Zw-DT1-4MGGfQvPg@@'>troisieme</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UjuQHBIE1xOxGpyzUqx6y6bsIxtlirqCGBNxOJ4ChnAuBsaRA5CALvJbwAWh-kYSE-_oIXQNZp58n43pq7Or5R76_J2pP9tgltmD2v1CPjdQEGHCtBWhCVYQ8GtwB-v3JgGLFG99DgXtd2pqANRbnlAdYaSjRXdAC1g_0N0b08_Zt6kLyDs2qcjoGso3cnLGm0XM9u_QyqMix4ytsyEEN1if2_xhbm8rti0GzhfpsPnEnlYnY2zDOkjKdvQlft7lPAAqSVx8dIlPyLpsyrnslJcfaw-HnEuGsG213uyB0MeMUlpSBnib_gxblTNoqBUXom6yPbxB5t5tes4OcD8z2mg@@'>troisieme</a></span><span class='detail hidable'>
 Troisième élément d'une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.l2p -->
-<span class='title'><a href='[% base %]/oneliner/Uia8NOdUcpl8o7jvvPVNr4qFu2eJvB6SlrB-VrGiUofbAsDT0PNuSX5leCUV5I2a71HSdsVQ4rlKQG-HF-02Nu8sw3NR87svPiIzIc003EZnPCHmCpKefkvbQoKXHztW-nCKDo7jx17YskDv-Nfj17_ycZUDozqD-liSksbzGsFhhBG_Z_GcGIPnJKb0ReyBSNjx3A6ajj9BIchYIPLzxU-3x7eeIeGsQBnOWV19JINvbIBVtNAcVhO8JJKFDNncLdydKs8lYoDbqQR9h18lm9d2E4b75L4WPrnpEhWaQMML0F_31ATyH5TjSQma_VG-qXcnaxdAKdDUEuYLpdVk6yg@@'>l2p</a></span><span class='detail hidable'> Deux premiers termes d'une liste </span></div>
+<span class='title'><a href='[% base %]/oneliner/UDjyD06HZ96YA5scJcI3mlkG_l5n69asAmYu1q7WV7b35ZQHp9rFD6fglBRVCDpRd26ae_LwqBK0XQ99MWgGJT4f4J2YcsW62AOrriDIe58b-d2vYlD9SCg_ZvckOuc-t4IUuv07F_LcBqBwKgUnRxOrrrmRmZ4RO82DLj7W5nLejppXrrruPmN1GnpMVBVXp1j9gmWoXkBj5LjTKpwCacifLLZm3FjW-9aRNQaZptzVldw7Qozy7PQ7fkI4UnU8Jr6giXd-MYqf4qSSK4PaBTmXt65zL-dS17f02m2S3HLNuARsBbfGP0e6ZHmNRsEnWODYx98uzg4g7WrxZ70apCw@@'>l2p</a></span><span class='detail hidable'> Deux premiers termes d'une liste </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.racines.0 -->
-<span class='title'><a href='[% base %]/oneliner/UagMWX02YoAXE2WiSbFFHWBZnKnrpt_-UaK_nl2atNwagrngn69SQePH0--9fKJ8KUTVXLU0kLywuNillEYdDcX_g5YPCINUz0pSsewhjhK0tCeLh2aTlicvEjy2-nY1A6Kq3Cu-3gbpnXA9pJ08F3e20Q6HU89W9x6eu-6hvSbIZA-Xdra0F-DN_2YL0JxhLKFSn_be-0QcTNgvmbqbfARMAStFJzw-tylc-KMslygU-E0ntxDLuG0jFqsM43-P9oqdnt57VkUETFQf1McZkNCDe5BPRJ6TEhlL4FnMwwmR9--DVc8bUzLuxaUUzSPMyAUsPglqwDTgLMZwLIQkD5g@@'>racines</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UvcDZaJ84QnEiG48E9O-NDPnH89W4CdtkksNBxB-Ng9_VJ4tnAZmoSfzcyTRN0sWJBD2w28DnX0hNjndz6y2thiYV_ztTVAjb3szJseQA1oEAIuYtVQUpn74wqg2GIkgtByjhlc38TrXNiGpBmj_oUtMMcapBBBA3cidP6iHTHLh37ZrzojxpYxZBUrBOwhBut5CO8d1_8lQolr6zn7mNPxS--ab9ycUm-pe4oUae4Vft8AigT2XCMtX00z4-WBP-NVXpSHZOaMJ0xr5BEH_MwaqBTiL59sDbSRnCj3jIUdOTqSSwtf07X1q-meiGcojnMCbNEXQYa_M6Qlk8pHYp2w@@'>racines</a></span><span class='detail hidable'>
 Racines d'une équation du second degré
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.repetition.0 -->
-<span class='title'><a href='[% base %]/oneliner/UOGDi8Fesb0q2qpPla8YdC1oSFMpPCAmzJ6TvJ2dcQB3CmX-ujfCIZhH46_LrM-3aCzecnv2wJF_hHoA2B0zAFevdbyd1oSp1k2ANywCvOUgxH2wA_jUG5FnHu_MGUpFJCZx35CbgW4G_u7xtvB7VH30NFdqGt-WyKFatF3WvdJGxJciuE-l9ZWVo6RtUPdt1ol8Z188KvTNGApTQn_xjecQX_g2vmepVv2t7W6_OSRrcVrMh3Vc8Zc_GKhBspxGb62IkiEpez-Qki6VaCU35ycwctUPQp_C7-E0u5WH6oi9gD4PCJf0OQk-rfWi263cjrEz-J5h6_74w58ZKoLCfIQ@@'>repetition</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UFJdZtytDMslWTMwwcPFCe17t1fVYePOlm65nUN-19k7XX5Q6_vkDzgzereMiKTA-EoHojewrMkWATiJC4cx68aLDauVg-MfhP7g-07mrW1zMYYlFVClQMEnZkEbgzEbmjJbM-hZDyH0IH2-TYQhe9jy1lKCL6y88CeDBA8TGroVdsTFPi5l87YfgsazLA62u8nJ27ATC5HLTYYENClCjF6g2sH80hD9Q2mSnxzlqO6tSDyvMpqz96u_UIwan1ki6udf6wH4ygMFN-lqO83EtWojWRjIp-KHykQ_e76Rc9bNwosxKV6C8nHmvcslTZPjTGzlOOpdFLs6Uk1MVnRYFZw@@'>repetition</a></span><span class='detail hidable'>
 Fabrication d'une liste par répétition
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.intervalle.0 -->
-<span class='title'><a href='[% base %]/oneliner/UP0Yt_jp7hoSoRFHLYd8ML7BZNHKxFPpWkuZs7jSsI7_j0Lab9cbb0NTbSIE2kTnpLd8js8L0rR_3sVGtRnMWaKvrcjk0nmr-TpWMqKLZiSlz_XUBP1_6SzQFat4VjEI_O_HitKLEaZDrCQveOCXFmKhMnU6gDTM_H0zXL6SKd21c-xei13SUgR3DRkoFHMHa0iak0SH8xaPRzocdsGw7wyNXaxhS4FG81qr6rtDCtrQChewbSvOlOFdWta-QEXmDAD_cuxscG9w9ADIl4JDoQmwkQt6MnBW6kfX--iZ6m_N1955t1Qb8DGkXzWdHxY60-qBex3j_4Qj0hgR3ZDaJOw@@'>intervalle</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UQuo_zwcVDKFiQOZxcx4buwV_vOn-Aw5sxlRb137R9ap84CNBMX9bNmGK4AHhXp9zhCPsKvQBqSbTU2_JhGKBF9kYSvIYrAsZw4ZsFnzj9N5vfppg9fAQT2wla0h3EFXN_5QwiaaX-scedlZ82Qg0Lfqb8NMqQxT9gZ05ZseqtcknR8cFxnzws4LmuSLxRcGbHvbF_X4Fj-0eNgvMRhJIwZto_Q_NkFjf2MOq3mk0IhOTHbXNi-z_c1lkj4RJRP6kZgKpJhUC1cOvnDTnpRbj1q4qe3VjIOhg6PYEIxkPWXSRfLtsR0jTgVCRZTipJJ1Q0rg1LfS6ix9B4o1dDHUIRg@@'>intervalle</a></span><span class='detail hidable'>
  Construction d'un intervalle d'entiers
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.somme-liste.0 -->
-<span class='title'><a href='[% base %]/oneliner/USDDJJv6xvYCQEJsOOFUv-4Ug8gK0wmFJB_j1SIK_h5Z45z4sJ_xmcid-9zDn2027VNo35wFakkax63gopazHS3xAqNBMSH-ap2qvuefxbbFKgr1Fzy2SqjOf6hsnQ21IV3he69th4IWPXRyUObmt1FQ_uCptltoVItIKiSXVe0ClBn94m9t0NlINnJFsFrUKCcfJnR6J3UABtOJRiBM6CtsZLeucF9NEI1zmLn3PYG4cplJZvmYZpVZYPoWWYz9v86y6dSFd1DfbRWkkE1KgPXMs5DNGs6rS2iIjxq0YpzIEYsSL22V4L296iYO9lLCsniEaDolfbBLKshoYSKix-Q@@'>somme-liste</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UkV5OWGoFOgD6Dpi836S7_Xq0TOH1YU2JTKvwxzPKG8qoXvULCowjomas87GGUeKr2vE2RUNlKGVjWHo2adApKeBjuBmRFNkZXRflaHBRDcYdT_qrZsXe8ZB_JGCEN_xB02RFYl7m_AfBxEfzfkDLRfRaJt74ExMo9IJuJgGMxWBZMIyuXN2H3uMjm5TwCzulD1druGJy-TRlLlDt1rrwAKRkJ5Y4Y6opxJlaH-mkmf29ccLrGK1qOddJUH0Xwq-APN7wQrGycyZjkjEdJM1N51iVACnv19PRZpZL6oGKLETAwhnpc_DGesRHbR-OA4UZWemsYYxr6I14g8wP4rBn6Q@@'>somme-liste</a></span><span class='detail hidable'>
 Somme des termes d'une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.longueur.0 -->
-<span class='title'><a href='[% base %]/oneliner/UEjk5nsG0xN0ET9iWv0wgjqNuaPdzw70Pcw-3LUApXVw7Sbq0TNx_K-6jdbnkTeMFPcmVD3USNP6MUXYtpE79W--YElmaJqoRzvpvC3ZxzvOAIHSuR0Iug8-peurxD79_EBJKZYRR4YUcZiT9OG_96umRD8Ua4pIfBP9mNb2VAmFBerqINNg9l1TVHe-1YlC3J4xZrg6iuegVSiepBZMBwG5MAvA4U3uFJTbGGjzKkB2kzdTJ5h6dRJEtI-ua8i853woUV35HACSLrOHFgYmHk3qDa_np-sZi7q7H11iSJnYT8apLWCRWabHwBKS199JLi6l_UlgAQmMIgWm5BDIiWg@@'>longueur</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UkwIIu4SmDqp14LR387Gb3WGpYuD7b61ELewMmVuoL2dgWlgqo3UYvh8jQomowDLHma-EkCVl86F1ZOy0SfsVaxJwi10qcjKZ0BhLA8g_wwnfIdirQhans3dKbjmwxa1HWZRfkhTtF3HSd_ShG3mBoyj-V9aZLd_WbOunVrPxUXmozKHG9RYN6zKWKNDjpvaUbxPPPErM2HQNVbyw3Vu8xgFbc-hSWdWUfD0KMK5bKpsnWAaZAUETve2l7GYq2t1F5mWoj_Qy-sTCIeqi_zXSW22inZvr79tWtSy_1Nc2R-VRSUvX3H1_6_hs81x-_g54Ytwb7JYFC5oAKxiWSaNs6Q@@'>longueur</a></span><span class='detail hidable'>
 Longueurs de liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.member.0 -->
-<span class='title'><a href='[% base %]/oneliner/UCkVedxJ_nqsTgut0Q3OuPOZptBMKEHKP9ll-DhD4hE_4b31u8o1fTxNvf09zqiKpaZwKDh02VSsZSEIVaBDKw0-J3Y1gxkDJX70i-GLhZkdVZV3Dq8VCPIcuxDE2SlIrWmYN0_TAzftbFFI4ffap-uqJBTggwUlNmNEKMxN_CpNAJ9XV_oO5_378UnTCfcIFf1hU1_2KzkApgyziZwn1BS3is1_CRe9ncI3TNUy7l2wTJAIU72_aJw8M7zLYyTaK2yZ1TcnQ8p8Z1_rZiIWXWW80hvXHP36lxu6s2Mzj0Y6gifSqu_1C6hZWPa5w0mYaon-kTGi9Y5pil6v7Tg1QBg@@'>est-dans</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UiehOQCY_vw76COWc1pGcGFWZOj_7R15-XQes2fbeFvMgkxUbu3OrIeaxcTm_NYSZ_MNIlLgvnRn1JV3bTTmduz53WpsH_keFmE_bhfHGTm1ouAxXBZf7DzCnOoyAv_FxkFD0Da5R1sEFghO0J0QdaP3zXoHHhrN5MrkyYjQk_y-0eSGX8SAE2pj6fmWo1YtP42jv7jEhl-69TaT0OJL4usT3VyT3B2zlnStv8t_gFODtbc4pO2XEKsb7jjImMy5F-WHUZMyWY2IHjlI8-I0QSLcnXxrz1VPnhbEejoc-u5yyOZjJp2wAZsBDRsINT2kdUsLCOKlTztgkLUpDhUKeEA@@'>est-dans</a></span><span class='detail hidable'>
 Présence d'un terme dans une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.count.0 -->
-<span class='title'><a href='[% base %]/oneliner/UZS5DCOno3dqITdVya-A8k5ZN_j1CwYYNCW3bIysBofurBE1P-X9TsKeHAr6N8EVEjm1MPv1wf2XQuko-42sztQS3SCIEqy5OSaEqXIbNOalFynlmRGsa3sUc_9t-TPTpr09Rb71YNq3N3MV38YxzyUSA50NC9uf4I8AAxZ4l-YPC3-IdoOcIT_CzwOEW4ZQl1yqUyHyx64OXqWz2Fpb8WpIgwe4kTQo5yk34fjc51fC9wFbHW2RGXNLPhrPEkpTcedJvqz_ArfykCMlN-URujJVqGMcxczosvMYuywYFbRFi8wAygFIaToFPYgtcTEaqlfVFCj8bnV8j0d-vDD7Nqw@@'>nombre-occurrences</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UVOwh27myUDPa7YZtSkNO48oeLquU2ari4RR8QIGzttSiz9K6SSfJX8L804TdVmrXzixPg6DFrDszpEj3vj-cPJW4azNV4pkJWU_hViqwCRhsWY0gnfyz_8u3OY23M8TWsiW5dCAVQx_a-ZGBqbcidU13Yf5fk0CE6PUAZl_UVcEpNNg2lGap1skppMrk7zqDdBeN2XEIk34o2pyk_Pae9ajkec-NhIineP6SrHI24AM83qM5pOEPte1DPBZCmhW44dtjeses2NEkZpO8U-8dpdL0E2dQNfG2y_2P9kVuB3v9cPXSz9lvlztVEp68HkmeRp28jE_NwbvSkBWLm-dceA@@'>nombre-occurrences</a></span><span class='detail hidable'>
 Compter le nombre d'occurrences d'une valeur dans une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.croissante.0 -->
-<span class='title'><a href='[% base %]/oneliner/UUREGTaEsKbCcIFwyfkNrVytzG2GNXyjH-sG8L_H-D9psY7deyvpif0mlQLJJVe3yHM09Ujzf5YsgeR-igppn8Otl2CAtFi8kEeLfT2I3rz7kP9DgnxuQSTHxuvzGdHRFM4mjT15clWO4jtdUoh71m9523Jj5ialT2oFhXuwwq6E5JZRhKcbHisJBYX8PjqtByxDV5Q-cterbyUAVkfCJFwiZboIklwMgEBTmqqXCDLodO8Lk7anteJAbSWKToF1qfUe1-fClUPOp_SQgUOJ2mwQYC7tijmi06o4V6DLM8pA1H_kJcptJU8Jg8JCkYOobAIxN1PVy6k4To47oIPsTRQ@@'>croissante</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uj0_7oY5OLVGxghL82otfHzMgFXZVAR2aDKF3t6J-9H_Nzpa-MYFYQu7ibPJdNuX2mMJlXLa4DSqCaLSXo4lGGapjBwvrzwRRz5gqLwlGaX_nq-hoLNs0vxi3Vd-iXtI9FrxhuMZRa_4P2ewQt_pc7eMkYTh8bmIW2TyjKqb6pq2bcjMxygrSCjTToeUzqbt5ZwNWLPpS4QS-40xvWPyA5-nv1RK1ClA38LKSPPzqVcfdZrLSVhuat7Gsjf6gZyIKJhV2EKZ6CDVJpqUov32ORHQxptqZ-sQPzJApPTEMUYJuEh1dUG9LyGe8bpK6paZrEwca0irHcPCWoCY1NMZ1tg@@'>croissante</a></span><span class='detail hidable'>
 Déterminer si une liste est croissante
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.somme-cumulee.0 -->
-<span class='title'><a href='[% base %]/oneliner/UYFEXZXCCEMVfivuylZnBvV9WkyeU3rVRC8sLQ0X1cwsZcOrKRqzSLff4lqZKDbny5T4Es0-7NP0BX9L1bYdFJsz4r07yMFj8_P7T0API9_mm64f6IOSOgN3qr22DxdaAvFCj13_hhpdkrBUldrmm_cwbNRT5rqaFnKrOz62XNnpwCc_KbYvI2evYu5zb-Z6hlQ_9M5PYr5zXyJ1DJzf0o-xDJUNZ1QeYMKXxxMIoyvQ99S6nJDOMSAg1pUU529PSkC97esdCTVOIJxQt6o2UAOjsPgihte8iJozhDDU5p9E2vjHf2i7nurlCb7g8JstGCnEzjLhAOM0MNISdimqSWg@@'>somme-cumulee</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UD8cFy0h6Pam5LjvM3KbtpIBLqALK0PC4yWaFzDbTAvHgOm5NU7v5iQ7ziPcgB6toODY-yhV-hTxY7ga5gUZsC9Hv6atoDvX2insd6XQrv6jl_4OU-K27U0WZd5P0C2z-dVBc62w3LHbwi8uEG-vr44UNtPlA9lVFrbcj7DFS280hJM0MQiRxMnJ5o4oObL-Yc-8bPh97A7pe9t9iqbnoZON6qgJhJlr0anX_8kTMX523DzNKFlyhTqh7q2c0EM_keiQkCiFKE5dhn1hFe0-WsySu0AchGucNfEfU3VsEruyVXJX1ao6EAnygJjwoDEpj01R8sO2BfGV07rDAPBhebg@@'>somme-cumulee</a></span><span class='detail hidable'>
 Somme cumulée
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.quicksort.0 -->
-<span class='title'><a href='[% base %]/oneliner/UabOm_Hz_LAGEOput8HbfuZzvM8LUsm8aNwyVp0FdvljO7HFyysbHM4i1E_ZHsXKA_u9bp3p1z6S9dHwr86SDic2ewm33N42Hig2cYaM_cplqSbwbjnIDEhrNCqzhxZT8jfIp16dwQzujZ8UF-DuguL3ZBf2aVb2d6ZhxtFHY2ie2nOKzPUQ-tKaKJu42TmZ4qh54G9NnaQSIk8jJ2wMEy1x8OkB1R3ggQ8UuuDvG5rn0PPgsQ4YrPAB21P4_WLycMAn03dNLfly1eX5p-aOgiS5tIqGIB82M6gFSc5pLp4Uik8QEzz8b5FCehQvkd-LxfRcBF3WdUzKEExVRyz7J_A@@'>quicksort</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UAovGSOfHL-Kc8YqH8kl8JYv4-QIZVgk3J_tLFesJkm4cjbGIpWN9-SgZLF_u6wtVp-ifXq1N7OxqKbtmm-sA6Cj6cZ1W2DD3LS4JpRp5oq-kZEGmoaC87UBQ86Ag7mKMIavIkVcMJF70GB0ZaLXg6aXja4y8TERl0huMmcVps8dyLjasuhTen5MIjVhbHCxLPkVNegPbtqarFURn2kyq3SerXjCck4-UD2eseNoW8tAtPVoT21u_wZO6bQGMmCV0FBf6WnSKtVDyv5vP_RJCaP6ReeCtQNDpXyYRhLS-YMGLjaruANIAkFhq6tx_gGu9ivfTzejsbQA_e8KCnMnCBQ@@'>quicksort</a></span><span class='detail hidable'>
 Tri de listes
       </span></div>
 </fieldset>
@@ -164,22 +164,22 @@ Lisez le forum pour en savoir plus!
 </p>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.sablier.0 -->
-<span class='title'><a href='[% base %]/oneliner/UX0pe7zg0Yb0VgYwvKHiqB0Q4MD4maZzR9aENJkwOF70hofGUGJaEk68kKZdC61T9-2qEbqz9V3e0RKZbWwAevhF_ogQrT1lbG-HwWu-MgZ_MxDeXaq3ztqR7EnA9Ciz3qNzbqVGsUkqdUdkfd3Gp1r-5DV-bYBmhaTAqjwNJOMkpJIMGr1IMwxqHXCNEW4StML1gWEMUrgM6N8S0mDcQ_ekVZ-u1mrcs7Elnwoq6Ce6B1h-y6Qsg4sOoO2qW7tZpgdW-JRbazbGZSXsmBRkOX8uY81lkkBmC-_U_YS9bAXqDbgI7TRMznuusO5emKO7bDUdfSSDnywGI9QRR7vbbVw@@'>sablier</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UX-Ri-UbdVAH8Q5G7sOjoLWrO79nfUzr_Uht3Is7xTI2Ap6azpQIhz_A1Hyw5IIwX2UciPif7z86MgWXEOn7O3YTM0MILFzH9wlADlUCkK50c68pYv6DcHfWCEYAfxuBqCdFxx4uiWSj53kloBNI2dtNd3mHU_WI0AV46uQUXpj8M5awUutSEc13TCnujNQKoXDLg5t5oC5iFnDmkvUv6Y421k4Ob38JZ7k8BwvGtTjIR5UxNg89S2tHdIT0_0mxuvYm4z9RoKlPt5Bksj9jjmzisrCwt9DY4QYSdpR0fp3yoO-w7Nm3N85iOHPLC6rvc_ywqyQffAMFnSeXnlLoRZw@@'>sablier</a></span><span class='detail hidable'>
 Dessin d'un sablier
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.sapin.0 -->
-<span class='title'><a href='[% base %]/oneliner/UgReJUn0rMYF3YfjOE-Ao6DEMGp2TJ6ODuFAmhQVtnEVEYFHvxt-P373pu5PL2VZpV_vzjbS6oAQlSyeKZx4VkSGuvubi9N3cT_YVNnhbTOxMCakg_XDRIRgtxBeube_CdBxgpLSU7Q5WDKTdaE8ypbOiJkwZ1PQM8qZSB433pTbBFizGF6JmppadEV-YomyT2O-LD3_YYxk4NAKnExzdsz7aLMpM9k3Vi-8ryOnY9DXzZbTRdHWfGoMpHRmSVAzQleE2hQ7DVG826ENxzaFonOD8-Np4kubEgOafodssvIuStwwwDGUSI3lxHa38PbHvdejgm1FDsiMX56bMTjH5wQ@@'>sapin</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UBPyDMFd8VFL8wNwB_faGLIzR1U1KLdGsvIWSNjXOnoTfNJw2brKJXUQa1oY0-NN6rKy1Q5rYPnYwH4ehtYd3s7DOx851Eggb3kYiKOdL4m1taD5hzmW7z8DysIPuK1yF8xxNgbzdB5WvRinqVh-n7xl12p9hYRvsx3yw_wg3ocVdHteesGC8n5I35LBg99o5RfP5KAd0kEtuHqGzJXE7LH-j3FG4voV08UuQAjLgUyb9Wes39wiD6O1143udWRdsfL6-NjFUS9FYX2zuYtjSNs4yVON0WMKtnLOWKIbvzoe9T4najtYtx6ag2E8TpylsoTrKRB563P_x9314CkrT9A@@'>sapin</a></span><span class='detail hidable'>
 Dessin d'un sapin.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.sierpinski.0 -->
-<span class='title'><a href='[% base %]/oneliner/ULKMeRALYiM2fK0preUBGKCXJGi2WkQgKjziwMX9jVnRKKPYlILXaGzb9HxLDoN_Q_xMiZXRAoWoiljp81qB0c-5YJXmssiAXJIbu2Uew_1CKeiPO8LKV6vj1o_4iKLR-Pt25OMjEisVIQ8_6_3thZkM6X-cuh7mbhTxXiL_br4o_Wlrk8wchi1A3laUGv6QOjWY36lhTKQCjQyV-nCGzARUl2xXoa12iDrYisd9130-70_C82Gbb0zhMcIiH3dz4yuV0D0jhkAmspXwxGyQO2teWf4C9FYhnOoWnrOTnvuTPeO_d28jebhKKybOkF6PcBdzrW1prRTF6E-Zmz8UV1w@@'>sierpinski</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UR-I85cZ5wOjw3_RSA2sbhy19mV8C5SjxOTQi9JmYev1_TUAt5v80POWVZqNt1WjeTFqz7BMtSYO3I3cPZDkJhBYU5OHFBbPZYAkso7pB-ZuXi5zTR2N-GeMfnRZUe1WEbiBwQpna8exui8-DlN9kDqxyTYy27RA2_MqFHQoA1rO949IxbD9U5qzs5gZRAl_hRpT9UlSV4zJ2_sUt6ivEGiY67WksZnGbFrlnTbxZAjWK1VRK7OKBXAMfKzigMBk5yrLTI64RNWAsTGhPUsZtw2dat-mgkJnPowOCYAsLHg3S9D7j9aNgQVSvMNeMbR4eccU1SaHuZqOtmkzN1doQzA@@'>sierpinski</a></span><span class='detail hidable'>
   Dessin de triangles de Sierpinski
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.dragon.0 -->
-<span class='title'><a href='[% base %]/oneliner/UMZLOwfPvdCkk-5iFxDT_yropydoGZ3KgjRzWPnMdHzJ4kB4K_Ru0EIMjbZB0NjKA9UfzunhHpXt4n8FJQEoZWdBN8ezIoafSD27MQeohCcLmLUS5rXal0DyDadV2H687_JMZsLT-EGVPnvkswN2qEx3zNBmkKYQtl3mwPG4xlyESLUUZiN_geMOu3OhrBwSYe8ERfk1y6mbvN_qt0onAFnhqjaAFmCa6P8XFRuyv0IJaWbB-oPTze24ysD3C4AtO1MjT0TvD-8_KMMG0c6EKpVeE8ZXFEUFISwmitmOD9uF-xL9eeP3fGz0wtOY0n_4an5TIcmF7LwA3eOTIal7Oxg@@'>dragon</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UnhS5DANTFyCgd56SVLJler4hXnuwJ71y3s42nPYr_uDOwFIqYPWAvI_4jXVjNRW7kGespm_GlVHv182lQlsqfCKbE7Nvhpryvb7c9evLpZx8e1Y88HF6FnZq2rf44K6XenhRcQQIhrqST19wCOKUU2Lhk3NWhA2jp1GMFxbp5L2dgEL9u5Mlb-K_DfGrbkOlCDkgM_huYksXJqXuvgtLtc5VSIq3y82zMA7e7jhtt4ehsZmLMh69f3KBacHU0glc6wJWZFjzbmOsDc5FZPGoPPNSxEJLrIfyyaWX-PXvwsMsBn-KsevYPsMRgqg61yYlDt56zEY-45LdrDwbq47dCQ@@'>dragon</a></span><span class='detail hidable'>
 Courbe du dragon
       </span></div>
 </fieldset>
@@ -189,47 +189,47 @@ sur les listes.
 </p>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.liste-carres.0 -->
-<span class='title'><a href='[% base %]/oneliner/UY9J0pECm5rm2n_hvvHAZfkphUcPIs2SWMuYyXz4w9LsJ-MNMz8Dxzx0jKXm-mCZKVqsmfNJG0dYoHmhC8-HdNE7hWW55g_QTUNqd7VFzuAQETSEr-5gvhdxxKil8eSS-3b9esrRfWM3klbZye5kuf_BsdqbPuZwdTajvfuGOPDk0lLR-QoxRz9DXGJPcevwoKRMS3MqV6fDhngJeP0kkb2_Ek5pLl9rsttDF-doBKkA_wAevW3V4Mh2dvAcso6kIIv8fMVUkZPKhLkwt83Rpkj5IgCr7uu2FwdeDWpRokhGSkPJqx1If5vpJJMyHtIKxV0lreywlDkjOaYOlLh2tOw@@'>liste-carres</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UeZY-WlRiDKe22SzaA9Ax_WarKou5UQPGilWNeLKe0w38Aj7iKrvkpV6FC28ZT8rVLQvZOWUTarCWlytGeMbRco8U_3XVTpTaow1drYmtds1ypF8ikZZsepIjWzh6A9vD_iIZnKWVFujsvSp0d_Vd_IgytD1fkjg1pptGuTjiak9Cx8V9-atUvYxRW63MKNPAhGFL8Gii-Re3nSWXnJpMSMj2ReVqXCYlagkRSoOBYc4Q7vF57rPlY1W8H0MPAXmERcds4XogtAHDiFUSl_AdkSrTItZS1GoUhgZjU6PEzjvLSOv9YK0mnCPtL1mn-vVKO3JPuE-ZfcJEV-Tu07Kg5g@@'>liste-carres</a></span><span class='detail hidable'>
 Liste des carrés d'une liste de nombres
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.plus-grands.0 -->
-<span class='title'><a href='[% base %]/oneliner/Ul6ctYfbGq_BUu2eAyxoB1VV1SpQlvAMMJtYXEfN4dpvQwOWKhRgc7MY0CwFK0NC9kJKi6-gkIKCIRanbYGqzsmJoGhAcS27EoS-c1o6-Zgxd6inuyLcCsy2PMdR5N5D5FA0yx4T9eASF7MpJT3iEcXrQ-TbiFC6fKfM2sjPfNhSryFGWWcEiuURJ3nNS6nbG0qgL5N4sQqA-1G0Frr7meHajcSwNf--sYFCYZrcLdZ1f2I1V1sSQVED-bZNNjy5EtGzHCOQS6UMujOWhIlIUqPYtIsgn26dEtltNEcrfwlE2jkxV_ldfMrcOcfj1YXcRZ1qlaooO8iYu2D-qmVXkEw@@'>plus-grands</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UvFcqxR3rkZzdPcHOob1W7lTIma3Zl57DcxdUgtYxDL1ajjcekNZY2TFeLWVxLNMSI5NNmTA2ILNuri70ITKW473Jnf_zBMBWIci3X_oC18b1TjcTNd1b8Ir7UmpF-fS8duCwtkcrhk8kx-YVIV5yn21OnLPxQURjFcDbUSMoXeooD_ivgU7N_7o-YP41qvahtf9YypyBcGuKXFjn9XnEk21r3xBu_KBn3oUvqmJxydWMekmqbViMEJJn3_cLIAh4q7LfxoO4Z6Z3UZfqUr6LbdepdAJDRUBn1vDANh6nukIdPMDVkKHTStOTBZ1lda6bKuw0tPNaNA6idFAjAP6Lfg@@'>plus-grands</a></span><span class='detail hidable'>
 Liste des termes plus grands qu'un nombre donné
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.moins-occurrences.0 -->
-<span class='title'><a href='[% base %]/oneliner/UbXP2wif01OAewe-M9KIjTEuxyyie4ZlvGpn8Ed_5nQSmiXmcieLEwdNbuvz7J3DWx-RY6a4GivtXs7T9AN-zoD0ZVq2YAqfmGhlkaSbZAScLUMYOEI3h22eiFAopxxq_i0i7PDCxP5cs14pUnoA_tYxbzBVmLZ0k9q8TsS_9YhF6DuSPXfJpMjW5IIA4bmQ90dM_-hwHuZQN5SkwY2ZOuLYVQ8CpfdkQC24Pa0p0xiXqof8cBSsdtwUkZM4ig9LabQn6r7MhIkLB1ft5MyVmlqwdUhCcqbUOBO2GrcjIzNoSOpm3WluxAO5QDFKWcmEsuKAq7eHSgHK0OVPBPfi7NA@@'>moins-occurrences</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UKzK5fbyXsHBnBs0-kzBxBuILZe7gHYRF0PtVU0BPyAW4rH1kYpMMVUTvmAdonz6S78OltUEymzLM3mLYsWqSVfwuRjp6tLXq8uSpfQsTObNWs2B8xZ3mM4eteIc7h_xrMZQlUmOmS_6RDv8uga33GK-s5GA2cbenqoBbq5R1T6tEoF9avKIIrDf3qiRsx1mQ12u0p6z6ywITlIRsfDc4YL9d8Y66NEBMfJAzFu7_34i9_ZbRD23fprzjleehk9_WsQ8244oZWiUB5kClHMFSRS3Uw6D3i050VO6iNDF4cSp_7mPa1WVJvFsS2t5NppHHWj9qwspp1OkxQ3uKqg0yKQ@@'>moins-occurrences</a></span><span class='detail hidable'>
 Supprimer toutes les occurrences d'un élément d'une liste.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.fact.0 -->
-<span class='title'><a href='[% base %]/oneliner/UGRgcfd3UPEIgJJWeMS5-9Sjm6Q_cC6vA7ij6gMuQ1YrPgQ57Wu4JXu3Hgpac0vv1vePbOKnR0oiUTcRV6hIJATAW9G0L9hiuib8nwSeH2vbd4byKtzKpQ9-shb_tWOINSWn_VbUg75Fb3qNfX0aCbImqwbXG-a57hgIbEw2f54pQpzbzfQZAJXMR0-ryYih2lmFCL_hxiqN-6TzlswyYcwD_ON1kY5RJrc8-Kgf3qAZ9rzQTMqhJdKCCCxijWrP0B57N79X-1RAsWhyzBypYXRi-BepYwtluh9rGP9lWgQrHDKDUajkPQ9GEGcqCpAhp3n9sx1HFqTjMUODrwX6rwg@@'>fact</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UivYOPmWTnSZ5Ipbx0v8pOyQ3dlAC8ZzO2Dnyk_aAWt8IMt4fcGbSrdVKJi4pti9RqvaDyBcPArnMQlsO3s4VJ00jbBJFTVkXcEVTuT936ylOTIK8JIohiZIcGTnnQN6rZbkNgFrffwk9oKN1Mm_2XfZg0nrIyXQOctyu56xAy2xf-n2H1dOqMXvk2MpV_aFf6I8K5TMJhls7lGebCqSD144KqVF1B6USDBoI90t8hk70fiNfhAUAWVLEDnKM_wBLPs-KZ7BS_QdVP_PIVc6Cz2HOWrY4O7BuHqxSgYgCoKH8m_2AvpXqj9Mfxub1A41v6R7beNsH_X6iHibTSCV25A@@'>fact</a></span><span class='detail hidable'>
 Curieux calcul de la factorielle
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.begaie.0 -->
-<span class='title'><a href='[% base %]/oneliner/Upde3O0k8MdiUvuf610wgJF6iQ9q_twLCQwd_0vOw4Wru75LHcDDyfAwFiV10AU7pAEDstu8_ZSfxL6k_yYOeplu2l0T9z6SzvlF4qnl4v5JtV3a4VTTv0iA3K6ud63cxH7qdtedvGqjsoWrFa4AN7v2-g9sHdCNetn9p6jTOaUhvqwju3KP1rTt-qMgDT6rzTpV3GyTXFdj7UxOxR3mZw_BWg5lgUeybFYWG9Lq3EIh8bqB_aysh1yw9PlR0doudrVp8Gnzi3trE8HDaVHdKqTgT8C0luLAP9T9yJKe5mihuVgZnoNZVKVZ5ZDCAZCQ-RhRbpqa4CBDNYlVXm3h2JA@@'>begaie</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uj5qehGZLrrwDOiwfyTE6hLfvIWCQWVVem-iW96k8sfUJ7fI_swcAxT9h8uvvVuobYVF89Y_k0zQYA2ouMMjg3tGaZ-IUk9J5qx9KPtbu2XsOFSG-Zk-EUUccimfzyPuRTMHYmct3hOkrfwFSSsDz8sAG3ZJGuvIOOeoAe9S3MIlYwmXFYc2ThI0towXHxcrNJQ8w21w4-B4qq1nIkKHRVizbj8y1rMk_oYciEWmIL8W76tZQalQIV0HWGAEJdC9ZIOKYu_FWLSkSANBBo1uRJCd9rb9Lx3hhP6Z3yY784vKlAKm5yg10Qs6zy_wZNgSlSGnJL097M0ZVQXkKnncsCw@@'>begaie</a></span><span class='detail hidable'>
 Bégayer une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.taille.0 -->
-<span class='title'><a href='[% base %]/oneliner/UsgNexh1MOy_jDJ3TVMFOsjfDe2ezZZyMgcx2tO5VHX7g7UicyFmAXDbG2dJ823t-SHBQEE9-Jji3bpzV6D0hytV0EnEeRguW6pGn8iTCYLUAB5KVQvpdjMYz8pJXNd2qbokFFAvcWT34iYLsvqc4_5gfxDZ_YPDPJGymmsUvL-Fa7tb-Ko8QHMSg9XHpo-7xDVUsXO831autlQgw4gUKpz7rAhJqXjpbPLPTgIpQMy1o-jpy1vOwkP9JwveVVfBghMN4pPcipXkqudH1_cU8E7k-M9oA6Q9G3biEFlxXQ8DmYbDXSJSS07cRPjo9LVrvl5RgDIkimrSAFaMqx0Iilg@@'>taille</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Ur1Ey_jIOrToPSlyOg4wKRl7sKwGCI2SExasYgJ88mRWvKSD5vvyoqfgMyX-LMxEJVXAonQlCdolfVj756AkdiUWEc46lY1LYkqOjcD5q5Nb5pVC9dODciFyXCUcWtdbIV2c_FULkTPGpeRR0q3oYU4hRzQ9Dv79Ka5xkxWLWBEEL28eHS9z1dg0ULrh1ve7KZ-ZFt-4iBUPW_J6YBiay-SEK1mQYkbX0UiDnSRtgTZ2MnhayDwOGhnRaeF9NYYzN2khvpQyJdwMrISD5VI1BgEFtvDrpq3aANf9GmT9dFTSp8uWdVnjQTaNrDrmlh1QxIiYOAvExVRVLDeoJTAHTbQ@@'>taille</a></span><span class='detail hidable'>
 Taille d'une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.nieme.0 -->
-<span class='title'><a href='[% base %]/oneliner/UwLefKxM7mLTBqXXyrwGKyg8bao8O10YMkImwsYphxjbHn416aNDFLhYUYuiFRJ_fT8UUPYsV_OBoLjdz9uRu3GEFPS9IufsIyEEIj7wK6kWeQhHGvLZbmzoNmsv9_P6ZNx8yHDQh6JgvXmhQ4pAhSGbQYNBu9WnbGfVkzYMTsCShkBNd_WP5r0bXble4RYg1Lpz8wXyCR0heDSdkl1LJ05ObiIE0fLgyiSOQMzd9zoHonAYvv9kEyKo9Ai7B2texR7NULFuiiebeCmfx-u2Sp5TKS4EQhsNUWG76ojZo3J8lNXdoEAGqHx52Nkqn5P-Kr7057CsHUeO3Uk18wyrblA@@'>nieme</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UlfvNUDus3Lp8lFFj691kbxie3wBmC3zoasun-hXE0XIJGlR_Qm41rpkpy6xdjVlougUqu98VEeVU8Qi2ietYO877x2UMDGtx7Fc-8TXXFrPxWOQgsxvmIKHFq9cuXfboQ7TCyrVopjpW6KNRjH_GH-ffABAxzI-IJWQXDUh-SWasUqEAr-Bfkl1JHhaS3N5cBgXEw6anf_3n3QY5Rjd6BmHe5vbrysXsvvcZ_AHpreYTA3qLMjdKxsyGc0qNTdyU6PWD7izRy4DHHBwMWKiG6VebEp4zvITPtlR_99GtC36u3BlHUsvsiN-deoBrkROLt_U2ZJ0xieq7WJjSswEn8w@@'>nieme</a></span><span class='detail hidable'>
 N-ième terme d'une liste
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.suivant.0 -->
-<span class='title'><a href='[% base %]/oneliner/UvMBOgdG_MhSc8qaV0TFLW5My7RvL-q2JJWdMLTcofcsl3ad78OK-EtsM13xjR2gu5n0uj_eRlOIDDC2c8e1SidnV-RVcmAX90I_iCyXkjRiVY62X1e8VQQQmxMbNUpq5Lk5wZBtIkHklWMiuKP68ne4Qy2l7PNVHdykiVXy9leoCO-7Nl8BsZXrBfN8kynAEAmKiDANL88DyyxEmgP10mud1L7XU9EBhnQHbwWihMkCkAetvqKh72Hl3SBv-Y9lP6-49GNq04MTtjjA6k5LSEFLctXO6hoJHHxK0wyr4Lc5Naw-M_f54Rk8jvGeJsdcbqHsDwQtqgZ5Epc1lYnBGPw@@'>suivant</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UV3d0SqvNQnJWukejqn_Krj46xc4VGsip7Qvk2_x3EQxk_TnhlVCbi_oNZ9gBc9w_XmUbiGiKIOKpfQ0ff4VqxJ_pcBPcwrKhNqQx_ptigEcRSdYLlxfw1lMPZA3JPGoTMWh8ADzuBqgUR8ooz88e5T1_LEz9UvUDax--vi76jumQ3bI_V-MXtC5jD_5dLQnlim4PMKdzUG6oKuKPPSaCpXpkfqevIp0TifStqIwmaZjq7onmHgsCZubGJYDZL5UW2x6x9zMjFfO4MNMHHK_6zk6RsDYoG6avAkHNu95YAkn_zzJFuvZb9uUCsQskfhh6Jhxty1voR2XX1NNs2SHGxw@@'>suivant</a></span><span class='detail hidable'>
 Suites géométriques
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.foldl.0 -->
-<span class='title'><a href='[% base %]/oneliner/UaKgQU7kXWenXRP0cRkLbJ_U2kTIdg2PwGGpDnXP8J6zKhy_St26RSyMgfBZxvDWu8rcPjoEDhnYtAvOJlXZdKCjNxqPCHfkd77OAehiBstHHpD0jOe-Uc0LuOpFRvynvuF-B_Y8VzfLKj44uN0TvvN70AE9y0NNo2SrF10l_WHFCCA-tFCW0wNfwtsHSODM0vMYHZtM1IydH4xMrdH2VwIsWMDgmjr5mYnibNrx9ipwSqR9n7CiZdxFGcYHnPOhXuRSyGkzwkuUE8SbtUqv2NkMalA6fKsbeiafF-_dHL6KcvcUVup5LtmVzSKp5FsmUdC6zlZrUg4wk-tiZv8PLSA@@'>foldl</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Ui2kqUQ0t1GLu8G0i4UlscMdkgqOTgtyvTBiHPKW68N251C8AYwJx-PXbCV_Wl-sR6-0CYDA9v0d6JxGUHGgv4tpgm7j-d6VjV4mmj-qiLIGdlXXyFA-Uuug-3PbxXLIOVQaK9A9JVmqnnJB8cmPPkmaRffzapAbPOdpAO96GbhMNPzioPvTlmxFss5PfsM3PtDvE42f1KkiDooTJPMJsBqyJK7GDPRc_iXwy_XdtUcN4rDvDggJO_Eez56fgeRuvmIB2BVtzSeNg3g1OMa_dhc_q_8A9oPNY9enX-lfy4UZNA4qWm4CHh095lqBCjbwhgCRY8vXL-9Gjd8C7fWTA_A@@'>foldl</a></span><span class='detail hidable'>
 Une réduction dans l'autre sens
       </span></div>
 </fieldset>
@@ -239,167 +239,167 @@ et introduisant à l'emploi d'accumulateurs.
 </p>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.histogram.0 -->
-<span class='title'><a href='[% base %]/oneliner/UgYKWlBIOg4qzSA-kVVtgC9GlKbCQOuuVUjmIPxYV3kFRkDbVGXoLopJ8zvIbevGiG0iAltq9IFUWth85ETOepTpVBWJsMLIRmbyjZsMSWgK0R3-FKXsLfCFUpGE33MpqifzMYdXXT8dzf_rY9h2rArsdxKKPiNDLRbaYjkkDeRubtHvWI04VWxt8wln3QScPHBG-9ddJqotNnSBxA-pBzsn0aav5_bCi1ygF60oMUHPmASYD_ZBT9495_YI-iRWpMRVphrWeNerGf6cWWu_FcAsFOTeJ8l7LdhS87_b57obUTLL55EUTCizBaNS-5rYLkmyBl5Bb28R8Bdw1Fmhhmg@@'>histogram</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UasotA0_7EfuupPP_4w-X5MTf3XDcTPG8HEdEyBHhtAQ30_TgEEWNZzNlDnVWsPsrAIfDdl6GdUrPaUrAG_Yc5qceWo5kquP3MmqPKgLZ3fIEAEao1qqMfFIfamLVmXCX2Cv5wrPPgoK_IBUcv74nHZeae8BiPdvJaQ6Yo_SBO2NkePEbJmKljhWMlzQBjg2fpP0OtuKaShfEhTzYx3JQ1xC52ejjbEUJFU4cbZwJeNRfntAtjlI3ZX7i0SouPoqhzyFyMQRHWAuTBm29Lb9Wl1PuQ7R5TttJ15GhXPweSZAFz1_EIo7jYW4mK3VNrgaSd_RGteaTa36lfsZEGX2hwQ@@'>histogram</a></span><span class='detail hidable'>
 Comptage de symboles
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.flatten.0 -->
-<span class='title'><a href='[% base %]/oneliner/UltNhtztR5gdry5LxqMC6WiXMQtNy0CX3osTyUih7K5etntVdExpCXQHnsFIKXtZDE7XaYlhuLs8_n3AanzFOaB_soa8s16PKvHd_I2vz9zBFAsJ37GqXBN74zfQhFoE4WF6XN8J930lLrLj9if3xDNTVKj4jXvyZPX62nAYeLq1y4ocnnHZaBQOtvmvaEncfMXnYEuqDErrDq7Njw9JCS1-ekUcceCBmJQ8rxGKfhKBQ2TGlHp_v6DD_YinT_70_e-Agq5FfmamZW603XTjVPWkL66vPi8Psh15axudfIkcr9e73QPBf42shAFg_utMuFGc0e0idKfRRsSxgoYS8Rw@@'>flatten</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UR9aOyzIu8vdk1S59n2QfTUzeRz6RjjSlipegatprrLKVl_Asretkj25unYMbnVUNlN1ZgM1-N-ZEwkkDmxH_Ro9yZV2ZyuuxnjotdjYiTqciRt4GXPjjnroko8qT4mH2p8aCDKIlvSrkberfFqfSx7SlI67ieIrhY8nVv4S0JdnDV7PKEQntlanAC14BVIfUQtpQEGobi9HYEnSobeviqPMRKohytrywzXOZaRBm42hf5OA1MA0NeYW4uIt9yd-x71OClP1eTu3FKDiGPotbkbSdQ3V7JIR06wbkE52qukhxUQEeB0jBj45qEdIT1A1jKaE0kY0Nkm4kpKxJmRyfeQ@@'>flatten</a></span><span class='detail hidable'>
 Aplatissement d'une S-expression
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.reverse.0 -->
-<span class='title'><a href='[% base %]/oneliner/Ug1iripiz8DCLqiJ1NqtmXo0OOLSkJBTGYrY-hUj-T8mwmg4R1aDTd1Ovi6LGTjrVPBvJk5u6AcWmbXTAl6mS9yzq_5_vQX2ZEfMTAr8AZX6dI1Ls6LJukUfckALiOvDKtQO-QwT3Y9QSn0n6XOlhWCQUf1_CbxCnphRu5MfUlqYhSEYgeCsKcOuWzrsOLnw75JoKs34Cae_Z1t29vUXetzlfFL6RJQBSlITxUgcQG2f7KwsRdQmduLDTiy1-84iD27QaqWh4uLu3_21sG29wk70Z0vj0lPe_aROUNyMUrpaxB6p_9ShUo1J4i1e1ORhjCI0nRSdl-36frYUBA5Ipdg@@'>reverse</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UqVlZclbbrFxAWW3pCubydv3f53ja1zavr3v4ygUKHP_lte0PGtTNqO9KGwAk5An74vxTsLZUbwb3iDLFeEm_tX6TrcHYijfxnfPL-MFUm7WqnkvaNMOgJgBhDlxeUiun4oRbTAFiPghFHHMgch8Wlc2fJQLCt_jbr2AczolqcV5REDbOxSNMA_HamtWGkSpu7QuXlYzVhYkBizAjmLV7gfOHAGfDeNDLaxD3cuJH-eapmpxxWzLCckkYwjlhc5BYa-agH9hQ_dTmBooVq5z-9lfDUd6eIJlv91Bu2O--bJE4-6vUG_WfU5jTgViLz3fUqkSjrbpYDwZozksPtaJ9uQ@@'>reverse</a></span><span class='detail hidable'>
 Renversement d'une liste
       </span></div>
 </fieldset>
 <fieldset><legend>Arbres binaires</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-liste-inf -->
-<span class='title'><a href='[% base %]/oneliner/UaUdhdlgOmi1aH8yhtIL4Vp8skynRdG_vGZlnZdc9W3qpxzB4HnzHkoGH9QY6sZVCb9n3ndNqev-2lAwPdu7x9tAR5s9m8fK3it3FjklxUdYjk6uJTSj39SqjVD3u2Qu2JImnpX58_DzEMqSkzHA6FOFRjaCS8qdw34OwjBEW7Rpf45exGQlqwPOAiD4LRBc3x7Q36rfrxwuInPvuvbBLKf_n6K2APWWyZ08Zhn_PrT-7CJcMSPEc-kcMVZ2rCpFqB__NkvkuYflA7yezX6Rb-TCKfnaTNMum-kH6JCDBrUNaLYaJbh-Fn_ydZaU2CBjPsP99msyWkiZT7msXLYjW3A@@'>ab-liste-inf</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UGfCZOaWlq-NXZ_wO5jYV2SptC7fcfJUgHjQ-k-4RdABZAERb0Bfd6XwHXZGmh62MUzpPcKwCvuq_m4b7D175GWGpNb_QjmjdzRpY2H_3g3hH5f-u4lLMAK9s9UaLNxiF2d6pGKcB4zZzCp9saM0j5UDEf0WtzCk6xIX1dgcA6iixqCwhdo9pqNfJEU07JYL7AIowwBzkK5h5JQ9nNGTvYjU5KEQHYmwJCNdy9p9_oodlM3v6SZiu_3N2_z7oGx4fLX5aVHMXSOUfmH04sIhIlws_C77TcrxS0nR-EDYXKTmLpjToaHjjR4Fl_bbmq6L0adRoH1iPX8BpoEjRBld-Fw@@'>ab-liste-inf</a></span><span class='detail hidable'>
 Liste des étiquettes en ordre infixe d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-liste-pref -->
-<span class='title'><a href='[% base %]/oneliner/UeHSeGZjcXNLk-2twnKG3a7h07aphl7gvlAdYAzhtwG2iPI1RtCvT5V2Cx1aWRQpvt-3tyD_rmuMWVooudfg7sEu1EO9J25cbQlRjTQGaV-JfTMQ-KE_KlbOoMCZk6KD7LA6xxtDtIhxx47piofP-ANn9tp5IkFX_7drIOOoz6KE8ho9JiohiHO9SusK2yqRvfzFjLm3mjoSRZakbllUQTEbqxR6DgYO_YvPVOM56FKw4jA23l9tcyA1xyC2ytYrXmTWeU_VSgrDgdisS0xLpdrBJSNDaNo_xEq7_aXU_WIa9zndt3mLDPUTSagGF1Seu0gGUQvEmm5sFzWUCfu487Q@@'>ab-liste-pref</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UIGsHGa12pPAIEnvw9BSPPI07UMOv4QWG67XIQSooTPFQJsxGdr0ri-08J9yFl6_ooeDztbESTmRt2tGjG14li3b25YrGPPPH2jlMhL47HOhp-u-S6b0AGYCzDzrzwN536TtBM0TDOlBckExHhz1LX1aNhYGSvXRhW0fYyoBovaYBqn2j7RuXt6x76RLDGcph99bn9r8xr6f9a6mI8AeMG-YSrh9wPVCLrN8FLEqz78X1OG4ATZZkgkVnSO2UcgxpKaYeFj63BUK5X2ChYhzaCnicLyHsKX03hoWSxoCnBVqF1is0kgLdLJV9g7IvECVdH_QKSkKvBahyerps-aq3WA@@'>ab-liste-pref</a></span><span class='detail hidable'>
 Liste des étiquettes en ordre préfixe d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-liste-post -->
-<span class='title'><a href='[% base %]/oneliner/UiphtpHOxD-_Gq951LrD8jvsKkD_mSYQl7LQPwezX270JHLupC2P8TPqgCsvYVJBeMGNGX8IgM_wYWfkoSYA8edfCLKdFXriQtbedgM30rZgd59cjyvuQd5WbWWCtOdm1P25STgkZ454NgCYFSIjtriDBrSz4pvQyuhcYIs9PbRojpDBPQ671pqU4kqgVw7PAhLlYUnVXCyloIIw-_TdYC4hv9YknOFWKLaeQ-CcTQhrCL7v_22YPpsq9MQ18IQ0LE5K1A88IJgXvmYYd2pCPymaUTd7U5Bu0gQIke2AltOswJTVFR1Ty1GlXML1UidYhxvNI4wx9FxVtJbrYgj4LDg@@'>ab-liste-post</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UDkUwrQHLthWEIKBmVzgMrT0wbw1TDH_c-_9KXeSnRDe8VgFTp_0uEdx3mB4Yhk9TjEhy7Xnu89T4oDw7x5ovmMxPo1i55isRDxiiXMV1buO3DQsIpSu0YvGEgT-EHc1rqq2xPO-LZ2B3rZTD_bdWcusZmi5PiHba_B9ArFTeS9CozwGWYvbbhIRLxQBJpKQgx6LLBszXgPw6LtMFqzs9HZikZBlsrb4Y1WnQzgZkj_IIC8KfUBMzyofmtaH7gB6iI6jPjC_3Z7OLCqwF46JXSNf28xjKHKeg3H0t1xOdjyosKXHNvIcv4mUyCoFOm17JeDlxU3-slR4GYfsicO8Esw@@'>ab-liste-post</a></span><span class='detail hidable'>
 Liste des étiquettes en ordre postfixe d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-hauteur -->
-<span class='title'><a href='[% base %]/oneliner/UQY_7Wt4DcJ2m24QrMeBnrFvDvlWXfrF2UsOwuGaW78G5eXoROs51-UMAtf7GIu44L0y9mIsEI57OXSRTKZR2kDY-2VF3BtysjPPMgh0KyoBzLhRDJpEjh8yfsRBa61fT2PJlwPPaKcjd-uR5Pd0vAd6zrEN4QHupsaX8eiq0eR5oO7x0mfBlTrHczspclbh3wvgzQwPRBQhkIDtYKmZXFbWnMEhh9_ReIIhOWQfRLNJOETVzaGKuqdh7TVs6ZIWUBOAY7V7T616ZWbjy7WVs0lFgSEKIA2Z2YtPLE6y5U9qiWGs6QD44ZKRt0IvITRDMbyVB-8jvBcu74zJiF81aKg@@'>ab-hauteur</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UhVmFgyXsiDBXjns8rBpVRSWt_B6iuEtKlCKnYvA8BIElvapQQj0XyKQGl6EKu4wS6IzFAUVejF0ozkNmsbX-kn-di3SkR3jkTlA2l3VXI7TgxpM-3Kb_WBQiLXDayhS9eO9N6lZj_GF7ORtps6u63ErF06zb7RVhJ9I4PPh-7xKti2Y6vtj-ZgVKwDzhGezf2nvNNkZ8eVRsmSQYJNpClEUFYOnN1kA_SpuF-KSz58Hdxgad8Fteg0I41XwjwGPUngn3hz9R1sXDCl3DSR8MJ2QAmy_5BXnrFkDfpMGxTw4oUhvr0wL29iwDKu8EsVvWQ-9DrIn_-w4BZwOEnQrAGQ@@'>ab-hauteur</a></span><span class='detail hidable'>
 Hauteur d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.ab-miroir -->
-<span class='title'><a href='[% base %]/oneliner/UoFaMz8AbNcTQAxTXBISxIpnrc3p7I6yNwS2INgEvNsRr3yNMWJPR2lI5zCEzZd7vBYIGnTEL8RmXIH5XxU6mN4DroljFrahhd1M297S3fINT42qbP240vWwPkEMpPYFSy5_wAHfokN9XVwd1UV4W_uaZxTLtDEvWxDWogC9DkLih-vQo2PFYzByyGPZjhD31e0JGwkKrf9yD_DUcM3eVo2pWw12WAuoaZnHFp93E34BBrRcx8uJ1gzNW-ouGfaKsuGuMnzahBfXV7sJNrKRCl1-IW65zbG5PMbd_Y81pNyPLFSmakrG85XqAT6DtM9eutp_ZpKdVUhI28TUyyP9DaA@@'>ab-miroir</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UOiG90xCuRHccTopTKE5p1mzXQSJh9PVWl7GgdxBxUu6Xv5CVsJ8QdgcmVUV-ke-YM-CYK2Xn5VN83s7ummgyRr1GviLs5WNP6Q1ghWqZ6IvVE71p3PwMmgYOBiDFa_BYKbaUOXV-SXsUi4vBN71pmjlhJmvChJVbg-Lw5PVUQxpSe7bVH2TpIwe7JFYUQ-LQYWjeUd2qAdJMGYhcta6Wki2auhjCCwJGgoZyS-ybrUFOH39oiauodfHt3HHNje7nmozSisvKhqbRBEHr7fekAjxxhRawqO8LQDJExvbKi2_6LJxy1wMLAwqOcLdxeQvGqDp9j98-8-aUuzIETsbKrg@@'>ab-miroir</a></span><span class='detail hidable'>
 Image miroir d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-liste-feuilles -->
-<span class='title'><a href='[% base %]/oneliner/UFdkFVztrSX1i6NC6Yr_4cob8SNljAYanzHKc559sXzUttDeDCHHH4twDqJEFd1WJpQL1Fhl0uKNnA-xdTdrQZYjGbgftgVM99QTxH6D6QneWTSYPKWhZcYj7aYe8tKhWPg3j-OndEdls2UMhvxBOEtt3B-R0QEWgPmQP2xfKBGm-zbWN73auWom0GsmpQfo7_MbLp8Ox-tXSM8yukD5B2IJXMQQNI5pdNka40h8lCokh0YN5dlWf9lIWGdFftfexkrzLxXiTB5i7nu85_eSd9W8KjTKLOoe9V8iOOirlA7r3PR4P_0BXNF4yQCwRZDJmAKjIOJHv3niCBiSrjYv4lw@@'>ab-liste-feuilles</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UpI2Fpq6N1uWLERzKKUSlniiHYbp8am-ThfPs0h-dvpR6pAct-qTDcPc5UNsr_dwzDuHauv5nZZb5KpS3pbQChbzA6Ss_ZEXnvj52IRC1j_P0eGp9zuW0HXRQ2Hd6M2r7Bo1IU16ig9FFXct7Z8mgURlxX5gdbIbz-vfGAEQVHb5FJlTHf1UmotlHqZWyFMecdcLYRsFVa8RclNYwizQpgEBeLVMvphKrfmTDN4eVPgTlUw8n6RVo6GdmISW5KtWuDcprlRU6HGoHSWFrB22HD-peFsH3AUGON4vExFCi0PQmkZYSM0PqpnbQzVmYHCfcJRI8zOHhWSySlEt3UgdcCA@@'>ab-liste-feuilles</a></span><span class='detail hidable'>
 Listes des étiquettes des feuilles d'un arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-etiq -->
-<span class='title'><a href='[% base %]/oneliner/Ur8ffjDEI8hS-O-YjNJ1EReNGin-BdA3Tmz9YG9WGT5BP4ssx0Bf8hDDoobcVTjJxYAB1h2NhUtPL35XXlkGM71rbmdj_DaZqimCm3daqMd6lvxWSv-nsm3W0SIDivSridFElLSu0W0gqy9cC42wVRuTuHxlbKyEm355fbxpUpSW5x58ZjHRleYwEPZNaaB6wlcEG8GjIFu_cJPhwpTWLy6C9cbCyj1Dk-5M129yLLvYtXLCm0puwLl6ZdI_7L1rfuwC7abjFxfPjMvg537hIZTVpWYGgmwyMQLZ4_iFJz9ti1GfxgSKFmknB42ULEzvwXRTFuT-6tz0PMmf--GK1SQ@@'>ab-etiq</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UDqCsCqbFSTjzp726zAO9lubnFQaZGGr1Si2gDe5Mvia0qDdDUB1nAefTKua6kcImubwqONYA_mWdvJ6dtU14O2lTEoq8Zzot6QI-4hwN3NKhvIa-kQkfHQCEfQjyItckt1FiwVPVmmnGIolNC7JYsqrnIOwJ8FXHyfQ7VEHlsDAlQvogurlfdVGExbqfYYhqsOepq4EnSVCx_4H3DTs6o576iC7Axim-V31JWaoV6PIxaOMo5ioEhOS-Om5iPo564TkdkirXNBMQ_2VFnFZJcXohskCZgnNeQzLCRGj1TAZF_i2QwhMG-II6R75Y5gW5MPf0Yn4R4Z00mrDy9A1A6Q@@'>ab-etiq</a></span><span class='detail hidable'>
 Présence, nombre d'occurrences et remplacement d'une étiquette dans arbre binaire
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-nb-feuilles -->
-<span class='title'><a href='[% base %]/oneliner/UIVuXYDTxEYzhSzSDV4Dvo6VsvhjlIVwQuQu38IKIEDAglXjCuKlJVVzpUm79CqSVQppEvnIkGiH1GQSekSjWStnfjLwwndtl05zUBqCIckL7zTo5AVKG-87rLGD7eM5d73AT1nU_RrN_qQuAD2wZlA76s9tTrU0nS2Ax2mVY2xxcDTce-eJx3UKegTvZZjJLAVlg2ZltSq813VCaBAWyeCOV3x6oStrJCuY54-JR2bFe62dyjX-x_dXfwqhPgqhlZgW-7oF7MS2mO428SNtDVoiRBRkdvmkNRSr6gS4q4aQbIrsXSAdicvLg8oqImRcoc26FLlmLjk40M0wOEB7WtQ@@'>ab-nb-feuilles</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UONfkDLweA8O_9MEZ1vOswSmhT1eY19Dbe_O5qFYW6EsifFB2U4aQjwUfqP9ANjlZlS7AkJVt25HuHdVpzbEcgnkouUb4t6aVU_8ak1NE326NH6mGLEQJeGt1DJec73bMOUEXkixWDSS5JVEEN90yAMjK5fgKhYjMpw7e_SNhEC4WXk7fgtqpQ6t-19_jJGQCyd6sE3J3f-1WE8ALg-AU3gEszuObfLfNxeKOKHQtI1rK1aohdzY39SlJ5P87v7lszzwTtgACs-SwUYwBxYFnLlONsfdErZjN0kMmj5O39Z5KJBQvkwazFjJHh3W52j_U1-34RB3bZKvwg_0za8xJpQ@@'>ab-nb-feuilles</a></span><span class='detail hidable'>
 Définition de fonction calculant des caractéristiques relatives aux feuilles des arbres binaires 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-nb-noeuds -->
-<span class='title'><a href='[% base %]/oneliner/UpB_61WLODNWN0MQ2TTnGxDEz4qc_GxDz-PmFfazebRktlQWq-cxq5IJszbkN80O-MKr0_19-ei6pZWLxUa-thk4dQCKOrA5yb17oDJsNgNjWiCPbmVAn-_3ckTzQNfTAs90YPFzZXttfNPPQYTwOQtma6NisbimUs_Mzv8ju4ZFcX0WRzq6rnlTVNHJD0IM4OCz9W31eJI60qQfdhisRgVhLTWuSPElRQSregA-xAyljDS00RM8zRXXg-zmDSR_Pj8CV-axHcAaJWjJ5HHV_UPBK-FlDdyk6Sf8IIIw11U7i8Ke-RzKh-S9vlQCIEdDsDCgHG5KnZAICvo_rdJZE5Q@@'>ab-nb-noeuds</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UwBbBEU5GtO8RFdDS_7vPztYprMYQD0lDuJX2zii1YV5iEmsCq_68vYM48IIrD4BqjViDRVukahERYgZNWIkrqXNVQ81KmZ0oWm5UkqqNpWz5f48LPoeLK8ottp2RL94UvSjs2SKS8kSP5_XOhkKCZ_YVsRHp59B4q2T6XjuXxx2jMB4Dw2FymtORjqoLpSEH7e1R16zAL6lJJOQjpQzh4vkPcig4cyM5hSLKbdEHW6cHKaWqfbw1vymFTAzsHcDYHYRNL6MTm1E5Kp0djqD0_ntufCYjJzhZpgMuqkPxaG3HMh1LXpr6-bqrJebkh1LmzftE4yCOB7MWMq4geG5Q8w@@'>ab-nb-noeuds</a></span><span class='detail hidable'>
 Définition de fonctions calculant différentes caractéristiques des arbres binaires autour du nombre de noeuds de ceux-ci.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ab-equal -->
-<span class='title'><a href='[% base %]/oneliner/UrStb14dWlOTgpEY0zPmcyT_CbLilFSM0MEgQBiO0DL2MNsHorH12U-BjJyvcCoZaZw8Fg0rb67qDMuDgom7zkLtF2ZtB4SKYLVaJ42kKN3EVXCe28b6I1Sq-0Dw9NEjQ6BnniHGYHXZ8OdjHAaoriMfNbYfwzheCSxS03td2S6cWi4Qr8HSczSJzaLAErk1jng-Yb4O16l7JpgObOwKd7YuJlYYiENdnHOyFLjZCP62ku1Z7oPM2vQKQ-Kzc_7pXu42ra-X11R7p-UDa--ZgxfK8b2NalrWptHzHRnGT3T_Rc7wz3DDjxNwwIP0r8p4ucQ_FWhE3G3vSTC9jG_6SdA@@'>ab-meme-forme</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UG6rL-5xqKMad_DBfDvq-52KnrSvJlBHkoAajTWpWzvr1GMpX9Jo1wapmqtDVEGKRQFcJJnqf5Q8mCFWzhRE8Ze-WKS9v-gRn9MhfpnSmfJ4eTJ2LA4R6_FqXCkpTlOQ9IPN9AzUAi-WxrzVKKGGfR7hFr8mII1zTzDLkN_GP8UVcnrqPerhcryUOyUU6qi97hes_KR9dbNFiCzMknxh4UvNEWyVkMFu8iLSc1t5jDr7tnu18SU27vw-e08xYjafwlFeOyi0zUQb8b5d4qAyuBYsdhJqZ4QMlP_VeitlLbZQzwgeMtFr1SQy54uY4JuymJgTttkRi5j8Rx8c4dN2GTg@@'>ab-meme-forme</a></span><span class='detail hidable'>
 Egalité et même forme d'un arbre binaire ou sous-arbre.
       </span></div>
 </fieldset>
 <fieldset><legend>Arbres de recherche</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.abr-ajout -->
-<span class='title'><a href='[% base %]/oneliner/UEPJCXH0tcSZ3ElJmYY9t1NqH1zMr6eHrtPotLUkx1BelXGv5Ar9JFV2dPOSCgiLHu7zorbW9fzHDjOQFGOzlDwA-dSEjs2d36vidGYfBWbgMCGDDg4VSIFIQ438FGOLDBSRpTHKIP8x-SU6L9j8bkE3EG--2sffLHPxr0xJP59U_OJY2eAaE4Ot8Xaqzy73ldhAF_4hFBTICNSDXse2YpPXDCrYNxf0q5kh-ptoaI8Zn8z5r9uB4zQZpRZI37abPmFlWMP8Fima23rd1rNQkXEGxfQiX6af5AXwYcsIMaWWyR9SEgwRra6BNa2IrSoZPuZBx9MqQc70HzjGNekTV_A@@'>abr-ajout</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UiBVip2_H1wPYUp_ia8wzatkxtqMeMfgSsvQjS2DpG9KkB8bSGwF-ngRerTqKjU0NxuxemDzda1bvgysmbH9v4Ack0yTIhY0Mm7gzvhFazOxkA-9ENGF6_n8ZT21nKhCDf3OXA6v9RX62-uY0NhhFkg2Z83G7jHInAI5_7EChIgdZWiaLwieWKG_Jw_O14G0i5UtZXokkp3zp5QmP2rR4vWAyYGtnnE1d0b931l1W9kIRqYQvl6hwqRs8hSQ50alNA81ztV5EytYcf3UerSJWa04NXN3OxCYLRyLwwNumFKHV4cFnD_Uip_yU5jy34fhxPlYNMlyxMaAOn23XSu8ydw@@'>abr-ajout</a></span><span class='detail hidable'>
 Ajout d'une étiquette, aux feuilles, dans un arbre binaire de recherche numérique
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.abr-ajout-racine -->
-<span class='title'><a href='[% base %]/oneliner/UqwShrsYN9VolGdPDfl_7BTt6Rrh5L6_4zt-sS8R2m32Of6hxUhqnQxiIQdT-r3nrkbmIdBPAO2_Wykk46_eqlIhqfofqnD8a-ha0gf8O7uO0L_lrOJMQcMrO8I37VIRPNTI3CktjYzJV5ZfGkmDQ2f-n1KRXCdL5JwMMFPmdBq1T6Xn4zIM8YHgWirIA2o_UD8fHfG5oifbCCJRhs3nnLpUBB5OGJpdc7qXkW2vyR42QKtWo6_q5bqsD1BIsdSmAJ2ie1WlltEbklngJ_cSm0JjrghIp1OJ6rqpXvXwABelXfJRCYdy6IDYXcm7GQ0yMj_GY7pTnzVOxaYNsekT3vg@@'>abr-ajout-racine</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Udik4dOJZO4d2hlEh989SG8lYn_DDnKQcsYpJz2OAr0eCEyT8jEgBZFrEhxMBkIol_YSWaIPemKMsIeEpT-HxWUbHQtM-YVwoAnRRGX-SOCW3vz8JN69HjLlmK2EX580VvQlWYLJZI2dLLcGn2A2zk4Z_Rb2p4nONzttPiBqhkgQaoVkbkQiKsTdaoKJSKH8vRZfvLdjtRZEezqp5gt4M0Zkw7FVIoaqarNBlWZQypBJPDEn3ZBZAyUG0YNxVK1FOwtJTSF9GsgjNaeudcoDEOjCGBS7ywFHh0ANyhgMELdAXFMEdw9mCUSIU3oJqEAVJea60HzOq996IowO0fxCqzA@@'>abr-ajout-racine</a></span><span class='detail hidable'>
 Ajout d'une étiquette à la racine d'un arbre binaire de recherche numérique
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.abr-recherche -->
-<span class='title'><a href='[% base %]/oneliner/UkbgnNGSjjIjJDJ4znFp1AcdT4f6vuCYEkI7bTQ-GoZhe5oFhf4jyXU5e9seVLmfxQmcIErw-Vup7gECLhKEpXx8G5keUMXYBOW-rUkvMHYRMVin26cwrI7FYgVYMrJNsy_bSo8iuN2Ar4x6Ix174Yrhzio5qrpi1xpRzl-CNXdMKwMcWZjNuBdKP5CnJWl-Qj_v5T30wbBReUdU0Yy_O-O0VJ1Ydw_F_ShfwolqJYxuVWRZl_hMxJckQJvz7-d-gajegbZy1v4FuW1bax-Noaie6Mo6hVApp6ogvfoqMn8BplryzKsoQ55PhpXoUsXiBejQVTucwl-XACJQNrLDQWQ@@'>abr-recherche</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UKNma3pqLKTJRVDxI4n15z_IQcg0PS6KE-RU1AgM1VLcZvUHHk3h0EuV8Ap_qrNDV-C9nEa3hvkN_p6Kg6186jURJYB2Lg90ZOzjkKVJlIKgFL7cKHgXai7VxZ61tyiL7xpVwYZII2GK31aMs8aKPVa_GLvxNfauf7CTPUJ-ECEQAEOiWj6HIMXpJMjtfQAZcDYRJe2vapZ3PW8leG_b9OCrlROGc9HhnYmPf0EbyDG5l4FnE-iKHPzNNNQCbHkWziHvxr41DrWqeDJeqWIrMcG8ajXS9gKxiRcRAUqJTJDLYNnQxEnMBVDTInRNawnaJnf3YlCAyj2J9dNndOvXoZw@@'>abr-recherche</a></span><span class='detail hidable'>
 Recherche dans un arbre binaire de recherche numérique
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.abr-string.0 -->
-<span class='title'><a href='[% base %]/oneliner/UOJjmKp-rOVW8eMUScc2GR-VkG8h_8Z-yvY3jPOwIG27zIx2DXBx5NesKC9kFpuINKAA657GF6wQ8Dt5jDOTlXm9rd0euBRacfwu6OamoG8HunWlgbDn8S0zi_NKbEkAiho0r7W8R1u1eDkpkgr_VQh-HIYn2syYcTm4ZhMx_6AZryuddOSm6JsxI8YTcE1Pq7Jcv45EuDnr1257SrHyUPGs0szpg_UZtAFKg2AVqayoaflLFeX8UxiDVEwMyzInPnorF-fOYqup8RtRhvbiJ9dqS3U-eh5rTIphDRQAMJA8Hzd-ve1LVmuRQz570jgdjzgbjuTwwkSworys0FeywbQ@@'>abr-string</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UADugjoGHyNzGYwBk2TNu6mSsjw1eMEf4ooPnG9HZv1QbYGKQN5x_V7vwia-KI7vyLBJ1-Mpnn0qz7xzhcw3SRNpR0Aw90dL4hL3sqp3Z1bOewGsStFhI-qH_-uNdy8yCWA5d9gGO0bfMtlimFgNFVOT9fmK3lJxw5SAY0cg32w5sqT3UOcNgU1v1tFRt-GBZtbSWv4WTpqGu77fKv1CBTr5kwk8WMi86Md0838zzkZbwj5RrX3Ux-NFkhC-svB8CsTqtq6EawLLfmwvzigVKMLPmPJD8gVxR1fo7yIRV6p5H7deUTDIZ5HKzymJ-d74RavM7QN6lfPzQAHRok2cW6g@@'>abr-string</a></span><span class='detail hidable'>
 Manipulation d'un arbre binaire de chaînes de caractères
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.abr-equilibrage.0 -->
-<span class='title'><a href='[% base %]/oneliner/UUTX_GBGSPVhWQ9LhZLku6OhMfX_dNTp-1ik4qYn_xG1gZMVu07D0wBZZYs-xnRnUrHKW3Wz1dPZ1Nciuedttooa7RKFCG4_EJ1krbAv0ZLG4D5-kmMGSvwzOVEJKUvet2H223Vxl2KVWlLDn0x93bC75pCrrfU3Os-ZHYPpAyzdIeHuGcR3pEnerbPFNWgemFZz97OHkoIubZI5S2sIyD123yiDQzpN0md5KYd0eaAKHhrH-6YAAzR-lZKZutxyeRlHo1uSyeaekpSFDlKBudHTHErqYd7hw3IGmBP03qQOTotNo6btC0HOJF-aakadjPNJFCsijOJT86PZFd1iiuw@@'>equilibrage</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Ujmn_5SIWr2kkEqHLD4GiM1vnnHCkxlCN_y215xCyJAd0CIR_OonYgX67Ra1vwhiu7paqwNEieVoX6ruEqIppkwX_UkhgKpEMOrsDnEqqxF5GUp_h_s8m_ckeDNHmwr9RCuqGylx9HG40T_Wy6qE9Krdjg-Iv3X2G-NWYCwY0gd2DmSm_1Zk2phRofJbiu_2Vn9D24nhgXV5ZIONiIE064JBMsSOY1PEC6SriiXI24iTUcrU3pK4gVpfIqtp6QKv8BhZASc4X95uw3A5QKzOVpgEXMaDGqq5zVy8-djf-w_jqzXQgWevkVjBhLOM9uYrfS3OJu8MWKE8rw2NhprifFw@@'>equilibrage</a></span><span class='detail hidable'>
 Équilibrage d'arbres binaires
       </span></div>
 </fieldset>
 <fieldset><legend>Arbres généraux</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-liste-feuilles -->
-<span class='title'><a href='[% base %]/oneliner/UJj5Hq4NM8FxYsOMZwWoJWqoHE2qc_bAklnbUImaeQMCZLOgu-il-R_upF1xBrnsUPQXg_T_uJKxs-D2Uq7LbFoD_10QL7_b_xA78AhJz2uN59jQMVDUxF_Y0mBBCZ6wMvj6gydoTYtqB4cPAkly3Wuor6q9MbhCu_WrsFV_nICCNIDe9D8jyXG3sGQMehqwjyxmxIowOd59VB8bZwqySQk12Ajh0soWCDXJ4FHmNjKV8m5-MNa1DOszAmzVoTk-J1242Fhkr_teHHizIhPg9ZTMbhqM9DGvHQqBMZsHQMyLLneGdb6DHFPlFyvJO921nMG3gSsudnm9ltTuAUgc5Ag@@'>ag-liste-feuilles</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uj_9GBK-eAGgZMfpFCO71frHuIJdyohnY6z0508KyZsVZtsdXSqc72F_vwoaMUVm8m0eQz2DsKPzdJYmoYeN4V2DIJn6tbmjdqYbfiIJ1mFfFqcoQrG6b03pkdlQGhSCjdCsPfYTHhlwAFypNskjNpxicbEZ5FXNYTKp0bRXQrbmkhZFacWaoOoX9YYZy_vjoTEfE52waKbBwUMSrX094oBpHaCSqnmMGDqh8OGusrp3E29QhWLX4jpjUUUl-1Hov7SayM-TVvZ2vxAsWDRcnnbywffFx6PeRDxgoBcYiGmB3ZH4ipZ2b4e2eTETZzqb0ZG6rStHmxr7pxhWN0jgrvg@@'>ag-liste-feuilles</a></span><span class='detail hidable'>
 Définition de fonction qui calcule la liste des étiquettes des feuilles d'un arbre général. 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-liste-post -->
-<span class='title'><a href='[% base %]/oneliner/UnOZCf5tVrysa-AO2uVzm_LzxmsGpG4gYPMvUDgOO6roP0mzTxbR9JFS7-8_UW2blpHzVrwv9NU205k9KUo6WFKhDY9ClBDZmROtiLvyNG05_3x6bOj4km4iBYmguEPtqpEW859OyBIn7elP2ytYE-cVZVbxMlYWyIdHIHjk-tAKMh4b-sEWCb-x_5wRAXzQUr7H3Z94r5PsCNtdo_sBnIiPansoucmaErCWxifymExRTTHolAuIXL9dqMSYtDAQjf4U1e_ATuz89KPiCkJfdj-8qVCEX_Nu3PuA8FSqA4XEAh34V9hmad5UrYZ8UH-vtMq1zeXSNaymutzhMpzbnQA@@'>ag-liste-post</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UhuaU3LCVXM_ZsiSK1PEzMkXdBk8WriUc-vJbCMGl5IOu8FwdIwhEIG37vdFS4P81pFv-mFb_jhODEY-9GdxX9gSzZkQ3vq4uf5ejpE3_nKu46G3M4gpIcR0nhfpA-8gyVAM6zZUlXHiho_TQ-aIpAPIggurXHwTrUVAFCPqrUqg-Ds-crEz6IJrR-VqekyuiL7TsI6LPCoOocpt1rNypv2NtozSph6UZwuy2hZUEufJ-5LmPJGzaKz98G4sRc81rGyKfkGDIOzkxu3hPHaZHhpPbc7-q2qk2gnOEnt8HAAWRINDqEDe-KDsZEuGgbxTR5MlhLz-L5CVm9V8LIRDbTA@@'>ag-liste-post</a></span><span class='detail hidable'>
 Liste postfixe des étiquettes d'un arbre général. 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-liste-pref -->
-<span class='title'><a href='[% base %]/oneliner/UtII6tHql5PkpqfdiLFeV8_75CG8q0yUqUHw9f-6YW8eR9O8YzrxWnAe505jryDBtGJtOyDF08SiC3FY3_925iqLgLXVYq_pxo5Irx71kJwmTTeNdD1zQIkTsJnH5V3nQgb_YvJcergclv8aA8yCUc4mLp0bxjQ6NcTZ3vBPgr2ADMhUcnqHpuDhm_gxYAqTPNCxzIKBoC_S3a45Hz98FgF8ana4zYVVOBpeETafbPbipoi-jqaE1vHsupfTjQn1Ck3aGLARTH4CB4OeYlou_dxMY4P_n0vZZycslXpQQcD4fhF_GQgoSCUeb95FDlIY16QZoSzmM2pDp-o6labTIVg@@'>ag-liste-pref</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Um3yj3I5QXly0y6F4IXMsI8sLIcJ78jb8uUq_0GWgPbUmpZD1HQi2fzsQi-RdWvhravOjxflc73gMXyDwU_yzoKQLglPpMbpV6EJnDOCLZqGeNB00J34fa_fCxP6DeiHWh9sxXGeRW1liaim_2Rw8XfAfLtx1KJOZlSIWFew-5QF4tgGpx1s37thxXNKCpbwVm-up-qM7L6-eBLTG63e0B2VR8uGr2CXAcvrWoJBROl5iqKHBfEfzUYinMCaqiKlprmsytkclOexCMhQdRvaYjAAVCQvkUaPSIZQTlG43BPvt2G7V5zJ4V05XYlCWpS0p4BNy8hAfvUtN1IthdjkQIw@@'>ag-liste-pref</a></span><span class='detail hidable'>
 Définition de fonction qui calcule la liste prefixe des étiquettes d'un arbre général. 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-max -->
-<span class='title'><a href='[% base %]/oneliner/UZ4tHgVKbh-ygB3Wht6Vc-yeYoIxbNc9gzt7G4xj5wwik60V86N7ajBU7QFsEuqp6lmKL37dn22YykdIg31jDJmKgttrKi7oRNqtmFPpCSU-_nSXcB86BC2XVj4EAFww6OUsSAErtIv5fr8xx0zfIdi_SO1N4BcB3tWcvBa13qo2qFrdI568Csyyx8tusaTEyD_z5wRAiUK9kJZ3YgYYRsphmfZncQwlKKqs5xlLpUV4JFMOKpv8ZV99Li_6qdYcgFUWGM-Jjpv3IltMCIPSJYUkE5MFp-21I3oiybMkjm0o1yyHPrMFXBX8wyCJlQ_90SvDDUCakYuqtjMO_iXDRpA@@'>ag-max</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UBI-28uEsshQxgL_rGXolHW7-pkLYcBB6izo2OnEhm8pb1uEI59WBVT09Nb0Wvn4PfyFa5Bz_3iE529kI-fqcXMgRnlAExnEVFMqTzO5V0N8W2lXkGTal4EU5qBsTh0oYeg7SVQublckm-lufL7qjdJkt6DZGeNod8vDkRjJKx014OcgvoeTi1UGDT7_oaLUyNABrrBK9sK0r0YDnbOWBeyvZ9xXjYPMlRAWVrakjpWYlJIOJ02Y6SF9J1a8qgqMJYAj5hp7oQRbD87LnWVHgLWfk18ZNEy-USqVwMxr1vY3heYcJpsZzRz7UKtrbP4hAX7iWMQ4wv8Rvk7U7P8LFBQ@@'>ag-max</a></span><span class='detail hidable'>
 Définition de fonction qui calcule l'étiquette maximale d'un arbre général de nombres.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-nb-feuilles-niveau -->
-<span class='title'><a href='[% base %]/oneliner/UYMUu2tPW_DvUOxYlPBvZwroyHNBuYaRMpAlmdyUTRZO_jzxTerDypwOI2FUeoAQkjGFD846H_1UqXho_I0YaGFwqnB9dVNyBuU04edLRtSGt8tZ7NAwHhKDnA1CBD5ozdR0dfasfL_QfLdt6jSzVDIW18hU-A42AWBSWAbvJuolRnEQF3EZXgM553Ak5v1zH2CUAjwyJ5tuMGaLke0dxKRxTO3krtE6itRgUJlAXnsgrDSDN86yHeYmmwVIJpxrwiYtA4SA8u9Nlka84iwjwFMbj3qT9yNGhycUYVEChRGg9wHGkOUTXgR807O2iSeJhLX5eAxZ_yy3W_6Gdzaof8g@@'>ag-nb-feuilles-niveau</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UrzZxXB3A9qd-z-vFY94y3DTHi4LcjY5qU7wqk3lT200bAMqba68xM3Z5pNOzYcathH40jguVV4b6hY2tebO_EcsLnJYB-onOAZjilckKIKzKQkaCxNfFiEGDxu8Y1pR0lteTsL0f62M5FKLHIZCvG4F9P_FPIcaK6Z-G3mEEpHhZNZGqhJoVogwFF4tvyMSxWA8zLeARGsPPTv7jR9AuhsA1lqvNkkixHk8iy-U50EHS8h-LmGnz-a2GmSufVlSFoalGH5v46hfmYA1R-5CGVOELKDMejcvUW3xnOmSigwymD7OP5QGnQgkIYLhAbscZfM76m05_3Hu3wO8tQMnmyQ@@'>ag-nb-feuilles-niveau</a></span><span class='detail hidable'>
 Calcul du nombre de feuilles d'un certain niveau dans un arbre général.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-nb-noeuds-niveau -->
-<span class='title'><a href='[% base %]/oneliner/UXJa4yq0IvFz64GxnazIwn6hmClwv7UXUvTZUM02O08bxGOJI42JiBOT46mNT4o0gS_NZNQEea8V-vuT_Nb_HsutHnqEUA5RC5UnmujPP_t4DpAzFJMhSrHCkxOpY3g2DqqeuxHuWJQXMdD8qjWoRnuwFfG7_M_H4Loyb8UNVBtiOkD3lhU9rMzgf-q2tnQrWi301CzPXzfIe2GTrtFdw9VLrcqfVT2MzETP1Iu4l-AaJubPMDbqe9PCb7W6KBC6gLYfgM8gYyrCjDW_6b1zvCFRT6c152S7gq0AOA2u0hlHEWht2WKpaYW9bnit0EBIfmmn2I3p8khvqJtmAEYvexg@@'>ag-nb-noeuds-niveau</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UpZVqaE3aoytHdIj93co_GHjgHpUBveEmecDXzXFSyN4rvxqOM1-8zt77lAZmqsnBLgI47tI6XbfgMdUoUKEmT2NKSe-e54p8aiZ07PtIZ3gEBP1Yld32iyOD-7xzrslbyl-OSS0u0u9hdylirpOvwqSgAQCqGDhrcDbxhpmjc1dTFGbTFx4vjLmouy6_t82KFSsdebiLaB76DOAEDKKHZgqalQc8XarwSei-XuD2MKxOSdWQZH5WO4mEN6rc-wJWSdi7OJOVQ-tIvB7SJw3cwndfa2Jc-3i3wIfa6URXRfF2GPm_gT2B9-uHTvvxZ38YX4o2cW4UtID_vmvgN8YBog@@'>ag-nb-noeuds-niveau</a></span><span class='detail hidable'>
 Définition de fonction qui calcule le nombre de noeuds d'un certain niveau d'un arbre général.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-nb-occ -->
-<span class='title'><a href='[% base %]/oneliner/USBI4lkT8AVVa3mX-e1P7ZxAnUr_6r-ChY1m2ftUk3L0KRBIHyU1UedBmm_ONv1p4RwEs51udplaPNMnR-IJI55rz9jN1B1B4ICdBuL1R4lTD6EynsaVZdekJWF6R7APwPSXrX0rdM1tpsBaLoYCI2tejf5leE-Y3dKy8hviabFpl8L43aFHada3_Q7OD16_WhZHYFDl0AmQJPaZXNwuMxBAEO5BZdrvTZ5RUCgiUgYJmHYFKrGjHSmovmL89FvfVc6mqZ5AiTENpBhSVZV8DuTfouuvJhE1U_P9Fl8OYRZtGH-w3HMTL9Qz_Cshzsu03hUEdiTXcq4Hk2pNCLAbZtQ@@'>ag-nb-occ</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UPMVLS-Jc-E823SOjjAVRVeo7ha9izEYKLGiNTpkHkCfFV_vPh9cjGxE_Vx3NHkpZbgRx8LNWhQ0sEgMM9MZ1NdYnbrh7H3jxXN1MBIQeJ0ZCiSQnuGsA_gdXIH-1tdJgHCM256cr33Jq2uyYQQGoQFmL1NBIvGhpRG760asGyVsI5yiS0bIbfCDflkaoUoqMDwBjhD6YT9OZz18SP6_Ra-Xzip2m3YqzkK2q72DiKPgE6WlGbBvd1kqOs26UE8epjqYl0nhGjDgDcyguxsmC2_CV06MMtf9pXapuXMeke5OqEoapeNkiXYT__Fe8mizuECt8gjG7cQpJVjF6YjVmvg@@'>ag-nb-occ</a></span><span class='detail hidable'>
 Définition de fonction qui calcule le nombre d'occurrences d'une etiquette dans un arbre général.
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-replace -->
-<span class='title'><a href='[% base %]/oneliner/UsHjt0zttCMDkJUOsOUs8YJyt9yGP_u7QDSSqxyMqpdd3-gN_LNYXROTkVlAL2RZ7LJfdTfy9rJTp8lFTYDTsXZFtIIaUjqYtwcV2YEwiBPYD_F5ShBQPja9lnxowKGhHCgvz1mwjcSmPMZ3i8aK8K_5kPTvDIFtolKj0JQZFYVxmPDcCUDoo0pAWpV1fzEWVNTGunryly1uz_XyFT9lsns-nzazk0zFjw8IkFsTi-7MxcypZhaZo4kAHchtdQc42m-0AzIj9UvASM9eIPFG70dPjNEG-sJHekQKKuLR-bTbiE__cBGjj-lQmLvrr5f9PJtAXCUB6v6QwIONqXZfFGg@@'>ag-replace</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UVNIzDOfAY0vJFSfzqcbQ54Me7qVscoQSiorxkKhBdplq9WajYXkYCkvtJE6YIeRQvsFr7Fq1OvGKc68C4Xrcs3-i2r3Tul8WUbDCTKb4l2Yjnx9IFft0Rd9edBqDOIcdH9hH8JRKc6vrskHPGl64CUdgFbtyrr-iH_2W_EOQVJCoPtSaoe5CpbMVd91Y4gdEFvE_Z3UgSJ8t-GrnmlT9u_hXfuoEQPiMJbGHXjnlTEd0oCP9C5L6TClZx3XiHB5UIJXjV5MzNi8iBaIiMSdKzPAqm2NQegbCp_uOp5Aq13SxvgDw5yonVCI39nfjGRmUFtZ8FL1QsCwG_pU-zJP-FQ@@'>ag-replace</a></span><span class='detail hidable'>
 Définition de fonction qui renvoie un arbre dans lequel toutes les occurrences d'une etiquette donnée ont été remplacées par une autre. 
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- fr.heydemann.karine.ag-egal -->
-<span class='title'><a href='[% base %]/oneliner/UFiSxHBRzceuHxDhXtt1u_YKL3HOEu5sU0-Sr8sVfKINFZC_b_isq9UC0b907Uvj_f76FgFnDG4lJ7jGuMRepTTNRMKF2WhePLwDbu8KQVgREwqeGPj2dsm-b2KN1d_TxKojkcAkjSmiNJYe1zl3fjwqc0-oL9-LZuacFCLWUu-loRkwHb_PdCRRfb_GUuB3l-q2QE_H92xL3ir-TGANZxLwRWwoHwPJGC-bQ3OH3zbWwHGdkdi-YRv2LiQ63s8AYAGWSFbYyPEhyoxmJl_H59k2aNBy3YzqVev3Yr5Skv43mjtEIjOokTFrdVeMFg3M09af9gSTFf-2wCXoNmaIvEg@@'>ag-egal</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UaYwJhMseuED2kh4QrrjUqPD5p984LtT6BBaHily_xGZJrHQS5xppUGQTNjRxLQfLC7xZ2vaKrWmiyY3Y4ghbXdrzifFwm39AR8naZGESI9datu88YJAYqDjoW_jAQjUrg72Hi2Zrm_jUE6ADWYF_qtLakeiC9CMP2nLoospXN8xNVQ3tHi7zko_Xc1o5nk1klXhiL1siOicNoB80ou7I7H7irqpq-urv6oFNZLstL5AW6VPqh0cVwNMUeDq_stQHRwy_dt5zC7cFbAauJSuSdYdKWPwK4Kd7vO9UMrdshG4YWUIEPfItiFUx5GgJdg9kBoJLhAIDbnA0zdbK7PSnCA@@'>ag-egal</a></span><span class='detail hidable'>
 Définition de fonction qui teste l'égalité de deux arbres généraux.
       </span></div>
 </fieldset>
 <fieldset><legend>S-expressions</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.aritheval.0 -->
-<span class='title'><a href='[% base %]/oneliner/UVv-5rfmC79R6GQm5e6-28rDFOKzetmLJmEau5coEM0RodVXhVyOVa-cXLbP38aG7YtxHJJBg_QJGCnnJWO9qtKGT1BNnPsy0oCPGfn3gkenpylNo_XwCJus9DJxWZqE3qIBkUuwtH12oRfrjf7nM6XHjJdFhKO9h2CKhivwcxtKm_bcnJj2Up0Y09brByTzXXzwEcsn4wn4qn8ppJYSLNIQp0eO2qaT50b7WmRdzOswK83CdhaZb6g0WfU7YdJmTLVj5hrd424iPdVWB_EoIT7njKbktT7QbxENEYx-KPrYnkwXcSd5BrP0b2tZunP7PafmFFyXZ3qBwWFn5J4HcgA@@'>aritheval</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uq34vaxR40cFrHpEC73vdjqqfSDPxmQvYsBneWJkgQOWTpDO_Z3wi2VrwFEbLmqxJvwRLbBnbuSAlUHV9ufQOU6lVZy69L_IX39TnAJGXx0rABwV4V8HXWaBNgs1RHJuopnhYshicNl8tgXyoAnwjWFTTOkaPk7aHCswpem6JwOO1jgAWcZ5ge2acWhMZLHiogrGwjfTEdKQ31ox94Ygbym9NGJxuqC93GGF1AQvocIPjG-vGiVqCvRbwI2MKDJnvarkihu3kOrWkavYju9jYkZNh-KoFOFSomGXUh1tiZam0GSzbNcRJpr2A_DfIrxZgJqCr_gDjJWdrHhZHymXKZQ@@'>aritheval</a></span><span class='detail hidable'>
 Évaluateur d'expressions arithmétiques
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.agparsexp.0 -->
-<span class='title'><a href='[% base %]/oneliner/USFn15Wt6pYMVYcsa0kEHdyhZ0EKLjhXv1hrms1ZgDUWGHJ8hfFVva1VypsWiyWJOzU4LO5fd0QpMsxgykKhvECgbBEOwTDwDVh35wzCtSGyUA2pAZaORZUv4_xn3xr4cACsryi8xh2it2mSu_EajDgfGc7M8tX76Dqqb86ciHmF6Pn3TMim49gsUOHyaujvsi9mJYSoS-ZjtZuLYGmQD8r2o-w4G7pf7g7L158FPdKMi7E4OM-vl_nrW5oV6PiptvmEXJ4nkIpqb2oX3cwsxuSwV0HutTIkBHjVf41DaIc8yoFdg9G-NRZMl259IJofjKin0WVZK0Tgn5ZEnv8YrMg@@'>agparsexp</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Uwg3AQoMmWXYC189E8PbGji8fjcEsPXurPzT8LkgjxWCK2rkACr0Encn4GFup9qpd2deXsDnrIbkhbuAuXoXov4pkkCRnqaEY48zyEJO-u2SCJ2FBS5780AIqd2mZOKZ-EU61McvhLrU-xDRYwKExui1SZaRJlAvAnqVy0pD552lZh0jlkE1t980U8tPvikV_hXUTXREeuXmg1HrBfsz_QAZahjRoaDc4i5h_Kcvcop7ByGjLhtusZf7Ps11AnoConJ50Tf2mlGizzIxjWrsZ-pFEiC47j9vW9eB04VM1qV7RlKkXlidEv3VtmOUDJjQliTWX2emJoSLE0HTaIQogEQ@@'>agparsexp</a></span><span class='detail hidable'>
 Codage d'arbres généraux par S-expressions
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.abparag.0 -->
-<span class='title'><a href='[% base %]/oneliner/UXVXWzDBtxtHKl43WcMHkqI34jsJg-ogKLcdwt9qVI68nODsCI8vCO3gyHuG36hQM2xrceOETxiKBlKQHe3ajFATf6iWZePrDhOw2dLiaAgk0eMmbLCVs4p_KwvJiLjM-47L5HYglFcQ4tXh40mjEKQNVsstWqgOKWhrkHriaKlxTU9Wvgdvix4LJk_B8-fwwDRZ5dCYwQRDFwEIVFHNmXw3eN12CHglFlNDyRtCoZ2YfuMcAblC0yDMh0wmlpcruk1bXNWOwrsoQFpJdAO5AnACdBPb5BuRB8oBXN6aQ0gKaoAVjh31a-8Uw0cJk4nVpNADFetHrKhsK2USbFqD9yw@@'>abparag</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UGqGO5bt5nZB_bGwi52O4la-IHBI_mAyUzTPpkAFrB2Se7BSQvY5wvRBDapfVi2dl4-ayWw5xwxt4mil2BDZq49wTNk8FDJblIweCRtBLRm3WItP4ngoxQ0VpdaAM9kS0Kgq0Igvl1ao1kRlTc207Kx0VNSYSNASb-Z27CD09MxdRqR1Dd_8nMXhI-VuWUsdUSvrHAh6bw6rGrkxxVUxJHtTZI8M3SlOYKUs54S_6nTP3feBRDviHf7W5Bjsl8d8AO8Rd5CZACnK_78AZ9czW6j7YAo0blTQRG46AITNZjetslgK9WvW-Gn3qLVMryhlj9wDYfRjL9_tYlMDU5I0NpQ@@'>abparag</a></span><span class='detail hidable'>
 Codage d'un arbre binaire par un arbre général.
       </span></div>
 </fieldset>
 <fieldset><legend>Évaluation</legend>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.demoeval.0 -->
-<span class='title'><a href='[% base %]/oneliner/UboTAe1jXYvZfkTvBDXtwDXlK8jyQytz0xiaVJTp8xLmhUcQ2Gxf0lr0_vN95SlFPUB86OZn0RGHocimh8t4zQ5rXBKHyxsD5C3pODSw4VA5YDg8Jj0TamyiQUlgJUjgUvmWj-fjjtZz87F7OFO0MwbfFGhjw_h19joHfrRdT8Cq2eTQ_RygQaFVgHlgjWn_752oaTNeWDYFmK9dS8jtqel2oovmAcOFH0FQcWa6G1_y_yv6iUBqbxEfwPSP5-Ag0FE7oBOd3yKZruwFZwDfoJaIHyj4VSnokAqgcA8xtu3aUfIvHemxx6RfppjOPaPMTDW2XSIts399k9Ti3IY__ag@@'>demoeval</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UDFuW_rRPvrlF6lAFab9x4LSKbFze1T1Ut66mYuC2VqWxWVRt6Wd1gSdDxyj9X58kqBqkhLggHgYj7AvvnxjAHHnFP5734gSf7DXF_uGdZseU5vW8D8NPzcvjrt8JOmFYkrB88XhNr6Ukm6eLEwnDAg03Eq0OdY00ovQkb73j8ZUC-b9vrPDA4YxloVLrr6MxDjQQ1VahAchqvRULzp0obRaP8Xy2mWR2OXPEjptTcXKlG3a3Mpip7I9a4EXzA5Rm-Xmpg3sohzI8wnlerh7mkeDwRTVNqcxhFO1nuh6gsn4GpbOjHnmumotFb_ezZ-e1DP3SZKX2Ovm2645E3jSu_w@@'>demoeval</a></span><span class='detail hidable'>
 Démonstration de l'emploi de l'évaluateur Scheme en Scheme
       </span></div>
 </fieldset>
@@ -410,12 +410,12 @@ disposer de 2 heures libres pour travailler cet examen.
 </p>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.syracuse.0 -->
-<span class='title'><a href='[% base %]/oneliner/Uc0xJYJyi1nvfS8X_2mSnUV7Z0p0MR019egyIZ1cJohZ0RSqvxLDxljprsGmyvrMfei11764nBm3fSUj3jg1BZQ-vO86g-uMoyWP7w05vm5BmgjW4ClBI5naK1JqfnJZG5rNgBhC2FBnVRf4i_ecvTVt9BLtF0J2suRkdxnXFasFZhmf-4REslFzC5ObJZv0CaIX_39L84cXCUtKfQxAAcEJUpq5hsoiVojFEwg2jAO40V8zdzv5GRxeI0AQqmpyHeLrI3gMHRhngZMLfIec-ddU0Ggaa2jElwT-kNbnKBaWIwSBpiQ5vTdNeG_yyCB8uDf_oieiwUje-6ANqRTcz3g@@'>syracuse</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/Ubq1eHRB01Pv6r1NWH8QI8FeU8vFW37Ze4v45MEYSdPSIObhGMmXxcTNHs31jBJSqQkHiHRydek1Zr_lN7FdkejGNXK61Oq1pMtgjtLQg-bYa6dY_dzDv3TnOpDHm-Dsfx7R9wKJI7LpgdliAP5pMR7ojkVam7WF1oxVDNTUVQ1EtVrT1y2WLm6RDZOYuaeo-GB9a8ixv_ZIwmpxHCkmL-CiAvxc09mNa3GqMbe1SzDfZXbjd8H1Kerx-SAEBcBjwDHuuY6nyKFvjxPB-fBhMBI5WEy0B2rRhemHqCLKcpFJ7M3bebx1m6LPECGCPtIFlIkU5pW1iboiRGV173G3zeA@@'>syracuse</a></span><span class='detail hidable'>
 Autour de la conjecture de Syracuse
       </span></div>
 <div class='unfoldable' _divTitle='.href' _divHidable='.hidable'>
 <!-- org.fw4ex.li101.abrdag.0 -->
-<span class='title'><a href='[% base %]/oneliner/Udy_pZZyBgZII548OB0hJrralO-pRiPpIwneDH6VXCkXM0lLX6X7x0wXi-y3IOwm2QPdooZpLOqsrFjc2tKAVEn7HdCN-Av-i4saK0dYJ4gDi_mbjWmVBOqIRTComb20GpXLehZSMiLqyGcqHMbdQdJiHw5K5YCompaUFSGpd0TOsyrXlggtp2gMwZxJxYb2QRIkHW2Eg_65rW8i2ebC6nOgiA8g0nd81qPkwDfT8Qr1QN2xJdJM7uRVDReB_qC4GG69YTufKRDDrqeW4tLHx2pXEPzuEqZ1YdYPIQXHgK1dn5xn0yXO8-cEHAgcUy0usq8SX4lPFGa_vfk-AIDczbA@@'>abrdag</a></span><span class='detail hidable'>
+<span class='title'><a href='[% base %]/oneliner/UroENKlbAujxUm4DQnbLlwvyeMAie99e6lAVLLShdt-_a6ZOqFpqBm0f6tSEYXx_prw6ViRtLQk0r_Rl4n8iThs4nMcWGRhssu6u7itchV9jfp4z87bB4PhwJ7d8mm2fMr2iI9AUqeG46tJYccXOmSsH8ip2Pl_Rpg3y2v4ShcpzAoVlAPosHz-L1jUJte-cPkuNC_D1NhsMBFXpDH2YcgbFF6ypsYiaNgSJ2GU028SZ3CHklR1O5a5bOos02RyJ5RzcVlW664WoxFCI9QSpSG3y1hJPe3Ib16w65QKjx5Wpq920YTeAHOJbR5i9US4dHWe3zp-Iw1zs7pX6tfK10gw@@'>abrdag</a></span><span class='detail hidable'>
 Arbre de prénoms
       </span></div>
 </fieldset>

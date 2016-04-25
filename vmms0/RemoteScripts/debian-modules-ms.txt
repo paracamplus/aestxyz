@@ -22,6 +22,9 @@ libnet-ssh-perl
 libssh2-1-dev
 cron    # implies exim
 bsdmainutils
+bc
+autogen
+libtool
 
 # Ajout pour marking slave (cf. Mlib/Init/packages.txt)
 openssl
@@ -90,6 +93,7 @@ python3-pip
 python3-pytest
 #mzscheme # N'existe plus
 ruby1.9.3
+#ruby2.0 # not yet on Debian
 lua5.2
 octave
 mono-runtime

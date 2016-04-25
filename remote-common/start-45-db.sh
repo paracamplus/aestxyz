@@ -22,7 +22,7 @@ checkSocket () {
 
 socket=/var/run/postgresql/.s.PGSQL.5432
 export PGWAY=viatcp
-if [ -x $socket ]
+if [ -r $socket ]
 then
     if checkSocket
     then

@@ -31,8 +31,8 @@ fi
 mkdir -p /home/md/.ssh
 cp -p /root/.ssh/fw4ex     /home/md/.ssh/
 cp -p /root/.ssh/fw4ex.pub /home/md/.ssh/
-cp -p /root/.ssh/saver_dsa     /home/md/.ssh/
-cp -p /root/.ssh/saver_dsa.pub /home/md/.ssh/
+cp -p /root/.ssh/saver2_rsa     /home/md/.ssh/
+cp -p /root/.ssh/saver2_rsa.pub /home/md/.ssh/
 
 if [ -f /root/RemoteScripts/booted ]
 then
@@ -47,6 +47,7 @@ fi
 if [ -d /root/.ssh ]
 then
     echo "Content of /root/.ssh/"
+    ls -l /root/.ssh/fw* /root/.ssh/sav*
     ls -l /root/.ssh/ | head -n5
     if [ -r /root/.ssh/authorized_keys ]
     then

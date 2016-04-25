@@ -1,23 +1,29 @@
 work : nothing 
 
-# Restart all containers
+# Restart all containers on Kimsufi
+CONTAINERS      = a1 e1 t1 x1 z1 jfp js scm unx pobj
+restart.all : restart.private.registry restart.md restart.hosts
 
-CONTAINERS	=       \
-        a e \
-        li218 li314 mooc-li101-2014fev mooc-li101-2015mar \
-        t x y z 
-restart.all : restart.hosts restart.md
+# restart all containers on OVHlicence
+#CONTAINERS 	=	a e t x z p jfp8
+##        li218 li314 mooc-li101-2014fev mooc-li101-2015mar mooc-li101-2015unsa 
+## y boucle!   
+#restart.all : restart.md restart.hosts     
+
 restart.hosts :
         for m in ${CONTAINERS} ;\
         do $$m.paracamplus.com/install.sh ;\
         done
-# Don't restart a6.
+
 restart.md :
         echo "Docker/monitor.sh start" | su - fw4ex
 
+restart.private.registry :
+        cd /root/Docker/Registry/ && make
+
 refresh.all :
-	docker images | grep paracamplus/ | cut -d' ' -f1 | sort -u |\
-	while read img ; do docker pull $$img ; done
+        docker images | grep paracamplus/ | cut -d' ' -f1 | sort -u |\
+        while read img ; do docker pull $$img ; done
 
 restart.vmmdr+vmms.with.log :
         echo "Docker/monitor.sh start -l" | su - fw4ex

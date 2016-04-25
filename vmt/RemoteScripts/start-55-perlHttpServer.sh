@@ -80,12 +80,17 @@ done
 
 cd /opt/tmp/$HOSTNAME
 export STARMAN_DEBUG=1
-starman --daemonize --listen 0:80 \
+/usr/local/bin/starman --daemonize --listen 0:80 \
     --user ${WWWUSER} --group ${WWWUSER} \
-    --pid $PIDFILE \
+    --pid $PIDFILE --workers 5 \
     --error-log /var/log/apache2/error.log \
     --access-log /var/log/apache2/access.log \
     -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
+
+# Monitor the starman server. From time to time, it becomes mad
+# and consumes 100% of the CPU especially when the perl modules
+# cannot be loaded (a syntax error for instance).
+/root/RemoteScripts/starman.sh install-watch
 
 # end of start-55-perlHttpServer.sh

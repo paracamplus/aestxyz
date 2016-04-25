@@ -15,7 +15,7 @@
 
 # Descriptive:
 configname: VMmdr
-version: 1272
+version: 1460
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmdr.paracamplus.com/fw4ex.rng
@@ -56,31 +56,31 @@ scheduler:
          action: /opt/vmmdr.paracamplus.com/Scripts/cleanVarLogFW4EX.sh
 #
     pluginConfigs:
-# On sauve systematiquement sur s.paracamplus.com Il faut que sur
-# s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:www-data.
-# Pour [es] on n'ecrase pas la version deja telechargee.
-       - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
-         server: s.paracamplus.com
-         destination: /var/www/s.paracamplus.com/
-         username: fw4ex
-         privateKeyFile: /home/fw4ex/.ssh/fw4ex
+# On sauve systematiquement sur s.paracamplus.com et sur s1. Il faut
+# que sur s*.paracamplus.com, les repertoires [bes] appartiennent a
+# fw4ex:www-data.
+       - class: Paracamplus::FW4EX::MD_plugin::StoreReports
+         server: http://d.paracamplus.com/storer
+         username: 42
+         privateKeyFile: /home/fw4ex/.ssh/fw4excookie.insecure.key
          period: 0
          recountperiod: 30
-         rsyncFlags: --ignore-existing
          sources:
             - /var/www/s.paracamplus.com/s
             - /var/www/s.paracamplus.com/e
-# Pour les rapports de batch, on met systematiquement a jour le rapport
-       - class: Paracamplus::FW4EX::MD_plugin::TransmitReports
-         server: s.paracamplus.com
-         destination: /var/www/s.paracamplus.com/
-         username: fw4ex
-         privateKeyFile: /home/fw4ex/.ssh/fw4ex
+            - /var/www/s.paracamplus.com/b
+#
+       - class: Paracamplus::FW4EX::MD_plugin::StoreReports
+         server: http://d1.paracamplus.com/storer
+         username: 42
+         privateKeyFile: /home/fw4ex/.ssh/fw4excookie.insecure.key
          period: 0
          recountperiod: 30
-         rsyncFlags:
          sources:
+            - /var/www/s.paracamplus.com/s
+            - /var/www/s.paracamplus.com/e
             - /var/www/s.paracamplus.com/b
+#
 # Quand les rapports sont transmis, on met a jour la base lointaine.
 # FUTURE: should try first to save in the remote db and, if not
 # possible, in the local database:
@@ -98,7 +98,8 @@ scheduler:
          ldbuser: transmitter
          ldbpassword: Glyrywel3
          tunneluser: saver
-         tunneluserkey: saver_dsa
+         tunneluserkey: saver2_rsa
+#
 # et maintenant on nettoie si necessaire pour ne pas deborder en memoire:
        - class: Paracamplus::FW4EX::MD_plugin::CleanSpace::ByPercentage
          period: 51
@@ -157,7 +158,7 @@ db:
 
 markEngine:
     class: Paracamplus::FW4EX::SimplisticMarkEngine
-    version: 1272
+    version: 1460
     jobDir:      /home/md/cache/jobs.d
     resultsDir:  /home/md/results
     exerciseDir: /home/md/autocheck

@@ -3,7 +3,7 @@
 # static pages directly.
 
 (
-    cd /root/Docker/$HOSTNAME/rootfs/var/www/*.paracamplus.com/
+    cd /root/Docker/$HOSTNAME/rootfs/var/www/$INNERHOSTNAME/
     DIR=$(pwd -P)
     mkdir -p /var/www/$HOSTNAME
     for f in *

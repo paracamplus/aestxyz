@@ -18,4 +18,6 @@ RUN /root/RemoteScripts/install-aptitude-packages.sh /root/RemoteScripts/debian-
 RUN /root/RemoteScripts/install-perl-modules.sh /root/RemoteScripts/perl-modules-ms.txt
 # @bijou: 9 min
 
+# @bijou (2015sep): 25min
+
 #end.

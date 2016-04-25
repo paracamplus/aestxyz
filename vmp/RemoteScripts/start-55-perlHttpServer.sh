@@ -80,9 +80,9 @@ done
 
 cd /opt/tmp/$HOSTNAME
 export STARMAN_DEBUG=1
-starman --daemonize --listen 0:80 \
+/usr/local/bin/starman --daemonize --listen 0:80 \
     --user ${WWWUSER} --group ${WWWUSER} \
-    --pid $PIDFILE --workers 3 \
+    --pid $PIDFILE --workers 5 \
     --error-log /var/log/apache2/error.log \
     --access-log /var/log/apache2/access.log \
     -M${PERLMODULE} \

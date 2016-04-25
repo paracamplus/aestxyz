@@ -6,12 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1272
+VERSION: 1456
 
 private_key_file: /opt/z.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/z.paracamplus.com
-version: 1272
+version: 1456
 lang: fr
 decoration:
     ue_url: http://info.paracamplus.com/
@@ -205,7 +205,7 @@ Controller::Skill:
       waitingImage: /static/5-1.gif
 
 Controller::OneLiner:
-   version: 1272
+   version: 1456
 # Use the same insecure key as the A server:
    private_key_file: /opt/z.paracamplus.com/fw4excookie.insecure.key
    campaignName: free
@@ -254,7 +254,7 @@ Controller::Badge:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/z.paracamplus.com/fw4excookie.insecure.key
-  version: 1272
+  version: 1456
   x:
      prefix: /x/
      remote: x.paracamplus.com

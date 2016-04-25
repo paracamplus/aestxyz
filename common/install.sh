@@ -354,6 +354,8 @@ then
     then
         echo "*** ${DOCKERIMAGE}:${DOCKERIMAGETAG} is ${DOCKERIMAGE}:$REALTAG ($LATEST)"
         DOCKERIMAGETAG=$REALTAG
+    else
+        DOCKERIMAGETAG=$LATEST
     fi
 fi
 
@@ -444,7 +446,7 @@ fi
 echo $CID > docker.cid
 # Record the version of the Docker image:
 #docker ps -l | awk '/paracamplus/ {print $2}' > docker.tag
-echo "${DOCKERIMAGE}:${DOCKERIMAGETAG}" > docker.tag
+echo "${LATEST} ${DOCKERIMAGE}:${DOCKERIMAGETAG}" > docker.tag
 # BUG in Docker 1.3.2: don't use . as target of 'docker cp':
 docker cp ${CID}:/etc/ssh/ssh_host_ecdsa_key.pub `pwd`/
 KEY="$(cat ./ssh_host_ecdsa_key.pub)"

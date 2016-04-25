@@ -1,17 +1,18 @@
 ---
 # This is the deployment configuration of the LI218 server on Docker
+# Version pour 2I015
 
 name: Paracamplus::FW4EX::LI218
 encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1272
+VERSION: 1411
 
 private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li218.paracamplus.com
-version: 1272
+version: 1411
 controllers :
    - Authenticate
    - Doc
@@ -31,12 +32,12 @@ controllers :
 
 lang: fr
 decoration:
-    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/2I012-2015fev/
+    ue_url: http://www-licence.ufr-info-p6.jussieu.fr/lmd/licence/2014/ue/2I015-2015fev/
     siteUrl: http://li218.paracamplus.com/
-    ue_code: 2I012
+    ue_code: 2I015
     lcAppName: li218
     pagetitle: "Environnement de développement sous Linux"
-    title: 2I012
+    title: 2I015
     ue_title: "Environnement de développement sous Linux"
 
 # Two different configurations for database access. It will be choosen
@@ -270,7 +271,7 @@ Controller::Whoswho:
 Controller::Skill:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
-   personGroupName: li218-2015fev
+   personGroupName: 2I015-2015fev
    exerciseGroupName: li218-2015fev
    startTime: 2014-09-01
    endTime:   2015-02-01
@@ -308,7 +309,7 @@ XXController::Progress:
    certificateServer: http://paracamplus.com
 
 Controller::OneLiner:
-   version: 1272
+   version: 1411
 # Use the same insecure key as the A server:
    private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
    campaignName: li218-2015fev
@@ -332,7 +333,7 @@ Controller::SaveRestaure:
 # The stylesheet (.xsl) must be reachable as a template (.tt)
 Controller::Proxy:
   private_key_file: /opt/li218.paracamplus.com/fw4excookie.insecure.key
-  version: 1272
+  version: 1411
 #  verbose : 110
   x:
      prefix: /x/

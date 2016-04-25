@@ -15,7 +15,7 @@ if [ -f /root/RemoteScripts/root-$MODULE.tgz ]
 then ( 
         echo "Populate container"
         cd /
-        tar xvzf /root/RemoteScripts/root-$MODULE.tgz || exit 21
+        tar xvzf /root/RemoteScripts/root-$MODULE.tgz --overwrite || exit 21
         rm -f /root/RemoteScripts/root-$MODULE.tgz
      )
 fi
@@ -73,13 +73,13 @@ then
             echo "Install Catalyst /opt/$HOSTNAME/Templates"
             mkdir -p /opt/$HOSTNAME
             cd /opt/$HOSTNAME
-            tar xvzf /root/RemoteScripts/$MODULE.tgz Templates
+            tar xvzf /root/RemoteScripts/$MODULE.tgz --overwrite Templates
          )
          (
              echo "Install /var/www/$HOSTNAME"
              mkdir -p /var/www/$HOSTNAME
              cd /var/www/$HOSTNAME
-             tar xvzf /root/RemoteScripts/$MODULE.tgz 
+             tar xvzf /root/RemoteScripts/$MODULE.tgz --overwrite
              rm -rf Templates
          )
          rm -f /root/RemoteScripts/$MODULE.tgz 

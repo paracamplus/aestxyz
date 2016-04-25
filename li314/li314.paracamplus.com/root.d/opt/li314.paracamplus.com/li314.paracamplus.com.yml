@@ -6,12 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1272
+VERSION: 1411
 
 private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
 
 tmpDir: /opt/tmp/li314.paracamplus.com
-version: 1272
+version: 1411
 controllers :
    - Authenticate
    - Doc
@@ -244,7 +244,7 @@ Controller::Progress:
    certificateServer: http://paracamplus.com
 
 Controller::OneLiner:
-   version: 1272
+   version: 1411
 # Use the same insecure key as the A server:
    private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
    campaignName: li314-2014oct
@@ -269,7 +269,7 @@ Controller::Stats:
 Controller::Proxy:
   verbose: 0
   private_key_file: /opt/li314.paracamplus.com/fw4excookie.insecure.key
-  version: 1272
+  version: 1411
   x:
      prefix: /x/
      remote: x.paracamplus.com

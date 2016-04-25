@@ -13,7 +13,7 @@
 
 # Descriptive:
 configname: VMmd
-version: 1262
+version: 1454
 tmpdir:  /home/md/tmp
 pidfile: /home/md/md.pid
 rngschemafile: /opt/vmmd.paracamplus.com/fw4ex.rng
@@ -69,7 +69,7 @@ scheduler:
          ldbuser: transmitter
          ldbpassword: Glyrywel3
          tunneluser: saver
-         tunneluserkey: saver_dsa
+         tunneluserkey: saver2_rsa
 #
 # On sauve systematiquement sur s.paracamplus.com Il faut que sur
 # s.paracamplus.com, les repertoires [bes] appartiennent a fw4ex:fw4ex.
@@ -141,7 +141,7 @@ DBtunnel :
     forwardedPort: 5432
     remotePort: 5432
     remoteUser: saver
-    privateKey: /home/fw4ex/.ssh/saver_dsa
+    privateKey: /home/fw4ex/.ssh/saver2_rsa
     dbtunnelpidfile: /home/md/dbtunnel.pid
 
 # Base locale

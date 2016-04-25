@@ -9,8 +9,10 @@ EOF
 }
 
 start () {
-    echo "############ START starman #####"  >> /var/log/apache2/error.log
-    /root/RemoteScripts/start-55-perlHttpServer.sh
+    {
+        echo "############ START starman #####"  
+        /root/RemoteScripts/start-55-perlHttpServer.sh 
+    } >> /var/log/apache2/error.log 2>&1
 }
 
 # Stop all starman processes
@@ -51,22 +53,24 @@ watch () {
     local GROUP=$( top -b -n 1 | /root/RemoteScripts/filterStarman.pl )
     if [ "$GROUP" = '' ]
     then 
-        echo "############ CHECK starman #####"  >> /var/log/apache2/error.log
+        echo "############ CHECKED starman #####"  
     else {
-            echo "############ AMOK starman.sh #####"  
+            echo "############ AMOK starman.sh (ps) #####"  
             ps -eo pgrp,pid,pcpu,time,priority,cmd
+            echo "############ AMOK starman.sh (top) #####"  
+            top -b -n 1
             echo "############ RESTARTING1 starman at `date` #####"  
         } >> /var/log/apache2/error.log
         /root/RemoteScripts/starman.sh restart
-    fi
+    fi >> /var/log/apache2/error.log
     # Restart if not running!
-    if /root/RemoteScripts/starman.sh status
+    if /root/RemoteScripts/starman.sh status >/dev/null 2>&1
     then :
     else
-        echo "############ RESTARTING2 starman at `date` #####" \
-             >> /var/log/apache2/error.log
-        /root/RemoteScripts/starman.sh restart
-    fi
+        echo "############ RESTARTING2 starman at `date` #####" 
+        start
+        echo "############ RESTARTED starman at `date` #####" 
+    fi >> /var/log/apache2/error.log
 }
 
 # Run watch every minute with root's crontab
@@ -117,7 +121,13 @@ status () {
     ps -eo pgrp,pid,pcpu,time,priority,cmd | \
         grep -E 'starman worker [-]-daemonize' | \
         tee /tmp/starman.status
-    grep -q starman < /tmp/starman.status
+    if grep -q starman < /tmp/starman.status
+    then
+        echo "Starman is running"
+    else
+        echo "Starman is down"
+        exit 2
+    fi
 }
 
 case "$1" in

@@ -88,4 +88,9 @@ starman --daemonize --listen 0:80 \
     -M${PERLMODULE} \
     /opt/tmp/$HOSTNAME/server.psgi
 
+# Monitor the starman server. From time to time, it becomes mad
+# and consumes 100% of the CPU especially when the perl modules
+# cannot be loaded (a syntax error for instance).
+/root/RemoteScripts/starman.sh install-watch
+
 # end of start-55-perlHttpServer.sh

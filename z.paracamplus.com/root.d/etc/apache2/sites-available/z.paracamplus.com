@@ -2,6 +2,7 @@
 # Check syntax with /usr/sbin/apache2ctl -t
 
   ServerName  z.paracamplus.com
+  ServerAlias z0.paracamplus.com
               # temporary:
               ServerAlias z.fw4ex.org
   ServerAdmin fw4exmaster@paracamplus.com

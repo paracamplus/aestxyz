@@ -6,13 +6,14 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1415
+VERSION: 1454
 #testing: 1
+sbase: http://p.paracamplus.com
 
 private_key_file: /opt/p.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/p.paracamplus.com
 problemdir: /var/log/apache2/problems
-version: 1415
+version: 1454
 campaignName: p
 controllers :
    - Doc
@@ -20,12 +21,12 @@ controllers :
    - Profile
 #   - Root
    - FromUPMC
-   - Embody
+#   - Embody
    - GoogleOpenID
 #   - LinkedInOpenID
    - Admin
    - Admin::Problem
-   - Restricted
+#   - Restricted
 #   - SaveRestaure
 
 lang: fr
@@ -90,7 +91,9 @@ View::XSLT:
 View::TT:
     INCLUDE_PATH: 
         - /opt/p.paracamplus.com/Templates
+        - /opt/p.paracamplus.com/Templates/W3css
         - /opt/p.paracamplus.com/Templates/HandMade
+        - /opt/p.paracamplus.com/Templates/Mails
         - /opt/p.paracamplus.com/Templates/Default
     ENCODING: utf-8
     render_die: 1
@@ -100,8 +103,8 @@ View::TT:
 
 Controller::Root:
   sendLinkBaseUrl: http://p.paracamplus.com/
-  smtpfrom: CodeGradX confirmation <noreply@codegradx.org>
-  sendLinkSubject: "Confirmation de courriel"
+  smtpfrom: CodeGradX infrastructure <noreply@codegradx.org>
+  sendLinkSubject: "Correspondance"
   smtpservers:
     - 127.0.0.1
   lang: fr
@@ -129,7 +132,9 @@ Controller::Root:
         disconnect: "Vous avez bien été déconnecté!"
   defaultGroup: free
   UAversion: 1
-  confirmMail: confirmMail.tt
+  confirmMail:  confirmMail.tt
+  sendlinkMail: sendlinkMail.tt
+  welcomeMail:  welcomeMail.tt
 
 Controller::Profile:
    campaignName: p

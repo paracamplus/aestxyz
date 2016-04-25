@@ -46,6 +46,16 @@ RUN /root/RemoteScripts/setup.sh
 EOF
 fi
 
+(
+    cd ../Servers/
+    mkdir -p w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME
+    cd w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME
+    mkdir -p lib
+    ( cd lib ; ln -sf ../../../../perllib/Paracamplus . )
+    mkdir -p Templates
+    (cd Templates ; ln -sf ../../../GenericApp/Templates Defaults )
+)
+
 if ! [ -d ../Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME ]
 then
     echo "Missing ../Servers/w.$SHORTBASENAME/Paracamplus-FW4EX-$UPPERSHORTBASENAME"
@@ -133,6 +143,13 @@ PROVIDE_SMTP=true
 EOF
 fi
 . $HOSTNAME/config.sh
+
+(
+    cd $HOSTNAME
+    ln -sf ../common/check-05-varwwwstatic.sh .
+    ln -sf ../common/check-10-endStart.sh .
+    ln -sf ../common/check-outer-availability.sh .
+)
 
 mkdir -p $HOSTNAME/root.d/var/www/$HOSTNAME
 if ! [ -f $HOSTNAME/root.d/var/www/$HOSTNAME/index.html ]
@@ -305,11 +322,11 @@ PROVIDE_APACHE=false
 PROVIDE_SMTP=false
 # special for bijou:
 REFRESH_DOCKER_IMAGES=false
-SSHDIR=/tmp/Docker/${HOSTNAME}/ssh.d
+SSHDIR=/tmp/Docker/${TESTHOSTNAME}/ssh.d
 FW4EX_MASTER_KEY=/opt/common-paracamplus.com/fw4excookie.insecure.key
-LOGDIR=/tmp/Docker/${HOSTNAME}/log.d
+LOGDIR=/tmp/Docker/${TESTHOSTNAME}/log.d
 SHARE_FW4EX_LOG=true
-# end of $HOSTNAME/config.sh
+# end of $TESTHOSTNAME/config.sh
 EOF
 fi
 . $TESTHOSTNAME/config.sh
@@ -393,15 +410,15 @@ cat <<EOF
 
 **************************************************************
 Files to be edited for Docker:
-   $SHORTNAME/$HOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml
-then      m create.aestxyz_$SHORTNAME COURSE=$SHORTNAME
+   $SHORTNAME/$INNERHOSTNAME/root.d/opt/$HOSTNAME/$HOSTNAME.yml
+then
+      m create.aestxyz_$SHORTNAME COURSE=$SHORTNAME
 
-Files to be edited to deploy $HOSTNAME:
-   $HOSTNAME/root.d/etc/apache2/sites-available/$HOSTNAME
-then    m deploy.$HOSTNAME COURSE=$SHORTNAME
+Deploy $INNERHOSTNAME with
+      m deploy.$INNERHOSTNAME COURSE=$SHORTNAME
 
 Test deployment on $TESTHOSTNAME:
-    ( cd $TESTHOSTNAME ; m run.local )
+      ( cd $TESTHOSTNAME ; m run.local )
 
 EOF
 

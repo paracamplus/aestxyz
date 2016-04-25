@@ -12,6 +12,13 @@ WORKDIR /root/
 ENV HOME /root/
 ADD RemoteScripts /root/RemoteScripts
 
+# Update Debian packages
+RUN /root/RemoteScripts/install-aptitude-packages.sh /root/RemoteScripts/debian-modules-ms.txt
+
+# Update Perl modules
+RUN /root/RemoteScripts/install-perl-modules.sh /root/RemoteScripts/perl-modules-ms.txt
+
+# install specific languages java, bigloo, racket
 RUN /root/RemoteScripts/setup-22-languages.sh
 # @bijou: 12 min
 

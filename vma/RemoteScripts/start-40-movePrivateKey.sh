@@ -3,6 +3,10 @@
 # DockHub, private keys are kept in a volume on the Docker host and
 # mounted when the container is run.
 
+ls -l /root/.ssh/
+ls -l /root/ssh.d/
+ls -l /usr/local/lib/site_perl/Paracamplus
+
 if [ -r /root/.ssh/fw4excookie.insecure.key ]
 then 
     mkdir -p /opt/$HOSTNAME/

@@ -7,6 +7,8 @@
 # with the specific config.sh to install.sh these two containers.
 cd ${0%/*}/
 
+REPOSITORY=www.paracamplus.com:5000/
+
 usage () {
     cat <<EOF
 Usage: ${0##*/} start [-r] [-l]
@@ -35,9 +37,9 @@ EOF
 }
 
 refresh () {
-    docker pull paracamplus/aestxyz_vmms
+    docker pull ${REPOSITORY}paracamplus/aestxyz_vmms
     remove_former_images vmms
-    docker pull paracamplus/aestxyz_vmmdr
+    docker pull ${REPOSITORY}paracamplus/aestxyz_vmmdr
     remove_former_images vmmdr
 }
 
@@ -78,7 +80,7 @@ show_md_log () {
             sleep 1
         fi
     done
-    tail -f vmmdr.paracamplus.com/log.d/md/md.log
+    tail -F vmmdr.paracamplus.com/log.d/md/md.log
 }
 
 connect () {
@@ -137,8 +139,8 @@ dist () {
     rsync -avu $OUT.bf info.fw4ex.org:/var/www/info.fw4ex.org/vmmdr+vmms/
 # create latest link........
     # This will push all the tagged images with these names:
-    docker push paracamplus/aestxyz_vmms
-    docker push paracamplus/aestxyz_vmmdr
+    docker push ${REPOSITORY}paracamplus/aestxyz_vmms
+    docker push ${REPOSITORY}paracamplus/aestxyz_vmmdr
 }
 
 cryptFile () {

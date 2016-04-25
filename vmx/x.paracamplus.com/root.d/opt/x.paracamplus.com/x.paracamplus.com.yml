@@ -4,10 +4,12 @@
 name: Paracamplus::FW4EX::X
 encoding: UTF-8
 default_view: TT
+lang: fr
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1272
+VERSION: 1454
 
+# Use the same insecure key as the A server:
 private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Catalyst::Engine:
@@ -35,14 +37,8 @@ viatcp-Model::FW4EXDB:
        - pg_enable_utf8: 1
 
 Controller::Root:
-    version: 1272
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Direct:
-    version: 1272
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     # 8 jours
     timeout: 691200
     ephemeralId: 32825
@@ -59,10 +55,7 @@ Controller::Direct:
           wrongCombination: "Mauvais nom de connexion ou mauvais mot de passe!"
 
 Controller::FromUPMC:
-    version: 1272
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
-    endTime: 20110201T00:00:00
+    endTime: 20310201T00:00:00
     message:
       en:
           notAuthenticated: "Authentication required!"
@@ -71,20 +64,17 @@ Controller::FromUPMC:
           wrongCombination: "Wrong combination of login and password!"
 
 Controller::FromMOOC:
-    version: 1272
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     smtpfrom: CodeGradX confirmation <noreply@paracamplus.com>
     sendLinkSubject: "Confirmation de courriel"
-    domain: http://mooc-li101-2015mar.paracamplus.com/
-    sendLinkBaseUrl: http://mooc-li101-2015mar.paracamplus.com/authenticate/checklink/
+    domain: http://x.paracamplus.com/
+    sendLinkBaseUrl: http://x.paracamplus.com/identification/checklink/
     smtpservers:
       - 127.0.0.1
     message:
       fr:
           missingEmail: "Courriel manquant!"
           badEmail:     "Pas un courriel!"
-    defaultGroup: mooc-li101-2015mar
+    defaultGroup: free,scm,js,unx,jfp
     checkAPPID: programmation-recursive
 # NOTA: mooc-li101-2015mar ne devrait pas apparaitre dans ces parametres!!!
 
@@ -96,112 +86,82 @@ Controller::FromMOOC:
 # URI DE REDIRECTION  http://x.paracamplus.com/openid/check
 # ORIGINES JAVASCRIPT http://mooc-li101-2015mar.paracamplus.com/
 
-Controller::OpenID:
+# Nouveau parametrage pour CodeGradX dans 
+# https://console.developers.google.com/project/codegradx/apiui/credential?highlightClient=812017552156-9m368hppmgsk4o7l35jumvl9uk38dr2k.apps.googleusercontent.com
+# clientID: 812017552156-9m368hppmgsk4o7l35jumvl9uk38dr2k.apps.googleusercontent.com
+# client secret: YnrudakxSWrqSNX7oTRj1dfh
+# uri de redirection http://{x,x0,x1}.paracamplus.com/
+# pas d'origine javascript!
+
+Controller::GoogleOpenID:
     verbose: 10
-    # Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     cache_dir: /opt/x.paracamplus.com/tmp/cache
     provider:  'https://accounts.google.com/o/oauth2/auth?'
+## Probablement pour mooc-li101-2014fev
 #    client_id: '1071555760360-bqi9hoesteh04npods0tjtnt8npu96n0.apps.googleusercontent.com'
 #    client_secret: '17bsCe7sdujQScEzofXXyYAQ'
-    client_id: '846108258081-dmrdejb4p5ihqab1j1d84qe8hjmkglqm.apps.googleusercontent.com'
-    client_secret: 'O7s-mLzP_F9obJjSEkb7o0Tr'
-    redirect_uri:  'http://x.paracamplus.com/openid/check'
+## Pour mooc-li101-2015mar
+#    client_id: '846108258081-dmrdejb4p5ihqab1j1d84qe8hjmkglqm.apps.googleusercontent.com'
+#    client_secret: 'O7s-mLzP_F9obJjSEkb7o0Tr'
+## Pour codegradx:
+    client_secret: 'YnrudakxSWrqSNX7oTRj1dfh'
+    client_id: '812017552156-9m368hppmgsk4o7l35jumvl9uk38dr2k.apps.googleusercontent.com'
+    redirect_uri:  'http://x.paracamplus.com/googleopenid/check'
     realm:         'http://*.paracamplus.com/'
-    checker:   'https://accounts.google.com/o/oauth2/token'
+    checker:       'https://accounts.google.com/o/oauth2/token'
     googleCertsUrl: https://www.googleapis.com/oauth2/v1/certs
-#    behavior: register
+
+Controller::LinkedInOpenID:
+    verbose: 10
+    cache_dir: /opt/x.paracamplus.com/tmp/cache
+    provider:  'https://www.linkedin.com/uas/oauth2/authorization?'
+## Pour codegradx:
+    client_secret: 'XeFo5M1tT52qsyGZ'
+    client_id:     '771cvyfg4j0v0z'
+    redirect_uri:  'https://paracamplus.com/x/linkedinopenid/check'
+    checker:       'https://www.linkedin.com/uas/oauth2/accessToken'
 
 Controller::Person:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sServerUrl: /s/
     xServerUrl: /
 
 Controller::History:
-    version: 1272
     count: 20
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sServerUrl: /sh/s/
     xServerUrl: /xh/
 
 Controller::Exercise:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sServerUrl: /s/
     xServerUrl: /
 
 Controller::Things:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
     defaultContentType: application/json
     maximum: 15
 
 Controller::Jobs:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
     defaultContentType: application/json
     maximum: 15
 
 Controller::Exercises:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Batches:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Persons:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Author:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::AuthorExercises:
-    version: 1272
-    user_cookie_key: u
-# Use the same insecure key as the A server:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Glimpse:
-    private_key_file:  /opt/x.paracamplus.com/fw4excookie.insecure.key
     duration: 5
     defaultContentType: application/json
 
 Controller::PersonGroup:
-    version: 1272
-    user_cookie_key: u
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
 
 Controller::Enroll:
-    version: 1272
-    user_cookie_key: u
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     home_page: /authenticationAnswer
 
 Controller::Register:
-    version: 1272
-    user_cookie_key: u
-    private_key_file: /opt/x.paracamplus.com/fw4excookie.insecure.key
     sendLinkBaseUrl: http://x.paracamplus.com/
     smtpfrom: FW4EX master <keymaster@paracamplus.com>
     smtpservers:
@@ -209,11 +169,48 @@ Controller::Register:
     confirmationLinkSubject: "Lien temporaire"
 # NOTA unifier sendlinkMail.tt avec confirmlinkMail.tt ?
 
+Controller::Identification:
+  sendLinkBaseUrl: http://x.paracamplus.com/identification/
+  smtpfrom: CodeGradX confirmation <noreply@codegradx.org>
+  sendLinkSubject: "Confirmation de courriel"
+  smtpservers:
+    - 127.0.0.1
+  message:
+    fr:
+        missingEmail: "Veuillez indiquer votre courriel!"
+        badEmail:     "Votre courriel ne ressemble pas à un courriel!"
+        updateProfile: "Pensez à mettre à jour votre profil!"
+        givePassword: "Vous avez oublié de m'indiquer votre mot de passe!"
+        unreachableDB: "Erreur interne, la base de données est injoignable!"
+        DBproblem:     "Erreur interne en base de données!"
+        wrongCombination: "Courriel ou mot de passe incorrect!"
+        invalidLink: "Ce lien temporaire est invalide!"
+        obsoleteLink: "Ce lien temporaire est obsolète!"
+        invalidPerson: "Vous avez été désinscrit!"
+        undefinedPerson: "Vous êtes vous déjà inscrit ?"
+        unfoundPerson: "Je ne vous trouve pas parmi les inscrits ?"
+        alreadyUsedEmail: "Vous êtes déjà inscrit!"
+        disconnect: "Vous êtes maintenant anonyme!"
+        unknownPersonId: "Je ne vois pas qui vous êtes!"
+        unknownLogin: "Mais qui êtes-vous ?"
+        differingPasswords: "Mots de passe différents ?"
+        incorrectPassword: "Mot de passe incorrect!"
+        missingOnePassword: "Mot de passe manquant!"
+  defaultGroup: free,scm,js,unx,jfp
+  UAversion: 2
+  confirmMail: confirmMail.tt
+  sendlinkMail: sendlinkMail.tt
+
 Plugin::Static::Simple:
     include_path:
         - /var/www/x.paracamplus.com/
 
+custom-error-message:
+  error-template: errorAnswer.tt
+
 View::TT:
+#   DEBUG: 3
+    ENCODING: 'utf-8'
     INCLUDE_PATH: 
         - /opt/x.paracamplus.com/Templates/
         - /opt/x.paracamplus.com/Templates/Default/

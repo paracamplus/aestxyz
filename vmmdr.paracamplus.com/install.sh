@@ -1,1 +1,1 @@
-../common/install.sh
+../../common/install.sh

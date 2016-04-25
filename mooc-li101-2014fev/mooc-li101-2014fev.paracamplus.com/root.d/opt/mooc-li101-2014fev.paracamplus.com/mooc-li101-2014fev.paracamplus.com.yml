@@ -6,12 +6,12 @@ encoding: UTF-8
 default_view: TT
 abort_chain_on_error_fix: 1
 using_frontend_proxy: 1
-VERSION: 1262
+VERSION: 1290
 
 private_key_file: /opt/mooc-li101-2014fev.paracamplus.com/fw4excookie.insecure.key
 tmpDir: /opt/tmp/mooc-li101-2014fev.paracamplus.com
 problemdir: /var/log/apache2/problems
-version: 1262
+version: 1290
 controllers :
    - Authenticate
    - Doc

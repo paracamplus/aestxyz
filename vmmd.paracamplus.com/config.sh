@@ -7,7 +7,7 @@ then
 else
     DOCKERNAME=vmmd1
 fi
-DOCKERIMAGE=paracamplus/aestxyz_${DOCKERNAME}
+DOCKERIMAGE=www.paracamplus.com:5000/paracamplus/aestxyz_${DOCKERNAME}
 #
 ADDITIONAL_FLAGS=" --privileged "
 # 

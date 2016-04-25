@@ -1,17 +1,24 @@
 #! /bin/bash
+# Display some information about the current container.
+# This script is run from the directory where install.sh stays.
 
-IP=`cat /tmp/Docker/$HOSTNAME/docker.ip`
+IP=`cat ./docker.ip`
+SCRIPTSDIR=$(cd ../Scripts/ ; pwd)
 cat <<EOF
 
   URL to access this Docker container ($HOSTNAME):
-    http://$IP:$HOSTPORT/
+    http://$IP/
+    http://127.0.0.1:$HOSTPORT/
 
   SSH to this Docker container with:
-    /tmp/Docker/Scripts/connect.sh $HOSTNAME
-    ssh -i /tmp/Docker/$HOSTNAME/root_rsa root@$IP 
+    $SCRIPTSDIR/connect.sh $HOSTNAME
+    ssh -i `pwd`/root_rsa root@$IP 
+
+  See installation log with
+   docker logs $DOCKERNAME | less
 
   See logs with
-    tail -F /tmp/Docker/$HOSTNAME/log.d/error.log
+    sudo tail -F `pwd`/rootfs/var/log/apache2/error.log
 
 EOF
 
