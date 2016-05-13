@@ -7,6 +7,7 @@ source /root/RemoteScripts/$HOSTNAME.sh
 #UNIXNAME=${HOSTNAME//[.-]/_}
 PERLMODULE=Paracamplus::FW4EX::${MODULE}
 WWWUSER=web2user
+WWWGROUP=www-data
 
 if ! id $WWWUSER
 then
@@ -30,7 +31,10 @@ fi
 
 if [ -d /var/log/apache2 ]
 then 
-    logrotate --force /etc/logrotate.d/apache2 
+    if which logrotate
+    then
+        logrotate --force /etc/logrotate.d/apache2 
+    fi
 else 
     mkdir -p /var/log/apache2
     chmod 750 /var/log/apache2
@@ -82,7 +86,7 @@ done
 cd /opt/tmp/$HOSTNAME
 export STARMAN_DEBUG=1
 /usr/local/bin/starman --daemonize --listen 0:80 \
-    --user ${WWWUSER} --group ${WWWUSER} \
+    --user ${WWWUSER} --group ${WWWGROUP} \
     --pid $PIDFILE --workers 5 \
     --error-log /var/log/apache2/error.log \
     --access-log /var/log/apache2/access.log \

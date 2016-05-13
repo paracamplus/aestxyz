@@ -24,7 +24,7 @@ PROVIDE_SMTP=false
 DOCKERIMAGETAG=${DOCKERIMAGETAG:-latest}
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 DBHOST=db.paracamplus.com
-REPOSITORY=www.paracamplus.com:5000
+REPOSITORY=${REPOSITORY:-www.paracamplus.com:5000/}
 source config.sh
 
 INNERHOSTNAME=${INNERHOSTNAME:-$HOSTNAME}
@@ -467,16 +467,31 @@ then
     echo "$IP $KEY"  >> /etc/ssh/ssh_known_hosts
 fi
 
-# Find rootfs with Docker ^1.10
-for h in $( ls -t1 /var/lib/docker/aufs/mnt/ | head -n 5 )
+# find rootfs(?) with Docker ^1.11
+# NOTA: the inner /opt/$INNERHOSTNAME may not be in the same layer as
+# /var/www/$INNERHOSTNAME! In fact, check-05-varwww just needs the
+# last directory.
+for h in $( ls -t1 /var/lib/docker/aufs/diff/ )
 do
-    if [ -d /var/lib/docker/aufs/mnt/$h/opt/$INNERHOSTNAME ]
+    if [ -d /var/lib/docker/aufs/diff/$h/var/www/$INNERHOSTNAME ]
     then
-        ln -sf /var/lib/docker/aufs/mnt/$h rootfs
+        ln -sf /var/lib/docker/aufs/diff/$h rootfs
         break
     fi
 done
-# This does not work starting with Docker 1.10
+if [ ! -L rootfs ] 
+then
+    # Find rootfs with Docker ^1.10
+    for h in $( ls -t1 /var/lib/docker/aufs/mnt/ | head -n 5 )
+    do
+        if [ -d /var/lib/docker/aufs/mnt/$h/opt/$INNERHOSTNAME ]
+        then
+            ln -sf /var/lib/docker/aufs/mnt/$h rootfs
+            break
+        fi
+    done
+fi
+# This does no longer work starting with Docker 1.10
 if [ ! -L rootfs ] 
 then
     if [ -d /var/lib/docker/devicemapper/mnt/$CID/rootfs/ ]
@@ -490,6 +505,11 @@ fi
 if [ ! -L rootfs ] 
 then
     echo "Could not find rootfs for the fresh container!"
+    exit 54
+fi
+if [ $(ls -1 rootfs/ | wc -l) -lt 1 ]
+then 
+    echo "rootfs is empty !?"
     exit 54
 fi
 

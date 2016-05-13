@@ -13,6 +13,8 @@ start () {
         echo "############ START starman #####"  
         /root/RemoteScripts/start-55-perlHttpServer.sh 
     } >> /var/log/apache2/error.log 2>&1
+    # If not yet done:
+    service cron start
 }
 
 # Stop all starman processes
@@ -53,13 +55,13 @@ watch () {
     local GROUP=$( top -b -n 1 | /root/RemoteScripts/filterStarman.pl )
     if [ "$GROUP" = '' ]
     then 
-        echo "############ CHECKED starman #####"  
+        echo "############ CHECKED starman at `date -u` #####"  
     else {
-            echo "############ AMOK starman.sh (ps) #####"  
+            echo "############ AMOK starman.sh (ps) at `date -u` #####"  
             ps -eo pgrp,pid,pcpu,time,priority,cmd
-            echo "############ AMOK starman.sh (top) #####"  
+            echo "############ AMOK starman.sh (top) at `date -u` #####"  
             top -b -n 1
-            echo "############ RESTARTING1 starman at `date` #####"  
+            echo "############ RESTARTING1 starman at `date -u` #####"  
         } >> /var/log/apache2/error.log
         /root/RemoteScripts/starman.sh restart
     fi >> /var/log/apache2/error.log

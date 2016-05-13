@@ -5,6 +5,9 @@
 chown root:  /root
 chmod go-rwx /root
 
-service cron start
+if ! service cron start
+then
+     tail -n20 /var/log/syslog
+fi
 
 # end of start-62-crond.sh

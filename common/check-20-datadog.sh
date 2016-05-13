@@ -5,6 +5,9 @@
 #    ( cd Docker/a1.paracamplus.com ; HOSTNAME=s1.paracamplus.com ./check-20-datadog.sh ) 
 #    ( cd Docker/a.paracamplus.com ; HOSTNAME=s.paracamplus.com ./check-20-datadog.sh ) 
 
+# Trial period exhausted.
+exit
+
 REALHOSTNAME=${HOSTNAME}
 LOG2DD=./log2dd.pl
 

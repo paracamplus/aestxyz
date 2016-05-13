@@ -1,4 +1,5 @@
 #! /bin/bash
+# Obsolete: see start-62-crond.sh
 
 if ! /etc/init.d/cron start
 then

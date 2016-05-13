@@ -73,6 +73,7 @@ File::Spec
 File::Temp
 File::Touch
 File::chmod
+File::chown
 IO::File
 IO::Handle
 IO::Scalar
