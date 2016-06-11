@@ -19,9 +19,12 @@ SHARE_FW4EX_LOG=false
 SHARE_FW4EX_PERLLIB=
 SHARE_VAR_WWW=
 PROVIDE_APACHE=true
+APACHE_RANK=499
 NEED_POSTGRESQL=false
+REALLY_NEED_POSTGRESQL=false
 PROVIDE_SMTP=false
 DOCKERIMAGETAG=${DOCKERIMAGETAG:-latest}
+REFRESH_DOCKER_IMAGES_FAIL=true
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 DBHOST=db.paracamplus.com
 REPOSITORY=${REPOSITORY:-www.paracamplus.com:5000/}
@@ -53,7 +56,8 @@ Usage: ${0##*/} [option]
   -e CMD    run CMD instead of start.sh (and its options) in the container
   -D V=v    exports the variable V with value v in the container
   -o STR    adds STR to the options of start.sh
-  -r        refresh docker images
+  -r        refresh docker images, fail if not possible 
+  -R        refresh docker images if possible
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -94,9 +98,15 @@ do
             # additional flags for start.sh in the container
             START_FLAGS="$START_FLAGS $OPTARG"
             ;;
-        R|r)
+        r)
             # Force a refresh of the Docker images
             REFRESH_DOCKER_IMAGES=true
+            REFRESH_DOCKER_IMAGES_FAIL=true
+            ;;
+        R)
+            # Try to refresh the Docker images
+            REFRESH_DOCKER_IMAGES=true
+            REFRESH_DOCKER_IMAGES_FAIL=false
             ;;
         \?)
             echo "Bad option $opt"
@@ -254,7 +264,9 @@ provide_postgresql () {
         for f in /etc/postgresql/*/main/pg_ident.conf
         do
             if ! grep -q fw4exmap < $f
-            then {
+            then
+                echo "Patching $f"
+                {
                     echo 'fw4exmap        www-data                web2user'
                     echo 'fw4exmap        www-data                watcher'
                 } >> $f
@@ -271,8 +283,12 @@ provide_postgresql () {
             #local   all         all            ident
             if ! grep -q 'map=fw4exmap' < $f
             then
-                echo "Misconfiguration of $f"
-                exit 54
+                echo "Patching $f"
+                cat >> $f <<EOF
+local   fw4ex       web2user       ident map=fw4exmap
+local   all         all            ident
+EOF
+                service postgresql restart
             fi
         done
 
@@ -307,6 +323,10 @@ then
     then
         echo "Docker is running on $DBHOST ($MYIP)($DBIP)"
         provide_postgresql
+    elif ${REALLY_NEED_POSTGRESQL}
+    then
+        echo "Share Postgresql socket with the container"
+        provide_postgresql
     fi
     # NOTA: if we are not on the dbhost then the container will use
     # a tcp connection towards the database. See start-45-db.sh and
@@ -326,7 +346,9 @@ then
     then 
         echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
         # Pay attention to ~/.docker/config.json
-        exit 54
+        if ${REFRESH_DOCKER_IMAGES_FAIL}
+        then exit 54
+        fi
     fi
 elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
 then 
@@ -337,7 +359,9 @@ else
     then 
         echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
         # Pay attention to ~/.docker/config.json
-        exit 54
+        if ${REFRESH_DOCKER_IMAGES_FAIL}
+        then exit 54
+        fi
     fi
 fi
 
@@ -618,7 +642,7 @@ then
                 for conf in $( cd ./root.d/etc/apache2/sites-available/ ; ls -1 )
                 do (
                         cd /etc/apache2/sites-enabled/
-                        ln -sf ../sites-available/$conf 499-$conf
+                        ln -sf ../sites-available/$conf ${APACHE_RANK}-$conf
                     )
                 done
             fi
@@ -671,6 +695,6 @@ do
     fi
 done
 
-echo "Docker container ${DOCKERNAME} ready"
+echo "Docker container ${DOCKERNAME} ready at `date`"
 
 # end of install.sh
