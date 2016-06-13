@@ -7,11 +7,11 @@
 # with the specific config.sh to install.sh these two containers.
 cd ${0%/*}/
 
-REPOSITORY=www.paracamplus.com:5000/
+export REPOSITORY=${REPOSITORY:-www.paracamplus.com:5000/}
 
 usage () {
     cat <<EOF
-Usage: ${0##*/} start [-r] [-l]
+Usage: ${0##*/} start [-r|-R] [-l]
        ${0##*/} connect [-h vmmdr|vmms]
        ${0##*/} log
        ${0##*/} stop
@@ -23,6 +23,7 @@ Usage: ${0##*/} start [-r] [-l]
 Option for start:
        -t LOG   log output to the LOG file
        -r fetch new versions of Docker images (as the refresh command)
+       -R try to fecth new versions of Docker images
        -l display the log of the Marking Driver after starting it
        -c clean previous monitor.sh processes
 
@@ -63,10 +64,10 @@ status () {
 }
 
 start () {
-    $VERBOSE vmms.paracamplus.com/install.sh
+    $VERBOSE vmms.paracamplus.com/install.sh $REFRESH_FLAG
     local CODE=$?
     [ "$CODE" -ne 0 ] && return $CODE
-    $VERBOSE vmmdr.paracamplus.com/install.sh
+    $VERBOSE vmmdr.paracamplus.com/install.sh $REFRESH_FLAG
 }
 
 show_md_log () {
@@ -215,7 +216,8 @@ HOST=no.such.host
 USER=${USER:-nobody}
 VERBOSE=
 REFRESH=false
-while getopts lrh:u:vct: opt
+REFRESH_FLAG=false
+while getopts lrRh:u:vct:d opt
 do
     case "$opt" in
         l)
@@ -224,7 +226,11 @@ do
             ;;
         r)
             # Fetch fresh images
-            REFRESH=true
+            REFRESH_FLAG=-r
+            ;;
+        R)
+            # Fetch fresh images
+            REFRESH_FLAG=-R
             ;;
         h)
             # Specify the Docker image to ssh to. Can only be vmmdr or vmms
@@ -240,6 +246,10 @@ do
             ;;
         c)
             kill_previous_monitors
+            ;;
+        d)
+            # pull images directly from public DockerHub:
+            export -n REPOSITORY
             ;;
         t)
             # Log what happened in this script:
@@ -263,7 +273,6 @@ case "$COMMAND" in
     start)
         stop
         clean
-        $REFRESH && refresh
         start
         CODE=$?
         [ "$CODE" -ne 0 ] && exit $CODE
@@ -279,7 +288,7 @@ case "$COMMAND" in
         start
         ;;
     refresh)
-        refresh
+        refresh 
         ;;
     clean)
         clean
