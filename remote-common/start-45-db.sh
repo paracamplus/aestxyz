@@ -47,9 +47,11 @@ fi
 
 (
     cd /opt/$HOSTNAME
-    sed -i.bak \
-        -e "/^${PGWAY}-Model::FW4EXDB/s#${PGWAY}-##" \
-        $HOSTNAME.yml
+    #NOTA: don't use 'sed -i' since it performs a kind of 'mv' incompatible
+    # with the way Docker mounts this file in zvmauthor
+    cp -p $HOSTNAME.yml $HOSTNAME.ymlbak
+    sed -e "/^${PGWAY}-Model::FW4EXDB/s#${PGWAY}-##" \
+        < $HOSTNAME.ymlbak > $HOSTNAME.yml
 )
 
 # end of start-45-db.sh

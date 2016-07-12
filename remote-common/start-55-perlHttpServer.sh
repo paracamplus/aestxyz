@@ -2,7 +2,7 @@
 # Start an HTTP server in Perl to minimize memory usage and avoid Apache2.
 
 export LANG=C
-source /root/RemoteScripts/$HOSTNAME.sh
+source /root/RemoteScripts/start-00-config.sh
 
 #UNIXNAME=${HOSTNAME//[.-]/_}
 PERLMODULE=Paracamplus::FW4EX::${MODULE}

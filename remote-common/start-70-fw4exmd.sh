@@ -18,6 +18,9 @@ mkdir -p /var/www/s.paracamplus.com/e
 mkdir -p /var/www/s.paracamplus.com/b
 chown -R fw4ex: /var/www/s.paracamplus.com/
 
+# This directory contains transcode which is needed by MarkEngineBase:
+export FW4EX_BIN_DIR=/home/fw4ex/bin
+
 if [ -f /root/RemoteScripts/booted ]
 then
     echo "Default configuration for qnc-fw4ex.sh:"

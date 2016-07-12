@@ -5,6 +5,9 @@
 HOSTNAME=${HOSTNAME:-no.host.name}
 source ${0%/*}/$HOSTNAME.sh
 
+# So the configuration is loaded first when starting the container:
+cp -p ${0%/*}/$HOSTNAME.sh /root/RemoteScripts/start-00-config.sh
+
 # Docker prevents these operations:
 #hostname ${HOSTNAME%%.*}
 #domainname ${HOSTNAME#*.}
