@@ -49,7 +49,7 @@ is_alive () {
 # Checks whether the DB server may be reached via ssh
 is_sshable () {
     ssh -i /opt/$HOSTNAME/dbuser_ecdsa \
-        $REMOTEUSER@$DBHOST psql -l
+        $REMOTEUSER@$DBHOST psql fw4ex -c 'select current_timestamp'
 }
 
 # Return a code telling if a network change occurred.
