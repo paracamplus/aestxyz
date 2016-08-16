@@ -28,6 +28,7 @@ REFRESH_DOCKER_IMAGES_FAIL=true
 FW4EX_MASTER_KEY=/root/.ssh/fw4excookie.insecure.key
 DBHOST=db.paracamplus.com
 REPOSITORY=${REPOSITORY:-www.paracamplus.com:5000/}
+LOGGER=nop
 source config.sh
 
 INNERHOSTNAME=${INNERHOSTNAME:-$HOSTNAME}
@@ -58,6 +59,7 @@ Usage: ${0##*/} [option]
   -o STR    adds STR to the options of start.sh
   -r        refresh docker images, fail if not possible 
   -R        refresh docker images if possible
+  -L        log (with logger) important facts
 Default option is -s $SLEEP
 
 This script should be run on a Docker host. It installs and starts a
@@ -66,9 +68,14 @@ starting script of the container. Option -e imposes the starting script.
 EOF
 }
 
+# This command just swallows its argument and does nothing
+nop () {
+    true
+}
+
 START_FLAGS=
 REFRESH_DOCKER_IMAGES=false
-while getopts e:s:inD:o:rR opt
+while getopts e:s:inD:o:rRL opt
 do
     case "$opt" in
         e)
@@ -107,6 +114,10 @@ do
             # Try to refresh the Docker images
             REFRESH_DOCKER_IMAGES=true
             REFRESH_DOCKER_IMAGES_FAIL=false
+            ;;
+        L)
+            # log important facts with logger
+            LOGGER=logger
             ;;
         \?)
             echo "Bad option $opt"
@@ -170,7 +181,8 @@ then
                         tar xzf $keyfile -U #--overwrite
                     )
                 else
-                    echo "Missing file $keyfile"
+                    echo "Missing tar file $keyfile"
+                    $LOGGER "Missing tar file $keyfile"
                     echo 57 > while.code
                     exit 57
                 fi
@@ -182,12 +194,14 @@ then
                     cp "$keyfile" ${SSHDIR}/ || exit 57
                 else
                     echo "Missing file $keyfile"
+                    $LOGGER "Missing file $keyfile"
                     echo 57 > while.code
                     exit 57
                 fi
                 ;;
             *)
                 echo "Unrecognized command $command"
+                $LOGGER "Unrecognized command $command"
                 echo 53 > while.code
                 exit 53
                 ;;
@@ -207,6 +221,7 @@ do
         if [ $status -gt 0 ]
         then 
             echo "Failed to run $f ($status)"
+            $LOGGER "Failed to run $f ($status)"
             exit $status
         fi
     fi
@@ -229,6 +244,7 @@ then
         ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${SHARE_FW4EX_PERLLIB}/Paracamplus:/usr/local/lib/site_perl/Paracamplus"
     else
         echo "Not a suitable directory ${SHARE_FW4EX_PERLLIB}" 1>&2
+        $LOGGER "Not a suitable directory ${SHARE_FW4EX_PERLLIB}" 1>&2
         exit 53
     fi
 fi
@@ -240,6 +256,7 @@ then
         ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${SHARE_VAR_WWW}:/var/www/${INNERHOSTNAME}"
     else
         echo "Cannot share ${SHARE_VAR_WWW}" 1>&2
+        $LOGGER "Cannot share ${SHARE_VAR_WWW}" 1>&2
         exit 53
     fi
 fi
@@ -258,7 +275,7 @@ fi
 
 provide_postgresql () {
     # Allow the container to access directly the Postgresql socket:
-    socket=/var/run/postgresql/.s.PGSQL.5432
+    local socket=$1
     if [ -r $socket ]
     then
         for f in /etc/postgresql/*/main/pg_ident.conf
@@ -293,12 +310,15 @@ EOF
         done
 
         ADDITIONAL_FLAGS="$ADDITIONAL_FLAGS -v ${socket%/*}/:${socket%/*}/ "
+        return 1
 
     else
         echo "!!! Cannot find Postgresql socket: $socket"
+        $LOGGER "!!! Cannot find Postgresql socket: $socket"
         #echo "!!! Reverting to ssh tunnel"
         #PROVIDE_TUNNEL=5432
-        exit 54
+        #exit 54
+        return 0
     fi
 }
 
@@ -315,6 +335,7 @@ then
         MYIP=$( sed -rne '/inet /s#^.*inet ([^ ]+) *netm.*$#\1#p' < config.ethernet )
     else
         echo "!!! Cannot determine ethernet configuration"
+        $LOGGER "!!! Cannot determine ethernet configuration"
         exit 55
     fi
     DBIP=$( host $DBHOST | \
@@ -322,11 +343,16 @@ then
     if [ "$MYIP" = "$DBIP" ]
     then
         echo "Docker is running on $DBHOST ($MYIP)($DBIP)"
-        provide_postgresql
+        provide_postgresql /var/run/postgresql/.s.PGSQL.5432
     elif ${REALLY_NEED_POSTGRESQL}
     then
+        # MacOSX use /tmp/ instead of /var/run/postgresql and Docker
+        # does not like sharing /var/run/ since /private/var/run is
+        # already shared.
         echo "Share Postgresql socket with the container"
-        provide_postgresql
+        provide_postgresql /var/run/postgresql/.s.PGSQL.5432 || \
+        provide_postgresql /tmp/.s.PGSQL.5432 ||
+        exit 54    
     fi
     # NOTA: if we are not on the dbhost then the container will use
     # a tcp connection towards the database. See start-45-db.sh and
@@ -336,6 +362,7 @@ fi
 if ! docker version 
 then
     echo "Docker is not available"
+    $LOGGER "Docker is not available"
     exit 54
 fi
 
@@ -347,7 +374,9 @@ then
         echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
         # Pay attention to ~/.docker/config.json
         if ${REFRESH_DOCKER_IMAGES_FAIL}
-        then exit 54
+        then 
+            $LOGGER "Failed to download ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
+            exit 54
         fi
     fi
 elif docker images | grep -E -q "^${DOCKERIMAGE} *${DOCKERIMAGETAG}"
@@ -360,7 +389,9 @@ else
         echo "Cannot pull ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
         # Pay attention to ~/.docker/config.json
         if ${REFRESH_DOCKER_IMAGES_FAIL}
-        then exit 54
+        then 
+            $LOGGER "failed to download ${DOCKERIMAGE}:${DOCKERIMAGETAG}"
+            exit 54
         fi
     fi
 fi
@@ -462,6 +493,7 @@ fi
 if [ -z "$CID" ]
 then 
     echo "Starting Docker container $DOCKERNAME failure!"
+    $LOGGER "Starting Docker container $DOCKERNAME failure!"
     docker logs ${DOCKERNAME} | tee docker.logs
     exit 55
 fi
@@ -479,6 +511,7 @@ IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID})
 if [ -z "$IP" ]
 then
     echo "No IP allocated!"
+    $LOGGER "No IP allocated!"
     docker logs ${DOCKERNAME} | tee docker.logs
     exit 56
 fi
@@ -531,11 +564,13 @@ then
     if [ ! -L rootfs ] 
     then
         echo "Could not find rootfs for the fresh container!"
+        $LOGGER "Could not find rootfs for the fresh container!"
         exit 54
     fi
     if [ $(ls -1 rootfs/ | wc -l) -lt 1 ]
     then 
         echo "rootfs is empty !?"
+        $LOGGER "rootfs is empty !?"
         exit 54
     fi
 fi
@@ -577,6 +612,7 @@ then
     then :
     else
         echo "Cannot open tunnel 25:127.0.0.1:25"
+        $LOGGER "Cannot open tunnel 25:127.0.0.1:25"
         docker logs ${DOCKERNAME} | tee docker.logs
         exit 59
     fi
@@ -608,6 +644,7 @@ then
     then :
     else
         echo "Cannot open tunnel ${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL}"
+        $LOGGER "Cannot open tunnel ${PROVIDE_TUNNEL}:127.0.0.1:${PROVIDE_TUNNEL}"
         docker logs ${DOCKERNAME} | tee docker.logs
         exit 59
     fi
@@ -688,6 +725,7 @@ do
         if [ $status -gt 0 ]
         then 
             echo "Failed check $f ($status), stopping Docker container"
+            $LOGGER "Failed check $f ($status), stopping Docker container"
             docker stop ${DOCKERNAME}
             docker logs ${DOCKERNAME} | tee docker.logs
             exit $status
@@ -695,6 +733,8 @@ do
     fi
 done
 
-echo "Docker container ${DOCKERNAME} ready at `date`"
+MSG="Docker container ${DOCKERNAME} ready at `date`"
+$LOGGER $MSG
+echo $MSG
 
 # end of install.sh
