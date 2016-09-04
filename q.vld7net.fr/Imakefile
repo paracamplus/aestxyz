@@ -1,0 +1,70 @@
+# Start a local Docker with some host
+# 
+#  (cd q.vld7net.fr/;m run.local refresh.local)
+#
+# Pour les tests, 
+#        m run.local
+#        time m prepare.test.on.bibou 
+#        m refresh.local
+#    dans autre fenetre              m connect
+# ou      docker exec -it vmx tail -F /var/log/apache2/error.log
+
+
+#if defined(SITE_is_bibou)
+WAYDIR	=	/Users/Docker/${HOSTNAME}
+#else
+WAYDIR	=	/tmp/Docker/${HOSTNAME}
+#endif
+
+work : nothing 
+clean ::
+	rm -rf docker.* nohup.out root root.pub root_rsa root_rsa.pub \
+		rootfs ssh.d ssh_host_ecdsa_key.pub
+
+DOCKERNAME	=	vmq
+COURSE		=	q
+regenerate :
+	make stop &
+	cd ../../Servers/q/Paracamplus-FW4EX-Q/ && gulp dist
+	cd .. ; m create.aestxyz_${DOCKERNAME}
+
+HOSTNAME	=	${COURSE}.vld7net.fr
+run.local : update.Scripts
+	-mkdir -p ${WAYDIR}/log.d
+	-chown -R '${USER}:' ${WAYDIR}/log.d
+	-chmod 755 ${WAYDIR}/log.d
+	cd ${WAYDIR} && ./install.sh 
+
+connect : update.Scripts
+#	${WAYDIR}/../Scripts/connect.sh ${HOSTNAME}
+	docker exec -it ${DOCKERNAME} bash
+
+update.Scripts :
+	mkdir -p ${WAYDIR}
+	rsync -avuL ../Scripts        ${WAYDIR}/../
+	rsync -avuL ../${HOSTNAME}/   ${WAYDIR}/
+
+stop :
+	docker stop ${DOCKERNAME}
+
+INNERHOSTNAME	=	${COURSE}.paracamplus.com
+RSYNC_FLAGS	=	--exclude='*~'
+refresh.local : update.Scripts 
+	-cd ../../Servers/q/Paracamplus-FW4EX-Q/ && rm js/tmp*.js
+	cd ../../Servers/q/Paracamplus-FW4EX-Q/ && gulp dev
+	cd ../../Servers/q/Paracamplus-FW4EX-Q/ && chmod -R 755 dist
+	cd ../../Servers/q/Paracamplus-FW4EX-Q/ && \
+	  tar cf - -C dist . | docker cp - vmq:/var/www/${INNERHOSTNAME}/
+	docker cp -L ../../Servers/q/Paracamplus-FW4EX-Q/root/static \
+		vmq:/var/www/${INNERHOSTNAME}/
+	docker cp -L ../../Servers/q/Paracamplus-FW4EX-Q/Templates \
+		vmq:/opt/${INNERHOSTNAME}/
+	docker cp -L local-${INNERHOSTNAME}.yml \
+		vmq:/opt/${INNERHOSTNAME}/${INNERHOSTNAME}.yml
+	-docker exec vmq rm /var/log/apache2/access.log
+	-docker exec vmq rm /var/log/apache2/error.log
+	docker exec vmq /root/RemoteScripts/starman.sh restart
+
+# Log of starman in /tmp/Docker/q.vld7net.fr/log.d/error.log
+
+# end of Makefile
