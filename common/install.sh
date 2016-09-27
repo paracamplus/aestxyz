@@ -333,6 +333,10 @@ then
     elif /sbin/ifconfig en0 > config.ethernet
     then
         MYIP=$( sed -rne '/inet /s#^.*inet ([^ ]+) *netm.*$#\1#p' < config.ethernet )
+    # (3) test for Ubuntu 16.04
+    elif /sbin/ifconfig $(netstat -rn | grep '^0.0.0.0' | awk '{print $8}') > config.ethernet
+    then
+         MYIP=$( sed -rne '/inet addr/s#^.*inet addr:([^ ]+) *B.*$#\1#p' < config.ethernet )
     else
         echo "!!! Cannot determine ethernet configuration"
         $LOGGER "!!! Cannot determine ethernet configuration"
