@@ -14,6 +14,8 @@ do
         $f
 done
 echo 'HashKnownHosts no' >> /etc/ssh/ssh_config
+sed -i.bak /etc/ssh/sshd_config \
+    -e 's/^.*PermitRootLogin without-password.*$/PermitRootLogin yes/'
 
 # This will also change the corresponding directory of the Docker host:
 mkdir -p /root/.ssh/
@@ -27,9 +29,13 @@ then
     chmod a=r /etc/ssh/ssh_known_hosts
 fi
 
-if ! /etc/init.d/ssh start
-then 
-    echo "Cannot start sshd"
+# With Debian 8.5, failure of sshd returns 0!
+/etc/init.d/ssh start & sleep 2
+if /etc/init.d/ssh status
+then
+    :
+else
+    echo "Cannot start sshd (code $?)"
     exit 44
 fi
 
