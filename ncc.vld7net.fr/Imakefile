@@ -1,0 +1,56 @@
+# Start a local Docker with some host
+# 
+#  (cd ncc.vld7net.fr/ ; m run.local)
+#
+#if defined(SITE_is_bibou)
+WAYDIR	=	/Users/Docker/ncc.vld7net.fr
+#else
+WAYDIR	=	/tmp/Docker/ncc.vld7net.fr
+#endif
+
+work : nothing 
+clean ::
+	rm -rf docker.* nohup.out root root.pub root_rsa root_rsa.pub 		rootfs ssh.d ssh_host_ecdsa_key.pub
+
+DOCKERNAME	=	ncc
+COURSE		=	ncc
+regenerate :
+	make stop &
+	cd .. ; m create.aestxyz_ncc COURSE=ncc
+
+HOSTNAME	=	ncc.vld7net.fr
+run.local :
+	[ -d ${WAYDIR} ] || rm -rf ${WAYDIR}
+	-rm -rf ${WAYDIR}
+	m update.Scripts
+	cd ${WAYDIR} && sudo ./install.sh
+	echo "Connect with http://$$(cat ${WAYDIR}/docker.ip)/"
+
+connect : update.Scripts
+#	${WAYDIR}/../Scripts/connect.sh ncc.vld7net.fr
+	docker exec -it ncc bash
+
+update.Scripts :
+	mkdir -p ${WAYDIR}
+	rsync -avuL ../Scripts        ${WAYDIR}/../
+	rsync -avuL ../ncc.vld7net.fr/   ${WAYDIR}/
+
+stop :
+	docker stop ncc
+
+INNERHOSTNAME	=	ncc.paracamplus.com
+RSYNC_FLAGS	=	--exclude='*~'
+refresh.local :
+	sudo chmod a+rx /var/lib/docker/aufs/mnt/
+	sudo chown -R queinnec: /tmp/Docker/ncc.vld7net.fr/rootfs/usr/local/lib/site_perl/
+#	echo 'chown -R 1299:1000 /usr/local/lib/site_perl/Paracamplus' | #		/tmp/Docker/Scripts/connect.sh ncc.vld7net.fr
+	rsync -avu ${RSYNC_FLAGS} ../../perllib/Paracamplus 	   ${WAYDIR}/rootfs/usr/local/lib/site_perl/
+	rsync -avu ${RSYNC_FLAGS} ../../Servers/GenericApp/Templates/ 	  ${WAYDIR}/rootfs/opt/ncc.paracamplus.com/Templates/Default/
+	rsync -avuL ${RSYNC_FLAGS} ../../Servers/w.ncc/Paracamplus-FW4EX-CC/root/ 	  ${WAYDIR}/rootfs/var/www/ncc.vld7net.fr/
+	{ echo "chown -R 1299: /usr/local/lib/site_perl/Paracamplus/" ;	  echo "/root/RemoteScripts/starman-stop.sh" ;	  echo "/root/RemoteScripts/start-55-perlHttpServer.sh" ;	  echo "tail -f /var/log/apache2/error.log" ;} | /tmp/Docker/Scripts/connect.sh ncc.vld7net.fr
+
+refresh.exo :
+	cd ../../Servers/w.ncc/Paracamplus-FW4EX-CC/ ; gulp dev
+	m refresh.local
+
+# end of Makefile
